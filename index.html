@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Masters Union Nations</title>
+<meta name="description" content="Masters Union Nations (MUN) — a two-day Model United Nations conference, 28 & 29 November 2026, Masters' Union School of Business, Gurugram." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="locked">
+
+<div class="grain"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<canvas id="stars"></canvas>
+
+<!-- ============ GATE (badge swipe) ============ -->
+<div class="gate" id="gate">
+  <div class="gate-inner">
+    <p class="pixel gate-status"><span class="led"></span> SUMMIT GATE &middot; LOCKED</p>
+    <h1 class="gate-title">Masters Union <span class="grad-text">Nations</span></h1>
+    <p class="gate-sub">Two days. Eight rooms.</p>
+
+    <form class="badge-form" id="badgeForm" autocomplete="off">
+      <div class="badge" id="badge">
+        <div class="badge-clip"></div>
+        <div class="badge-top"><span class="badge-logo">Masters Union Nations</span><span class="badge-entry">Entry card</span></div>
+        <div class="badge-avatar">
+          <svg viewBox="0 0 80 80"><circle cx="40" cy="30" r="14"/><path d="M12 76c2-18 14-26 28-26s26 8 28 26z"/></svg>
+        </div>
+        <label for="delegateName" class="pixel">DELEGATE NAME</label>
+        <input id="delegateName" maxlength="22" placeholder="Type your name" required />
+        <div class="badge-strip"></div>
+        <div class="badge-bar"></div>
+        <div class="scan-beam"></div>
+      </div>
+      <button type="submit" class="btn btn-solid btn-lg magnetic" id="swipeBtn">Swipe badge &amp; enter</button>
+      <p class="scan-status pixel" id="scanStatus"></p>
+      <p class="gate-hint" id="gateHint">Type your delegate name, then swipe in.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ============ TOP BANNER ============ -->
+<header class="hud" id="hud">
+  <a href="#top" class="brand nav-link">
+    <span class="brand-mark">Masters Union <em>Nations</em></span>
+  </a>
+  <nav class="topnav" id="topnav">
+    <a href="#top" class="nav-link">Home</a>
+    <a href="#hall" class="nav-hall" id="navHall">Committee Doors</a>
+    <a href="#applications" class="nav-link">Applications</a>
+    <a href="#awards" class="nav-link">Prizes</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </nav>
+  <div class="hud-stats">
+    <div class="hud-chip hud-name" id="hudName">Delegate</div>
+  </div>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<main id="top">
+
+<!-- ============ HOME ============ -->
+<section class="scene lobby" id="lobby">
+  <div class="lobby-glow a"></div><div class="lobby-glow b"></div>
+  <div class="lobby-content">
+    <p class="pixel lobby-status"><span class="led on"></span> GATE OPEN &middot; WELCOME, <span id="welcomeName">DELEGATE</span></p>
+    <h2 class="lobby-title">Masters Union<br/><span class="grad-text">Nations</span></h2>
+    <p class="lobby-sub">A two-day Model United Nations conference for young leaders &mdash; diplomacy, debate and decision-making.</p>
+    <div class="lobby-meta">
+      <div class="meta-pill">&#128197; 28 &amp; 29 November 2026</div>
+      <div class="meta-pill">&#128205; Masters&rsquo; Union School of Business, Gurugram</div>
+    </div>
+    <div class="countdown" id="countdown">
+      <div class="count-box"><span id="cd-days">00</span><label>Days</label></div>
+      <div class="count-box"><span id="cd-hours">00</span><label>Hours</label></div>
+      <div class="count-box"><span id="cd-mins">00</span><label>Mins</label></div>
+      <div class="count-box"><span id="cd-secs">00</span><label>Secs</label></div>
+    </div>
+    <div class="lobby-cta">
+      <button class="btn btn-solid btn-lg magnetic" id="enterHall">Enter the Hall of Doors</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPLICATIONS ============ -->
+<section class="scene section" id="applications">
+  <div class="scene-head">
+    <span class="tag">Applications</span>
+    <h2 class="section-title">Be a part of Masters Union Nations</h2>
+    <p class="scene-lead">Delegates apply for a committee from the Hall of Doors. You can also join the organising team below.</p>
+  </div>
+  <h3 class="sub-title">Join the team</h3>
+  <div class="app-grid">
+    <article class="app-card" data-reveal>
+      <h3>Chairperson</h3>
+      <p class="app-full">Requirements</p>
+      <ul class="req-list">
+        <li>Minimum 3 years of MUN experience</li>
+        <li>Chaired at least 3 conferences</li>
+        <li>Strong knowledge of rules of procedure</li>
+        <li>Available for both days of the conference</li>
+      </ul>
+      <button class="btn btn-solid" data-apply="Chairperson">Apply as Chairperson</button>
+    </article>
+    <article class="app-card" data-reveal>
+      <h3>Secretariat</h3>
+      <p class="app-full">What you will do</p>
+      <ul class="req-list">
+        <li>Lead conference planning and operations</li>
+        <li>Coordinate chairpersons and committees</li>
+        <li>Liaise with Masters&rsquo; Union administration</li>
+        <li>Prior MUN or event-organising experience preferred</li>
+      </ul>
+      <button class="btn btn-solid" data-apply="Secretariat">Apply for Secretariat</button>
+    </article>
+    <article class="app-card" data-reveal>
+      <h3>Campus Ambassador</h3>
+      <ul class="amb-list">
+        <li><strong>7+</strong> 50% off registration fees</li>
+        <li><strong>14+</strong> 100% off registration &middot; 50% off Social Night</li>
+        <li><strong>20+</strong> 100% off registration &middot; free Social Night entry with +1 &middot; special gift</li>
+      </ul>
+      <button class="btn btn-solid" data-apply="Campus Ambassador">Apply as Ambassador</button>
+    </article>
+  </div>
+</section>
+
+<!-- ============ PRIZES ============ -->
+<section class="scene section" id="awards">
+  <div class="scene-head">
+    <span class="tag">Prizes</span>
+    <h2 class="section-title">The Trophy Room</h2>
+    <p class="scene-lead">A total prize pool of <strong class="gold">&#8377;2,25,000</strong> &mdash; including &#8377;2k in H&amp;M gift cards.</p>
+  </div>
+  <div class="prize-total" data-reveal>
+    <span class="pixel">TOTAL PRIZE POOL</span>
+    <strong>&#8377;<span data-count="225000">0</span></strong>
+  </div>
+  <div class="prize-cols">
+    <div class="prize-box" data-reveal>
+      <h3>Best Delegate in every committee</h3>
+      <p class="muted">The same for every committee except IP.</p>
+      <ul class="prize-list">
+        <li><span>Best Delegate</span><strong>&#8377;15k</strong></li>
+        <li><span>High Commendation</span><strong>&#8377;10k</strong></li>
+        <li><span>High Commendation (School)</span><strong>&#8377;5k</strong></li>
+      </ul>
+    </div>
+    <div class="prize-box" data-reveal>
+      <h3>International Press</h3>
+      <ul class="prize-list">
+        <li><span>Best Photographer, Journalist &amp; Caricaturist</span><strong>&#8377;10k</strong></li>
+        <li><span>High Commendation in all three</span><strong>&#8377;5k</strong></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="scene section" id="contact">
+  <div class="contact-grid">
+    <div>
+      <span class="tag">Contact</span>
+      <h2 class="section-title">Questions? Talk to the organisers.</h2>
+      <p class="scene-lead">Reach out to the Organising Committee about committees, payments or accommodation.</p>
+      <ul class="contact-list">
+        <li><span class="contact-icon">&#128100;</span><div><strong>Heer Chauhan</strong><a href="mailto:heer.chauhan_ugtbm2028@mastersunion.org">heer.chauhan_ugtbm2028@mastersunion.org</a><a href="tel:+917229091033">+91 72290 91033</a></div></li>
+        <li><span class="contact-icon">&#128100;</span><div><strong>Ronit Pahuja</strong><a href="mailto:ronit.pahuja_ugdsai2030@mastersunion.org">ronit.pahuja_ugdsai2030@mastersunion.org</a><a href="tel:995887567">995887567</a></div></li>
+      </ul>
+    </div>
+    <div class="venue-card" data-reveal>
+      <div class="venue-pulse"></div>
+      <h3>Masters&rsquo; Union School of Business</h3>
+      <p>Gurugram, Haryana</p>
+      <p class="venue-dates">28 &amp; 29 NOVEMBER 2026</p>
+      <a class="btn btn-outline magnetic" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Masters+Union+School+of+Business+Gurugram">Open in Maps</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="brand"><span class="brand-mark">Masters Union <em>Nations</em></span></div>
+    <p class="footer-copy">&copy; 2026 Masters Union Nations. Masters&rsquo; Union School of Business, Gurugram.</p>
+  </div>
+</footer>
+
+<!-- ============ HALL OF DOORS (separate full-screen page) ============ -->
+<div class="hallview" id="hallview" aria-hidden="true">
+  <div class="hv-wall"></div>
+  <div class="hv-head">
+    <button class="hv-back" id="hvBack">&larr; Back</button>
+    <p class="pixel hv-title">COMMITTEE DOORS</p>
+    <p class="hv-sub" id="hvSub">Choose a door, Delegate.</p>
+  </div>
+
+  <div class="hv-doors" id="hvDoors"><!-- doors injected --></div>
+  <div class="hv-floor"></div>
+
+  <div class="hv-bubble" id="hvBubble">Which committee will you choose?</div>
+
+  <div class="delegate" id="delegate">
+    <svg class="dg-svg" viewBox="0 0 120 300" aria-hidden="true">
+      <g class="leg leg-l"><rect x="40" y="190" width="18" height="90" rx="6" fill="#1b1a26"/><rect x="36" y="272" width="26" height="12" rx="6" fill="#0a0a0f"/></g>
+      <g class="leg leg-r"><rect x="62" y="190" width="18" height="90" rx="6" fill="#23212e"/><rect x="58" y="272" width="26" height="12" rx="6" fill="#0a0a0f"/></g>
+      <g class="arm arm-l"><rect x="14" y="90" width="16" height="84" rx="8" fill="#2a2840"/><circle cx="22" cy="178" r="9" fill="#e0ae84"/></g>
+      <g class="arm arm-r"><rect x="90" y="90" width="16" height="84" rx="8" fill="#2a2840"/><circle cx="98" cy="178" r="9" fill="#e0ae84"/></g>
+      <path d="M28 92 Q60 78 92 92 L96 200 L24 200 Z" fill="#2a2840"/>
+      <path d="M50 88 L60 130 L70 88 Z" fill="#f4f1ea"/>
+      <path d="M50 88 L44 140 L60 130 Z M70 88 L76 140 L60 130 Z" fill="#f2b544"/>
+      <rect x="53" y="68" width="14" height="22" rx="5" fill="#e0ae84"/>
+      <circle cx="60" cy="48" r="26" fill="#e8b88f"/>
+      <path d="M34 46 Q36 18 60 20 Q86 18 86 46 Q76 30 60 32 Q44 30 34 46 Z" fill="#14121c"/>
+      <circle cx="51" cy="50" r="2.6" fill="#14121c"/><circle cx="69" cy="50" r="2.6" fill="#14121c"/>
+      <path d="M52 62 Q60 68 68 62" stroke="#8a4b3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M48 86 L60 148 M72 86 L60 148" stroke="#f2b544" stroke-width="2.5" fill="none"/>
+    </svg>
+    <div class="dg-card"><small>Masters Union Nations</small><strong id="dgName">Delegate</strong><i></i></div>
+  </div>
+</div>
+
+<!-- ============ ROOM CARD ============ -->
+<div class="room" id="room" aria-hidden="true">
+  <div class="room-backdrop" id="roomBackdrop"></div>
+  <div class="portal" id="portal"></div>
+  <div class="room-panel" role="dialog" aria-modal="true" aria-labelledby="roomTitle">
+    <button class="room-close" id="roomClose" aria-label="Back to the hall">&times;</button>
+    <div class="room-top">
+      <div class="room-glyph" id="roomGlyph"></div>
+      <div>
+        <p class="pixel room-room" id="roomNum"></p>
+        <h3 id="roomTitle"></h3>
+        <p class="room-full" id="roomFull"></p>
+      </div>
+    </div>
+    <div class="room-body">
+      <div class="room-block"><span class="pixel">AGENDA</span><p id="roomAgenda"></p></div>
+      <div class="room-block"><span class="pixel">MATRIX LINK</span><p id="roomMatrix"></p></div>
+      <div class="room-block"><span class="pixel">PRIZES</span><p id="roomPrize"></p></div>
+    </div>
+    <div class="room-foot">
+      <button class="btn btn-outline" id="roomBack">Back to the hall</button>
+      <button class="btn btn-solid" id="roomCta">Pick this committee &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APPLICATION FORM ============ -->
+<div class="room" id="formModal" aria-hidden="true">
+  <div class="room-backdrop" id="formBackdrop"></div>
+  <div class="room-panel" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <button class="room-close" id="formClose" aria-label="Close form">&times;</button>
+    <p class="pixel room-room">ONBOARDING</p>
+    <h3 class="form-title" id="formTitle">Delegate application</h3>
+    <form id="applyForm" class="apply-form">
+      <label>Name<input name="name" id="fName" required maxlength="60" placeholder="Your full name"></label>
+      <label>Applying for<select name="applyingFor" id="fRole" required></select></label>
+      <div class="q-block">
+        <span class="pixel">QUESTIONS</span>
+        <label>Question 1 (to be added)<textarea name="q1" rows="3" placeholder="Your answer"></textarea></label>
+        <label>Question 2 (to be added)<textarea name="q2" rows="3" placeholder="Your answer"></textarea></label>
+        <label>Question 3 (to be added)<textarea name="q3" rows="3" placeholder="Your answer"></textarea></label>
+      </div>
+      <p class="form-note" id="formNote"></p>
+      <button type="submit" class="btn btn-solid btn-lg" id="formSubmit">Submit application</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ ACCESS CARD ============ -->
+<div class="room" id="cardModal" aria-hidden="true">
+  <div class="room-backdrop" id="cardBackdrop"></div>
+  <div class="room-panel card-panel" role="dialog" aria-modal="true" aria-label="Your access card">
+    <button class="room-close" id="cardClose" aria-label="Close">&times;</button>
+    <p class="pixel room-room">APPLICATION RECEIVED</p>
+    <h3 class="form-title">Your access card is ready</h3>
+    <div class="card-wrap"><canvas id="cardCanvas" width="1080" height="1920"></canvas></div>
+    <p class="muted card-tip">Download it and share it on your story or with friends.</p>
+    <div class="room-foot card-actions">
+      <button class="btn btn-solid" id="cardShare">Share</button>
+      <button class="btn btn-outline" id="cardDownload">Download PNG</button>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
