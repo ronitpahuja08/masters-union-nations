@@ -441,3 +441,10 @@ main,footer,.hud{position:relative;z-index:2}
   100%{opacity:0;clip-path:circle(160% at var(--px) var(--py))}}
 .room.open{transition:opacity .1s ease,visibility 0s}
 .room-panel{transition:transform .55s cubic-bezier(.2,1,.3,1),opacity .35s ease}
+
+.brand{flex-direction:row;align-items:center;gap:10px}
+.brand-logo{width:30px;height:30px}
+.gate-logo{width:64px;height:64px;margin:0 auto 14px;display:block}
+
+.gate{align-items:flex-start}
+.gate-inner{margin:auto}
