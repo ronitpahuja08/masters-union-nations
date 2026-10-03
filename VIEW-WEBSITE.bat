@@ -22,5 +22,5 @@ if not defined PORT_IN_USE (
   timeout /t 2 /nobreak >nul
 )
 
-start "" "http://localhost:5173/?preview=%RANDOM%%RANDOM%"
+start "" "http://localhost:5173/experience.html?preview=%RANDOM%%RANDOM%"
 exit /b 0
