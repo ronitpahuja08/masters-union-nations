@@ -3,110 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#05060a">
-<title>Masters Union Nations — Diplomatic Universe</title>
-<meta name="description" content="Explore 8 committee worlds at Masters Union Nations 2026.">
+<meta name="theme-color" content="#07100f">
+<title>Masters Union Nations — Global Boardroom</title>
+<meta name="description" content="Enter the Masters Union Nations global boardroom, explore 8 committees and unlock your delegate identity.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/experience.css">
+<link rel="stylesheet" href="assets/css/global-boardroom.css">
 </head>
 <body>
-<div class="noise" aria-hidden="true"></div>
-<div class="sky" aria-hidden="true"><span class="nebula n1"></span><span class="nebula n2"></span><span class="nebula n3"></span></div>
-<div class="progress-line" id="progressLine" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="board-grid" aria-hidden="true"></div>
+<div class="progress-line" id="progressLine"></div>
 
+<button class="sound-toggle" id="soundToggle" type="button" aria-label="Toggle sound"><span class="sound-bars"><i></i><i></i><i></i></span><b>SOUND OFF</b></button>
+
+<!-- ENTRY / ID ANALYSIS -->
+<section class="scan-gate" id="scanGate">
+  <div class="scan-ambient" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="scan-copy">
+    <p class="micro"><span class="live-dot"></span> GLOBAL BOARDROOM ACCESS</p>
+    <h1>Present your<br><em>delegate identity.</em></h1>
+    <p class="scan-lead">Before entering Masters Union Nations, the boardroom verifies your access card and creates your delegate profile.</p>
+    <div class="scan-log" id="scanLog">
+      <span>01 / Identity signal</span>
+      <span>02 / Conference clearance</span>
+      <span>03 / Committee access layer</span>
+    </div>
+  </div>
+
+  <form class="access-terminal" id="accessForm">
+    <div class="terminal-head"><span>MU:NATIONS / ID ANALYSER</span><b id="terminalState">STANDBY</b></div>
+    <div class="id-card" id="idCard">
+      <div class="card-grid"></div>
+      <div class="card-top"><span>MASTERS UNION</span><strong>NATIONS</strong><i>2026</i></div>
+      <div class="card-profile">
+        <div class="avatar-orbit"><div class="avatar-core" id="avatarCore">D</div></div>
+        <div><small>DELEGATE</small><strong id="cardName">YOUR NAME</strong><span>GLOBAL BOARDROOM ACCESS</span></div>
+      </div>
+      <label for="delegateName">DELEGATE NAME</label>
+      <input id="delegateName" maxlength="28" autocomplete="name" placeholder="Type your name" required>
+      <div class="card-code"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="scan-beam"></div>
+    </div>
+    <button class="analyse-btn" type="submit"><span>ANALYSE ACCESS CARD</span><b>↗</b></button>
+    <p class="terminal-note" id="terminalNote">Identity scan requires one interaction. Sound remains optional.</p>
+  </form>
+</section>
+
+<!-- BOARDROOM -->
+<div class="boardroom-shell" id="boardroomShell" aria-hidden="true">
 <header class="nav-shell">
   <a class="wordmark" href="experience.html"><span>Masters Union</span><strong>Nations</strong></a>
-  <nav>
-    <a href="#universe">Committees</a><a href="#experience">Experience</a><a href="card-studio.html">ID Studio</a>
-  </nav>
-  <div class="delegate-chip"><span class="online-dot"></span><span id="navDelegate">Guest Delegate</span></div>
+  <nav><a href="#boardroom">Boardroom</a><a href="#committees">Committees</a><a href="#journey">Journey</a></nav>
+  <div class="delegate-chip"><span class="online-dot"></span><span id="navDelegate">Delegate</span></div>
 </header>
 
 <main>
-<section class="hero" id="top">
-  <div class="hero-copy">
-    <p class="eyebrow">28—29 NOV 2026 · GURUGRAM</p>
-    <h1>Choose a world.<br><em>Enter the debate.</em></h1>
-    <p class="hero-lead">Eight committees. Eight visual identities. One conference built like an interactive diplomatic universe.</p>
-    <form class="delegate-login" id="delegateLogin">
-      <label for="delegateName">Delegate name</label>
-      <div><input id="delegateName" maxlength="28" placeholder="Type your name" autocomplete="name"><button type="submit">Enter universe <span>↗</span></button></div>
-    </form>
-    <div class="hero-stats"><span><strong>08</strong> committee worlds</span><span><strong>₹2.25L</strong> prize pool</span><span><strong>02</strong> days</span></div>
-  </div>
-  <div class="hero-art" aria-hidden="true">
-    <div class="core"><span class="core-ring r1"></span><span class="core-ring r2"></span><span class="core-ring r3"></span><b>MU<br>NATIONS</b></div>
-    <div class="orbit o1"><i></i></div><div class="orbit o2"><i></i></div><div class="orbit o3"><i></i></div>
-    <p>Diplomatic Universe / 2026</p>
-  </div>
-</section>
-
-<section class="universe" id="universe">
-  <div class="section-kicker"><span>01</span><p>COMMITTEE CONSTELLATION</p></div>
-  <div class="section-title-row">
-    <h2>Eight destinations.<br>Pick your arena.</h2>
-    <p>No basic doors. Every committee is its own world with a unique emblem, atmosphere, agenda and game-style entry sequence.</p>
+<section class="boardroom" id="boardroom">
+  <div class="boardroom-copy">
+    <p class="micro">BOARDROOM ONLINE · 8 ACTIVE COMMITTEES</p>
+    <h2>The world is<br><em>your conference floor.</em></h2>
+    <p>Move across the global boardroom. Every node is a different committee, visual identity and debate format. Select one and your delegate enters that committee’s briefing room.</p>
+    <div class="board-stats"><span><b>08</b> committees</span><span><b>₹2.25L</b> prize pool</span><span><b>28—29</b> Nov 2026</span></div>
   </div>
 
-  <div class="universe-stage" id="universeStage">
-    <div class="world-grid" id="worldGrid"></div>
-    <aside class="world-detail" id="worldDetail">
-      <div class="detail-index" id="detailIndex">01 / 08</div>
-      <div class="detail-emblem" id="detailEmblem"></div>
-      <p class="detail-type" id="detailType">Select a committee</p>
-      <h3 id="detailCode">UNHRC</h3>
-      <p class="detail-full" id="detailFull">United Nations Human Rights Council</p>
-      <div class="detail-rule"></div>
-      <p class="detail-agenda" id="detailAgenda"></p>
-      <button class="launch-btn" id="launchBtn"><span>Deploy delegate</span><b>ENTER WORLD ↗</b></button>
-      <a class="text-link" id="detailLink" href="committees/unhrc.html">View committee page →</a>
-    </aside>
-
-    <div class="delegate-platform" aria-hidden="true">
-      <div class="delegate-suit" id="delegateSuit">
-        <svg viewBox="0 0 140 310" role="img" aria-label="Suited delegate character">
-          <g class="leg l"><path d="M45 190h23l-5 92H43z"/><path class="shoe" d="M42 276h25v15H34c0-8 2-12 8-15z"/></g>
-          <g class="leg r"><path d="M72 190h23l3 92H78z"/><path class="shoe" d="M78 276h22c7 3 10 7 10 15H76z"/></g>
-          <g class="arm l"><path d="M38 100L18 160l18 8 23-57z"/><circle class="skin" cx="24" cy="166" r="10"/></g>
-          <g class="arm r"><path d="M102 100l20 60-18 8-23-57z"/><circle class="skin" cx="116" cy="166" r="10"/></g>
-          <path class="jacket" d="M39 91q31-18 62 0l9 111H30z"/>
-          <path class="shirt" d="M54 87h32l-16 66z"/>
-          <path class="tie" d="M66 94h8l6 48-10 13-10-13z"/>
-          <rect class="skin" x="62" y="66" width="17" height="25" rx="6"/>
-          <circle class="skin" cx="70" cy="45" r="28"/>
-          <path class="hair" d="M42 43q2-31 29-29 29 0 29 30-13-17-29-14-17-3-29 13z"/>
-          <circle cx="60" cy="47" r="2.4"/><circle cx="80" cy="47" r="2.4"/>
-          <path class="smile" d="M61 60q9 7 18 0"/>
-          <rect class="badge-card" x="48" y="127" width="44" height="31" rx="4"/><path class="lanyard" d="M57 91l13 51 13-51"/>
-        </svg>
-        <div class="nameplate" id="characterName">DELEGATE</div>
-      </div>
-      <p>YOUR AVATAR</p>
+  <div class="map-console" id="mapConsole">
+    <div class="map-topbar"><span>GLOBAL BOARDROOM / LIVE MAP</span><b>NODE SELECT</b></div>
+    <div class="world-map" id="worldMap">
+      <svg viewBox="0 0 1000 520" aria-label="Stylized world map">
+        <g class="map-lines">
+          <path d="M65 132l76-45 79 9 58 58-18 53-66 18-43 54-55-31-49-48z"/>
+          <path d="M231 286l45 25 32 60-10 91-37 31-27-79-34-57z"/>
+          <path d="M430 106l61-31 76 24 22 44-56 26-14 53-43 7-41-32-36-39z"/>
+          <path d="M507 232l55-3 64 42-13 79-50 85-50-23-29-80z"/>
+          <path d="M583 126l91-28 128 10 92 55-16 67-81 28-38 52-84-22-51-53-61-21z"/>
+          <path d="M818 350l55-10 48 31-18 47-52 4-43-34z"/>
+        </g>
+        <g class="route-lines" id="routeLines"></g>
+      </svg>
+      <div class="map-scan"></div>
+      <div class="delegate-token" id="delegateToken" aria-hidden="true"><span class="token-head"></span><span class="token-body"></span><b>D</b></div>
+      <div class="map-nodes" id="mapNodes"></div>
+      <div class="map-legend"><span><i></i> Committee node</span><span><i class="active"></i> Selected</span><span>Positions are boardroom destinations, not official headquarters.</span></div>
     </div>
   </div>
 </section>
 
-<section class="experience-section" id="experience">
-  <div class="section-kicker"><span>02</span><p>THE JOURNEY</p></div>
-  <div class="journey-grid">
-    <article><b>01</b><h3>Choose your committee</h3><p>Explore the 8 worlds and understand the agenda, format, skills and prizes before registering.</p></article>
-    <article><b>02</b><h3>Register & pay</h3><p>Your payment success becomes the unlock event for the selected committee identity.</p></article>
-    <article class="featured"><b>03</b><h3>Design your entry card</h3><p>After registration, customize your official delegate ID: finish, accent, identity, institution and profile image.</p><a href="card-studio.html">Open prototype studio →</a></article>
-    <article><b>04</b><h3>Enter your world</h3><p>The delegate avatar runs into your committee world and your personalized identity follows you into the conference.</p></article>
+<section class="committees" id="committees">
+  <div class="section-head"><div><p class="micro">08 COMMITTEE DOSSIERS</p><h2>Select your arena.</h2></div><p>Each committee has its own briefing room with agenda, format, skills, prizes, registration flow and post-payment identity unlock.</p></div>
+  <div class="committee-layout">
+    <div class="committee-list" id="committeeList"></div>
+    <aside class="committee-preview" id="committeePreview">
+      <div class="crest" id="previewCrest"><span>HR</span></div>
+      <p class="preview-type" id="previewType">HUMAN RIGHTS DIPLOMACY</p>
+      <h3 id="previewCode">UNHRC</h3>
+      <p class="preview-full" id="previewFull">United Nations Human Rights Council</p>
+      <div class="preview-rule"></div>
+      <p class="preview-node" id="previewNode"></p>
+      <h4>Agenda</h4>
+      <p class="preview-agenda" id="previewAgenda"></p>
+      <div class="preview-actions"><button id="enterCommittee" type="button">ENTER BRIEFING ROOM <span>↗</span></button><a id="openDossier" href="committee.html?id=unhrc">Open full dossier</a></div>
+    </aside>
   </div>
 </section>
 
-<section class="manifesto">
-  <p>THIS IS NOT A REGISTRATION WEBSITE.</p>
-  <h2>It should feel like you just received access to a world you want to belong to.</h2>
-  <a href="#universe">Choose your committee <span>↗</span></a>
+<section class="journey" id="journey">
+  <div class="section-head"><div><p class="micro">DELEGATE JOURNEY</p><h2>From access card to conference identity.</h2></div></div>
+  <div class="journey-rail">
+    <article><b>01</b><h3>Identity analysis</h3><p>Your delegate card is scanned before the boardroom opens.</p></article>
+    <article><b>02</b><h3>Committee briefing</h3><p>Explore full committee information before registering.</p></article>
+    <article><b>03</b><h3>Registration & payment</h3><p>Successful payment unlocks the selected committee identity.</p></article>
+    <article><b>04</b><h3>Virtual ID studio</h3><p>Customize the official card theme, finish, details and visual treatment.</p></article>
+  </div>
 </section>
 </main>
-
-<div class="travel-layer" id="travelLayer" aria-hidden="true"><div class="travel-copy"><span id="travelCode">UNHRC</span><strong>ACCESSING COMMITTEE WORLD</strong></div></div>
 <footer><span>Masters Union Nations · 2026</span><span>Masters’ Union School of Business · Gurugram</span></footer>
-<script src="assets/js/experience.js"></script>
+</div>
+
+<div class="travel-layer" id="travelLayer" aria-hidden="true"><div class="travel-grid"></div><div class="travel-copy"><span id="travelCode">UNHRC</span><strong>OPENING BRIEFING ROOM</strong><small id="travelNode">GENEVA DESK</small></div></div>
+
+<script src="assets/js/soundscape.js"></script>
+<script src="assets/js/global-boardroom.js"></script>
 </body>
 </html>
