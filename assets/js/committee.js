@@ -1,11 +1,12 @@
 (function(){
 'use strict';
-var d=document,$=function(s,c){return (c||d).querySelector(s);};
-var params=new URLSearchParams(location.search),id=params.get('id')||'unhrc',committee=null;
+var d=document,$=function(s,c){return(c||d).querySelector(s);};
+var params=new URLSearchParams(location.search),id=params.get('id')||'unhrc',committee=null,themePlayed=false;
 function sound(n){if(window.MUNSound)window.MUNSound.cue(n);}function setSound(){var on=window.MUNSound&&window.MUNSound.isOn();$('#soundToggle b').textContent=on?'SOUND ON':'SOUND OFF';}
-$('#soundToggle').onclick=function(){if(window.MUNSound)window.MUNSound.toggle();setSound();};setSound();
+$('#soundToggle').onclick=function(){if(window.MUNSound){window.MUNSound.toggle();if(window.MUNSound.isOn()&&committee)window.MUNSound.committee(committee.slug);}setSound();};setSound();
 function hydrate(c){committee=c;document.documentElement.style.setProperty('--c',c.color);d.title=c.code+' — Masters Union Nations';$('#typeLabel').textContent=c.type.toUpperCase();$('#code').textContent=c.code;$('#full').textContent=c.full;$('#summary').textContent=c.summary;$('#heroCrest span').textContent=c.mark;$('#nodeLabel').textContent=c.boardroomNode.toUpperCase();$('#headerNode').textContent=c.boardroomNode.toUpperCase();$('#agenda').textContent=c.agenda;$('#experienceList').innerHTML=c.experience.map(function(x){return'<span>'+x+'</span>';}).join('');$('#prizeList').innerHTML=c.prizes.map(function(x){return'<span>'+x+'</span>';}).join('');$('#paymentCode').textContent=c.code;$('#successCrest').textContent=c.mark;$('#studioLink').href='card-studio.html?committee='+encodeURIComponent(c.slug);if(c.matrix){$('#matrixLink').hidden=false;$('#matrixLink').href=c.matrix;}var name='';try{name=localStorage.getItem('munDelegateName')||'';}catch(e){}if(name)$('#payName').value=name;}
-$('#registerBtn').onclick=function(){sound('select');$('#registerPanel').scrollIntoView({behavior:'smooth'});};
+function playThemeOnce(){if(themePlayed||!committee||!window.MUNSound||!window.MUNSound.isOn())return;themePlayed=true;window.MUNSound.wake();window.MUNSound.committee(committee.slug);}d.addEventListener('pointerdown',playThemeOnce,{once:false});
+$('#registerBtn').onclick=function(){playThemeOnce();sound('select');$('#registerPanel').scrollIntoView({behavior:'smooth'});};
 $('#paymentBtn').onclick=function(){if(!committee)return;if(committee.registrationUrl){location.href=committee.registrationUrl;return;}$('#paymentNote').textContent='Production payment link is not connected yet. Use the preview success button below to test the post-payment flow.';sound('hover');};
 $('#previewPay').onclick=function(){if(!committee)return;var name=$('#payName').value.trim()||'Delegate',email=$('#payEmail').value.trim();try{localStorage.setItem('munDelegateName',name);localStorage.setItem('munPayment',JSON.stringify({committee:committee.slug,verified:true,preview:true,email:email,at:new Date().toISOString()}));}catch(e){}sound('success');$('#successLayer').classList.add('show');};
 fetch('assets/data/committees.json').then(function(r){return r.json();}).then(function(data){hydrate(data.committees.find(function(c){return c.slug===id;})||data.committees[0]);}).catch(function(){$('#summary').textContent='Committee data could not load. Open this page through localhost.';});
