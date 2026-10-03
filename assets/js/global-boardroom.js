@@ -1,0 +1,30 @@
+(function(){
+'use strict';
+var d=document,$=function(s,c){return (c||d).querySelector(s);},$$=function(s,c){return Array.prototype.slice.call((c||d).querySelectorAll(s));};
+var state={data:null,selected:null,name:'Delegate'};
+function esc(v){return String(v||'').replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
+function initials(name){return(name||'D').trim().split(/\s+/).slice(0,2).map(function(x){return x[0]||'';}).join('').toUpperCase()||'D';}
+function sound(name){if(window.MUNSound)window.MUNSound.cue(name);}
+function setSoundLabel(){var b=$('#soundToggle');if(!b)return;var on=window.MUNSound&&window.MUNSound.isOn();$('b',b).textContent=on?'SOUND ON':'SOUND OFF';}
+$('#soundToggle').addEventListener('click',function(){if(window.MUNSound)window.MUNSound.toggle();setSoundLabel();});
+setSoundLabel();
+
+try{var saved=localStorage.getItem('munDelegateName');if(saved)state.name=saved;}catch(e){}
+var nameInput=$('#delegateName');if(state.name!=='Delegate')nameInput.value=state.name;
+nameInput.addEventListener('input',function(){var v=nameInput.value.trim();$('#cardName').textContent=(v||'YOUR NAME').toUpperCase();$('#avatarCore').textContent=initials(v||'D');});
+if(nameInput.value){$('#cardName').textContent=state.name.toUpperCase();$('#avatarCore').textContent=initials(state.name);}
+
+function unlockBoardroom(){var gate=$('#scanGate'),shell=$('#boardroomShell');shell.classList.add('is-live');shell.setAttribute('aria-hidden','false');gate.classList.add('is-leaving');setTimeout(function(){gate.classList.add('gone');window.scrollTo(0,0);},920);}
+$('#accessForm').addEventListener('submit',function(e){e.preventDefault();var n=nameInput.value.trim()||'Delegate';state.name=n;try{localStorage.setItem('munDelegateName',n);}catch(err){}$('#cardName').textContent=n.toUpperCase();$('#avatarCore').textContent=initials(n);$('#navDelegate').textContent=n;$('#terminalState').textContent='ANALYSING';$('#terminalNote').textContent='Reading identity signal…';$('#idCard').classList.add('scanning');if(window.MUNSound){window.MUNSound.wake();sound('scan');}setTimeout(function(){$('#terminalState').textContent='VERIFIED';$('#terminalNote').textContent='Access granted. Opening global boardroom…';$('#idCard').classList.remove('scanning');$('#idCard').classList.add('verified');sound('success');},1450);setTimeout(unlockBoardroom,2200);});
+
+function crest(c,mini){return '<div class="'+(mini?'mini-crest':'crest')+'" style="--c:'+c.color+';--pc:'+c.color+'"><span>'+esc(c.mark)+'</span></div>';}
+function renderNodes(){var wrap=$('#mapNodes');wrap.innerHTML=state.data.committees.map(function(c){return '<button class="map-node" data-id="'+c.slug+'" style="--x:'+c.mapX+'%;--y:'+c.mapY+'%;--c:'+c.color+'"><i></i><span>'+esc(c.code)+'</span></button>';}).join('');$$('.map-node',wrap).forEach(function(btn){btn.addEventListener('click',function(){select(btn.dataset.id,true);});btn.addEventListener('mouseenter',function(){sound('hover');});});}
+function renderList(){var wrap=$('#committeeList');wrap.innerHTML=state.data.committees.map(function(c,i){return '<button class="committee-row" data-id="'+c.slug+'" style="--c:'+c.color+'">'+crest(c,true)+'<span><strong>'+esc(c.code)+'</strong><small>'+esc(c.full)+'</small></span><em>'+String(i+1).padStart(2,'0')+' ↗</em></button>';}).join('');$$('.committee-row',wrap).forEach(function(btn){btn.addEventListener('click',function(){select(btn.dataset.id,false);});btn.addEventListener('mouseenter',function(){sound('hover');});});}
+function select(id,fromMap){var c=state.data.committees.find(function(x){return x.slug===id;})||state.data.committees[0];state.selected=c;$$('.map-node').forEach(function(x){x.classList.toggle('active',x.dataset.id===id);});$$('.committee-row').forEach(function(x){x.classList.toggle('active',x.dataset.id===id);});var token=$('#delegateToken');token.style.left=c.mapX+'%';token.style.top=c.mapY+'%';token.querySelector('b').textContent=initials(state.name);var p=$('#committeePreview');p.style.setProperty('--pc',c.color);$('#previewCrest').style.setProperty('--pc',c.color);$('#previewCrest').innerHTML='<span>'+esc(c.mark)+'</span>';$('#previewType').textContent=c.type.toUpperCase();$('#previewCode').textContent=c.code;$('#previewFull').textContent=c.full;$('#previewNode').textContent='BOARDROOM NODE · '+c.boardroomNode;$('#previewAgenda').textContent=c.agenda;$('#openDossier').href='committee.html?id='+encodeURIComponent(c.slug);sound('select');if(fromMap){setTimeout(function(){$('#committees').scrollIntoView({behavior:'smooth',block:'start'});},650);}}
+function enterSelected(){var c=state.selected;if(!c)return;var node=$('.map-node[data-id="'+c.slug+'"]'),travel=$('#travelLayer');var r=node?node.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};travel.style.setProperty('--tx',(r.left+r.width/2)+'px');travel.style.setProperty('--ty',(r.top+r.height/2)+'px');travel.style.setProperty('--tc',c.color);$('#travelCode').textContent=c.code;$('#travelNode').textContent=c.boardroomNode.toUpperCase();sound('travel');travel.classList.add('go');setTimeout(function(){location.href='committee.html?id='+encodeURIComponent(c.slug);},980);}
+$('#enterCommittee').addEventListener('click',enterSelected);
+
+var raf=0;function scrollFx(){raf=0;var max=Math.max(1,d.documentElement.scrollHeight-innerHeight);$('#progressLine').style.transform='scaleX('+Math.min(1,scrollY/max)+')';}addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(scrollFx);},{passive:true});scrollFx();
+
+fetch('assets/data/committees.json').then(function(r){if(!r.ok)throw new Error('data');return r.json();}).then(function(data){state.data=data;renderNodes();renderList();$('#navDelegate').textContent=state.name;select(data.committees[0].slug,false);}).catch(function(){document.body.insertAdjacentHTML('beforeend','<div style="position:fixed;left:20px;bottom:20px;z-index:200;background:#311;padding:12px 16px;border-radius:10px">Committee data could not load. Run through localhost.</div>');});
+})();
