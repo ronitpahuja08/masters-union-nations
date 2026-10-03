@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07100f"><title>Virtual ID Studio — Masters Union Nations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/css/card-studio.css"></head>
+<body><div class="grain"></div><div class="studio-grid"></div>
+<header><a id="backLink" href="experience.html#committees">← COMMITTEE DOSSIER</a><span>VIRTUAL <b>ID STUDIO</b></span><i id="studioStatus">POST-PAYMENT ACCESS</i></header>
+<main>
+<section class="studio-copy"><p class="micro">DELEGATE IDENTITY / 2026</p><h1>Make your access card<br><em>feel like yours.</em></h1><p>Your committee identity is already loaded. Customize the finish, typography treatment and delegate details, then export the final card.</p></section>
+<section class="studio-shell">
+  <div class="controls">
+    <div class="control-head"><span>01</span><h2>Identity</h2></div>
+    <label>Delegate name<input id="nameInput" maxlength="28" placeholder="Your name"></label>
+    <label>Institution<input id="institutionInput" maxlength="42" placeholder="School / university"></label>
+    <label>Portfolio / Country<input id="portfolioInput" maxlength="32" placeholder="Portfolio or country"></label>
+    <label>Profile photo<input id="photoInput" type="file" accept="image/*"></label>
+    <div class="control-head"><span>02</span><h2>Card finish</h2></div>
+    <div class="theme-grid" id="themeGrid"><button data-theme="committee" class="active">Committee</button><button data-theme="obsidian">Obsidian</button><button data-theme="ivory">Ivory</button><button data-theme="blueprint">Blueprint</button></div>
+    <div class="finish-grid" id="finishGrid"><button data-finish="matte" class="active">Matte</button><button data-finish="glass">Glass</button><button data-finish="foil">Foil</button></div>
+    <div class="control-head"><span>03</span><h2>Export</h2></div>
+    <button class="download-btn" id="downloadBtn">DOWNLOAD ID CARD PNG <span>↗</span></button>
+    <p class="hint">This preview studio uses your verified committee state from the registration flow.</p>
+  </div>
+  <div class="preview-zone">
+    <div class="preview-toolbar"><span>LIVE PREVIEW</span><b id="committeeLabel">UNHRC</b></div>
+    <div class="canvas-wrap"><canvas id="cardCanvas" width="900" height="1350"></canvas></div>
+  </div>
+</section>
+</main>
+<div class="locked-layer" id="lockedLayer"><div><p class="micro">IDENTITY LOCKED</p><h2>Complete registration first.</h2><p>The ID studio opens after a successful payment state for a selected committee.</p><a id="returnCommittee" href="experience.html#committees">RETURN TO COMMITTEES ↗</a><button id="devUnlock">PREVIEW MODE: UNLOCK STUDIO</button></div></div>
+<script src="assets/js/card-studio.js"></script></body></html>
