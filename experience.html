@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05060a">
+<title>Masters Union Nations — Diplomatic Universe</title>
+<meta name="description" content="Explore 8 committee worlds at Masters Union Nations 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/experience.css">
+</head>
+<body>
+<div class="noise" aria-hidden="true"></div>
+<div class="sky" aria-hidden="true"><span class="nebula n1"></span><span class="nebula n2"></span><span class="nebula n3"></span></div>
+<div class="progress-line" id="progressLine" aria-hidden="true"></div>
+
+<header class="nav-shell">
+  <a class="wordmark" href="experience.html"><span>Masters Union</span><strong>Nations</strong></a>
+  <nav>
+    <a href="#universe">Committees</a><a href="#experience">Experience</a><a href="card-studio.html">ID Studio</a>
+  </nav>
+  <div class="delegate-chip"><span class="online-dot"></span><span id="navDelegate">Guest Delegate</span></div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="hero-copy">
+    <p class="eyebrow">28—29 NOV 2026 · GURUGRAM</p>
+    <h1>Choose a world.<br><em>Enter the debate.</em></h1>
+    <p class="hero-lead">Eight committees. Eight visual identities. One conference built like an interactive diplomatic universe.</p>
+    <form class="delegate-login" id="delegateLogin">
+      <label for="delegateName">Delegate name</label>
+      <div><input id="delegateName" maxlength="28" placeholder="Type your name" autocomplete="name"><button type="submit">Enter universe <span>↗</span></button></div>
+    </form>
+    <div class="hero-stats"><span><strong>08</strong> committee worlds</span><span><strong>₹2.25L</strong> prize pool</span><span><strong>02</strong> days</span></div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="core"><span class="core-ring r1"></span><span class="core-ring r2"></span><span class="core-ring r3"></span><b>MU<br>NATIONS</b></div>
+    <div class="orbit o1"><i></i></div><div class="orbit o2"><i></i></div><div class="orbit o3"><i></i></div>
+    <p>Diplomatic Universe / 2026</p>
+  </div>
+</section>
+
+<section class="universe" id="universe">
+  <div class="section-kicker"><span>01</span><p>COMMITTEE CONSTELLATION</p></div>
+  <div class="section-title-row">
+    <h2>Eight destinations.<br>Pick your arena.</h2>
+    <p>No basic doors. Every committee is its own world with a unique emblem, atmosphere, agenda and game-style entry sequence.</p>
+  </div>
+
+  <div class="universe-stage" id="universeStage">
+    <div class="world-grid" id="worldGrid"></div>
+    <aside class="world-detail" id="worldDetail">
+      <div class="detail-index" id="detailIndex">01 / 08</div>
+      <div class="detail-emblem" id="detailEmblem"></div>
+      <p class="detail-type" id="detailType">Select a committee</p>
+      <h3 id="detailCode">UNHRC</h3>
+      <p class="detail-full" id="detailFull">United Nations Human Rights Council</p>
+      <div class="detail-rule"></div>
+      <p class="detail-agenda" id="detailAgenda"></p>
+      <button class="launch-btn" id="launchBtn"><span>Deploy delegate</span><b>ENTER WORLD ↗</b></button>
+      <a class="text-link" id="detailLink" href="committees/unhrc.html">View committee page →</a>
+    </aside>
+
+    <div class="delegate-platform" aria-hidden="true">
+      <div class="delegate-suit" id="delegateSuit">
+        <svg viewBox="0 0 140 310" role="img" aria-label="Suited delegate character">
+          <g class="leg l"><path d="M45 190h23l-5 92H43z"/><path class="shoe" d="M42 276h25v15H34c0-8 2-12 8-15z"/></g>
+          <g class="leg r"><path d="M72 190h23l3 92H78z"/><path class="shoe" d="M78 276h22c7 3 10 7 10 15H76z"/></g>
+          <g class="arm l"><path d="M38 100L18 160l18 8 23-57z"/><circle class="skin" cx="24" cy="166" r="10"/></g>
+          <g class="arm r"><path d="M102 100l20 60-18 8-23-57z"/><circle class="skin" cx="116" cy="166" r="10"/></g>
+          <path class="jacket" d="M39 91q31-18 62 0l9 111H30z"/>
+          <path class="shirt" d="M54 87h32l-16 66z"/>
+          <path class="tie" d="M66 94h8l6 48-10 13-10-13z"/>
+          <rect class="skin" x="62" y="66" width="17" height="25" rx="6"/>
+          <circle class="skin" cx="70" cy="45" r="28"/>
+          <path class="hair" d="M42 43q2-31 29-29 29 0 29 30-13-17-29-14-17-3-29 13z"/>
+          <circle cx="60" cy="47" r="2.4"/><circle cx="80" cy="47" r="2.4"/>
+          <path class="smile" d="M61 60q9 7 18 0"/>
+          <rect class="badge-card" x="48" y="127" width="44" height="31" rx="4"/><path class="lanyard" d="M57 91l13 51 13-51"/>
+        </svg>
+        <div class="nameplate" id="characterName">DELEGATE</div>
+      </div>
+      <p>YOUR AVATAR</p>
+    </div>
+  </div>
+</section>
+
+<section class="experience-section" id="experience">
+  <div class="section-kicker"><span>02</span><p>THE JOURNEY</p></div>
+  <div class="journey-grid">
+    <article><b>01</b><h3>Choose your committee</h3><p>Explore the 8 worlds and understand the agenda, format, skills and prizes before registering.</p></article>
+    <article><b>02</b><h3>Register & pay</h3><p>Your payment success becomes the unlock event for the selected committee identity.</p></article>
+    <article class="featured"><b>03</b><h3>Design your entry card</h3><p>After registration, customize your official delegate ID: finish, accent, identity, institution and profile image.</p><a href="card-studio.html">Open prototype studio →</a></article>
+    <article><b>04</b><h3>Enter your world</h3><p>The delegate avatar runs into your committee world and your personalized identity follows you into the conference.</p></article>
+  </div>
+</section>
+
+<section class="manifesto">
+  <p>THIS IS NOT A REGISTRATION WEBSITE.</p>
+  <h2>It should feel like you just received access to a world you want to belong to.</h2>
+  <a href="#universe">Choose your committee <span>↗</span></a>
+</section>
+</main>
+
+<div class="travel-layer" id="travelLayer" aria-hidden="true"><div class="travel-copy"><span id="travelCode">UNHRC</span><strong>ACCESSING COMMITTEE WORLD</strong></div></div>
+<footer><span>Masters Union Nations · 2026</span><span>Masters’ Union School of Business · Gurugram</span></footer>
+<script src="assets/js/experience.js"></script>
+</body>
+</html>
