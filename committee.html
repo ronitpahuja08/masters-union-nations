@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07100f">
+<title>Committee Briefing — Masters Union Nations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/committee.css">
+</head>
+<body>
+<div class="grain"></div><div class="backdrop-grid"></div>
+<button class="sound-toggle" id="soundToggle" type="button"><span>▥</span><b>SOUND OFF</b></button>
+<header><a href="experience.html#committees">← GLOBAL BOARDROOM</a><span>MASTERS UNION <b>NATIONS</b></span><i id="headerNode">BRIEFING ROOM</i></header>
+<main>
+<section class="committee-hero" id="committeeHero">
+  <div class="hero-copy"><p class="micro" id="typeLabel">COMMITTEE DOSSIER</p><h1 id="code">UNHRC</h1><p class="full" id="full"></p><p class="summary" id="summary"></p><div class="hero-actions"><button id="registerBtn">REGISTER FOR THIS COMMITTEE <span>↗</span></button><a id="matrixLink" href="#" hidden>Open matrix →</a></div></div>
+  <div class="crest-stage"><div class="crest-rings"><i></i><i></i><i></i></div><div class="hero-crest" id="heroCrest"><span>HR</span></div><small id="nodeLabel">GENEVA DESK</small></div>
+</section>
+<section class="dossier-grid">
+  <article class="agenda-panel"><p class="micro">01 / AGENDA</p><h2 id="agenda"></h2><div class="agenda-line"></div><p>This briefing room is generated from the same committee data that powers the global boardroom, so content stays synchronized across the website.</p></article>
+  <article><p class="micro">02 / WHAT TO EXPECT</p><div class="pill-list" id="experienceList"></div></article>
+  <article><p class="micro">03 / PRIZES</p><div class="prize-list" id="prizeList"></div></article>
+  <article class="identity-panel"><p class="micro">04 / IDENTITY UNLOCK</p><h3>Payment success unlocks your committee ID studio.</h3><p>Your selected committee, color system and delegate name flow directly into the card customizer.</p><button id="studioLocked" disabled>LOCKED UNTIL PAYMENT</button></article>
+</section>
+<section class="register-panel" id="registerPanel">
+  <div><p class="micro">REGISTRATION FLOW</p><h2>Secure your seat.<br>Unlock your identity.</h2><p>The production payment link is read from the committee data layer. Until a real payment provider/link is connected, this prototype exposes a clearly-marked success simulator for testing the complete post-payment experience.</p></div>
+  <div class="payment-card">
+    <div class="payment-head"><span>SELECTED COMMITTEE</span><strong id="paymentCode">UNHRC</strong></div>
+    <label>Delegate<input id="payName" placeholder="Your name"></label>
+    <label>Email<input id="payEmail" type="email" placeholder="you@example.com"></label>
+    <button id="paymentBtn">CONTINUE TO PAYMENT <span>↗</span></button>
+    <button class="preview-pay" id="previewPay">PREVIEW: SIMULATE PAYMENT SUCCESS</button>
+    <p id="paymentNote">No real payment will be charged in preview mode.</p>
+  </div>
+</section>
+</main>
+<div class="success-layer" id="successLayer"><div class="success-crest" id="successCrest">HR</div><p>PAYMENT VERIFIED</p><h2>Your delegate identity is unlocked.</h2><a id="studioLink" href="card-studio.html">OPEN VIRTUAL ID STUDIO ↗</a></div>
+<script src="assets/js/soundscape.js"></script><script src="assets/js/committee.js"></script>
+</body></html>
