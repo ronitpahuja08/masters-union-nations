@@ -1,0 +1,11 @@
+(function(){
+'use strict';
+var ctx=null,master=null,ambient=null,enabled=false;
+function init(){if(ctx)return;var A=window.AudioContext||window.webkitAudioContext;if(!A)return;ctx=new A();master=ctx.createGain();master.gain.value=.16;master.connect(ctx.destination);}
+function tone(freq,dur,type,vol,delay){if(!enabled)return;init();if(!ctx)return;if(ctx.state==='suspended')ctx.resume();var o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+(delay||0);o.type=type||'sine';o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.05,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.03);}
+function ambience(on){init();if(!ctx)return;if(ambient){try{ambient.stop();}catch(e){}ambient=null;}if(!on||!enabled)return;ambient=ctx.createOscillator();var g=ctx.createGain(),f=ctx.createBiquadFilter();ambient.type='sine';ambient.frequency.value=55;f.type='lowpass';f.frequency.value=180;g.gain.value=.018;ambient.connect(f);f.connect(g);g.connect(master);ambient.start();}
+function cue(name){if(name==='hover')tone(520,.08,'sine',.025);else if(name==='select'){tone(300,.13,'triangle',.04);tone(620,.16,'sine',.035,.04);}else if(name==='scan'){tone(180,.1,'square',.025);tone(340,.12,'square',.025,.1);tone(760,.22,'sine',.04,.22);}else if(name==='travel'){tone(120,.35,'sawtooth',.025);tone(480,.4,'sine',.035,.18);}else if(name==='success'){tone(392,.16,'sine',.04);tone(523,.2,'sine',.04,.11);tone(659,.28,'sine',.045,.21);}else tone(420,.08,'sine',.025);}
+function set(on){enabled=!!on;try{localStorage.setItem('munSound',enabled?'1':'0');}catch(e){}if(enabled){init();if(ctx&&ctx.state==='suspended')ctx.resume();ambience(true);cue('select');}else ambience(false);document.documentElement.classList.toggle('sound-on',enabled);return enabled;}
+function toggle(){return set(!enabled);}try{enabled=localStorage.getItem('munSound')==='1';}catch(e){}
+window.MUNSound={toggle:toggle,set:set,cue:cue,isOn:function(){return enabled;},wake:function(){if(enabled){init();if(ctx&&ctx.state==='suspended')ctx.resume();ambience(true);}}};
+})();
