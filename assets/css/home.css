@@ -82,40 +82,61 @@ body.at-map .hud{opacity:0;pointer-events:none}
 body.at-map .nav{opacity:1;pointer-events:auto}
 body:not(.on-home) .grain,body:not(.on-home) .cursor-glow{display:none}
 
-/* ---- ZERO theme: deep red, white type, binary field ---- */
-.ronit{--bg:#13070a;--bg-2:#1c0709;--surface:rgba(255,255,255,.05);--border:rgba(255,120,110,.24);--text:#fff;--muted:#e0bdb7;--gold:#ff4a3c;--amber:#ff7a45;--teal:#ff9a8a;--blue:#ff2a2a;--grad:linear-gradient(100deg,#ffffff 0%,#ffd6cf 38%,#ff6454 100%)}
-#home{background:#13070a}
-.journey-stick{background:#13070a}
+/* ---- Burgundy / royal theme ---- */
+.ronit{--bg:#16060a;--bg-2:#220a10;--surface:rgba(255,255,255,.045);--border:rgba(214,160,150,.2);--text:#fff;--muted:#d9bfbf;--gold:#d2a95c;--amber:#b8323f;--teal:#e3b9b9;--blue:#8f1d33;--grad:linear-gradient(100deg,#ffffff 0%,#f4dcd5 40%,#dbb46b 100%)}
+#home,.journey-stick{background:#16060a}
 #home::before{content:'';position:absolute;inset:0;z-index:0;background:
-  radial-gradient(ellipse 72% 62% at 50% 46%,rgba(168,20,20,.92) 0%,rgba(104,12,14,.78) 36%,rgba(30,6,9,0) 76%),
-  radial-gradient(ellipse 46% 9% at 10% 40%,rgba(255,126,64,.5),transparent 72%),
-  radial-gradient(ellipse 40% 8% at 92% 24%,rgba(255,126,64,.38),transparent 72%),
-  linear-gradient(180deg,#1c0709,#2b0a0b 46%,#14060a)}
-#home::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:url(../images/world-atlas-india-focus.png) center/cover no-repeat;opacity:.11;mix-blend-mode:screen;filter:grayscale(1) sepia(1) saturate(5) hue-rotate(-35deg) blur(.5px)}
-#home .lobby-glow.a{background:#ff2a2a40}
-#home .lobby-glow.b{background:#ff7a4538}
-#home .lobby-title{color:#fff;text-shadow:0 0 60px rgba(255,60,50,.28)}
-#home .lobby-sub{color:#f0d6d1}
-#home .led.on{background:#ff4a3c;box-shadow:0 0 12px #ff4a3c}
-#home .meta-pill,#home .count-box{background:rgba(24,4,7,.55);border-color:rgba(255,120,110,.28)}
-#home .btn-solid{background:#fff;color:#14060a}
-#home .btn-solid:hover{box-shadow:0 0 34px rgba(255,64,52,.6)}
-.hud.scrolled{background:rgba(20,5,8,.8)}
-.hud .brand-mark em{color:#ff5a4a}
-.zero-line{position:absolute;left:4vw;right:4vw;bottom:6vh;height:2px;z-index:1;background:linear-gradient(90deg,#d4141c 0%,#d4141c 82%,transparent 100%);box-shadow:0 0 14px rgba(255,40,40,.55)}
-.zero-line::before{content:'';position:absolute;left:0;bottom:0;width:2px;height:16px;background:#d4141c}
-.zero-line i{position:absolute;bottom:-5px;width:22px;height:12px;background:repeating-linear-gradient(115deg,#d4141c 0 5px,transparent 5px 10px)}
-.zero-line i:nth-child(1){right:70px}
-.zero-line i:nth-child(2){right:40px;opacity:.7}
-.zero-line i:nth-child(3){right:0;width:14px;height:14px;border:2px solid #d4141c;border-radius:50%;background:none;bottom:-6px}
-@media(max-width:700px){.zero-line{bottom:3vh}}
+  radial-gradient(ellipse 76% 66% at 50% 44%,rgba(108,14,36,.95) 0%,rgba(68,9,25,.86) 38%,rgba(22,6,10,0) 80%),
+  radial-gradient(ellipse 46% 9% at 8% 40%,rgba(214,152,92,.26),transparent 72%),
+  radial-gradient(ellipse 40% 8% at 94% 22%,rgba(214,152,92,.2),transparent 72%),
+  linear-gradient(180deg,#1b070d,#2b0c15 46%,#150508)}
+#home::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:url(../images/world-atlas-india-focus.png) center/cover no-repeat;opacity:.1;mix-blend-mode:screen;filter:grayscale(1) sepia(1) saturate(2.4) hue-rotate(-52deg) brightness(.85)}
+#home .lobby-glow.a{background:#8f1d3340}
+#home .lobby-glow.b{background:#c9904a2e}
+#home .lobby-sub{color:#ecd8d6}
+#home .led.on{background:#d2a95c;box-shadow:0 0 12px #d2a95c}
+#home .meta-pill,#home .count-box{background:rgba(26,5,10,.6);border-color:rgba(214,160,150,.26)}
+#home .btn-solid{background:#fff;color:#1a060b}
+#home .btn-solid:hover{box-shadow:0 0 34px rgba(210,169,92,.5)}
+.hud.scrolled{background:rgba(24,5,9,.82)}
+.hud .brand-mark{font-weight:700;letter-spacing:.01em}
+.hud .brand-mark em{color:#d2a95c}
+.zero-line{background:linear-gradient(90deg,#9b2236 0%,#9b2236 82%,transparent 100%);box-shadow:0 0 12px rgba(155,34,54,.5)}
+.zero-line::before{background:#9b2236}
+.zero-line i{background:repeating-linear-gradient(115deg,#9b2236 0 5px,transparent 5px 10px)}
+.zero-line i:nth-child(3){border-color:#d2a95c;background:none}
+
+/* ---- bold hero ---- */
+#home .lobby-title{display:flex;flex-direction:column;align-items:center;line-height:.86;text-transform:uppercase;font-weight:700;letter-spacing:-.04em;text-shadow:none}
+#home .lobby-title .t1{font-size:clamp(1.3rem,min(4.6vw,6.4vh),4.2rem);letter-spacing:.38em;margin-right:-.38em;font-weight:600;color:#f7ebe8;margin-bottom:.35em;animation:heroIn 1s cubic-bezier(.2,.8,.2,1) .1s backwards}
+#home .lobby-title .t2{position:relative;isolation:isolate;font-size:clamp(3.8rem,min(17vw,24vh),15rem);background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 46px rgba(143,29,51,.7));animation:heroIn 1.1s cubic-bezier(.2,.8,.2,1) .28s backwards}
+#home .lobby-title .t2::after{content:attr(data-t);position:absolute;inset:0;z-index:-1;transform:translate(.05em,.05em);-webkit-text-fill-color:transparent;-webkit-text-stroke:2px rgba(219,170,160,.45)}
+@keyframes heroIn{from{opacity:0;transform:translateY(46px) scale(.97);filter:blur(10px)}}
+#home .lobby-sub{animation:heroIn 1s cubic-bezier(.2,.8,.2,1) .5s backwards}
+#home .lobby-meta,#home .countdown,#home .lobby-cta{animation:heroIn 1s cubic-bezier(.2,.8,.2,1) .65s backwards}
+.hero-ring{position:absolute;left:50%;top:50%;width:min(118vh,104vw);aspect-ratio:1;z-index:0;pointer-events:none;opacity:.42;transform:translate(-50%,-50%);animation:ringSpin 90s linear infinite}
+.hero-ring svg{width:100%;height:100%}
+.hero-ring circle,.hero-ring ellipse,.hero-ring path{stroke:rgba(222,170,160,.4);stroke-width:.7;vector-effect:non-scaling-stroke}
+@keyframes ringSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.corner{position:absolute;z-index:1;width:34px;height:34px;border:2px solid rgba(210,169,92,.6);pointer-events:none}
+.corner.tl{top:92px;left:4vw;border-right:0;border-bottom:0}
+.corner.tr{top:92px;right:4vw;border-left:0;border-bottom:0}
+.corner.bl{bottom:calc(6vh + 40px);left:4vw;border-right:0;border-top:0}
+.corner.br{bottom:calc(6vh + 40px);right:4vw;border-left:0;border-top:0}
+.hero-tag{position:absolute;z-index:1;top:104px;font:400 .56rem/1 var(--font-p);letter-spacing:.12em;color:rgba(235,205,200,.6)}
+.hero-tag.tl{left:calc(4vw + 48px)}.hero-tag.tr{right:calc(4vw + 48px)}
+.hero-ticker{position:absolute;left:0;right:0;bottom:calc(6vh + 16px);z-index:1;overflow:hidden;white-space:nowrap;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.hero-ticker .track{display:inline-flex;gap:2rem;animation:tickerRun 46s linear infinite;font:700 .78rem var(--font-d);letter-spacing:.34em;color:rgba(240,214,208,.5)}
+.hero-ticker .track span:nth-child(even){color:#d2a95c}
+@keyframes tickerRun{to{transform:translateX(-50%)}}
+@media(max-width:700px){.hero-tag,.corner{display:none}}
 
 /* ---- the map lands with a thud ---- */
-.thud-ring{position:absolute;left:50%;top:50%;width:40vmin;height:40vmin;margin:-20vmin 0 0 -20vmin;border-radius:50%;z-index:6;pointer-events:none;opacity:0;border:2px solid rgba(255,90,70,.9);box-shadow:0 0 60px rgba(255,60,50,.6),inset 0 0 60px rgba(255,60,50,.35)}
-.journey-stick.thud{animation:thud .62s cubic-bezier(.2,.8,.2,1)}
-.journey-stick.thud .thud-ring{animation:thudRing .75s ease-out}
-@keyframes thud{0%{transform:scale(1.05)}30%{transform:scale(.985) translateY(6px)}55%{transform:scale(1.004) translateY(-2px)}100%{transform:none}}
-@keyframes thudRing{0%{opacity:.9;transform:scale(.2)}100%{opacity:0;transform:scale(5)}}
+.thud-ring{position:absolute;left:50%;top:50%;width:40vmin;height:40vmin;margin:-20vmin 0 0 -20vmin;border-radius:50%;z-index:6;pointer-events:none;opacity:0;border:2px solid rgba(214,170,100,.75);box-shadow:0 0 50px rgba(155,34,54,.55),inset 0 0 50px rgba(155,34,54,.3)}
+.journey-stick.thud{animation:thud .95s cubic-bezier(.22,.7,.2,1)}
+.journey-stick.thud .thud-ring{animation:thudRing 1.1s cubic-bezier(.2,.6,.3,1)}
+@keyframes thud{0%{transform:scale(1.022)}38%{transform:scale(.993) translateY(3px)}68%{transform:scale(1.002) translateY(-1px)}100%{transform:none}}
+@keyframes thudRing{0%{opacity:.7;transform:scale(.25)}100%{opacity:0;transform:scale(5.2)}}
 body.at-map .node{animation:nodeIn .5s cubic-bezier(.2,1.2,.3,1) backwards}
 body.at-map .node:nth-child(1){animation-delay:.15s}body.at-map .node:nth-child(2){animation-delay:.22s}body.at-map .node:nth-child(3){animation-delay:.29s}body.at-map .node:nth-child(4){animation-delay:.36s}body.at-map .node:nth-child(5){animation-delay:.43s}body.at-map .node:nth-child(6){animation-delay:.5s}body.at-map .node:nth-child(7){animation-delay:.57s}body.at-map .node:nth-child(8){animation-delay:.64s}
 @keyframes nodeIn{from{opacity:0;scale:.2}}
@@ -123,3 +144,8 @@ body.at-map .node:nth-child(1){animation-delay:.15s}body.at-map .node:nth-child(
 /* short windows: keep the top of the content below the banner instead of centring into it */
 .journey-stick #home{align-items:safe center;padding-top:96px;padding-bottom:84px}
 @media(max-height:760px){#home .lobby-title{font-size:clamp(2.6rem,9vh,5.6rem)}#home .countdown{margin-top:22px}#home .lobby-cta{margin-top:26px}}
+
+.journey-stick main{transition:opacity .35s ease}
+body.at-map .globe-canvas{transition:opacity .4s ease}
+@media(max-width:1100px){.hero-tag{display:none}}
+@media(max-height:760px){.hero-ticker,.corner.bl,.corner.br{display:none}}

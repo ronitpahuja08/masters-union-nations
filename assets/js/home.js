@@ -10,7 +10,7 @@
   var target=0,p=0,raf=0,globeOn=true;
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
 
-  var LAND=.9,landed=false;   // at LAND the unrolled globe is pixel-identical to the page's map: swap and thud
+  var LAND=.92,landed=false;   // at LAND the unrolled globe is pixel-identical to the page's map: swap and thud
   function thud(){
     stick.classList.remove('thud');void stick.offsetWidth;stick.classList.add('thud');
   }
@@ -38,7 +38,7 @@
   function step(){
     var d=target-p;
     if(Math.abs(d)<.0004){p=target;apply();raf=0;return;}
-    p+=d*.085;apply();raf=requestAnimationFrame(step);
+    p+=d*.07;apply();raf=requestAnimationFrame(step);
   }
   function onScroll(){
     var r=range();target=r>0?clamp((scrollY-journey.offsetTop)/r,0,1):0;

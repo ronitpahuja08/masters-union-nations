@@ -101,10 +101,24 @@
 <section class="scene lobby ronit" id="home">
   <canvas id="stars"></canvas>
   <div class="lobby-glow a"></div><div class="lobby-glow b"></div>
+  <div class="hero-ring" aria-hidden="true">
+    <svg viewBox="0 0 400 400" fill="none">
+      <circle cx="200" cy="200" r="196"/><circle cx="200" cy="200" r="150" stroke-dasharray="2 7"/>
+      <ellipse cx="200" cy="200" rx="196" ry="70"/><ellipse cx="200" cy="200" rx="70" ry="196"/>
+      <ellipse cx="200" cy="200" rx="140" ry="196"/><ellipse cx="200" cy="200" rx="196" ry="140"/>
+      <path d="M4 200h392M200 4v392"/>
+    </svg>
+  </div>
+  <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+  <span class="hero-tag tl">28.46&deg;N / 77.02&deg;E</span><span class="hero-tag tr">28 &mdash; 29 NOV 2026</span>
+  <div class="hero-ticker" aria-hidden="true"><div class="track">
+    <span>DIPLOMACY</span><span>&#10022;</span><span>DEBATE</span><span>&#10022;</span><span>DECISIONS</span><span>&#10022;</span><span>08 COMMITTEES</span><span>&#10022;</span><span>02 DAYS</span><span>&#10022;</span><span>ONE BOARDROOM</span><span>&#10022;</span>
+    <span>DIPLOMACY</span><span>&#10022;</span><span>DEBATE</span><span>&#10022;</span><span>DECISIONS</span><span>&#10022;</span><span>08 COMMITTEES</span><span>&#10022;</span><span>02 DAYS</span><span>&#10022;</span><span>ONE BOARDROOM</span><span>&#10022;</span>
+  </div></div>
   <div class="zero-line" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="lobby-content">
     <p class="pixel lobby-status"><span class="led on"></span> GATE OPEN &middot; WELCOME, DELEGATE</p>
-    <h2 class="lobby-title">Masters Union<br/><span class="grad-text">Nations</span></h2>
+    <h2 class="lobby-title"><span class="t1">Masters Union</span><span class="t2" data-t="Nations">Nations</span></h2>
     <p class="lobby-sub">A two-day Model United Nations conference for young leaders &mdash; diplomacy, debate and decision-making.</p>
     <div class="lobby-meta">
       <div class="meta-pill">&#128197; 28 &amp; 29 November 2026</div>

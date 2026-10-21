@@ -7,6 +7,7 @@ const stick = document.getElementById('journeyStick');
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const smooth = (v, a, b) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 const easeOut = t => 1 - Math.pow(1 - t, 3);
+const smoother = (v, a, b) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * t * (t * (t * 6 - 15) + 10); };
 
 const IMG_ASPECT = 1672 / 941;
 const TARGET_U = 0.705;     // India's position across the atlas; the spin ends facing it
@@ -52,7 +53,7 @@ try {
           vec3 pl=vec3((uv.x-.5)*uPlane.x,(uv.y-.5)*uPlane.y,0.);
           float d=abs(uv.x-uCenterU)/max(uCenterU,1.-uCenterU);
           float m=clamp(uMorph*1.9-.9*d,0.,1.);
-          m=m*m*(3.-2.*m);
+          m=m*m*m*(m*(m*6.-15.)+10.);
           vN=normalize(mix(sph,vec3(0.,0.,1.),m));
           gl_Position=projectionMatrix*modelViewMatrix*vec4(mix(sph,pl,m),1.);
         }`,
@@ -74,7 +75,7 @@ try {
   const haloMat = new THREE.ShaderMaterial({
     uniforms: { uA: { value: 1 } },
     vertexShader: 'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-    fragmentShader: 'uniform float uA;varying vec3 vN;void main(){float i=pow(max(0.,.68-dot(vN,vec3(0.,0.,1.))),3.);gl_FragColor=vec4(1.,.24,.16,1.)*i*1.7*uA;}',
+    fragmentShader: 'uniform float uA;varying vec3 vN;void main(){float i=pow(max(0.,.68-dot(vN,vec3(0.,0.,1.))),3.);gl_FragColor=vec4(.74,.14,.26,1.)*i*1.5*uA;}',
     side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
   });
   const halo = new THREE.Mesh(new THREE.SphereGeometry(1.12, 64, 48), haloMat);
@@ -97,10 +98,10 @@ try {
   function render(p) {
     currentP = p;
     const d0 = 10 - 6 * easeOut(clamp(p / 0.3, 0, 1));            // emerge: glide in from far away
-    const unroll = smooth(p, 0.6, 0.88);
+    const unroll = smoother(p, 0.54, 0.9);
     camera.position.set(0, 0, d0 + (dEnd - d0) * unroll);
     camera.lookAt(0, 0, 0);
-    const spin = smooth(p, 0.1, 0.62);
+    const spin = smoother(p, 0.1, 0.6);
     uniforms.uRot.value.set(0.05 + (TARGET_LAT - 0.05) * spin, startY + (endY - startY) * spin);
     uniforms.uMorph.value = unroll;
     haloMat.uniforms.uA.value = 1 - smooth(unroll, 0, 0.35);
