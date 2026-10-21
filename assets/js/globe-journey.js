@@ -13,6 +13,7 @@ const IMG_ASPECT = 1672 / 941;
 const TARGET_U = 0.705;     // India's position across the atlas; the spin ends facing it
 const TARGET_LAT = 0.34;
 const FOV = 40;
+const UNROLL_END = 0.88;   // keep in sync with LAND in home.js
 
 try {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -90,15 +91,22 @@ try {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    // distance that keeps the whole sphere on screen, and its on-screen radius (used to place the side words)
+    dBase = Math.max(4, Math.sqrt(1 + Math.pow(3.43 / camera.aspect, 2)));
+    const radiusPx = (h / 2) * (1 / Math.tan(THREE.MathUtils.degToRad(FOV / 2))) / Math.sqrt(dBase * dBase - 1);
+    stick.style.setProperty('--globe-r', radiusPx.toFixed(1) + 'px');
     const ph = 2 * Math.max(1, camera.aspect / IMG_ASPECT);       // "cover" sizing, like the page's background
     uniforms.uPlane.value.set(ph * IMG_ASPECT, ph);
   }
 
-  let currentP = 0;
+  let currentP = 0, dBase = 4;
   function render(p) {
     currentP = p;
-    const d0 = 10 - 6 * easeOut(clamp(p / 0.3, 0, 1));            // emerge: glide in from far away
-    const unroll = smoother(p, 0.54, 0.9);
+    const d0 = dBase + 6 * (1 - easeOut(clamp(p / 0.3, 0, 1)));   // emerge: glide in from far away
+    // unroll ends exactly at UNROLL_END, where the page swaps to its own map and lands; the blend keeps
+    // some speed at the end so the sheet arrives with momentum instead of drifting to a stop
+    const ut = clamp((p - 0.54) / (UNROLL_END - 0.54), 0, 1);
+    const unroll = 0.6 * smoother(ut, 0, 1) + 0.4 * Math.pow(ut, 2.4);
     camera.position.set(0, 0, d0 + (dEnd - d0) * unroll);
     camera.lookAt(0, 0, 0);
     const spin = smoother(p, 0.1, 0.6);

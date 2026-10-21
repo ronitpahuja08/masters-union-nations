@@ -10,7 +10,7 @@
   var target=0,p=0,raf=0,globeOn=true;
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
 
-  var LAND=.92,landed=false;   // at LAND the unrolled globe is pixel-identical to the page's map: swap and thud
+  var LAND=.88,landed=false;   // at LAND the unrolled globe is pixel-identical to the page's map: swap and thud
   function thud(){
     stick.classList.remove('thud');void stick.offsetWidth;stick.classList.add('thud');
   }
@@ -21,6 +21,7 @@
     content.style.transform='scale('+(1+.08*(1-c))+')';
     content.style.filter=c<1?'blur('+((1-c)*6).toFixed(1)+'px)':'';
     content.style.visibility=c<=0.01?'hidden':'visible';
+    stick.style.setProperty('--gb',(smooth(p,.17,.3)*(1-smooth(p,.5,.6))).toFixed(3));   // GLOBAL / BOARDROOM words
     var cv=$('#globeCanvas');
     var now=globeOn?p>=LAND:p>=.9;
     if(globeOn){
