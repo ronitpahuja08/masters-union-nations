@@ -223,3 +223,12 @@ body.gb-on .hud{opacity:0;pointer-events:none}
 .gb-r{top:calc(50% + var(--globe-r,23vh) + 1.6vh);transform:translateX(-50%) translateY(calc((1 - var(--gb,0))*70px));
   letter-spacing:-.015em;isolation:isolate;background:linear-gradient(100deg,#fff 0%,#f4dcd5 45%,#dbb46b 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 44px rgba(143,29,51,.75))}
 .gb-r::after{content:attr(data-t);position:absolute;inset:0;z-index:-1;transform:translate(.035em,.035em);-webkit-text-fill-color:transparent;-webkit-text-stroke:2px rgba(219,170,160,.42);text-transform:uppercase}
+
+/* ---- map page: burgundy frames the blue map, echoing the globe moment ---- */
+.map-stage::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 88% 82% at 50% 50%,transparent 52%,rgba(92,10,32,.5) 100%),linear-gradient(180deg,rgba(80,8,28,.35),transparent 18%,transparent 82%,rgba(80,8,28,.4))}
+#home::before{background:
+  radial-gradient(ellipse 76% 66% at 50% 44%,rgba(104,14,38,.95) 0%,rgba(66,9,28,.86) 38%,rgba(20,8,26,0) 80%),
+  radial-gradient(ellipse 46% 9% at 8% 40%,rgba(214,152,92,.24),transparent 72%),
+  radial-gradient(ellipse 40% 8% at 94% 22%,rgba(214,152,92,.18),transparent 72%),
+  linear-gradient(180deg,#140a1e,#2a0c1a 46%,#0e0a1a)}
+.map-stage::after{z-index:2;background:radial-gradient(ellipse 82% 78% at 50% 50%,transparent 46%,rgba(128,18,48,.5) 78%,rgba(92,10,36,.88) 100%),linear-gradient(180deg,rgba(96,10,36,.55),transparent 16%,transparent 84%,rgba(96,10,36,.6))}

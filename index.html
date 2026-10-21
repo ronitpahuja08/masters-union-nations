@@ -13,6 +13,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="stylesheet" href="assets/css/boardroom.css">
 <link rel="stylesheet" href="assets/css/home.css">
+<link rel="stylesheet" href="assets/css/theme-modals.css">
 </head>
 <body class="on-home">
 <div class="grain"></div>
@@ -263,31 +264,36 @@
 </div>
 </div>
 </section>
-<dialog class="modal" id="applyModal">
-<button class="close modal-close" data-close="applyModal">Close ×</button>
-<p class="eyebrow">Delegate onboarding</p>
+<dialog class="modal apply-modal" id="applyModal" aria-labelledby="formTitle">
+<button class="close modal-close" data-close="applyModal" type="button">Close &times;</button>
+<div class="ap-grid">
+<aside class="ap-side">
+<p class="ap-eyebrow"><i class="ap-dot"></i> Delegate onboarding</p>
+<div class="ap-crest" id="formCrest">MCC</div>
+<h3 class="ap-full" id="formFull">Committee</h3>
+<p class="ap-agenda" id="formAgenda"></p>
+<ul class="ap-facts">
+<li><b>28 &ndash; 29 Nov 2026</b><span>Two full days</span></li>
+<li><b>Masters&rsquo; Union</b><span>DLF Cyber Park, Gurugram</span></li>
+</ul>
+</aside>
+<div class="ap-main">
 <h2 id="formTitle">Application</h2>
+<p class="ap-lead">Fill in your details, then continue to registration to confirm your seat.</p>
 <form id="applyForm">
-<div class="field-row">
-<label>Full name<input id="fName" name="name" required>
-</label>
-<label>Email<input name="email" type="email" required>
-</label>
+<div class="ap-row">
+<label><span>Full name</span><input id="fName" name="name" required autocomplete="name" placeholder="Your full name"></label>
+<label><span>Email</span><input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
 </div>
-<label>Applying for<select id="fRole" name="applyingFor">
-</select>
-</label>
-<label>Institution<input name="institution" required placeholder="School / university">
-</label>
-<label>Why do you want this seat?<textarea name="motivation" rows="4" required>
-</textarea>
-</label>
-<p class="form-note" id="formNote">
-</p>
-<button class="primary" type="submit">Proceed to registration <b>→</b>
-</button>
-<p class="secure-note">Application details are submitted through the configured registration endpoint.</p>
+<label><span>Applying for</span><select id="fRole" name="applyingFor"></select></label>
+<label><span>Institution</span><input name="institution" required autocomplete="organization" placeholder="School or university"></label>
+<label><span>Why do you want this seat?</span><textarea name="motivation" rows="4" required placeholder="A few lines on your interest and experience"></textarea></label>
+<p class="form-note" id="formNote"></p>
+<button class="primary ap-submit" type="submit"><span>Proceed to registration</span><b>&rarr;</b></button>
+<p class="secure-note">Next step: a registration payment unlocks your delegate ID.</p>
 </form>
+</div>
+</div>
 </dialog>
 <dialog class="modal studio-modal" id="studioModal">
 <button class="close modal-close" data-close="studioModal">Close ×</button>
