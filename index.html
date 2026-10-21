@@ -1,76 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Masters Union Nations</title>
-<meta name="description" content="Masters Union Nations (MUN) — a two-day Model United Nations conference, 28 & 29 November 2026, Masters' Union School of Business, Gurugram." />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07100f">
+<meta name="description" content="Masters Union Nation — The Global Boardroom. 28–29 November 2026, Gurugram.">
+<title>Masters Union Nation — The Global Boardroom</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/boardroom.css">
+<link rel="stylesheet" href="assets/css/home.css">
 </head>
-<body class="locked">
-
+<body class="on-home">
 <div class="grain"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
-<canvas id="stars"></canvas>
-
-<!-- ============ GATE (badge swipe) ============ -->
-<div class="gate" id="gate">
-  <div class="gate-inner">
-    <img class="gate-logo" src="assets/img/logo-mark.svg" alt="Masters Union Nations logo">
-    <p class="pixel gate-status"><span class="led"></span> SUMMIT GATE &middot; LOCKED</p>
-    <h1 class="gate-title">Masters Union <span class="grad-text">Nations</span></h1>
-    <p class="gate-sub">Two days. Eight rooms.</p>
-
-    <form class="badge-form" id="badgeForm" autocomplete="off">
-      <div class="badge" id="badge">
-        <div class="badge-clip"></div>
-        <div class="badge-top"><span class="badge-logo">Masters Union Nations</span><span class="badge-entry">Entry card</span></div>
-        <div class="badge-avatar">
-          <svg viewBox="0 0 80 80"><circle cx="40" cy="30" r="14"/><path d="M12 76c2-18 14-26 28-26s26 8 28 26z"/></svg>
-        </div>
-        <label for="delegateName" class="pixel">DELEGATE NAME</label>
-        <input id="delegateName" maxlength="22" placeholder="Type your name" required />
-        <div class="badge-strip"></div>
-        <div class="badge-bar"></div>
-        <div class="scan-beam"></div>
-      </div>
-      <button type="submit" class="btn btn-solid btn-lg magnetic" id="swipeBtn">Swipe badge &amp; enter</button>
-      <p class="scan-status pixel" id="scanStatus"></p>
-      <p class="gate-hint" id="gateHint">Type your delegate name, then swipe in.</p>
-    </form>
-  </div>
-</div>
-
-<!-- ============ TOP BANNER ============ -->
-<header class="hud" id="hud">
-  <a href="#top" class="brand nav-link">
+<header class="hud ronit" id="hud">
+  <a href="#home" class="brand">
     <img class="brand-logo" src="assets/img/logo-mark.svg" alt="">
     <span class="brand-mark">Masters Union <em>Nations</em></span>
   </a>
   <nav class="topnav" id="topnav">
-    <a href="#top" class="nav-link">Home</a>
-    <a href="#hall" class="nav-hall" id="navHall">Committee Doors</a>
-    <a href="#applications" class="nav-link">Applications</a>
-    <a href="#awards" class="nav-link">Prizes</a>
-    <a href="#contact" class="nav-link">Contact</a>
+    <a href="#home">Home</a>
+    <a href="#boardroom">Boardroom</a>
+    <a href="#prizes">Prizes</a>
+    <a href="#applications">Applications</a>
+    <a href="#contact">Contact</a>
   </nav>
-  <div class="hud-stats">
-    <div class="hud-chip hud-name" id="hudName">Delegate</div>
-  </div>
   <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
-
-<main id="top">
-
-<!-- ============ HOME ============ -->
-<section class="scene lobby" id="lobby">
+<div class="noise">
+</div>
+<div class="pointer-light" id="pointerLight">
+</div>
+<section class="access gate-disabled" id="access" hidden aria-labelledby="accessTitle">
+<div class="access-grid">
+</div>
+<div class="access-copy">
+<p class="eyebrow">
+<span class="live-dot">
+</span> Diplomatic network · 2026</p>
+<h1 id="accessTitle">Your seat at the<br>
+<em>Global Boardroom</em>
+</h1>
+<p>Identity clearance is required to enter the summit.</p>
+<div class="access-meta">
+<span>28—29 NOV 2026</span>
+<span>GURUGRAM · IN</span>
+</div>
+</div>
+<form class="credential" id="credentialForm" autocomplete="off">
+<div class="lanyard">
+</div>
+<div class="credential-shine">
+</div>
+<div class="scanline">
+</div>
+<div class="credential-head">
+<span class="seal">MU<br>N</span>
+<span>DELEGATE ACCESS<br>
+<b>GB—26</b>
+</span>
+<i id="gateLed">
+</i>
+</div>
+<div class="portrait">
+<div class="portrait-rings">
+</div>
+<span id="initials">ID</span>
+<small>BIOMETRIC<br>CAPTURE</small>
+</div>
+<label for="delegateName">IDENTITY / FULL NAME</label>
+<input id="delegateName" required maxlength="36" placeholder="Enter delegate name" aria-describedby="scanStatus">
+<div class="credential-code">
+<span>AUTH / 28.11.26</span>
+<span>LEVEL / DELEGATE</span>
+</div>
+<button class="primary" id="verifyButton" type="submit">
+<span>Verify identity</span>
+<b>→</b>
+</button>
+<p class="scan-status" id="scanStatus">Awaiting credentials</p>
+</form>
+</section>
+<header class="nav" id="nav">
+<a class="wordmark" href="#boardroom">
+<span>MU</span> Masters Union <b>Nation</b>
+</a>
+<nav>
+<a href="#boardroom">Boardroom</a>
+<a href="#prizes">Prizes</a>
+<a href="#applications">Applications</a>
+<a href="#contact">Contact</a>
+</nav>
+<button class="sound" id="soundToggle" aria-pressed="false">
+<i>
+</i>
+<span>Sound off</span>
+</button>
+<button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">Menu</button>
+</header>
+<section class="scene lobby ronit" id="home">
+  <canvas id="stars"></canvas>
   <div class="lobby-glow a"></div><div class="lobby-glow b"></div>
   <div class="lobby-content">
-    <p class="pixel lobby-status"><span class="led on"></span> GATE OPEN &middot; WELCOME, <span id="welcomeName">DELEGATE</span></p>
+    <p class="pixel lobby-status"><span class="led on"></span> GATE OPEN &middot; WELCOME, DELEGATE</p>
     <h2 class="lobby-title">Masters Union<br/><span class="grad-text">Nations</span></h2>
     <p class="lobby-sub">A two-day Model United Nations conference for young leaders &mdash; diplomacy, debate and decision-making.</p>
     <div class="lobby-meta">
@@ -84,216 +120,276 @@
       <div class="count-box"><span id="cd-secs">00</span><label>Secs</label></div>
     </div>
     <div class="lobby-cta">
-      <button class="btn btn-solid btn-lg magnetic" id="enterHall">Enter the Hall of Doors</button>
+      <button class="btn btn-solid btn-lg magnetic" id="enterBoardroom">Enter the Boardroom</button>
     </div>
   </div>
 </section>
-
-<!-- ============ APPLICATIONS ============ -->
-<section class="scene section" id="applications">
-  <div class="scene-head">
-    <span class="tag">Applications</span>
-    <h2 class="section-title">Be a part of Masters Union Nations</h2>
-    <p class="scene-lead">Delegates apply for a committee from the Hall of Doors. You can also join the organising team below.</p>
-  </div>
-  <h3 class="sub-title">Join the team</h3>
-  <div class="app-grid">
-    <article class="app-card" data-reveal>
-      <h3>Chairperson</h3>
-      <p class="app-full">Requirements</p>
-      <ul class="req-list">
-        <li>Minimum 3 years of MUN experience</li>
-        <li>Chaired at least 3 conferences</li>
-        <li>Strong knowledge of rules of procedure</li>
-        <li>Available for both days of the conference</li>
-      </ul>
-      <button class="btn btn-solid" data-apply="Chairperson">Apply as Chairperson</button>
-    </article>
-    <article class="app-card" data-reveal>
-      <h3>Secretariat</h3>
-      <p class="app-full">What you will do</p>
-      <ul class="req-list">
-        <li>Lead conference planning and operations</li>
-        <li>Coordinate chairpersons and committees</li>
-        <li>Liaise with Masters&rsquo; Union administration</li>
-        <li>Prior MUN or event-organising experience preferred</li>
-      </ul>
-      <button class="btn btn-solid" data-apply="Secretariat">Apply for Secretariat</button>
-    </article>
-    <article class="app-card" data-reveal>
-      <h3>Campus Ambassador</h3>
-      <ul class="amb-list">
-        <li><strong>7+</strong> 50% off registration fees</li>
-        <li><strong>14+</strong> 100% off registration &middot; 50% off Social Night</li>
-        <li><strong>20+</strong> 100% off registration &middot; free Social Night entry with +1 &middot; special gift</li>
-      </ul>
-      <button class="btn btn-solid" data-apply="Campus Ambassador">Apply as Ambassador</button>
-    </article>
-  </div>
+<main>
+<section class="boardroom" id="boardroom">
+<div class="map-heading" aria-hidden="true">
+<span class="live-dot"></span>
+<p>Global committee network</p>
+<b>Select a destination</b>
+</div>
+<div class="map-stage" id="mapStage">
+<div class="map-aura">
+</div>
+<svg class="world" viewBox="0 0 1000 520" preserveAspectRatio="none" role="img" aria-label="Interactive world map showing eight committee destinations">
+<defs>
+<filter id="glow">
+<feGaussianBlur stdDeviation="5" result="b"/>
+<feMerge>
+<feMergeNode in="b"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+</defs>
+<g class="routes" id="routes">
+</g>
+</svg>
+<div class="nodes" id="nodes">
+</div>
+<aside class="map-preview" id="mapPreview"><span id="previewNum">01</span><div><small id="previewCity">GENEVA</small><b id="previewCode">UNHRC</b><p id="previewAgenda">Addressing human trafficking across Asia and Africa.</p></div><i>ENTER ↗</i></aside>
+<div class="map-readout">
+<span>CURSOR <b id="coords">28.46°N / 77.02°E</b>
+</span>
+<span>ACTIVE ROOMS <b>08</b>
+</span>
+</div>
+</div>
+<div class="committee-rail" id="committeeRail">
+</div>
 </section>
-
-<!-- ============ PRIZES ============ -->
-<section class="scene section" id="awards">
-  <div class="scene-head">
-    <span class="tag">Prizes</span>
-    <h2 class="section-title">The Trophy Room</h2>
-    <p class="scene-lead">A total prize pool of <strong class="gold">&#8377;2,25,000</strong> &mdash; including &#8377;2k in H&amp;M gift cards.</p>
-  </div>
-  <div class="prize-total" data-reveal>
-    <span class="pixel">TOTAL PRIZE POOL</span>
-    <strong>&#8377;<span data-count="225000">0</span></strong>
-  </div>
-  <div class="prize-cols">
-    <div class="prize-box" data-reveal>
-      <h3>Best Delegate in every committee</h3>
-      <p class="muted">The same for every committee except IP.</p>
-      <ul class="prize-list">
-        <li><span>Best Delegate</span><strong>&#8377;15k</strong></li>
-        <li><span>High Commendation</span><strong>&#8377;10k</strong></li>
-        <li><span>High Commendation (School)</span><strong>&#8377;5k</strong></li>
-      </ul>
-    </div>
-    <div class="prize-box" data-reveal>
-      <h3>International Press</h3>
-      <ul class="prize-list">
-        <li><span>Best Photographer, Journalist &amp; Caricaturist</span><strong>&#8377;10k</strong></li>
-        <li><span>High Commendation in all three</span><strong>&#8377;5k</strong></li>
-      </ul>
-    </div>
-  </div>
+<section class="manifesto section" id="prizes">
+<p class="eyebrow">The mandate</p>
+<div class="manifesto-grid">
+<h2>Not another conference.<br>
+<em>A room where history moves.</em>
+</h2>
+<div>
+<p>Debate live crises, negotiate impossible alliances and turn ideas into resolutions across two high-stakes days.</p>
+<div class="stats">
+<span>
+<b>08</b> Committees</span>
+<span>
+<b>02</b> Days</span>
+<span>
+<b>₹2.5L</b> Prize pool</span>
+</div>
+</div>
+</div>
+<div class="prize-grid">
+<article>
+<small>01 / EVERY COMMITTEE</small>
+<h3>Best Delegate</h3>
+<b>₹15,000</b>
+<p>For the most strategic, persuasive voice in the room.</p>
+</article>
+<article>
+<small>02 / EVERY COMMITTEE</small>
+<h3>High Commendation</h3>
+<b>₹10,000</b>
+<p>For exceptional diplomacy and command of committee.</p>
+</article>
+<article>
+<small>03 / SCHOOL CATEGORY</small>
+<h3>High Commendation</h3>
+<b>₹5,000</b>
+<p>Dedicated recognition for outstanding school delegates.</p>
+</article>
+<article class="ip-prize">
+<small>04 / INTERNATIONAL PRESS</small>
+<h3>Three disciplines</h3>
+<b>₹10,000</b>
+<p>Best journalist, photographer and caricaturist.</p>
+</article>
+</div>
 </section>
-
-<!-- ============ CONTACT ============ -->
-<section class="scene section" id="contact">
-  <div class="contact-grid">
-    <div>
-      <span class="tag">Contact</span>
-      <h2 class="section-title">Questions? Talk to the organisers.</h2>
-      <p class="scene-lead">Reach out to the Organising Committee about committees, payments or accommodation.</p>
-      <ul class="contact-list">
-        <li><span class="contact-icon">&#128100;</span><div><strong>Heer Chauhan</strong><a href="mailto:heer.chauhan_ugtbm2028@mastersunion.org">heer.chauhan_ugtbm2028@mastersunion.org</a><a href="tel:+917229091033">+91 72290 91033</a></div></li>
-        <li><span class="contact-icon">&#128100;</span><div><strong>Ronit Pahuja</strong><a href="mailto:ronit.pahuja_ugdsai2030@mastersunion.org">ronit.pahuja_ugdsai2030@mastersunion.org</a><a href="tel:995887567">995887567</a></div></li>
-      </ul>
-    </div>
-    <div class="venue-card" data-reveal>
-      <div class="venue-pulse"></div>
-      <h3>Masters&rsquo; Union School of Business</h3>
-      <p>Gurugram, Haryana</p>
-      <p class="venue-dates">28 &amp; 29 NOVEMBER 2026</p>
-      <a class="btn btn-outline magnetic" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Masters+Union+School+of+Business+Gurugram">Open in Maps</a>
-    </div>
-  </div>
+<section class="applications section" id="applications">
+<div class="section-head">
+<div>
+<p class="eyebrow">Enter the room</p>
+<h2>Find your role<br>at the table.</h2>
+</div>
+<p>Delegate applications begin inside each committee dossier. Help build the summit through one of the roles below.</p>
+</div>
+<div class="role-list">
+<button data-apply="Chairperson">
+<span>01</span>
+<b>Chairperson</b>
+<small>Lead debate · Rule on procedure · Shape the room</small>
+<i>Apply ↗</i>
+</button>
+<button data-apply="Secretariat">
+<span>02</span>
+<b>Secretariat</b>
+<small>Build operations · Coordinate committees · Run the summit</small>
+<i>Apply ↗</i>
+</button>
+<button data-apply="Campus Ambassador">
+<span>03</span>
+<b>Campus Ambassador</b>
+<small>Represent MUN · Grow your delegation · Unlock benefits</small>
+<i>Apply ↗</i>
+</button>
+</div>
 </section>
-
+<section class="contact section" id="contact">
+<p class="eyebrow">Open channel</p>
+<h2>Let’s talk<br>
+<em>diplomacy.</em>
+</h2>
+<div class="contact-row">
+<a href="mailto:heer.chauhan_ugtbm2028@mastersunion.org">
+<small>ORGANISING COMMITTEE</small>
+<b>Heer Chauhan</b>
+<span>heer.chauhan_ugtbm2028@mastersunion.org</span>
+</a>
+<a href="mailto:ronit.pahuja_ugdsai2030@mastersunion.org">
+<small>ORGANISING COMMITTEE</small>
+<b>Ronit Pahuja</b>
+<span>ronit.pahuja_ugdsai2030@mastersunion.org</span>
+</a>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Masters+Union+School+of+Business+Gurugram">
+<small>SUMMIT VENUE</small>
+<b>Masters’ Union</b>
+<span>Gurugram, Haryana ↗</span>
+</a>
+</div>
+</section>
 </main>
-
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="brand"><span class="brand-mark">Masters Union <em>Nations</em></span></div>
-    <p class="footer-copy">&copy; 2026 Masters Union Nations. Masters&rsquo; Union School of Business, Gurugram.</p>
-  </div>
+<footer>
+<div class="wordmark">
+<span>MU</span> Masters Union <b>Nation</b>
+</div>
+<p>28—29 NOVEMBER 2026 · GURUGRAM</p>
+<p>© 2026 MUN</p>
 </footer>
-
-<!-- ============ HALL OF DOORS (separate full-screen page) ============ -->
-<div class="hallview" id="hallview" aria-hidden="true">
-  <div class="hv-wall"></div>
-  <div class="hv-head">
-    <button class="hv-back" id="hvBack">&larr; Back</button>
-    <p class="pixel hv-title">COMMITTEE DOORS</p>
-    <p class="hv-sub" id="hvSub">Choose a door, Delegate.</p>
-  </div>
-
-  <div class="hv-doors" id="hvDoors"><!-- doors injected --></div>
-  <div class="hv-floor"></div>
-
-  <div class="hv-bubble" id="hvBubble">Which committee will you choose?</div>
-
-  <div class="delegate" id="delegate">
-    <svg class="dg-svg" viewBox="0 0 120 300" aria-hidden="true">
-      <g class="leg leg-l"><rect x="40" y="190" width="18" height="90" rx="6" fill="#1b1a26"/><rect x="36" y="272" width="26" height="12" rx="6" fill="#0a0a0f"/></g>
-      <g class="leg leg-r"><rect x="62" y="190" width="18" height="90" rx="6" fill="#23212e"/><rect x="58" y="272" width="26" height="12" rx="6" fill="#0a0a0f"/></g>
-      <g class="arm arm-l"><rect x="14" y="90" width="16" height="84" rx="8" fill="#2a2840"/><circle cx="22" cy="178" r="9" fill="#e0ae84"/></g>
-      <g class="arm arm-r"><rect x="90" y="90" width="16" height="84" rx="8" fill="#2a2840"/><circle cx="98" cy="178" r="9" fill="#e0ae84"/></g>
-      <path d="M28 92 Q60 78 92 92 L96 200 L24 200 Z" fill="#2a2840"/>
-      <path d="M50 88 L60 130 L70 88 Z" fill="#f4f1ea"/>
-      <path d="M50 88 L44 140 L60 130 Z M70 88 L76 140 L60 130 Z" fill="#f2b544"/>
-      <rect x="53" y="68" width="14" height="22" rx="5" fill="#e0ae84"/>
-      <circle cx="60" cy="48" r="26" fill="#e8b88f"/>
-      <path d="M34 46 Q36 18 60 20 Q86 18 86 46 Q76 30 60 32 Q44 30 34 46 Z" fill="#14121c"/>
-      <circle cx="51" cy="50" r="2.6" fill="#14121c"/><circle cx="69" cy="50" r="2.6" fill="#14121c"/>
-      <path d="M52 62 Q60 68 68 62" stroke="#8a4b3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <path d="M48 86 L60 148 M72 86 L60 148" stroke="#f2b544" stroke-width="2.5" fill="none"/>
-    </svg>
-    <div class="dg-card"><small>Masters Union Nations</small><strong id="dgName">Delegate</strong><i></i></div>
-  </div>
+<div class="transition" id="transition">
+<div class="flight-stars" aria-hidden="true"></div>
+<div class="flight-route" aria-hidden="true"></div>
+<div class="arrival-portal" id="arrivalPortal"><span id="transitionMark"></span></div>
+<img class="delegate-rocket" src="assets/images/delegate-rocket.png" alt="A delegate riding a rocket to the selected committee">
+<div class="flight-copy"><small>DESTINATION LOCKED</small><b id="transitionText"></b><span>Entering committee space</span></div>
 </div>
-
-<!-- ============ ROOM CARD ============ -->
-<div class="room" id="room" aria-hidden="true">
-  <div class="room-backdrop" id="roomBackdrop"></div>
-  <div class="portal" id="portal"></div>
-  <div class="room-panel" role="dialog" aria-modal="true" aria-labelledby="roomTitle">
-    <button class="room-close" id="roomClose" aria-label="Back to the hall">&times;</button>
-    <div class="room-top">
-      <div class="room-glyph" id="roomGlyph"></div>
-      <div>
-        <p class="pixel room-room" id="roomNum"></p>
-        <h3 id="roomTitle"></h3>
-        <p class="room-full" id="roomFull"></p>
-      </div>
-    </div>
-    <div class="room-body">
-      <div class="room-block"><span class="pixel">AGENDA</span><p id="roomAgenda"></p></div>
-      <div class="room-block"><span class="pixel">MATRIX LINK</span><p id="roomMatrix"></p></div>
-      <div class="room-block"><span class="pixel">PRIZES</span><p id="roomPrize"></p></div>
-    </div>
-    <div class="room-foot">
-      <button class="btn btn-outline" id="roomBack">Back to the hall</button>
-      <button class="btn btn-solid" id="roomCta">Pick this committee &rarr;</button>
-    </div>
-  </div>
+<section class="dossier" id="dossier" aria-hidden="true">
+<button class="close" id="dossierClose" aria-label="Close dossier">Close ×</button>
+<div class="dossier-visual">
+<div class="crest" id="dossierCrest">
 </div>
-
-<!-- ============ APPLICATION FORM ============ -->
-<div class="room" id="formModal" aria-hidden="true">
-  <div class="room-backdrop" id="formBackdrop"></div>
-  <div class="room-panel" role="dialog" aria-modal="true" aria-labelledby="formTitle">
-    <button class="room-close" id="formClose" aria-label="Close form">&times;</button>
-    <p class="pixel room-room">ONBOARDING</p>
-    <h3 class="form-title" id="formTitle">Delegate application</h3>
-    <form id="applyForm" class="apply-form">
-      <label>Name<input name="name" id="fName" required maxlength="60" placeholder="Your full name"></label>
-      <label>Applying for<select name="applyingFor" id="fRole" required></select></label>
-      <div class="q-block">
-        <span class="pixel">QUESTIONS</span>
-        <label>Question 1 (to be added)<textarea name="q1" rows="3" placeholder="Your answer"></textarea></label>
-        <label>Question 2 (to be added)<textarea name="q2" rows="3" placeholder="Your answer"></textarea></label>
-        <label>Question 3 (to be added)<textarea name="q3" rows="3" placeholder="Your answer"></textarea></label>
-      </div>
-      <p class="form-note" id="formNote"></p>
-      <button type="submit" class="btn btn-solid btn-lg" id="formSubmit">Submit application</button>
-    </form>
-  </div>
+<p id="dossierCity">
+</p>
+<div class="visual-rings">
 </div>
-
-<!-- ============ ACCESS CARD ============ -->
-<div class="room" id="cardModal" aria-hidden="true">
-  <div class="room-backdrop" id="cardBackdrop"></div>
-  <div class="room-panel card-panel" role="dialog" aria-modal="true" aria-label="Your access card">
-    <button class="room-close" id="cardClose" aria-label="Close">&times;</button>
-    <p class="pixel room-room">APPLICATION RECEIVED</p>
-    <h3 class="form-title">Your access card is ready</h3>
-    <div class="card-wrap"><canvas id="cardCanvas" width="1080" height="1920"></canvas></div>
-    <p class="muted card-tip">Download it and share it on your story or with friends.</p>
-    <div class="room-foot card-actions">
-      <button class="btn btn-solid" id="cardShare">Share</button>
-      <button class="btn btn-outline" id="cardDownload">Download PNG</button>
-    </div>
-  </div>
 </div>
-
-
-
-<script src="assets/js/main.js"></script>
+<div class="dossier-content">
+<p class="eyebrow" id="dossierIndex">
+</p>
+<h2 id="dossierCode">
+</h2>
+<h3 id="dossierFull">
+</h3>
+<div class="agenda">
+<small>THE AGENDA</small>
+<p id="dossierAgenda">
+</p>
+</div>
+<div class="dossier-copy">
+<div>
+<small>BRIEFING</small>
+<p id="dossierIntro">
+</p>
+</div>
+<div>
+<small>IN THE ROOM</small>
+<p id="dossierExpect">
+</p>
+</div>
+</div>
+<div class="skill-row" id="skills">
+</div>
+<div class="dossier-actions">
+<button class="primary" id="dossierApply">Apply for this committee <b>→</b>
+</button>
+<button class="committee-sound" id="dossierSound" type="button"><span>■</span> Stop committee music</button>
+<p>
+<b>₹15K</b> Best Delegate · <b>₹10K</b> High Commendation</p>
+</div>
+</div>
+</section>
+<dialog class="modal" id="applyModal">
+<button class="close modal-close" data-close="applyModal">Close ×</button>
+<p class="eyebrow">Delegate onboarding</p>
+<h2 id="formTitle">Application</h2>
+<form id="applyForm">
+<div class="field-row">
+<label>Full name<input id="fName" name="name" required>
+</label>
+<label>Email<input name="email" type="email" required>
+</label>
+</div>
+<label>Applying for<select id="fRole" name="applyingFor">
+</select>
+</label>
+<label>Institution<input name="institution" required placeholder="School / university">
+</label>
+<label>Why do you want this seat?<textarea name="motivation" rows="4" required>
+</textarea>
+</label>
+<p class="form-note" id="formNote">
+</p>
+<button class="primary" type="submit">Proceed to registration <b>→</b>
+</button>
+<p class="secure-note">Application details are submitted through the configured registration endpoint.</p>
+</form>
+</dialog>
+<dialog class="modal studio-modal" id="studioModal">
+<button class="close modal-close" data-close="studioModal">Close ×</button>
+<div class="studio-head">
+<div>
+<p class="eyebrow">Virtual delegate ID studio</p>
+<h2>Make your identity official.</h2>
+</div>
+<span class="unlocked">● STUDIO UNLOCKED</span>
+</div>
+<div class="studio-grid">
+<form id="studioForm" class="studio-controls">
+<label>Name<input id="sName" maxlength="36">
+</label>
+<label>School / university<input id="sSchool" maxlength="54">
+</label>
+<label>Portfolio / country<input id="sPortfolio" maxlength="40" placeholder="e.g. Republic of India">
+</label>
+<label>Profile photo<input id="sPhoto" type="file" accept="image/*">
+</label>
+<div>
+<small>CARD FINISH</small>
+<div class="finish-picks">
+<button type="button" data-finish="glass" class="active">Glass</button>
+<button type="button" data-finish="obsidian">Obsidian</button>
+<button type="button" data-finish="ivory">Ivory</button>
+<button type="button" data-finish="foil">Foil</button>
+</div>
+</div>
+</form>
+<div class="canvas-side">
+<canvas id="cardCanvas" width="1080" height="1350">
+</canvas>
+<section class="payment-panel" id="paymentPanel">
+<div><small>SECURE REGISTRATION</small><b id="paymentAmount">Registration payment</b><p id="paymentStatus">Complete payment to unlock your downloadable delegate ID.</p></div>
+<button class="primary" id="paymentButton" type="button">Pay securely <span>↗</span></button>
+</section>
+<div>
+<button class="primary" id="cardDownload" disabled>Download PNG ↓</button>
+<button class="secondary" id="cardShare" disabled>Share card ↗</button>
+</div>
+</div>
+</div>
+</dialog>
+<div class="toast" id="toast">
+</div>
+<script src="assets/js/home.js"></script>
+<script src="assets/js/boardroom.js">
+</script>
 </body>
 </html>
