@@ -156,25 +156,39 @@ body.at-map .globe-canvas{transition:opacity .4s ease}
 .topnav a{font-size:.95rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#f1dedb}
 .topnav a:hover{color:#fff;background:rgba(210,169,92,.16)}
 #home .lobby-content{max-width:1100px;width:100%}
-.info-row{display:grid;grid-template-columns:1fr 1.1fr 1.35fr;gap:16px;width:100%;margin:36px auto 0;text-align:left}
-.info-card{position:relative;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:20px 24px;border-radius:20px;border:1px solid rgba(214,160,150,.32);background:linear-gradient(160deg,rgba(74,10,26,.8),rgba(26,5,11,.78));backdrop-filter:blur(8px);box-shadow:0 18px 44px -20px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.08);animation:heroIn 1s cubic-bezier(.2,.8,.2,1) .65s backwards}
-.info-card::before{content:'';position:absolute;left:0;top:18%;bottom:18%;width:3px;border-radius:3px;background:linear-gradient(180deg,#d2a95c,#9b2236)}
-.info-card small{font:400 .6rem var(--font-p);letter-spacing:.16em;color:#d2a95c}
-.info-card b{font-family:var(--font-d);font-size:clamp(1.35rem,2.5vw,2.25rem);line-height:1.04;font-weight:700;color:#fff;letter-spacing:-.015em}
-.info-card span{color:#ead2ce;font-size:.95rem;font-weight:500}
-.info-link{cursor:pointer;color:inherit;transition:transform .3s,border-color .3s,box-shadow .3s}
-.info-link:hover{transform:translateY(-5px);border-color:#d2a95c;box-shadow:0 0 38px rgba(210,169,92,.38),0 18px 44px -20px rgba(0,0,0,.75)}
-.info-link .arrow{font-style:normal;color:#d2a95c;font-weight:700;display:inline-block;transition:transform .3s}
-.info-link:hover .arrow{transform:translate(3px,-3px)}
-.info-count .countdown{margin:6px 0 0;justify-content:flex-start;gap:8px}
-.info-count .count-box{flex:1;min-width:0;padding:8px 4px 7px;text-align:center;border-radius:12px;background:rgba(10,2,5,.45);border-color:rgba(214,160,150,.2)}
-.info-count .count-box span{font-size:clamp(1.7rem,3.1vw,2.9rem);line-height:1.05;color:#fff}
-.info-count .count-box label{font-size:.58rem;color:#d2a95c}
 .scroll-hint{position:absolute;left:50%;bottom:calc(6vh + 52px);transform:translateX(-50%);z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;font:400 .56rem var(--font-p);letter-spacing:.2em;color:rgba(240,214,208,.6)}
 .scroll-hint i{width:1px;height:34px;background:linear-gradient(180deg,#d2a95c,transparent);animation:hintDrip 1.8s ease-in-out infinite;transform-origin:top}
 @keyframes hintDrip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
-@media(max-width:900px){.info-row{grid-template-columns:1fr}.hud .menu-btn{right:16px}}
+@media(max-width:900px){.hud .menu-btn{right:16px}}
 @media(max-height:760px){.scroll-hint{display:none}}
-.info-row{grid-template-columns:1.35fr 1.1fr 1.3fr}
-.info-card:nth-child(1) b{white-space:nowrap;font-size:clamp(1.15rem,1.9vw,1.85rem)}
-@media(max-width:900px){.info-row{grid-template-columns:1fr}}
+@media(max-width:900px){}
+
+/* ---- T-minus clock: the hero's opening line ---- */
+.tminus{display:flex;align-items:center;justify-content:center;gap:clamp(14px,2.4vw,30px);width:100%;max-width:860px;margin:0 auto clamp(14px,3.2vh,34px);animation:heroIn 1s cubic-bezier(.2,.8,.2,1) 0s backwards}
+.tm-label{font:500 .68rem var(--mono);letter-spacing:.34em;color:#d2a95c;white-space:nowrap}
+.tm-digits{display:flex;align-items:flex-start;gap:clamp(8px,1.5vw,20px)}
+.tm-digits div{display:flex;flex-direction:column;align-items:center;gap:7px}
+.tm-digits b{font:500 clamp(2rem,3.8vw,3.6rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff;letter-spacing:.01em;text-shadow:0 0 28px rgba(210,169,92,.35)}
+.tm-digits i{font:500 .56rem var(--mono);font-style:normal;letter-spacing:.24em;text-transform:uppercase;color:#d9bfbf}
+.tm-digits u{text-decoration:none;font:500 clamp(1.8rem,3.4vw,3.2rem)/1 var(--mono);color:#d2a95c;opacity:.75}
+@media(max-width:860px){.tminus{flex-wrap:wrap;gap:10px 18px}.tm-label:last-child{display:none}}
+
+/* ---- event pass: one ticket stub, perforated dividers ---- */
+.pass{position:relative;display:grid;grid-template-columns:1fr 1.3fr 1fr;width:100%;max-width:980px;margin:clamp(22px,4.5vh,46px) auto 0;text-align:left;border:1px solid rgba(214,170,100,.5);border-radius:16px;background:linear-gradient(100deg,rgba(84,11,29,.86),rgba(30,6,13,.88));backdrop-filter:blur(8px);box-shadow:0 24px 54px -26px #000;animation:heroIn 1s cubic-bezier(.2,.8,.2,1) .65s backwards;-webkit-mask-image:radial-gradient(circle at 0 50%,transparent 11px,#000 11.5px),radial-gradient(circle at 100% 50%,transparent 11px,#000 11.5px);-webkit-mask-composite:source-in;mask-image:radial-gradient(circle at 0 50%,transparent 11px,#000 11.5px),radial-gradient(circle at 100% 50%,transparent 11px,#000 11.5px);mask-composite:intersect}
+.pass-seg{display:flex;flex-direction:column;gap:6px;padding:20px 30px;color:inherit;text-decoration:none}
+.pass-seg+.pass-seg{border-left:1.5px dashed rgba(214,170,100,.4)}
+.pass-seg small{font:500 .62rem var(--mono);letter-spacing:.28em;text-transform:uppercase;color:#d2a95c}
+.pass-seg b{display:flex;align-items:center;gap:.4em;font:700 clamp(1.25rem,2.15vw,1.95rem)/1.05 var(--font-d);letter-spacing:-.012em;color:#fff;white-space:nowrap}
+.pass-seg span{font:500 .88rem var(--font-b);color:#e6cdc9}
+.pass-link{cursor:pointer;transition:background .3s}
+.pass-link:hover{background:rgba(210,169,92,.13)}
+.pass-link b i{font-style:normal;color:#d2a95c;transition:transform .3s}
+.pass-link:hover b i{transform:translate(4px,-4px)}
+.pass-link:focus-visible{outline:2px solid #d2a95c;outline-offset:-3px}
+@media(max-width:760px){.pass{grid-template-columns:1fr;-webkit-mask-image:none;mask-image:none}.pass-seg+.pass-seg{border-left:0;border-top:1.5px dashed rgba(214,170,100,.4)}.pass-seg{padding:14px 22px}}
+
+/* ---- spacing balance + side scroll marker ---- */
+.journey-stick #home{padding-top:84px;padding-bottom:124px}
+.scroll-hint{left:auto;right:calc(4vw + 6px);top:50%;bottom:auto;transform:translateY(-50%);flex-direction:row;gap:14px;writing-mode:vertical-rl;font:500 .58rem var(--mono);letter-spacing:.34em}
+.scroll-hint i{width:1px;height:60px;transform-origin:top}
+@media(max-height:760px),(max-width:1100px){.scroll-hint{display:none}}
