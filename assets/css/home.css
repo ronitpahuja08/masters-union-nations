@@ -164,14 +164,7 @@ body.at-map .globe-canvas{transition:opacity .4s ease}
 @media(max-width:900px){}
 
 /* ---- T-minus clock: the hero's opening line ---- */
-.tminus{display:flex;align-items:center;justify-content:center;gap:clamp(14px,2.4vw,30px);width:100%;max-width:860px;margin:0 auto clamp(14px,3.2vh,34px);animation:heroIn 1s cubic-bezier(.2,.8,.2,1) 0s backwards}
-.tm-label{font:500 .68rem var(--mono);letter-spacing:.34em;color:#d2a95c;white-space:nowrap}
-.tm-digits{display:flex;align-items:flex-start;gap:clamp(8px,1.5vw,20px)}
-.tm-digits div{display:flex;flex-direction:column;align-items:center;gap:7px}
-.tm-digits b{font:500 clamp(2rem,3.8vw,3.6rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff;letter-spacing:.01em;text-shadow:0 0 28px rgba(210,169,92,.35)}
-.tm-digits i{font:500 .56rem var(--mono);font-style:normal;letter-spacing:.24em;text-transform:uppercase;color:#d9bfbf}
-.tm-digits u{text-decoration:none;font:500 clamp(1.8rem,3.4vw,3.2rem)/1 var(--mono);color:#d2a95c;opacity:.75}
-@media(max-width:860px){.tminus{flex-wrap:wrap;gap:10px 18px}.tm-label:last-child{display:none}}
+@media(max-width:860px){}
 
 /* ---- event pass: one ticket stub, perforated dividers ---- */
 .pass{position:relative;display:grid;grid-template-columns:1fr 1.3fr 1fr;width:100%;max-width:980px;margin:clamp(22px,4.5vh,46px) auto 0;text-align:left;border:1px solid rgba(214,170,100,.5);border-radius:16px;background:linear-gradient(100deg,rgba(84,11,29,.86),rgba(30,6,13,.88));backdrop-filter:blur(8px);box-shadow:0 24px 54px -26px #000;animation:heroIn 1s cubic-bezier(.2,.8,.2,1) .65s backwards;-webkit-mask-image:radial-gradient(circle at 0 50%,transparent 11px,#000 11.5px),radial-gradient(circle at 100% 50%,transparent 11px,#000 11.5px);-webkit-mask-composite:source-in;mask-image:radial-gradient(circle at 0 50%,transparent 11px,#000 11.5px),radial-gradient(circle at 100% 50%,transparent 11px,#000 11.5px);mask-composite:intersect}
@@ -192,3 +185,30 @@ body.at-map .globe-canvas{transition:opacity .4s ease}
 .scroll-hint{left:auto;right:calc(4vw + 6px);top:50%;bottom:auto;transform:translateY(-50%);flex-direction:row;gap:14px;writing-mode:vertical-rl;font:500 .58rem var(--mono);letter-spacing:.34em}
 .scroll-hint i{width:1px;height:60px;transform-origin:top}
 @media(max-height:760px),(max-width:1100px){.scroll-hint{display:none}}
+
+/* ---- countdown lives in the pass; bigger heading; endless ticker ---- */
+#home .lobby-content{max-width:1220px}
+.pass{grid-template-columns:1fr 1.2fr .95fr 1.45fr;max-width:1180px}
+.pass-count b{display:block;font:500 clamp(1.5rem,2.3vw,2.2rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff}
+.pc-digits{display:flex;align-items:flex-start;gap:clamp(6px,.9vw,12px)}
+.pc-digits div{display:flex;flex-direction:column;gap:5px}
+.pc-digits i{font:500 .54rem var(--mono);font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:#d9bfbf}
+.pc-digits u{text-decoration:none;font:500 clamp(1.4rem,2.1vw,2rem)/1 var(--mono);color:#d2a95c;opacity:.8}
+#home .lobby-title .t1{font-size:clamp(1.3rem,min(4.8vw,7vh),4.6rem)}
+#home .lobby-title .t2{font-size:clamp(3.8rem,min(19vw,28vh),16rem)}
+.journey-stick #home{padding-top:76px;padding-bottom:132px}
+.pass{margin-top:clamp(26px,6vh,56px)}
+.hero-ticker .track{display:flex;width:max-content;gap:0;animation:tickerRun var(--dur,60s) linear infinite;will-change:transform}
+.hero-ticker .set{display:flex;flex:none;gap:2rem;padding-right:2rem}
+@keyframes tickerRun{to{transform:translateX(var(--shift,-50%))}}
+@media(max-width:1100px){.pass{grid-template-columns:1fr 1fr}.pass-seg:nth-child(3){border-left:0}.pass-seg:nth-child(n+3){border-top:1.5px dashed rgba(214,170,100,.4)}.pass-seg:nth-child(2){border-left:1.5px dashed rgba(214,170,100,.4)}.pass-seg:nth-child(4){border-left:1.5px dashed rgba(214,170,100,.4)}}
+@media(max-width:760px){.pass{grid-template-columns:1fr}.pass-seg:nth-child(n){border-left:0}.pass-seg+.pass-seg{border-top:1.5px dashed rgba(214,170,100,.4)}}
+
+/* ---- larger hero block: no dead space under the banner ---- */
+#home .lobby-title .t1{font-size:clamp(1.3rem,min(5vw,7.8vh),5rem);margin-bottom:.3em}
+#home .lobby-title .t2{font-size:clamp(3.8rem,min(21vw,33vh),17.5rem)}
+#home .lobby-sub{font-size:clamp(1rem,1.5vh + .55rem,1.4rem);margin-top:clamp(18px,3.4vh,34px);max-width:720px}
+.journey-stick #home{padding-top:70px;padding-bottom:120px}
+.pass{margin-top:clamp(26px,6.5vh,64px)}
+
+.journey-stick #home{padding-top:60px;padding-bottom:140px}
