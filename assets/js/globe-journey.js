@@ -92,7 +92,7 @@ try {
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     // distance that keeps the whole sphere on screen, and its on-screen radius (used to place the side words)
-    dBase = Math.max(4, Math.sqrt(1 + Math.pow(3.43 / camera.aspect, 2)));
+    dBase = Math.max(6, Math.sqrt(1 + Math.pow(3.43 / camera.aspect, 2)));
     const radiusPx = (h / 2) * (1 / Math.tan(THREE.MathUtils.degToRad(FOV / 2))) / Math.sqrt(dBase * dBase - 1);
     stick.style.setProperty('--globe-r', radiusPx.toFixed(1) + 'px');
     const ph = 2 * Math.max(1, camera.aspect / IMG_ASPECT);       // "cover" sizing, like the page's background

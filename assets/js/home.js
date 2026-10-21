@@ -21,7 +21,9 @@
     content.style.transform='scale('+(1+.08*(1-c))+')';
     content.style.filter=c<1?'blur('+((1-c)*6).toFixed(1)+'px)':'';
     content.style.visibility=c<=0.01?'hidden':'visible';
-    stick.style.setProperty('--gb',(smooth(p,.17,.3)*(1-smooth(p,.5,.6))).toFixed(3));   // GLOBAL / BOARDROOM words
+    var gb=smooth(p,.17,.3)*(1-smooth(p,.5,.6));
+    stick.style.setProperty('--gb',gb.toFixed(3));   // GLOBAL / BOARDROOM words
+    body.classList.toggle('gb-on',gb>.04);
     var cv=$('#globeCanvas');
     var now=globeOn?p>=LAND:p>=.9;
     if(globeOn){
