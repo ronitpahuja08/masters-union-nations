@@ -1,14 +1,17 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.181.1/build/three.module.js';
 
-// The Earth revolves into view as you scroll from the home page, then flattens into the world map.
+// Scroll choreography: the Earth emerges, completes one rotation, then its surface unrolls
+// into the flat world map. The flat map in the page is the same image, so the hand-off is seamless.
 const canvas = document.getElementById('globeCanvas');
 const stick = document.getElementById('journeyStick');
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const smooth = (v, a, b) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const easeOut = t => 1 - Math.pow(1 - t, 3);
 
-// where India sits on the flat atlas (fraction across / down); used to finish the spin facing it
-const TARGET_U = 0.705;
+const IMG_ASPECT = 1672 / 941;
+const TARGET_U = 0.705;     // India's position across the atlas; the spin ends facing it
 const TARGET_LAT = 0.34;
+const FOV = 40;
 
 try {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -16,52 +19,92 @@ try {
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 50);
+  const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 60);
 
-  const tex = new THREE.TextureLoader().load('assets/images/world-atlas-night.png', () => render(currentP));
+  const tex = new THREE.TextureLoader().load('assets/images/world-atlas-india-focus.png', () => render(currentP));
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-  const earth = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 96, 64),
-    new THREE.ShaderMaterial({
-      uniforms: { map: { value: tex } },
-      vertexShader: 'varying vec2 vUv;varying vec3 vN;void main(){vUv=uv;vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-      fragmentShader: 'uniform sampler2D map;varying vec2 vUv;varying vec3 vN;void main(){vec4 c=texture2D(map,vUv);float f=clamp(vN.z,0.,1.);c.rgb*=mix(.28,1.,smoothstep(0.,.55,f));gl_FragColor=vec4(c.rgb,1.);\n#include <colorspace_fragment>\n}'
-    })
-  );
-  scene.add(earth);
+  const uniforms = {
+    map: { value: tex },
+    uMorph: { value: 0 },
+    uRot: { value: new THREE.Vector2(0, 0) },
+    uPlane: { value: new THREE.Vector2(2 * IMG_ASPECT, 2) },
+    uCenterU: { value: TARGET_U }
+  };
 
-  const halo = new THREE.Mesh(
-    new THREE.SphereGeometry(1.12, 64, 48),
+  // one grid that is both the sphere and the flat map; uMorph slides every vertex from sphere to plane
+  const sheet = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1, 240, 120),
     new THREE.ShaderMaterial({
-      vertexShader: 'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-      fragmentShader: 'varying vec3 vN;void main(){float i=pow(max(0.,.68-dot(vN,vec3(0.,0.,1.))),3.);gl_FragColor=vec4(.30,.56,1.,1.)*i*1.6;}',
-      side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
+      uniforms,
+      side: THREE.DoubleSide,
+      vertexShader: `
+        uniform float uMorph; uniform vec2 uRot; uniform vec2 uPlane; uniform float uCenterU;
+        varying vec2 vUv; varying vec3 vN;
+        mat3 rotY(float a){float c=cos(a),s=sin(a);return mat3(c,0.,-s, 0.,1.,0., s,0.,c);}
+        mat3 rotX(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0., 0.,c,s, 0.,-s,c);}
+        void main(){
+          vUv=uv;
+          float phi=uv.x*6.28318530718, theta=(1.-uv.y)*3.14159265359;
+          vec3 sp=vec3(-cos(phi)*sin(theta), cos(theta), sin(phi)*sin(theta));
+          vec3 sph=rotX(uRot.x)*rotY(uRot.y)*sp;
+          vec3 pl=vec3((uv.x-.5)*uPlane.x,(uv.y-.5)*uPlane.y,0.);
+          float d=abs(uv.x-uCenterU)/max(uCenterU,1.-uCenterU);
+          float m=clamp(uMorph*1.9-.9*d,0.,1.);
+          m=m*m*(3.-2.*m);
+          vN=normalize(mix(sph,vec3(0.,0.,1.),m));
+          gl_Position=projectionMatrix*modelViewMatrix*vec4(mix(sph,pl,m),1.);
+        }`,
+      fragmentShader: `
+        uniform sampler2D map; varying vec2 vUv; varying vec3 vN;
+        void main(){
+          vec4 c=texture2D(map,vUv);
+          float f=clamp(vN.z,0.,1.);
+          float shade=mix(.26,1.,smoothstep(0.,.55,f));
+          if(!gl_FrontFacing) shade*=.4;
+          gl_FragColor=vec4(c.rgb*shade,1.);
+          #include <colorspace_fragment>
+        }`
     })
   );
+  sheet.frustumCulled = false;
+  scene.add(sheet);
+
+  const haloMat = new THREE.ShaderMaterial({
+    uniforms: { uA: { value: 1 } },
+    vertexShader: 'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader: 'uniform float uA;varying vec3 vN;void main(){float i=pow(max(0.,.68-dot(vN,vec3(0.,0.,1.))),3.);gl_FragColor=vec4(1.,.24,.16,1.)*i*1.7*uA;}',
+    side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
+  });
+  const halo = new THREE.Mesh(new THREE.SphereGeometry(1.12, 64, 48), haloMat);
   scene.add(halo);
 
   const endY = -(TARGET_U - 0.25) * Math.PI * 2;
-  const startY = endY - 4.4;
+  const startY = endY - Math.PI * 2;              // exactly one full revolution
+  const dEnd = 1 / Math.tan(THREE.MathUtils.degToRad(FOV / 2));   // distance at which a 2-unit-tall plane fills the screen
 
   function resize() {
     const w = stick.clientWidth, h = stick.clientHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    const ph = 2 * Math.max(1, camera.aspect / IMG_ASPECT);       // "cover" sizing, like the page's background
+    uniforms.uPlane.value.set(ph * IMG_ASPECT, ph);
   }
 
   let currentP = 0;
   function render(p) {
     currentP = p;
-    const t = smooth(p, 0.04, 0.8);
-    const dist = 7 - 4.4 * Math.pow(t, 1.35);        // pull in, stopping while the texture is still crisp
-    camera.position.set(0, 0, dist);
+    const d0 = 10 - 6 * easeOut(clamp(p / 0.3, 0, 1));            // emerge: glide in from far away
+    const unroll = smooth(p, 0.6, 0.88);
+    camera.position.set(0, 0, d0 + (dEnd - d0) * unroll);
     camera.lookAt(0, 0, 0);
-    const spin = smooth(p, 0.03, 0.82);
-    earth.rotation.set(0.12 + (TARGET_LAT - 0.12) * spin, startY + (endY - startY) * spin, 0);
-    halo.visible = p < 0.97;
+    const spin = smooth(p, 0.1, 0.62);
+    uniforms.uRot.value.set(0.05 + (TARGET_LAT - 0.05) * spin, startY + (endY - startY) * spin);
+    uniforms.uMorph.value = unroll;
+    haloMat.uniforms.uA.value = 1 - smooth(unroll, 0, 0.35);
+    halo.visible = unroll < 0.4;
     renderer.render(scene, camera);
   }
 

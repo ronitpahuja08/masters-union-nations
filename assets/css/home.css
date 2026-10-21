@@ -69,7 +69,7 @@ body.on-home .noise,body.on-home .pointer-light{display:none}
 body:not(.on-home) .grain,body:not(.on-home) .cursor-glow{display:none}
 .gate-disabled{display:none!important}
 /* ---- journey ---- */
-.journey{position:relative;height:420vh}
+.journey{position:relative;height:380vh}
 .journey-stick{position:sticky;top:0;height:100vh;overflow:hidden;background:#07070a}
 .journey-stick #home{position:absolute;inset:0;min-height:0}
 .journey-stick .lobby-content{z-index:3}
@@ -81,3 +81,45 @@ body:not(.at-map) .nav{opacity:0;pointer-events:none}
 body.at-map .hud{opacity:0;pointer-events:none}
 body.at-map .nav{opacity:1;pointer-events:auto}
 body:not(.on-home) .grain,body:not(.on-home) .cursor-glow{display:none}
+
+/* ---- ZERO theme: deep red, white type, binary field ---- */
+.ronit{--bg:#13070a;--bg-2:#1c0709;--surface:rgba(255,255,255,.05);--border:rgba(255,120,110,.24);--text:#fff;--muted:#e0bdb7;--gold:#ff4a3c;--amber:#ff7a45;--teal:#ff9a8a;--blue:#ff2a2a;--grad:linear-gradient(100deg,#ffffff 0%,#ffd6cf 38%,#ff6454 100%)}
+#home{background:#13070a}
+.journey-stick{background:#13070a}
+#home::before{content:'';position:absolute;inset:0;z-index:0;background:
+  radial-gradient(ellipse 72% 62% at 50% 46%,rgba(168,20,20,.92) 0%,rgba(104,12,14,.78) 36%,rgba(30,6,9,0) 76%),
+  radial-gradient(ellipse 46% 9% at 10% 40%,rgba(255,126,64,.5),transparent 72%),
+  radial-gradient(ellipse 40% 8% at 92% 24%,rgba(255,126,64,.38),transparent 72%),
+  linear-gradient(180deg,#1c0709,#2b0a0b 46%,#14060a)}
+#home::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:url(../images/world-atlas-india-focus.png) center/cover no-repeat;opacity:.11;mix-blend-mode:screen;filter:grayscale(1) sepia(1) saturate(5) hue-rotate(-35deg) blur(.5px)}
+#home .lobby-glow.a{background:#ff2a2a40}
+#home .lobby-glow.b{background:#ff7a4538}
+#home .lobby-title{color:#fff;text-shadow:0 0 60px rgba(255,60,50,.28)}
+#home .lobby-sub{color:#f0d6d1}
+#home .led.on{background:#ff4a3c;box-shadow:0 0 12px #ff4a3c}
+#home .meta-pill,#home .count-box{background:rgba(24,4,7,.55);border-color:rgba(255,120,110,.28)}
+#home .btn-solid{background:#fff;color:#14060a}
+#home .btn-solid:hover{box-shadow:0 0 34px rgba(255,64,52,.6)}
+.hud.scrolled{background:rgba(20,5,8,.8)}
+.hud .brand-mark em{color:#ff5a4a}
+.zero-line{position:absolute;left:4vw;right:4vw;bottom:6vh;height:2px;z-index:1;background:linear-gradient(90deg,#d4141c 0%,#d4141c 82%,transparent 100%);box-shadow:0 0 14px rgba(255,40,40,.55)}
+.zero-line::before{content:'';position:absolute;left:0;bottom:0;width:2px;height:16px;background:#d4141c}
+.zero-line i{position:absolute;bottom:-5px;width:22px;height:12px;background:repeating-linear-gradient(115deg,#d4141c 0 5px,transparent 5px 10px)}
+.zero-line i:nth-child(1){right:70px}
+.zero-line i:nth-child(2){right:40px;opacity:.7}
+.zero-line i:nth-child(3){right:0;width:14px;height:14px;border:2px solid #d4141c;border-radius:50%;background:none;bottom:-6px}
+@media(max-width:700px){.zero-line{bottom:3vh}}
+
+/* ---- the map lands with a thud ---- */
+.thud-ring{position:absolute;left:50%;top:50%;width:40vmin;height:40vmin;margin:-20vmin 0 0 -20vmin;border-radius:50%;z-index:6;pointer-events:none;opacity:0;border:2px solid rgba(255,90,70,.9);box-shadow:0 0 60px rgba(255,60,50,.6),inset 0 0 60px rgba(255,60,50,.35)}
+.journey-stick.thud{animation:thud .62s cubic-bezier(.2,.8,.2,1)}
+.journey-stick.thud .thud-ring{animation:thudRing .75s ease-out}
+@keyframes thud{0%{transform:scale(1.05)}30%{transform:scale(.985) translateY(6px)}55%{transform:scale(1.004) translateY(-2px)}100%{transform:none}}
+@keyframes thudRing{0%{opacity:.9;transform:scale(.2)}100%{opacity:0;transform:scale(5)}}
+body.at-map .node{animation:nodeIn .5s cubic-bezier(.2,1.2,.3,1) backwards}
+body.at-map .node:nth-child(1){animation-delay:.15s}body.at-map .node:nth-child(2){animation-delay:.22s}body.at-map .node:nth-child(3){animation-delay:.29s}body.at-map .node:nth-child(4){animation-delay:.36s}body.at-map .node:nth-child(5){animation-delay:.43s}body.at-map .node:nth-child(6){animation-delay:.5s}body.at-map .node:nth-child(7){animation-delay:.57s}body.at-map .node:nth-child(8){animation-delay:.64s}
+@keyframes nodeIn{from{opacity:0;scale:.2}}
+
+/* short windows: keep the top of the content below the banner instead of centring into it */
+.journey-stick #home{align-items:safe center;padding-top:96px;padding-bottom:84px}
+@media(max-height:760px){#home .lobby-title{font-size:clamp(2.6rem,9vh,5.6rem)}#home .countdown{margin-top:22px}#home .lobby-cta{margin-top:26px}}
