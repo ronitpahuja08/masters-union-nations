@@ -18,16 +18,13 @@
 <div class="grain"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
 <header class="hud ronit" id="hud">
-  <a href="#home" class="brand">
+  <a href="#home" class="brand" data-goto="top">
     <img class="brand-logo" src="assets/img/logo-mark.svg" alt="">
     <span class="brand-mark">Masters Union <em>Nations</em></span>
   </a>
   <nav class="topnav" id="topnav">
-    <a href="#home">Home</a>
-    <a href="#boardroom">Boardroom</a>
-    <a href="#prizes">Prizes</a>
-    <a href="#applications">Applications</a>
-    <a href="#contact">Contact</a>
+    <a href="#home" data-goto="top">Home</a>
+    <a href="#boardroom" data-goto="map">Boardroom</a>
   </nav>
   <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
@@ -86,14 +83,11 @@
 </form>
 </section>
 <header class="nav" id="nav">
-<a class="wordmark" href="#boardroom">
+<a class="wordmark" href="#home" data-goto="top">
 <span>MU</span> Masters Union <b>Nation</b>
 </a>
 <nav>
-<a href="#boardroom">Boardroom</a>
-<a href="#prizes">Prizes</a>
-<a href="#applications">Applications</a>
-<a href="#contact">Contact</a>
+<a href="#home" data-goto="top">Home</a>
 </nav>
 <button class="sound" id="soundToggle" aria-pressed="false">
 <i>
@@ -102,6 +96,8 @@
 </button>
 <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">Menu</button>
 </header>
+<div class="journey" id="journey">
+<div class="journey-stick" id="journeyStick">
 <section class="scene lobby ronit" id="home">
   <canvas id="stars"></canvas>
   <div class="lobby-glow a"></div><div class="lobby-glow b"></div>
@@ -120,10 +116,11 @@
       <div class="count-box"><span id="cd-secs">00</span><label>Secs</label></div>
     </div>
     <div class="lobby-cta">
-      <button class="btn btn-solid btn-lg magnetic" id="enterBoardroom">Enter the Boardroom</button>
+      <button class="btn btn-solid btn-lg magnetic" id="enterBoardroom" data-goto="map">Enter the Boardroom</button>
     </div>
   </div>
 </section>
+<canvas class="globe-canvas" id="globeCanvas" aria-hidden="true"></canvas>
 <main>
 <section class="boardroom" id="boardroom">
 <div class="map-heading" aria-hidden="true">
@@ -160,118 +157,45 @@
 <div class="committee-rail" id="committeeRail">
 </div>
 </section>
-<section class="manifesto section" id="prizes">
-<p class="eyebrow">The mandate</p>
-<div class="manifesto-grid">
-<h2>Not another conference.<br>
-<em>A room where history moves.</em>
-</h2>
-<div>
-<p>Debate live crises, negotiate impossible alliances and turn ideas into resolutions across two high-stakes days.</p>
-<div class="stats">
-<span>
-<b>08</b> Committees</span>
-<span>
-<b>02</b> Days</span>
-<span>
-<b>₹2.5L</b> Prize pool</span>
-</div>
-</div>
-</div>
-<div class="prize-grid">
-<article>
-<small>01 / EVERY COMMITTEE</small>
-<h3>Best Delegate</h3>
-<b>₹15,000</b>
-<p>For the most strategic, persuasive voice in the room.</p>
-</article>
-<article>
-<small>02 / EVERY COMMITTEE</small>
-<h3>High Commendation</h3>
-<b>₹10,000</b>
-<p>For exceptional diplomacy and command of committee.</p>
-</article>
-<article>
-<small>03 / SCHOOL CATEGORY</small>
-<h3>High Commendation</h3>
-<b>₹5,000</b>
-<p>Dedicated recognition for outstanding school delegates.</p>
-</article>
-<article class="ip-prize">
-<small>04 / INTERNATIONAL PRESS</small>
-<h3>Three disciplines</h3>
-<b>₹10,000</b>
-<p>Best journalist, photographer and caricaturist.</p>
-</article>
-</div>
-</section>
-<section class="applications section" id="applications">
-<div class="section-head">
-<div>
-<p class="eyebrow">Enter the room</p>
-<h2>Find your role<br>at the table.</h2>
-</div>
-<p>Delegate applications begin inside each committee dossier. Help build the summit through one of the roles below.</p>
-</div>
-<div class="role-list">
-<button data-apply="Chairperson">
-<span>01</span>
-<b>Chairperson</b>
-<small>Lead debate · Rule on procedure · Shape the room</small>
-<i>Apply ↗</i>
-</button>
-<button data-apply="Secretariat">
-<span>02</span>
-<b>Secretariat</b>
-<small>Build operations · Coordinate committees · Run the summit</small>
-<i>Apply ↗</i>
-</button>
-<button data-apply="Campus Ambassador">
-<span>03</span>
-<b>Campus Ambassador</b>
-<small>Represent MUN · Grow your delegation · Unlock benefits</small>
-<i>Apply ↗</i>
-</button>
-</div>
-</section>
-<section class="contact section" id="contact">
-<p class="eyebrow">Open channel</p>
-<h2>Let’s talk<br>
-<em>diplomacy.</em>
-</h2>
-<div class="contact-row">
-<a href="mailto:heer.chauhan_ugtbm2028@mastersunion.org">
-<small>ORGANISING COMMITTEE</small>
-<b>Heer Chauhan</b>
-<span>heer.chauhan_ugtbm2028@mastersunion.org</span>
-</a>
-<a href="mailto:ronit.pahuja_ugdsai2030@mastersunion.org">
-<small>ORGANISING COMMITTEE</small>
-<b>Ronit Pahuja</b>
-<span>ronit.pahuja_ugdsai2030@mastersunion.org</span>
-</a>
-<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Masters+Union+School+of+Business+Gurugram">
-<small>SUMMIT VENUE</small>
-<b>Masters’ Union</b>
-<span>Gurugram, Haryana ↗</span>
-</a>
-</div>
-</section>
 </main>
-<footer>
-<div class="wordmark">
-<span>MU</span> Masters Union <b>Nation</b>
 </div>
-<p>28—29 NOVEMBER 2026 · GURUGRAM</p>
-<p>© 2026 MUN</p>
-</footer>
-<div class="transition" id="transition">
-<div class="flight-stars" aria-hidden="true"></div>
-<div class="flight-route" aria-hidden="true"></div>
-<div class="arrival-portal" id="arrivalPortal"><span id="transitionMark"></span></div>
-<img class="delegate-rocket" src="assets/images/delegate-rocket.png" alt="A delegate riding a rocket to the selected committee">
-<div class="flight-copy"><small>DESTINATION LOCKED</small><b id="transitionText"></b><span>Entering committee space</span></div>
 </div>
+
+<section class="street-sim venue-sim" id="dalalStreet" data-venue="DALAL" aria-hidden="true" aria-label="Interactive committee venue">
+<button class="street-close" id="streetClose" type="button" aria-label="Leave committee venue">Exit ×</button>
+<button class="street-sound" id="streetSound" type="button">■ Music off</button>
+<div class="street-sky" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<canvas class="dalal-canvas" id="dalalCanvas" aria-label="Playable 3D Dalal Street environment"></canvas>
+<div class="game-loader" id="gameLoader"><span></span><b id="venueLoaderTitle">OPENING DALAL STREET</b><small>Loading interactive 3D venue…</small></div>
+<div class="street-hud">
+<small id="venueKicker">DALAL STREET · FINANCIAL DISTRICT</small>
+<h2 id="venueTitle">Approach the<br><em>exchange.</em></h2>
+<p id="venueDescription">Use WASD or the arrow controls to walk to the main entrance.</p>
+<div class="ticker" id="venueTicker"><span>NIFTY 50&nbsp; ▲ 0.82%</span><span>SENSEX&nbsp; ▲ 612.14</span><span>INR / USD&nbsp; 83.12</span></div>
+</div>
+<div class="street-world" id="streetWorld">
+<div class="iso-stage" id="isoStage">
+<div class="pixel-ground" aria-hidden="true"></div><div class="market-road" aria-hidden="true"><i></i><i></i></div>
+<button class="market-building exchange" data-building="Bombay Stock Exchange" style="--bx:17%;--by:10%">
+<span class="building-volume"><span class="building-front"><span class="building-crown">BSE</span><span class="window-grid"><i></i><i></i><i></i><i></i><i></i><i></i></span><b>Bombay Stock Exchange</b><small>Equities &amp; indices</small><span class="building-door">ENTER</span></span><span class="building-side"></span><span class="building-roof"></span></span>
+</button>
+<button class="market-building regulator" data-building="Market Regulator" style="--bx:43%;--by:7%">
+<span class="building-volume"><span class="building-front"><span class="building-crown">SEBI</span><span class="window-grid"><i></i><i></i><i></i><i></i><i></i><i></i></span><b>Market Regulator</b><small>Rules &amp; surveillance</small><span class="building-door">ENTER</span></span><span class="building-side"></span><span class="building-roof"></span></span>
+</button>
+<button class="market-building trading" data-building="Institutional Trading Floor" style="--bx:70%;--by:13%">
+<span class="building-volume"><span class="building-front"><span class="building-crown">₹</span><span class="window-grid"><i></i><i></i><i></i><i></i><i></i><i></i></span><b>Trading Floor</b><small>Deals &amp; strategy</small><span class="building-door">ENTER</span></span><span class="building-side"></span><span class="building-roof"></span></span>
+</button>
+<div class="street-prop bull" aria-hidden="true">♉</div><div class="street-prop lamp l1" aria-hidden="true"></div><div class="street-prop lamp l2" aria-hidden="true"></div>
+<div class="street-shadow" id="streetShadow" aria-hidden="true"></div>
+<div class="street-delegate" id="streetDelegate" aria-label="Your delegate"><span class="hair"></span><span class="face"></span><span class="suit"></span><span class="shirt"></span><span class="case"></span><span class="leg left"></span><span class="leg right"></span></div>
+</div>
+</div>
+<div class="street-controls" aria-label="Walking controls">
+<button type="button" data-walk="left" aria-label="Walk left">←</button><button type="button" data-walk="up" aria-label="Walk up">↑</button><button type="button" data-walk="down" aria-label="Walk down">↓</button><button type="button" data-walk="right" aria-label="Walk right">→</button>
+</div>
+<p class="street-tip" id="streetTip">WASD / arrows to move · approach the entrance</p>
+<button class="building-interact" id="buildingInteract" type="button" hidden><kbd>E</kbd><span><small>INTERACT</small><b>Enter BSE registration desk</b></span></button>
+</section>
 <section class="dossier" id="dossier" aria-hidden="true">
 <button class="close" id="dossierClose" aria-label="Close dossier">Close ×</button>
 <div class="dossier-visual">
@@ -391,5 +315,6 @@
 <script src="assets/js/home.js"></script>
 <script src="assets/js/boardroom.js">
 </script>
+<script type="module" src="assets/js/globe-journey.js"></script>
 </body>
 </html>

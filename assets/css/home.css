@@ -64,9 +64,20 @@
 /* ---- integration: home sits above the boardroom ---- */
 #home #stars{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .hud{transition:opacity .35s,transform .35s,background .3s,backdrop-filter .3s}
-body:not(.on-home) .hud{opacity:0;pointer-events:none;transform:translateY(-100%)}
-body.on-home .nav{opacity:0;pointer-events:none}
 .nav{transition:opacity .35s}
 body.on-home .noise,body.on-home .pointer-light{display:none}
 body:not(.on-home) .grain,body:not(.on-home) .cursor-glow{display:none}
 .gate-disabled{display:none!important}
+/* ---- journey ---- */
+.journey{position:relative;height:420vh}
+.journey-stick{position:sticky;top:0;height:100vh;overflow:hidden;background:#07070a}
+.journey-stick #home{position:absolute;inset:0;min-height:0}
+.journey-stick .lobby-content{z-index:3}
+.journey-stick main{position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none}
+.journey-stick .boardroom{height:100%}
+.globe-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;opacity:0}
+body.at-map .journey-stick main{pointer-events:auto}
+body:not(.at-map) .nav{opacity:0;pointer-events:none}
+body.at-map .hud{opacity:0;pointer-events:none}
+body.at-map .nav{opacity:1;pointer-events:auto}
+body:not(.on-home) .grain,body:not(.on-home) .cursor-glow{display:none}
