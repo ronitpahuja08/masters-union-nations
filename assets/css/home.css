@@ -256,3 +256,6 @@ body.gb-on .hud{opacity:0;pointer-events:none}
 /* the burgundy frame returns softly once the map has landed */
 .map-stage::after{opacity:0;transition:opacity 1.4s ease .25s}
 body.at-map .map-stage::after{opacity:1}
+
+/* ---- GLOBAL BOARDROOM: golden yellow, fully solid ---- */
+.gb-l,.gb-r{background:linear-gradient(100deg,#fff2b0 0%,#f6cb52 48%,#e0a21f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 42px rgba(246,203,82,.38))}
