@@ -247,3 +247,12 @@ body.gb-on .hud{opacity:0;pointer-events:none}
 /* ---- GLOBAL BOARDROOM: fully solid, no outlines ---- */
 .gb-l{color:#ecc98a;-webkit-text-stroke:0;isolation:isolate;background:linear-gradient(100deg,#fbeee6 0%,#ecc98a 55%,#d2a05a 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 40px rgba(210,169,92,.3))}
 .gb-l::after,.gb-r::after{content:attr(data-t);position:absolute;inset:0;z-index:-1;transform:translate(.04em,.045em);-webkit-text-fill-color:rgba(122,24,48,.78);-webkit-text-stroke:0;text-transform:uppercase}
+
+/* ---- shared palette: one ink, one gold, wine and navy meeting in the middle ---- */
+:root{--mun-ink:#12061a;--mun-wine:#6c0e24;--mun-navy:#071328;--mun-gold:#d2a95c}
+.dusk{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;background:
+  radial-gradient(ellipse 130% 80% at 50% 118%,rgba(108,14,36,.4),transparent 62%),
+  radial-gradient(ellipse 85% 75% at 50% 48%,#0a1c3e 0%,var(--mun-navy) 48%,var(--mun-ink) 100%)}
+/* the burgundy frame returns softly once the map has landed */
+.map-stage::after{opacity:0;transition:opacity 1.4s ease .25s}
+body.at-map .map-stage::after{opacity:1}

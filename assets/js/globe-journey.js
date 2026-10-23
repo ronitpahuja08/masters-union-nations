@@ -74,9 +74,9 @@ try {
   scene.add(sheet);
 
   const haloMat = new THREE.ShaderMaterial({
-    uniforms: { uA: { value: 1 } },
+    uniforms: { uA: { value: 1 }, uC: { value: new THREE.Vector3(.74, .14, .26) } },
     vertexShader: 'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-    fragmentShader: 'uniform float uA;varying vec3 vN;void main(){float i=pow(max(0.,.68-dot(vN,vec3(0.,0.,1.))),3.);gl_FragColor=vec4(.74,.14,.26,1.)*i*1.5*uA;}',
+    fragmentShader: 'uniform float uA;uniform vec3 uC;varying vec3 vN;void main(){float i=pow(max(0.,.68-dot(vN,vec3(0.,0.,1.))),3.);gl_FragColor=vec4(uC,1.)*i*1.5*uA;}',
     side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
   });
   const halo = new THREE.Mesh(new THREE.SphereGeometry(1.12, 64, 48), haloMat);
@@ -113,6 +113,8 @@ try {
     uniforms.uRot.value.set(0.05 + (TARGET_LAT - 0.05) * spin, startY + (endY - startY) * spin);
     uniforms.uMorph.value = unroll;
     haloMat.uniforms.uA.value = 1 - smooth(unroll, 0, 0.35);
+    const tint = smooth(p, 0.15, 0.6);
+    haloMat.uniforms.uC.value.set(.74 + (.34 - .74) * tint, .14 + (.30 - .14) * tint, .26 + (.86 - .26) * tint);
     halo.visible = unroll < 0.4;
     renderer.render(scene, camera);
   }
