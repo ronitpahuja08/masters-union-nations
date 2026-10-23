@@ -12,7 +12,7 @@
 
   var LAND=.88,landed=false;   // at LAND the unrolled globe is pixel-identical to the page's map: swap and thud
   function thud(){
-    stick.classList.remove('thud');void stick.offsetWidth;stick.classList.add('thud');
+    stick.classList.remove('thud');void stick.offsetWidth;stick.classList.add('thud');if(window.MUNSound&&MUNSound.isOn())MUNSound.cue('travel');
   }
   function apply(){
     stick.style.setProperty('--p',p.toFixed(4));
