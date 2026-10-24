@@ -95,3 +95,8 @@ dialog.studio-modal .modal-close:hover{background:rgba(210,169,92,.2);border-col
   .studio-modal .canvas-side>div:last-child{flex-direction:column}
   dialog.studio-modal .modal-close{top:16px;right:16px}
 }
+
+/* dossier: Matrix link */
+.matrix-chip{display:inline-flex;align-items:center;gap:.4em;padding:12px 22px;border-radius:999px;border:1px solid rgba(214,170,100,.55);background:rgba(255,255,255,.05);color:#fff;font:700 1rem 'Space Grotesk',sans-serif;text-decoration:none;transition:background .2s,border-color .2s}
+.matrix-chip:hover{background:rgba(210,169,92,.2);border-color:#d2a95c}
+.matrix-chip[hidden]{display:none}

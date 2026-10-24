@@ -1,0 +1,109 @@
+{
+  "event": {
+    "name": "Masters Union Nations",
+    "dates": "28 & 29 November 2026",
+    "venue": "Masters’ Union School of Business, Gurugram",
+    "prizePool": "₹2,20,000"
+  },
+  "committees": [
+    {
+      "slug": "unhrc",
+      "code": "UNHRC",
+      "full": "United Nations Human Rights Council",
+      "agenda": "Addressing Human Trafficking in Asia & Africa",
+      "prizes": [
+        "Best Delegate — ₹15,000",
+        "High Commendation (College) — ₹10,000",
+        "High Commendation (School) — ₹5,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    },
+    {
+      "slug": "mcc",
+      "code": "MCC",
+      "full": "Midnight Crisis Committee",
+      "agenda": "Debate over night",
+      "prizes": [
+        "Best Delegate — ₹30,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    },
+    {
+      "slug": "ccep",
+      "code": "CCEP",
+      "full": "CCEP",
+      "agenda": "To be announced",
+      "prizes": [
+        "Best Delegate — ₹15,000",
+        "High Commendation (College) — ₹10,000",
+        "High Commendation (School) — ₹5,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    },
+    {
+      "slug": "ipl",
+      "code": "IPL",
+      "full": "Indian Premier League",
+      "agenda": "To be announced",
+      "prizes": [
+        "Best Raiser — ₹10,000",
+        "Best Player — ₹10,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    },
+    {
+      "slug": "aippm",
+      "code": "AIPPM",
+      "full": "All India Political Parties Meet",
+      "agenda": "One Nation, One Election / Secularism",
+      "prizes": [
+        "Best Delegate — ₹15,000",
+        "High Commendation (College) — ₹10,000",
+        "High Commendation (School) — ₹5,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    },
+    {
+      "slug": "dalal-street",
+      "code": "DALAL STREET",
+      "full": "Dalal Street",
+      "agenda": "IPO",
+      "prizes": [
+        "Best Delegate — ₹20,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    },
+    {
+      "slug": "startup",
+      "code": "STARTUP",
+      "full": "Startup Boardroom",
+      "agenda": "Build, pitch and defend a venture under boardroom pressure.",
+      "prizes": [
+        "Best Delegate — ₹20,000",
+        "High Commendation (College) — ₹15,000",
+        "High Commendation (School) — ₹10,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    },
+    {
+      "slug": "ip",
+      "code": "IP",
+      "full": "International Press",
+      "agenda": "International Press Coverage",
+      "prizes": [
+        "Best Photographer — ₹5,000",
+        "Best Journalist — ₹5,000",
+        "Best Caricaturist — ₹5,000"
+      ],
+      "matrix": "",
+      "registrationUrl": ""
+    }
+  ]
+}

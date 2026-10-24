@@ -2,6 +2,8 @@
   var $=function(s){return document.querySelector(s);};
   var home=$('#home'),hud=$('#hud'),body=document.body,journey=$('#journey'),stick=$('#journeyStick'),main=stick.querySelector('main'),content=$('.lobby-content'),themeReveal=$('#themeReveal');
 
+  var dusk=$('.dusk');
+  var decos=Array.prototype.slice.call(document.querySelectorAll('.hero-ticker,.zero-line,.corner,.scroll-hint'));
   var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
   var smooth=function(v,a,b){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);};
 
@@ -57,6 +59,9 @@
     $('#impactFlash').style.opacity=(flash*.82).toFixed(3);
     $('#impactVeil').style.opacity=blackout.toFixed(3);
     body.classList.toggle('in-blackout',p>.835&&p<.93);
+    dusk.style.opacity=smooth(p,.14,.78).toFixed(3);   // wine backdrop turns to navy before the map lands
+    var dk=1-smooth(p,0,.09);   // bottom ticker, line, corners and scroll marker leave before the words arrive
+    decos.forEach(function(e){e.style.opacity=dk;e.style.visibility=dk<=.01?'hidden':'visible';});
     var cv=$('#globeCanvas');
     var now=p>=LAND;
     if(globeOn){

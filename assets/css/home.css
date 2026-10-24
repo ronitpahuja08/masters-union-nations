@@ -305,3 +305,29 @@ body.in-blackout .hud{opacity:0;pointer-events:none}
 @media(max-width:760px){.gb-strike .gb-words{bottom:110px}}
 @media(max-width:760px){.at-map .journey-music-toggle{bottom:70px}}
 @media(prefers-reduced-motion:reduce){.theme-reveal.is-playing *,.theme-reveal.is-playing::after{animation-duration:.01ms!important;animation-delay:0ms!important}}
+/* ---- refinements: nav separator, NATIONS a notch smaller, pass sized so the countdown never clips ---- */
+.hud::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent 0%,#7a1830 14%,#d2a95c 50%,#7a1830 86%,transparent 100%);box-shadow:0 0 14px rgba(210,169,92,.28);opacity:.85}
+.hud.scrolled{border-bottom-color:transparent}
+#home .lobby-title .t2{font-size:clamp(3.4rem,min(18vw,28.5vh),15rem)}
+#home .lobby-content{max-width:1320px}
+.pass{max-width:1280px;grid-template-columns:1.15fr 1.15fr .9fr 1.3fr}
+.pass-seg{padding:20px 26px}
+.pass-seg b{font-size:clamp(1.15rem,1.65vw,1.7rem)}
+.pass-count b{font-size:clamp(1.4rem,1.9vw,1.9rem)}
+.pc-digits{flex-wrap:nowrap;gap:clamp(5px,.7vw,10px)}
+
+/* ---- GLOBAL BOARDROOM: fully solid, no outlines ---- */
+.gb-l{color:#ecc98a;-webkit-text-stroke:0;isolation:isolate;background:linear-gradient(100deg,#fbeee6 0%,#ecc98a 55%,#d2a05a 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 40px rgba(210,169,92,.3))}
+.gb-l::after,.gb-r::after{content:attr(data-t);position:absolute;inset:0;z-index:-1;transform:translate(.04em,.045em);-webkit-text-fill-color:rgba(122,24,48,.78);-webkit-text-stroke:0;text-transform:uppercase}
+
+/* ---- shared palette: one ink, one gold, wine and navy meeting in the middle ---- */
+:root{--mun-ink:#12061a;--mun-wine:#6c0e24;--mun-navy:#071328;--mun-gold:#d2a95c}
+.dusk{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;background:
+  radial-gradient(ellipse 130% 80% at 50% 118%,rgba(108,14,36,.4),transparent 62%),
+  radial-gradient(ellipse 85% 75% at 50% 48%,#0a1c3e 0%,var(--mun-navy) 48%,var(--mun-ink) 100%)}
+/* the burgundy frame returns softly once the map has landed */
+.map-stage::after{opacity:0;transition:opacity 1.4s ease .25s}
+body.at-map .map-stage::after{opacity:1}
+
+/* ---- GLOBAL BOARDROOM: golden yellow, fully solid ---- */
+.gb-l,.gb-r{background:linear-gradient(100deg,#fff2b0 0%,#f6cb52 48%,#e0a21f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 42px rgba(246,203,82,.38))}
