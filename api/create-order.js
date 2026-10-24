@@ -1,6 +1,6 @@
 const crypto = require('node:crypto');
 
-const ALLOWED_COMMITTEES = new Set(['UNHRC','MCC','CCEP','IPL','AIPPM','DALAL','CCC','IP']);
+const ALLOWED_COMMITTEES = new Set(['UNHRC','MCC','CCEP','IPL','AIPPM','DALAL','STARTUP','IP']);
 
 module.exports = async function createOrder(req, res) {
   res.setHeader('Cache-Control', 'no-store');

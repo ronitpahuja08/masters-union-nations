@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="stylesheet" href="assets/css/boardroom.css">
-<link rel="stylesheet" href="assets/css/home.css">
+<link rel="stylesheet" href="assets/css/home.css?v=cinematic-burst-1">
 <link rel="stylesheet" href="assets/css/theme-modals.css">
 </head>
 <body class="on-home">
@@ -23,6 +23,7 @@
     <a href="#home" data-goto="top">Home</a>
     <a href="#boardroom" data-goto="map">Boardroom</a>
   </nav>
+  <a class="landing-campaign-mark" href="#home" data-goto="top" aria-label="Masters' Union Nations — The World Reset"><img src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset"></a>
   <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
 <div class="noise">
@@ -91,6 +92,9 @@
 </i>
 <span>Sound off</span>
 </button>
+<a class="campaign-mark-link" href="#home" data-goto="top" aria-label="Masters' Union Nations — The World Reset">
+<img src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset">
+</a>
 <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">Menu</button>
 </header>
 <div class="journey" id="journey">
@@ -142,7 +146,17 @@
   </div>
 </section>
 <canvas class="globe-canvas" id="globeCanvas" aria-hidden="true"></canvas>
+<div class="impact-flash" id="impactFlash" aria-hidden="true"></div>
+<div class="impact-veil" id="impactVeil" aria-hidden="true"></div>
 <div class="gb-words" aria-hidden="true"><span class="gb-word gb-l">Global</span><span class="gb-word gb-r" data-t="Boardroom">Boardroom</span></div>
+<section class="theme-reveal" id="themeReveal" aria-hidden="true" aria-label="2026 theme reveal">
+  <div class="theme-reveal-orbit" aria-hidden="true"></div>
+  <div class="theme-reveal-inner">
+    <div class="theme-reveal-top"><span>MASTERS' UNION NATIONS</span><span>THEME / 2026</span></div>
+    <div class="theme-reveal-title"><p>THE WORLD ENTERS</p><h2><span>Global</span><em>Boardroom.</em></h2><i aria-hidden="true"></i><p class="theme-reveal-deck">Eight rooms. One world. Every decision matters.</p></div>
+    <div class="theme-reveal-bottom"><span>28—29 NOVEMBER 2026</span><span>SCROLL TO ENTER THE BOARDROOM ↓</span></div>
+  </div>
+</section>
 <div class="thud-ring" aria-hidden="true"></div>
 <main>
 <section class="boardroom" id="boardroom">
@@ -150,6 +164,7 @@
 <span class="live-dot"></span>
 <p>Global committee network</p>
 <b>Select a destination</b>
+<small class="map-prize-pool">₹2,20,000 total prize pool</small>
 </div>
 <div class="map-stage" id="mapStage">
 <div class="map-aura">
@@ -184,9 +199,77 @@
 </div>
 </div>
 
+<section class="committee-flight" id="committeeFlight" aria-hidden="true" aria-label="Journey to committee">
+<div class="cf-stars" aria-hidden="true"></div><div class="cf-globe" aria-hidden="true"><span class="cf-globe-shine"></span></div><div class="cf-ring" aria-hidden="true"></div>
+<div class="cf-destination"><small>ROUTE LOCKED</small><b id="cfCity">MUMBAI</b><span id="cfCommittee">DALAL STREET</span></div>
+<svg class="cf-rocket" viewBox="0 0 180 90" aria-hidden="true"><defs><linearGradient id="rocketHull" x1="0" x2="1"><stop stop-color="#fff4d3"/><stop offset=".7" stop-color="#e4c999"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient id="rocketFlame" x1="0" x2="1"><stop stop-color="#ff5e75"/><stop offset=".55" stop-color="#ffd36a"/><stop offset="1" stop-color="#fff8d5"/></linearGradient></defs><path d="M28 43 2 31l11 16L2 59l28-6" fill="url(#rocketFlame)"/><path d="M48 29Q82 3 153 12l18 33-18 33Q82 87 48 61l-12-16z" fill="url(#rocketHull)" stroke="#c28f56" stroke-width="3"/><path d="M91 18q-4 27 0 54M53 29 38 17l-2 25m17 19L38 73l-2-21" fill="#c93336" stroke="#f1c46e" stroke-width="3"/><circle cx="127" cy="45" r="11" fill="#17445b" stroke="#ffd987" stroke-width="5"/><path d="M164 30q13 15 0 30" fill="#e23c3a" stroke="#ffd987" stroke-width="3"/></svg>
+<img class="cf-broker" src="assets/images/dalal-broker-mascot.png" alt="" aria-hidden="true">
+<div class="cf-caption"><small>MASTERS' UNION NATIONS</small><b>One world.<br>One decisive move.</b></div>
+<button class="cf-skip" id="committeeJourneySkip" type="button">Skip journey <span>↗</span></button>
+</section>
+
+<section class="dalal-page" id="dalalCommitteePage" role="dialog" aria-modal="true" aria-labelledby="dpTitle" aria-hidden="true">
+<header class="dp-nav"><button id="dalalPageClose" type="button" aria-label="Return to committee map">← <span>Global Boardroom</span></button><a class="dp-brand" href="#dalalTop">MU <i>/</i> MUN</a><div class="dp-nav-right"><a class="dp-nav-cta" href="#dalalRegister">Register <span>↗</span></a><img class="committee-brand-mark" src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset"></div></header>
+<main class="dp-scroll" id="dalalPageScroll">
+<section class="dp-hero" id="dalalTop"><div class="dp-hero-glow"></div><div class="dp-hero-copy"><p class="dp-eyebrow"><i></i> COMMITTEE 06 &nbsp;·&nbsp; MUMBAI, INDIA</p><h1 id="dpTitle">THE MARKET<br>IS YOURS<br><em>TO MOVE.</em></h1><p>A capital-markets simulation where information, valuation and conviction move the ticker.</p><div class="dp-meta"><span>28—29 NOV 2026</span><span>MASTERS' UNION · GURUGRAM</span></div><a class="dp-primary" href="#dalalRegister">Take your seat <b>↓</b></a></div><div class="dp-hero-caption"><span>THE BOMBAY STOCK EXCHANGE</span><i>19°04′34″N &nbsp; 72°52′40″E</i></div></section>
+<section class="dp-section dp-brief" id="dalalBrief"><div class="dp-section-title"><small>01 / THE BRIEF</small><h2>Read the room.<br><em>Move the market.</em></h2></div><div class="dp-brief-copy"><p class="dp-lead">Take a company public. Survive the IPO.</p><p>Step onto a fast-moving trading floor where every briefing can change a valuation. Build a case, read the signals, negotiate your way through the market and decide what the next move is worth.</p><div class="dp-tags"><span>MARKETS</span><span>FINANCE</span><span>RISK</span><span>NEGOTIATION</span></div></div></section>
+<section class="dp-awards"><div class="dp-awards-head"><small>02 / RECOGNITION</small><h2>Make your call.<br><em>Make it count.</em></h2><p>One award for the strongest performance on the trading floor.</p></div><article><small>BEST DELEGATE</small><b>₹20,000</b><span>For the sharpest strategy on the floor.</span></article></section>
+<section class="dp-playbook"><div><small>03 / YOUR PLAYBOOK</small><h2>Think like an<br><em>underwriter.</em></h2><p>Research the company. Build your valuation. Pitch the issue, test the numbers and negotiate when the market turns.</p></div><ol><li><i>01</i><span><b>Read the signals</b><small>Find the opportunity in the brief.</small></span></li><li><i>02</i><span><b>Build your case</b><small>Set a value others can believe.</small></span></li><li><i>03</i><span><b>Make the move</b><small>Negotiate, adapt and close.</small></span></li></ol></section>
+<section class="dp-register" id="dalalRegister"><div class="dp-register-copy"><small>04 / TAKE YOUR SEAT</small><h2>Step onto<br><em>Dalal Street.</em></h2><p>Enter your details to begin. Next, create your delegate ID and continue to payment.</p><div class="dp-register-details"><span>IN PERSON <b>Mumbai-inspired market simulation</b></span><span>AT MASTERS' UNION <b>DLF Cyber Park, Gurugram</b></span><span>CONFERENCE DATES <b>28—29 November 2026</b></span></div></div><form class="dp-form" id="dalalInlineForm"><label>FULL NAME<input name="name" required autocomplete="name" placeholder="Your full name"></label><label>EMAIL<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label><label>INSTITUTION<input name="institution" required autocomplete="organization" placeholder="School or university"></label><label>YOUR MARKET INSTINCT<textarea name="motivation" rows="3" required placeholder="What would you bring to the trading floor?"></textarea></label><input type="hidden" name="applyingFor" value="DALAL"><p class="dp-form-note" id="dalalFormNote" aria-live="polite"></p><button type="submit">Start registration <b>↗</b></button><small>Next, continue to delegate ID and payment.</small></form></section>
+<footer class="dp-footer"><span>DALAL STREET · MASTERS' UNION NATIONS</span><a href="#dalalTop">Back to top ↑</a></footer>
+</main>
+<aside class="dp-mascot" id="dalalMascot" aria-hidden="true"><img src="assets/images/dalal-broker-mascot.png" alt=""></aside>
+</section>
+
+<section class="committee-page" id="committeePage" role="dialog" aria-modal="true" aria-labelledby="cpTitle" aria-hidden="true">
+<header class="cp-nav">
+<button class="cp-back" id="committeePageClose" type="button"><span aria-hidden="true">←</span> Global Boardroom</button>
+<div class="cp-nav-right">
+<a class="cp-nav-register" href="#cpRegister">Register <span aria-hidden="true">↗</span></a>
+<img class="committee-brand-mark" src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset">
+</div>
+</header>
+<main class="cp-scroll" id="committeePageScroll" tabindex="-1">
+<section class="cp-hero" id="committeePageTop" aria-labelledby="cpTitle">
+<div class="mcc-scene" aria-hidden="true"><div class="mcc-panorama"></div><div class="mcc-haze"></div><div class="mcc-stars"></div><div class="mcc-rail"><div class="mcc-train"><span class="mcc-car"><i></i><i></i><i></i><i></i></span><span class="mcc-car"><i></i><i></i><i></i><i></i></span><span class="mcc-car"><i></i><i></i><i></i><i></i></span><span class="mcc-car"><i></i><i></i><i></i><i></i></span><span class="mcc-car"><i></i><i></i><i></i><i></i></span></div></div><div class="mcc-foreground"></div></div>
+<div class="cp-hero-copy">
+<p class="cp-eyebrow"><span id="cpNumber">COMMITTEE 01</span><i aria-hidden="true"></i><span id="cpLocation">GENEVA / SWITZERLAND</span></p>
+<h1 id="cpTitle"><span id="cpHeroA">The room is</span><br><em id="cpHeroB">yours to shape.</em></h1>
+<h2 class="cp-full-name" id="cpFullName">Committee name</h2>
+<p class="cp-agenda" id="cpAgenda"></p>
+<div class="cp-meta"><span>28—29 NOV 2026</span><span>MASTERS' UNION · GURUGRAM</span></div>
+<a class="cp-primary" href="#cpBrief">Explore the committee <b aria-hidden="true">↓</b></a>
+</div>
+<aside class="cp-hero-art" aria-hidden="true">
+<div class="cp-art-grid"></div><div class="cp-art-orbit"></div>
+<span class="cp-art-code" id="cpArtCode">UNHRC</span>
+<div class="cp-art-caption"><small>COMMITTEE LOCATION</small><b id="cpArtCity">GENEVA</b></div>
+</aside>
+</section>
+<section class="cp-section cp-brief" id="cpBrief">
+<div class="cp-section-label"><small>01 / THE MANDATE</small><h2>Understand<br><em>what is at stake.</em></h2></div>
+<div class="cp-brief-copy"><p class="cp-lead" id="cpLead"></p><p id="cpIntro"></p><div class="cp-tags" id="cpSkills"></div></div>
+</section>
+<section class="cp-do">
+<div class="cp-do-head"><small>02 / YOUR ROLE</small><h2>How the room<br><em>moves forward.</em></h2><p>Every committee rewards preparation, clear thinking and the ability to work with the room.</p></div>
+<ol class="cp-steps" id="cpSteps"></ol>
+</section>
+<section class="cp-awards" id="cpAwards">
+<div class="cp-awards-head"><small>03 / RECOGNITION</small><h2>Good work<br><em>gets noticed.</em></h2><p id="cpAwardsNote"></p></div>
+<div class="cp-awards-list" id="cpAwardsList"></div>
+</section>
+<section class="cp-register" id="cpRegister">
+<div><small>04 / TAKE YOUR SEAT</small><h2>Bring your point<br><em>of view.</em></h2><p>Register for this committee and prepare to take part in two days of debate, decision-making and collaboration.</p><div class="cp-event-meta"><span>DATES <b>28—29 November 2026</b></span><span>VENUE <b>Masters' Union · DLF Cyber Park, Gurugram</b></span></div></div>
+<div class="cp-register-actions"><button class="cp-apply" id="committeePageApply" type="button">Start registration <b aria-hidden="true">↗</b></button><button class="cp-venue" id="committeeVenuePreview" type="button" hidden>Explore the interactive venue <b aria-hidden="true">↗</b></button><small>Registration continues in the existing delegate form.</small></div>
+</section>
+<footer class="cp-footer"><span>MASTERS' UNION NATIONS · THE WORLD RESET</span><a href="#committeePageTop">Back to top ↑</a></footer>
+</main>
+</section>
+
 <section class="street-sim venue-sim" id="dalalStreet" data-venue="DALAL" aria-hidden="true" aria-label="Interactive committee venue">
 <button class="street-close" id="streetClose" type="button" aria-label="Leave committee venue">Exit ×</button>
 <button class="street-sound" id="streetSound" type="button">■ Music off</button>
+<img class="venue-brand-mark" src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset">
 <div class="street-sky" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <canvas class="dalal-canvas" id="dalalCanvas" aria-label="Playable 3D Dalal Street environment"></canvas>
 <div class="game-loader" id="gameLoader"><span></span><b id="venueLoaderTitle">OPENING DALAL STREET</b><small>Loading interactive 3D venue…</small></div>
@@ -259,12 +342,11 @@
 <button class="primary" id="dossierApply">Apply for this committee <b>→</b>
 </button>
 <button class="committee-sound" id="dossierSound" type="button"><span>■</span> Stop committee music</button>
-<p>
-<b>₹15K</b> Best Delegate · <b>₹10K</b> High Commendation</p>
+<p id="dossierAwards"></p>
 </div>
 </div>
 </section>
-<dialog class="modal apply-modal" id="applyModal" aria-labelledby="formTitle">
+<dialog class="modal apply-modal" id="applyModal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
 <button class="close modal-close" data-close="applyModal" type="button">Close &times;</button>
 <div class="ap-grid">
 <aside class="ap-side">
@@ -295,12 +377,12 @@
 </div>
 </div>
 </dialog>
-<dialog class="modal studio-modal" id="studioModal">
+<dialog class="modal studio-modal" id="studioModal" role="dialog" aria-modal="true" aria-labelledby="studioTitle">
 <button class="close modal-close" data-close="studioModal">Close ×</button>
 <div class="studio-head">
 <div>
 <p class="eyebrow">Virtual delegate ID studio</p>
-<h2>Make your identity official.</h2>
+<h2 id="studioTitle">Make your identity official.</h2>
 </div>
 <span class="unlocked">● STUDIO UNLOCKED</span>
 </div>
@@ -340,9 +422,11 @@
 </dialog>
 <div class="toast" id="toast">
 </div>
-<script src="assets/js/home.js"></script>
+<button class="journey-music-toggle" id="journeyMusicToggle" type="button" aria-pressed="false" aria-label="Turn on soundtrack"><span class="journey-music-icon" aria-hidden="true">♫</span><span class="journey-music-label">Music off</span></button>
+<script src="assets/js/home.js?v=cinematic-burst-1"></script>
 <script src="assets/js/boardroom.js">
 </script>
-<script type="module" src="assets/js/globe-journey.js"></script>
+<script src="assets/js/journey-audio.js"></script>
+<script type="module" src="assets/js/globe-journey.js?v=cinematic-burst-5"></script>
 </body>
 </html>
