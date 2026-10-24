@@ -549,3 +549,69 @@ body.map-mode .nav nav{display:none}
 @media(max-width:800px){.committee-page[data-committee="MCC"] .cp-hero{min-height:100dvh;padding:100px 18px 25vh}.committee-page[data-committee="MCC"] .cp-hero h1{font-size:clamp(3.9rem,14vw,7rem)}.mcc-rail{bottom:15%}.mcc-panorama{background-position:50% center}}
 @media(max-width:480px){.committee-page[data-committee="MCC"] .cp-hero h1{font-size:clamp(3.4rem,15vw,5rem)}.committee-page[data-committee="MCC"] .cp-eyebrow{font-size:.43rem;letter-spacing:.1em}.mcc-rail{bottom:16%}}
 @media(prefers-reduced-motion:reduce){.mcc-train,.mcc-stars,.mcc-car i{animation:none!important}.mcc-train{transform:translateX(8vw)}.mcc-panorama,.committee-page[data-committee="MCC"] .cp-hero-copy{transform:none}}
+
+/* Dalal Street uses the same centered editorial opening as the MCC page. */
+.dp-hero{justify-content:center;min-height:100dvh;padding:105px 24px 110px;text-align:center;background:#090c11}
+.dp-hero::before{background:none;animation:none}
+.dp-hero::after{z-index:1;background:linear-gradient(180deg,#07090d8c 0%,#07090d30 28%,#07090db8 74%,#090b0e 100%),radial-gradient(ellipse at 50% 44%,#0008,transparent 65%)}
+.dp-scene{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.dp-bse-panorama{position:absolute;inset:-3%;background:url("../images/dalal-bse-live.png") 50% 48%/cover no-repeat;filter:saturate(.86) contrast(1.09);animation:dpMarketCamera 17s ease-in-out infinite alternate}
+.dp-market-display{position:absolute;top:15%;left:-1%;right:-1%;overflow:hidden;border-block:1px solid #ffdc9e6e;background:linear-gradient(90deg,#06120ee8,#10251dd9 52%,#06120ee8);box-shadow:0 0 55px #080c09aa,0 0 28px #67e8a322;transform:perspective(800px) rotateX(-5deg)}
+.dp-market-tape{display:flex;width:max-content;white-space:nowrap;animation:dpTapeRun 23s linear infinite}
+.dp-market-tape span{display:block;flex:none;padding:13px 0;color:#f0d8a9;font:700 clamp(.55rem,1vw,.85rem) var(--mono);letter-spacing:.18em}
+.dp-market-tape b{color:#79e5a3;font-weight:700}
+.dp-chart{position:absolute;right:4%;bottom:16%;width:min(34vw,440px);height:110px;opacity:.57;filter:drop-shadow(0 0 9px #63e4ae)}
+.dp-chart path{fill:none;stroke:#79e5a3;stroke-width:2;vector-effect:non-scaling-stroke;stroke-dasharray:650;stroke-dashoffset:650;animation:dpChartDraw 6s ease-in-out infinite}
+.dp-hero-glow{z-index:1;pointer-events:none}
+.dp-hero-copy{z-index:3;width:min(100%,1050px);max-width:none;margin:0;display:flex;align-items:center;flex-direction:column}
+.dp-eyebrow{color:#ffe7b8;text-shadow:0 2px 12px #000}
+.dp-hero h1{margin:24px 0 18px;font:900 clamp(4rem,12vw,10rem)/.8 var(--sans);letter-spacing:-.095em;color:#fffaf0;text-shadow:0 4px 0 #1c241d,0 14px 45px #000d}
+.dp-hero h1 em{font:inherit;font-style:normal;color:#f1d99c;letter-spacing:inherit}
+.dp-hero-copy>p:not(.dp-eyebrow){max-width:620px;margin:5px auto 0;text-shadow:0 2px 16px #000}
+.dp-meta{justify-content:center;margin:21px 0}
+.dp-primary{gap:22px;background:#f2d598}
+.dp-hero-caption{z-index:3}
+.dp-mascot{opacity:0;visibility:hidden;transition:top .32s cubic-bezier(.2,.7,.2,1),opacity .35s,visibility .35s}
+.dalal-page.has-scrolled .dp-mascot{opacity:1;visibility:visible}
+@keyframes dpMarketCamera{to{transform:scale(1.09) translate3d(-1.2%,.7%,0)}}
+@keyframes dpTapeRun{to{transform:translateX(-50%)}}
+@keyframes dpChartDraw{0%,12%{stroke-dashoffset:650;opacity:.35}65%,86%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-80;opacity:.3}}
+
+/* IPL: an animated match plays behind the same central title system. */
+.ipl-scene{display:none}
+.committee-page[data-committee="IPL"]{background:#071423}
+.committee-page[data-committee="IPL"] .cp-nav{border-bottom-color:#ffffff30;background:#071423c7}
+.committee-page[data-committee="IPL"] .cp-hero{display:flex;justify-content:center;align-items:center;min-height:100dvh;padding:95px 22px 18vh;text-align:center;background:#071423;perspective:1100px}
+.committee-page[data-committee="IPL"] .cp-hero::before{z-index:1;background:linear-gradient(180deg,#06101c62 0%,#06101c32 30%,#06101c77 63%,#071423 100%)}
+.committee-page[data-committee="IPL"] .ipl-scene{position:absolute;inset:0;display:block;overflow:hidden;pointer-events:none;transform-style:preserve-3d}
+.ipl-panorama{position:absolute;inset:-3%;background:url("../images/ipl-stadium-cinematic.png") center/cover no-repeat;animation:iplCamera 13s ease-in-out infinite alternate;will-change:transform}
+.ipl-stands{position:absolute;inset:16% 0 21%;opacity:.26;background:repeating-radial-gradient(ellipse at 50% 58%,transparent 0 17px,#fff4 18px 19px,transparent 20px 38px);mask-image:linear-gradient(90deg,#000,transparent 43%,transparent 57%,#000);animation:iplCrowdWave 2.2s ease-in-out infinite alternate}
+.ipl-bowler,.ipl-batsman{position:absolute;z-index:2;height:auto;filter:drop-shadow(0 9px 10px #000c);will-change:transform}
+.ipl-bowler{left:40%;bottom:18%;width:clamp(72px,9vw,142px);animation:iplBowl 7.8s ease-in-out infinite}
+.ipl-batsman{left:49%;bottom:17%;width:clamp(55px,7vw,110px);transform-origin:50% 86%;animation:iplSwing 7.8s ease-in-out infinite}
+.ipl-ball{position:absolute;z-index:3;left:52%;bottom:36%;width:8px;height:8px;border-radius:50%;background:#fff8df;box-shadow:0 0 13px 5px #fff6,0 0 34px 12px #ffc36680;opacity:0;animation:iplSix 7.8s cubic-bezier(.12,.42,.27,.96) infinite}
+.ipl-crowd-flash{position:absolute;z-index:2;inset:0;opacity:0;background:radial-gradient(ellipse at 50% 65%,#fff6a23b,transparent 60%);animation:iplCrowdFlash 7.8s ease-in-out infinite}
+.ipl-haze{position:absolute;z-index:3;inset:0;background:linear-gradient(180deg,#06132225 0%,transparent 32%,#06132255 70%,#071423 100%);box-shadow:inset 0 0 100px #07132284}
+.committee-page[data-committee="IPL"] .cp-hero-copy{z-index:4;width:min(100%,1000px);max-width:none}
+.committee-page[data-committee="IPL"] .cp-eyebrow{justify-content:center;color:#fff2cf;text-shadow:0 2px 15px #000}
+.committee-page[data-committee="IPL"] .cp-eyebrow i{background:#f6d274}
+.committee-page[data-committee="IPL"] .cp-hero h1{margin:25px 0;font:900 clamp(5rem,16vw,14rem)/.78 var(--sans);letter-spacing:-.1em;color:#fffefa;text-shadow:0 4px 0 #193347,0 12px 45px #000e}
+.committee-page[data-committee="IPL"] .cp-hero h1 br,.committee-page[data-committee="IPL"] .cp-hero h1 em,.committee-page[data-committee="IPL"] .cp-full-name,.committee-page[data-committee="IPL"] .cp-agenda,.committee-page[data-committee="IPL"] .cp-meta,.committee-page[data-committee="IPL"] .cp-hero-art{display:none}
+.committee-page[data-committee="IPL"] .cp-primary{margin-top:18px;border:1px solid #fff4ca9e;background:#081827bd;color:#fff;backdrop-filter:blur(8px)}
+.committee-page[data-committee="IPL"] .cp-primary b{color:#f5d47d}
+.committee-page:not(.open) .ipl-scene *{animation-play-state:paused}
+@keyframes iplCamera{to{transform:scale(1.065) translateY(1%)}}
+@keyframes iplCrowdWave{to{opacity:.42;transform:translateY(-7px)}}
+@keyframes iplBowl{0%,8%{opacity:0;transform:translate(-75px,18px) rotate(-9deg)}17%{opacity:1}34%{transform:translate(0,0) rotate(0)}40%,70%{opacity:1;transform:translate(13px,-5px) rotate(9deg)}78%,100%{opacity:0;transform:translate(30px,2px) rotate(12deg)}}
+@keyframes iplSwing{0%,32%{transform:rotate(-16deg) translateY(4px)}43%,66%{transform:rotate(7deg) translateY(-5px)}80%,100%{transform:rotate(-16deg) translateY(4px)}}
+@keyframes iplSix{0%,31%{opacity:0;transform:translate(-150px,110px) scale(.5)}36%{opacity:1;transform:translate(-55px,46px)}43%{opacity:1;transform:translate(0,0)}63%{opacity:1;transform:translate(26vw,-38vh) scale(.8)}74%,100%{opacity:0;transform:translate(43vw,-61vh) scale(.35)}}
+@keyframes iplCrowdFlash{0%,43%,72%,100%{opacity:0}49%,62%{opacity:1}}
+@media(max-width:800px){.dp-hero{padding:105px 16px 100px}.dp-hero-copy{width:100%;padding:0}.dp-hero h1{font-size:clamp(3.8rem,15vw,7rem)}.dp-market-display{top:13%}.dp-chart{right:1%;bottom:15%;width:40vw}.dp-hero-caption{right:16px;bottom:23px}.committee-page[data-committee="IPL"] .cp-hero{padding:100px 15px 21vh}.committee-page[data-committee="IPL"] .cp-hero h1{font-size:clamp(5rem,21vw,9rem)}.ipl-bowler{left:34%;bottom:21%}.ipl-batsman{left:51%;bottom:20%}}
+@media(max-width:480px){.dp-hero h1{font-size:clamp(3.5rem,15vw,5rem)}.dp-hero-copy>p:not(.dp-eyebrow){font-size:.75rem}.dp-meta{gap:5px}.dp-meta span{padding:7px;font-size:.4rem}.dp-market-display{top:11%}.dp-market-tape span{padding:10px 0}.dp-chart{bottom:16%;width:48vw}.dp-mascot{width:84px}.committee-page[data-committee="IPL"] .cp-hero h1{font-size:clamp(5rem,23vw,7rem)}.ipl-bowler{left:27%;width:72px}.ipl-batsman{left:50%;width:62px}.ipl-ball{left:55%}}
+@media(prefers-reduced-motion:reduce){.dp-bse-panorama,.dp-market-tape,.dp-chart path,.ipl-scene *{animation:none!important}.dp-market-tape{transform:none}.dp-chart path{stroke-dashoffset:0}.ipl-bowler{opacity:1;transform:none}.ipl-ball{display:none}.ipl-batsman{transform:none}}
+@media(max-width:800px){.dp-brand{display:none}.dp-nav{grid-template-columns:1fr auto}.dp-nav-right{grid-column:2}}
+.ipl-bowler,.ipl-batsman{z-index:4;filter:drop-shadow(0 10px 12px #000e) drop-shadow(0 0 10px #fff4)}
+.ipl-bowler{width:clamp(96px,12vw,185px)}
+.ipl-batsman{width:clamp(75px,10vw,150px)}
+@media(max-width:800px){.ipl-bowler{width:clamp(88px,15vw,150px)}.ipl-batsman{width:clamp(68px,12vw,120px)}}
+@media(max-width:480px){.ipl-bowler{width:88px}.ipl-batsman{width:68px}}
