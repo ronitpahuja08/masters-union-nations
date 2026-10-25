@@ -1,0 +1,149 @@
+/* Committee cinematics extension — always load AFTER boardroom.css. */
+/* TRANSITIONS: asset-led, never low-poly fake 3D figures. */
+.mc-journey{position:fixed;inset:0;z-index:145;isolation:isolate;display:block;overflow:hidden;background:#04070f;color:#faf8f4;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility .18s;font-family:var(--sans,Arial,sans-serif)}
+.mc-journey.playing{opacity:1;visibility:visible;pointer-events:auto}
+.mc-journey .mc-world,.mc-journey .mc-photo,.mc-journey .mc-haze,.mc-journey .mc-grain{position:absolute;inset:0}
+.mc-world{overflow:hidden;background:radial-gradient(ellipse at 60% 45%,#28364d,#060910 72%)}
+.mc-photo{background-size:cover;background-position:center;filter:brightness(.72) contrast(1.12);transform:scale(1.2)}
+.mc-journey.playing .mc-photo{animation:mcPush 3.85s cubic-bezier(.2,.5,.3,1) both}
+.mc-haze{background:linear-gradient(0deg,#03070ff2,transparent 44%,#04061096),radial-gradient(ellipse at 52% 55%,transparent 0%,#02040a7c 85%)}
+.mc-grain{pointer-events:none;opacity:.12;background:repeating-linear-gradient(0deg,#fff1 0 1px,transparent 1px 4px);mix-blend-mode:screen}
+.mc-top,.mc-bottom{position:absolute;z-index:6;left:5vw;right:5vw;display:flex;justify-content:space-between;gap:18px;font:600 clamp(8px,.8vw,11px)/1.5 var(--mono,monospace);letter-spacing:.22em;color:#f5f4e3d6;text-shadow:0 3px 14px #000}
+.mc-top{top:6vh}.mc-bottom{bottom:5vh}
+.mc-heading{position:absolute;z-index:8;left:5%;right:5%;top:50%;text-align:center;transform:translateY(-40%);opacity:0;filter:blur(18px);pointer-events:none}
+.mc-heading small{display:block;font:700 clamp(9px,.8vw,12px) var(--mono,monospace);letter-spacing:.3em;color:var(--mc-accent,#f4f0df);margin-bottom:12px}
+.mc-heading h2{margin:0;font:900 clamp(5rem,15vw,12.7rem)/.82 var(--sans,Arial,sans-serif);letter-spacing:-.11em;color:#fff;filter:drop-shadow(0 13px 35px #0009)}
+.mc-heading p{font:600 clamp(10px,.85vw,14px) var(--mono,monospace);letter-spacing:.19em;color:#fff9e6;margin-top:23px}
+.mc-journey.playing .mc-heading{animation:mcTitleReveal 3.8s both}
+.mc-skip{position:absolute;z-index:10;right:4vw;bottom:10vh;cursor:pointer;border:1px solid #ffffff80;border-radius:999px;background:#04060baf;backdrop-filter:blur(10px);color:#fff;padding:11px 17px;font:600 12px var(--sans,Arial,sans-serif)}
+.mc-skip:hover,.mc-skip:focus-visible{background:#fff;color:#0b0d15;outline:2px solid #fff7}
+.mc-playfield{position:absolute;inset:0;pointer-events:none}
+@keyframes mcPush{from{transform:scale(1.17) translateX(1.6%)}to{transform:scale(1.03) translateX(-1%)} }
+@keyframes mcTitleReveal{0%,66%{opacity:0;transform:translateY(-37%) scale(.93);filter:blur(18px)}76%,90%{opacity:1;transform:translateY(-50%) scale(1);filter:blur(0)}100%{opacity:1;transform:translateY(-50%) scale(1.08);filter:blur(0)}}
+
+/* UNHRC — dignified evidence dossier and Geneva reveal */
+.mc-journey[data-code="UNHRC"]{--mc-accent:#9cc8ff}
+.mc-journey[data-code="UNHRC"] .mc-world{background:#132b40}
+.mc-journey[data-code="UNHRC"] .mc-photo{background-image:linear-gradient(0deg,#061623b8,#0d233058),url('../images/unhrc-geneva-cinematic.webp')}
+.mc-dossier{position:absolute;z-index:3;top:50%;left:50%;width:min(560px,73vw);height:min(340px,46vh);padding:26px 34px;border:1px solid #f4f5ee97;background:linear-gradient(145deg,#d8e7f1ed,#8ab4c5cd);box-shadow:0 15px 120px #010b18c4;color:#153448;display:grid;grid-template-columns:1fr 1fr;gap:10px;transform:translate(-50%,-30%) rotateX(30deg) scale(.7);opacity:0;filter:blur(12px)}
+.mc-dossier small{grid-column:1/-1;font:700 .62rem monospace;letter-spacing:.15em}.mc-dossier b{font:900 clamp(1.7rem,3vw,2.8rem) var(--sans,Arial);letter-spacing:-.06em;grid-column:1/-1}.mc-dossier i{display:block;grid-column:1/-1;background:#123346;height:3px;margin-bottom:12px}.mc-dossier span{font:700 .61rem monospace;letter-spacing:.12em;padding:8px 9px;border:1px solid #18394c58}.mc-dossier strong{grid-column:1/-1;font:900 clamp(.8rem,2.1vw,1.45rem) var(--sans,Arial);letter-spacing:.2em;color:#b43d37;margin-top:8px}
+.mc-journey.playing .mc-dossier{animation:mcDossier 2.5s cubic-bezier(.23,.7,.28,1) both}
+.mc-network{position:absolute;inset:0;opacity:0}.mc-route-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.mc-route-svg path{fill:none;stroke:var(--mc-accent,#5de6c9);stroke-width:1.6;stroke-dasharray:12 6;filter:drop-shadow(0 0 8px currentColor);stroke-dashoffset:270}.mc-route-svg circle{fill:var(--mc-accent,#5de6c9);filter:drop-shadow(0 0 17px currentColor)}
+.mc-journey.playing .mc-network{animation:mcNetworkIn 2.8s ease-out both}.mc-journey.playing .mc-route-svg path{animation:mcLines 2.2s .4s linear both}
+@keyframes mcDossier{0%{opacity:0;transform:translate(-50%,-10%) rotateX(50deg) scale(.7);filter:blur(14px)}18%,42%{opacity:1;transform:translate(-50%,-50%) rotateX(0) scale(1);filter:none}67%,100%{opacity:0;transform:translate(-50%,-70%) rotateX(-25deg) scale(1.45);filter:blur(22px)}}
+@keyframes mcNetworkIn{0%,42%{opacity:0}62%{opacity:1}72%,100%{opacity:.1}}
+@keyframes mcLines{to{stroke-dashoffset:0}}
+/* CCEP — shipping/data routes intersect over Singapore */
+.mc-journey[data-code="CCEP"]{--mc-accent:#56ffdc}
+.mc-journey[data-code="CCEP"] .mc-world{background:#07302f}
+.mc-journey[data-code="CCEP"] .mc-photo{background-image:linear-gradient(0deg,#042222a1,#051e283c),url('../images/ccep-singapore-cinematic.webp')}
+.mc-journey[data-code="CCEP"] .mc-network{opacity:1}
+.mc-journey.playing[data-code="CCEP"] .mc-network{animation:mcCCEPNetwork 3.8s both}
+@keyframes mcCCEPNetwork{0%{opacity:0;transform:scale(1.35)}20%,57%{opacity:1;transform:scale(1)}80%,100%{opacity:0}}
+.mc-trade{position:absolute;z-index:2;left:50%;top:56%;display:grid;gap:10px;transform:translate(-50%,-50%);width:min(520px,80vw);padding:25px 35px;text-align:center;border:1px solid #5effd768;background:#031d24b7;color:#ecfffa;box-shadow:0 12px 60px #031a18;opacity:0}
+.mc-trade span,.mc-trade small{font:600 10px var(--mono,monospace);letter-spacing:.24em}.mc-trade b{font:800 clamp(1.5rem,4vw,3.1rem)/1.05 var(--sans,Arial);letter-spacing:-.06em}
+.mc-journey.playing .mc-trade{animation:mcCCEPLabel 2.8s both}
+@keyframes mcCCEPLabel{0%,18%{opacity:0;transform:translate(-50%,-40%) scale(.93)}32%,52%{opacity:1;transform:translate(-50%,-50%) scale(1)}78%,100%{opacity:0;transform:translate(-50%,-58%) scale(1.3)}}
+/* IPL — auction-room event, not another cricket match */
+.mc-journey[data-code="IPL"]{--mc-accent:#fbd56b}
+.mc-journey[data-code="IPL"] .mc-photo{background-image:linear-gradient(0deg,#081a2fbe,#081a2e56),url('../images/ipl-stadium-cinematic.png')}
+.mc-stadium-beam{position:absolute;inset:-30% 50% -30% -50%;background:linear-gradient(105deg,transparent 30%,#fffbd131 50%,transparent 69%);transform:translateX(-60%) rotate(-15deg);mix-blend-mode:screen}
+.mc-stadium-beam.beam-two{transform:translateX(50%) rotate(15deg)}
+.mc-journey.playing .beam-one{animation:mcSweep 2.8s .15s ease-in-out both}
+.mc-journey.playing .beam-two{animation:mcSweep 2.7s .35s ease-in-out both reverse}
+@keyframes mcSweep{to{transform:translateX(90%) rotate(9deg)}}
+.mc-auction{position:absolute;left:50%;top:44%;display:grid;gap:10px;min-width:min(530px,82vw);text-align:center;padding:28px 18px;border:1px solid #ffda7d7f;background:#071726d9;box-shadow:0 0 65px #ffc45921,inset 0 0 50px #12283e;color:#fff9de;transform:translate(-50%,-42%) scale(.8);opacity:0}
+.mc-auction>span,.mc-auction>small{font:700 clamp(9px,.8vw,12px) var(--mono,monospace);letter-spacing:.23em}.mc-auction>b{font:900 clamp(2rem,4.8vw,4.2rem)/1 var(--sans,Arial)}.mc-auction>strong{font:900 clamp(3rem,11vw,8rem)/.86 var(--sans,Arial);color:#fbd56b;letter-spacing:-.085em;text-shadow:0 0 32px #ffc34c88;opacity:0;transform:scale(1.6)}
+.mc-journey.playing .mc-auction{animation:mcAuction 2.8s both}
+.mc-journey.playing .mc-auction>strong{animation:mcSold 2.8s both}
+@keyframes mcAuction{0%,10%{opacity:0;transform:translate(-50%,-38%) scale(.8)}24%,59%{opacity:1;transform:translate(-50%,-50%) scale(1)}75%,100%{opacity:0;transform:translate(-50%,-65%) scale(1.45)}}
+@keyframes mcSold{0%,31%{opacity:0;transform:scale(1.5)}44%,59%{opacity:1;transform:scale(1)}75%,100%{opacity:0;transform:scale(1.18)}}
+/* AIPPM — Parliament doors open and reveal the House */
+.mc-journey[data-code="AIPPM"]{--mc-accent:#ffd09b}
+.mc-journey[data-code="AIPPM"] .mc-photo{background-image:linear-gradient(0deg,#210f0ac4,#39241755),url('../images/aippm-parliament-live.png')}
+.mc-door{position:absolute;z-index:4;top:0;bottom:0;width:50.2%;background:linear-gradient(90deg,#312014,#886745 48%,#382314);box-shadow:inset 0 0 60px #0007,0 0 35px #0006}
+.mc-left{left:0;transform-origin:left center}.mc-right{right:0;transform-origin:right center}
+.mc-door::after{content:"";position:absolute;inset:9% 10%;border:2px solid #d4ad7d35;box-shadow:inset 0 0 0 17px #28170d55}
+.mc-journey.playing .mc-left{animation:mcDoorLeft 2.35s cubic-bezier(.66,.08,.2,.98) both}
+.mc-journey.playing .mc-right{animation:mcDoorRight 2.35s cubic-bezier(.66,.08,.2,.98) both}
+@keyframes mcDoorLeft{0%,11%{transform:translateX(0)}75%,100%{transform:translateX(-110%)}}
+@keyframes mcDoorRight{0%,11%{transform:translateX(0)}75%,100%{transform:translateX(110%)}}
+.mc-session{position:absolute;left:50%;top:50%;width:min(700px,86vw);display:grid;gap:10px;justify-items:center;transform:translate(-50%,-43%);opacity:0;text-align:center}
+.mc-session span,.mc-session small{font:700 11px var(--mono,monospace);letter-spacing:.22em}.mc-session>b{font:900 clamp(2rem,5vw,5.1rem)/.94 var(--sans,Arial);letter-spacing:-.075em}.mc-session i{width:120px;height:2px;background:#ffc879}
+.mc-journey.playing .mc-session{animation:mcSessionIn 3.6s both}
+@keyframes mcSessionIn{0%,29%{opacity:0;filter:blur(15px);transform:translate(-50%,-40%) scale(.8)}43%,62%{opacity:1;filter:none;transform:translate(-50%,-50%) scale(1)}78%,100%{opacity:0;transform:translate(-50%,-55%) scale(1.3)}}
+
+/* LANDING PAGES: five distinct full-bleed worlds, matching MCC + IPL hierarchy. */
+.cinema-hero-scene{position:absolute;z-index:0;inset:0;display:none;overflow:hidden;pointer-events:none;isolation:isolate}
+.cinema-hero-scene .ch-photo,.cinema-hero-scene .ch-video,.cinema-hero-scene .ch-grid,.cinema-hero-scene .ch-grain,.cinema-hero-scene .ch-light{position:absolute;inset:0}
+.cinema-hero-scene .ch-photo,.cinema-hero-scene .ch-video{width:100%;height:100%;object-fit:cover;background-size:cover;background-position:center;animation:chPan 26s ease-in-out infinite alternate;transform:scale(1.045)}
+.cinema-hero-scene .ch-grid{opacity:.12;background:linear-gradient(90deg,#fff2 1px,transparent 1px),linear-gradient(#fff2 1px,transparent 1px);background-size:120px 120px;mask-image:linear-gradient(90deg,transparent,#000 60%,transparent)}
+.cinema-hero-scene .ch-grain{opacity:.09;background:repeating-linear-gradient(0deg,#fff1 0 1px,transparent 1px 3px);mix-blend-mode:screen}
+.cinema-hero-scene .ch-light{background:linear-gradient(180deg,#06091133 0%,#0609112a 25%,#05091477 66%,#070910 100%);box-shadow:inset 0 0 140px #03040c5e}
+@keyframes chPan{from{transform:scale(1.05) translateX(-.6%)}to{transform:scale(1.095) translateX(1.1%)}}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-hero{display:flex;justify-content:center;align-items:center;min-height:100dvh;padding:98px 24px 18vh;text-align:center;background:#060c17}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-hero:before{z-index:1;background:linear-gradient(180deg,#05091470,transparent 27%,#07091017 54%,#050914aa 80%,#070910)}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cinema-hero-scene{display:block}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-hero-copy{z-index:4;max-width:1100px;width:100%;padding:0;display:flex;flex-direction:column;align-items:center}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-eyebrow{justify-content:center;color:#fff5e9;text-shadow:0 3px 20px #000c;letter-spacing:.2em}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-hero h1{font:900 clamp(3.9rem,11.5vw,10.7rem)/.79 var(--sans,Arial);letter-spacing:-.095em;color:#fdfaf1;text-shadow:0 4px 0 #151c2c,0 20px 50px #000e;margin:23px 0}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-hero h1 em{font:inherit;color:#fff8e8;font-style:normal;letter-spacing:inherit}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) :is(.cp-full-name,.cp-agenda,.cp-meta,.cp-hero-art){display:none}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-primary{border:1px solid #ffffffa3;background:#08101da5;color:#fff;backdrop-filter:blur(13px);box-shadow:0 14px 36px #0008;margin-top:12px}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-primary b{color:var(--committee-accent)}
+/* The same photographic treatment stays subtly visible while users scroll, like MCC / IPL. */
+.committee-page[data-committee="UNHRC"] .cp-scroll-backdrop{background-image:linear-gradient(#0b1427bb,#071221c9),url('../images/unhrc-geneva-cinematic.webp')}
+.committee-page[data-committee="CCEP"] .cp-scroll-backdrop{background-image:linear-gradient(#052626c9,#061922c9),url('../images/ccep-singapore-cinematic.webp')}
+.committee-page[data-committee="AIPPM"] .cp-scroll-backdrop{background-image:linear-gradient(#29170fbd,#140e0acf),url('../images/aippm-parliament-live.png')}
+.committee-page[data-committee="STARTUP"] .cp-scroll-backdrop{background-image:linear-gradient(#190d23c1,#090d20d8),url('../images/startup-san-francisco-cinematic.webp')}
+.committee-page[data-committee="IP"] .cp-scroll-backdrop{background-image:linear-gradient(#161714d5,#0d1110e3),url('../images/ip-press-camera.png')}
+/* THEME 1: Geneva — solemn and urgent. */
+.committee-page[data-committee="UNHRC"]{--committee-accent:#a6d5fa;background:#081626}
+.committee-page[data-committee="UNHRC"] .ch-photo{background-image:linear-gradient(0deg,#071527b0,#14314844),url('../images/unhrc-geneva-cinematic.webp')}
+.committee-page[data-committee="UNHRC"] .cp-hero h1{font-size:clamp(3.7rem,10.6vw,10rem)}
+.ch-document{position:absolute;z-index:1;left:5%;bottom:12%;display:grid;gap:5px;transform:rotate(-5deg);opacity:.35;text-align:left;color:#e7f4ff}
+.ch-document small,.ch-document span,.ch-document em{font:700 10px monospace;letter-spacing:.17em;font-style:normal}.ch-document b{font:900 27px var(--sans,Arial);letter-spacing:-.07em}.ch-document i{height:2px;width:140px;background:#b2d7f1}
+/* THEME 2: Singapore — kinetic commerce and the harbor. */
+.committee-page[data-committee="CCEP"]{--committee-accent:#5ae9d0;background:#081e25}
+.committee-page[data-committee="CCEP"] .ch-photo{background-image:linear-gradient(0deg,#062d2cad,#031b243f),url('../images/ccep-singapore-cinematic.webp')}
+.committee-page[data-committee="CCEP"] .cp-hero h1{font-size:clamp(4rem,12.3vw,10rem)}
+.committee-page[data-committee="CCEP"] .cp-hero h1 em{color:#aaffea}
+.ch-route{position:absolute;inset:0;opacity:.2;color:#5af3d6}.ch-route .mc-route-svg path{stroke:#5af3d6;stroke-dashoffset:0;animation:chDashes 24s linear infinite}
+@keyframes chDashes{to{stroke-dashoffset:-250}}
+.ch-market{position:absolute;right:3%;bottom:17%;display:grid;gap:8px;opacity:.65;text-align:right;font:700 10px monospace;color:#9dfff0;letter-spacing:.13em}.ch-market b{font-size:12px}
+/* THEME 3: Parliament — ceremonial and neutral, no party politics. */
+.committee-page[data-committee="AIPPM"]{--committee-accent:#f7c37d;background:#25140d}
+.committee-page[data-committee="AIPPM"] .ch-photo{background-image:linear-gradient(0deg,#2c150cb7,#45201343),url('../images/aippm-parliament-live.png')}
+.committee-page[data-committee="AIPPM"] .cp-hero h1{font-size:clamp(3.7rem,12.2vw,10.8rem)}
+.committee-page[data-committee="AIPPM"] .cp-hero h1 em{color:#ffe2b0}
+.ch-parliament-bar{position:absolute;bottom:14%;left:5%;display:grid;gap:6px;text-align:left;color:#ffdbad;opacity:.55;letter-spacing:.18em;font:700 10px monospace}
+/* THEME 4: Startup — real Golden Gate footage instead of a cartoon unicorn. */
+.committee-page[data-committee="STARTUP"]{--committee-accent:#ffc6ba;background:#150d22}
+.committee-page[data-committee="STARTUP"] .ch-photo{background-image:linear-gradient(0deg,#170d26cb,#38172e64),url('../images/startup-san-francisco-cinematic.webp')}
+.committee-page[data-committee="STARTUP"] .ch-video{filter:saturate(.85) brightness(.76) contrast(1.14);object-position:center}
+.committee-page[data-committee="STARTUP"] .cp-hero h1{font-size:clamp(4rem,11.9vw,10.6rem)}
+.committee-page[data-committee="STARTUP"] .cp-hero h1 em{color:#ffd8bc}
+.ch-funding{position:absolute;bottom:15%;right:4%;display:flex;align-items:center;gap:9px;opacity:.6;color:#ffe8e1;font:700 10px monospace;letter-spacing:.1em}
+.ch-funding i{width:24px;height:1px;background:#ffe3da}.ch-funding b{color:#ffe0b5}
+/* THEME 5: Press — moving broadsheets and film-noir flash. */
+.committee-page[data-committee="IP"]{--committee-accent:#f1d9a6;background:#0d1110}
+.committee-page[data-committee="IP"] .ch-photo{background-image:linear-gradient(0deg,#101213d4,#0b1116a3),url('../images/ip-press-camera.png');background-size:cover,contain;background-repeat:no-repeat;background-position:center,20% 50%;filter:grayscale(1)}
+.committee-page[data-committee="IP"] .cp-hero h1{font-size:clamp(3.8rem,11.8vw,10.5rem)}
+.ch-paper{position:absolute;left:-2%;top:19%;width:min(310px,27vw);min-height:230px;padding:22px;background:#e7e1d2;color:#121617;box-shadow:0 25px 55px #0009;transform:rotate(-11deg) translateX(-22%);opacity:.55;display:grid;gap:12px;text-align:left;animation:chPaperFloat 10s ease-in-out infinite alternate}
+.ch-paper small{font:700 9px monospace;letter-spacing:.18em;border-bottom:1px solid #222;padding-bottom:10px}.ch-paper b{font:900 clamp(1.5rem,3.1vw,2.9rem)/.9 var(--sans,Arial);letter-spacing:-.08em}.ch-paper span{font:700 9px monospace}
+.ch-paper.p-two{left:auto;right:-3%;top:29%;opacity:.32;transform:rotate(12deg) translateX(10%);animation-delay:-5s}
+.ch-flash{position:absolute;inset:0;background:#fff;opacity:0;animation:chFlash 14s infinite}
+@keyframes chPaperFloat{to{translate:0 -18px}}
+@keyframes chFlash{0%,21%,21.3%,76%,76.4%,100%{opacity:0}21.15%,76.2%{opacity:.12}}
+/* Compatibility / performance */
+@media(max-width:850px){.mc-bottom{display:none}.mc-top{left:6vw;right:6vw}.mc-heading h2{font-size:clamp(5rem,19vw,9rem)}.mc-dossier{padding:18px;width:82vw}.ch-paper{opacity:.26}.ch-paper.p-two{opacity:.18}.ch-market,.ch-funding,.ch-document,.ch-parliament-bar{display:none}}
+@media(max-width:500px){.mc-top{font-size:8px;top:5vh}.mc-top span:last-child{display:none}.mc-heading h2{font-size:clamp(4.4rem,22vw,8rem)}.mc-heading p{font-size:9px;letter-spacing:.12em}.mc-skip{right:15px;bottom:32px}.mc-trade{padding:18px 12px}.mc-auction{min-width:86vw}.mc-dossier span{font-size:8px}.ch-paper{top:12%;width:49vw;min-height:170px;padding:12px}.ch-paper.p-two{top:40%}.ch-paper b{font-size:21px}:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-hero{padding:105px 15px 23vh}:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cp-hero h1{font-size:clamp(3.4rem,12vw,5rem)}}
+@media(prefers-reduced-motion:reduce){.mc-journey *, .cinema-hero-scene *{animation:none!important;transition:none!important}.mc-journey.playing .mc-photo{transform:none}.mc-journey.playing .mc-heading{opacity:1;filter:none;transform:translateY(-50%)}.cinema-hero-scene .ch-video{display:none}}
+
+/* Keep the intro control clear of the global music toggle. */
+.mc-skip{left:clamp(16px,4vw,56px);right:auto;bottom:28px}
+.cinema-hero-tag{display:none}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cinema-hero-tag{display:block;margin:0 0 14px;color:#fff6df;font:600 clamp(.62rem,.9vw,.85rem)/1.5 var(--mono,monospace);letter-spacing:.24em;text-shadow:0 4px 20px #000}
+.committee-page[data-committee="STARTUP"] .ch-video{z-index:1}
+.committee-page[data-committee="STARTUP"] .ch-grid,.committee-page[data-committee="STARTUP"] .ch-funding,.committee-page[data-committee="STARTUP"] .ch-light{z-index:2}
+@media(max-width:500px){:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cinema-hero-tag{max-width:30ch;letter-spacing:.14em}}
