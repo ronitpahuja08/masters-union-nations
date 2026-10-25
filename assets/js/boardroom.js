@@ -133,13 +133,10 @@ $('#cardShare').onclick=async()=>{const b=await cardBlob(),f=new File([b],$('#ca
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
 
 $('#navToggle').onclick=()=>$('#nav').classList.toggle('menu-open');$$('.nav nav a').forEach(a=>a.onclick=()=>$('#nav').classList.remove('menu-open'));window.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#committeeFlight').classList.contains('active')||$('#ipCinematic').classList.contains('active')||$('#startupLaunch').classList.contains('active')||$('#mccNightFlight').classList.contains('active'))finishCommitteeJourney();else if($('#applyModal').open||$('#applyModal').hasAttribute('open'))closeModal($('#applyModal'));else if($('#studioModal').open||$('#studioModal').hasAttribute('open'))closeModal($('#studioModal'));else if($('#dalalCommitteePage').classList.contains('open'))closeDalalCommitteePage();else if($('#committeePage').classList.contains('open'))closeCommitteePage();else if($('#dossier').classList.contains('open'))closeDossier()}});
-const map=$('#mapStage');let raf=0,dragging=false,dragStart={x:0,y:0},rotation={x:0,y:0};
-function setMapTransform(x,y){map.style.transform=`perspective(1000px) rotateX(${x}deg) rotateY(${y}deg) translateZ(0)`}
-map.addEventListener('pointerdown',e=>{if(innerWidth<=900||e.target.closest('.node'))return;dragging=true;dragStart={x:e.clientX-rotation.y*45,y:e.clientY+rotation.x*45};map.classList.add('dragging');map.setPointerCapture(e.pointerId)});
-map.addEventListener('pointermove',e=>{if(!dragging)return;rotation.y=Math.max(-4,Math.min(4,(e.clientX-dragStart.x)/45));rotation.x=Math.max(-3,Math.min(3,-(e.clientY-dragStart.y)/45));setMapTransform(rotation.x,rotation.y)});
-map.addEventListener('pointerup',e=>{dragging=false;map.classList.remove('dragging');if(map.hasPointerCapture(e.pointerId))map.releasePointerCapture(e.pointerId)});
-map.addEventListener('pointercancel',()=>{dragging=false;map.classList.remove('dragging')});
-window.addEventListener('pointermove',e=>{if(raf)return;raf=requestAnimationFrame(()=>{$('#pointerLight').style.left=e.clientX+'px';$('#pointerLight').style.top=e.clientY+'px';if(innerWidth>900&&!dragging){const r=map.getBoundingClientRect(),inside=e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;if(inside){const rx=(e.clientY-r.top-r.height/2)/r.height,ry=(e.clientX-r.left-r.width/2)/r.width;setMapTransform(rotation.x-rx*.7,rotation.y+ry*.9)}}$('#coords').textContent=(90-e.clientY/innerHeight*180).toFixed(2)+'° / '+(e.clientX/innerWidth*360-180).toFixed(2)+'°';raf=0})},{passive:true});
+// Stable map: committee nodes remain clickable; no pointer-driven tilting, dragging or camera shake.
+const map=$('#mapStage');
+map.style.transform='none';
+// The UI may show a coordinate readout, but it no longer follows every pointer event.
 const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.animate([{opacity:0,transform:'translateY(25px)'},{opacity:1,transform:'none'}],{duration:700,fill:'both',easing:'cubic-bezier(.2,.8,.2,1)'})}),{threshold:.12});$$('.prize-grid article,.role-list button,.contact-row a').forEach(el=>observer.observe(el));
 $('#soundToggle').setAttribute('aria-pressed',state.sound);$('#soundToggle span').textContent=state.sound?'Sound on':'Sound off';
 (function(){if(!window.MUNSound)return;if(!state.sound&&MUNSound.isOn())MUNSound.set(false);addEventListener('pointerdown',function(){if(state.sound&&!MUNSound.isOn())MUNSound.set(true)},{once:true});})();

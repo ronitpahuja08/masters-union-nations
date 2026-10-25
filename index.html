@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="assets/css/home.css?v=cinematic-burst-1">
 <link rel="stylesheet" href="assets/css/theme-modals.css">
 <link rel="stylesheet" href="assets/css/committee-cinematics.css?v=2">
+<link rel="stylesheet" href="assets/css/committee-v2.css?v=mun4-5">
 </head>
 <body class="on-home">
 <div class="grain"></div>
@@ -168,6 +169,7 @@
 <b>Select a destination</b>
 <small class="map-prize-pool">₹2,20,000 total prize pool</small>
 </div>
+<div class="map-pan" aria-label="Swipe horizontally to explore the world map">
 <div class="map-stage" id="mapStage">
 <div class="map-aura">
 </div>
@@ -194,6 +196,7 @@
 </span>
 </div>
 </div>
+ </div>
 <div class="committee-rail" id="committeeRail">
 </div>
 </section>
@@ -211,7 +214,7 @@
 </section>
 
 <section class="dalal-crash" id="dalalCrash" aria-hidden="true" aria-label="Dalal Street market crash cinematic introduction" role="dialog" aria-modal="true" aria-labelledby="dalalCrashTitle">
-<video class="dc-market-footage" id="dcMarketVideo" src="assets/video/market-data-pexels.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+<video class="dc-market-footage" id="dcMarketVideo" src="assets/video/market-data-pexels.mp4" muted playsinline preload="metadata" aria-hidden="true"></video>
 <canvas class="dalal-crash-canvas" id="dalalCrashCanvas" aria-hidden="true"></canvas>
 <div class="dc-atmosphere" aria-hidden="true"></div><div class="dc-scanlines" aria-hidden="true"></div>
 <div class="dc-ticker" aria-hidden="true"><span class="dc-live"><i></i> LIVE</span><b>BSE <i>•</i> DALAL STREET <i>•</i> MARKET OPEN</b><span class="dc-prices" id="dcIndex">SENSEX&nbsp; 74,382.15&nbsp; <em>▲ 1.42%</em></span></div>
@@ -221,8 +224,8 @@
 </section>
 
 <section class="startup-launch" id="startupLaunch" aria-hidden="true" aria-label="Startup Boardroom cinematic introduction" role="dialog" aria-modal="true" aria-labelledby="startupLaunchTitle">
-<video class="sl-footage sl-bridge" id="slBridgeVideo" src="assets/video/san-francisco-golden-gate-pexels.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
-<video class="sl-footage sl-boardroom" id="slBoardroomVideo" src="assets/video/glass-boardroom-pexels.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+<video class="sl-footage sl-bridge" id="slBridgeVideo" src="assets/video/san-francisco-golden-gate-pexels.mp4" muted playsinline preload="metadata" aria-hidden="true"></video>
+<video class="sl-footage sl-boardroom" id="slBoardroomVideo" src="assets/video/glass-boardroom-pexels.mp4" muted playsinline preload="metadata" aria-hidden="true"></video>
 <div class="sl-vignette" aria-hidden="true"></div><div class="sl-grain" aria-hidden="true"></div><canvas class="sl-particles" id="slParticles" aria-hidden="true"></canvas>
 <div class="sl-location"><i></i><span>SAN FRANCISCO <b>•</b> SILICON VALLEY</span></div>
 <div class="sl-valuation" aria-live="polite" aria-atomic="true"><span>VALUATION</span><b id="slValuation">$1M</b></div>
@@ -231,7 +234,7 @@
 </section>
 
 <section class="mcc-night-flight" id="mccNightFlight" aria-hidden="true" aria-label="Midnight Crisis Committee cinematic introduction" role="dialog" aria-modal="true" aria-labelledby="mccFlightTitle">
-<video class="mcc-drone-video" id="mccDroneVideo" src="assets/video/mcc-new-york-drone.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+<video class="mcc-drone-video" id="mccDroneVideo" src="assets/video/mcc-new-york-drone.mp4" muted playsinline preload="metadata" aria-hidden="true"></video>
 <div class="mcc-night-grade" aria-hidden="true"></div><div class="mcc-city-lights" aria-hidden="true"></div><div class="mcc-flight-vignette" aria-hidden="true"></div>
 <div class="mcc-flight-title"><p>MASTERS’ UNION NATIONS <i>·</i> NEW YORK</p><h1 id="mccFlightTitle">MIDNIGHT CRISIS<br><em>COMMITTEE</em></h1></div>
 <button class="mcc-flight-skip" id="mccFlightSkip" type="button">Skip intro <span aria-hidden="true">↗</span></button>
@@ -446,5 +449,6 @@
 <script type="module" src="assets/js/startup-launch.js?v=startup-launch-3"></script>
 <script src="assets/js/mcc-night-flight.js?v=mcc-night-flight-1"></script>
 <script src="assets/js/committee-cinematics.js?v=2"></script>
+<script src="assets/js/committee-v2.js?v=mun4-4"></script>
 </body>
 </html>

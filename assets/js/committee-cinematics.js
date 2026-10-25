@@ -118,9 +118,7 @@
     if (!page) return;
     new MutationObserver(()=>{if(!page.classList.contains('open')) closePage();})
       .observe(page,{attributes:true,attributeFilter:['class']});
-    const warmScenes=()=>sceneImages.forEach(src=>{const image=new Image();image.src=src;warmedImages.push(image);});
-    if ('requestIdleCallback' in window) requestIdleCallback(warmScenes,{timeout:2500});
-    else setTimeout(warmScenes,500);
+    // Avoid downloading every committee background before it is needed.
   });
   window.MUNCommitteeCinematics={play,stop,decoratePage,closePage};
 })();
