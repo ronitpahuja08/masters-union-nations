@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 414 551" fill="none">
+  <defs>
+    <linearGradient id="cloth" x1="94" y1="403" x2="304" y2="541" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#737477"/><stop offset=".22" stop-color="#3c3d40"/><stop offset=".48" stop-color="#191a1d"/><stop offset=".72" stop-color="#4b4c50"/><stop offset="1" stop-color="#17181b"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="160" y1="372" x2="230" y2="417" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a6a6a5"/><stop offset=".48" stop-color="#353639"/><stop offset="1" stop-color="#111215"/>
+    </linearGradient>
+    <linearGradient id="fold" x1=".5" y1="0" x2="1" y2="1">
+      <stop stop-color="#d0cfca" stop-opacity=".32"/><stop offset=".5" stop-color="#969694" stop-opacity=".08"/><stop offset="1" stop-color="#050608" stop-opacity=".5"/>
+    </linearGradient>
+    <clipPath id="torso"><path d="M172 370c13-3 26 1 39 10 7 5 12 7 18 6 13-9 26-13 39-12 16 2 28 12 37 29 7 14 8 34 8 53l-1 42c-1 20-6 38-12 53H99c-4-19-8-42-8-62 1-26 5-50 13-66 7-15 20-25 39-30 12-3 20-10 29-23Z"/></clipPath>
+  </defs>
+  <!-- A sculpted, heavy-fabric tunic fitted only over the statue's bare torso. -->
+  <path d="M172 370c13-3 26 1 39 10 7 5 12 7 18 6 13-9 26-13 39-12 16 2 28 12 37 29 7 14 8 34 8 53l-1 42c-1 20-6 38-12 53H99c-4-19-8-42-8-62 1-26 5-50 13-66 7-15 20-25 39-30 12-3 20-10 29-23Z" fill="url(#cloth)"/>
+  <!-- Collar follows the neck line while staying below the face and red stripe. -->
+  <path d="M171 371c12-5 26-4 40 6 7 5 13 9 19 10 11-8 23-13 38-14-6 17-17 29-34 35-18-2-34-13-48-37l-15 4Z" fill="url(#edge)" stroke="#c0beb8" stroke-opacity=".26" stroke-width="2"/>
+  <!-- Diagonal drape, with restrained highlights and folds to match the original stone lighting. -->
+  <path d="M264 380c12 4 23 13 31 27 5 9 9 20 11 32-26 10-49 24-72 43-27 22-54 44-88 65l-34-7c8-20 19-38 33-55 17-21 38-40 57-57 21-19 42-36 62-48Z" fill="#27282b" fill-opacity=".88"/>
+  <g clip-path="url(#torso)">
+    <path d="M287 397c-25 20-52 43-80 70-26 25-52 52-75 80M273 405c-22 18-45 39-67 62-21 22-40 44-57 66M298 419c-16 11-33 24-52 40-25 21-49 45-70 70" stroke="url(#fold)" stroke-width="7" stroke-linecap="round" opacity=".75"/>
+    <path d="M102 443c27-27 53-45 80-61M97 466c25-23 47-39 70-51M107 512c16-15 33-29 51-42M236 405c-18 19-36 36-55 51" stroke="#d0cfca" stroke-opacity=".18" stroke-width="3" stroke-linecap="round"/>
+    <path d="M180 393c-15 35-21 72-21 109M212 403c-7 37-9 79-7 129M247 396c-4 35-5 81-3 130" stroke="#0a0b0d" stroke-opacity=".24" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>

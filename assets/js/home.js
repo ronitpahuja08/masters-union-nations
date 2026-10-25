@@ -25,7 +25,6 @@
     themeReveal.setAttribute('aria-hidden','false');
     window.scrollTo(0,journey.offsetTop+range()*revealAnchor);
     apply();
-    window.MUNJourneyAudio?.reveal();
     clearTimeout(revealTimer);
     revealTimer=setTimeout(function(){
       revealActive=false;revealComplete=true;
