@@ -1,39 +1,39 @@
 /* Focused visual repair for the four V2 committee pages. */
 
 /* Editorial interiors: keep the shared cinematic backdrop and remove the nested metal-card treatment. */
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) :is(.cp-brief,.cp-do,.cp-awards,.cp-register),
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) :is(.cp-brief,.cp-do,.cp-awards,.cp-register),
 .dalal-page.open :is(.dp-brief,.dp-playbook,.dp-awards,.dp-register){background:transparent!important;border-color:#ffffff24!important;box-shadow:none!important}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) :is(.cp-section-label,.cp-brief-copy,.cp-do-head,.cp-steps,.cp-awards-head,.cp-awards article,.cp-register>div),
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) :is(.cp-section-label,.cp-brief-copy,.cp-do-head,.cp-steps,.cp-awards-head,.cp-awards article,.cp-register>div),
 .dalal-page.open :is(.dp-section-title,.dp-brief-copy,.dp-awards-head,.dp-playbook>div,.dp-playbook ol,.dp-register-copy,.dp-form){position:relative;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) :is(.cp-section h2,.cp-do h2,.cp-awards h2,.cp-register h2),
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) :is(.cp-section h2,.cp-do h2,.cp-awards h2,.cp-register h2),
 .dalal-page.open :is(.dp-section h2,.dp-awards h2,.dp-playbook h2,.dp-register h2){font-size:clamp(2.65rem,5.2vw,5.4rem);line-height:.94;letter-spacing:-.065em}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) :is(.cp-brief-copy p,.cp-do-head>p,.cp-steps li small,.cp-awards-head>p,.cp-register>div>p),
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) :is(.cp-brief-copy p,.cp-do-head>p,.cp-steps li small,.cp-awards-head>p,.cp-register>div>p),
 .dalal-page.open :is(.dp-brief-copy p,.dp-playbook>div>p,.dp-playbook li small,.dp-awards-head>p,.dp-register-copy>p){font-size:clamp(1rem,1.2vw,1.12rem)!important;line-height:1.65!important;color:#f0ece6!important;text-shadow:0 2px 18px #000c}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) :is(.cp-lead,.cp-steps li b,.cp-awards article b),
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) :is(.cp-lead,.cp-steps li b,.cp-awards article b),
 .dalal-page.open :is(.dp-lead,.dp-playbook li b,.dp-awards article b){color:#fff!important;text-shadow:0 2px 18px #000c}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-section-label h2,
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-do-head h2,
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-section-label h2,
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-do-head h2,
 .dalal-page.open .dp-section-title h2,.dalal-page.open .dp-playbook>div h2{max-width:10ch}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-steps,
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-steps,
 .dalal-page.open .dp-playbook ol{border-top:1px solid #ffffff55}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-steps li,
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-steps li,
 .dalal-page.open .dp-playbook li{padding:22px 0;border-bottom-color:#ffffff42}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-steps li b,
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-steps li b,
 .dalal-page.open .dp-playbook li b{font-size:clamp(1.1rem,1.5vw,1.35rem)}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-awards article,
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-awards article,
 .dalal-page.open .dp-awards article{min-height:130px;border-bottom:1px solid #ffffff48!important}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-scroll-backdrop{filter:brightness(.76) saturate(.86)}
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-scroll-backdrop{filter:brightness(.76) saturate(.86)}
 .committee-page.open[data-committee="IP"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#07101c9c,#07101c8c),url('../images/ip-newsroom-v2.webp')!important}
 .committee-page.open[data-committee="MCC"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#070b1a83,#070b1a78),url('../images/mcc-new-york-night.webp')!important}
 .committee-page.open[data-committee="AIPPM"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#160c0780,#170d087d),url('../images/aippm-parliament-live.png')!important}
 
 /* One reusable, full-width registration layout for the four in-scope pages. */
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register{grid-template-columns:1fr;gap:22px;padding-block:clamp(54px,7vw,92px)}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register>div:first-child{text-align:center}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register>div:first-child h2{display:none}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register>div:first-child>p{max-width:760px;margin:12px auto 0}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-event-meta{display:none}
-.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register-actions{width:100%;max-width:1100px;margin:auto}
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register{grid-template-columns:1fr;gap:22px;padding-block:clamp(54px,7vw,92px)}
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register>div:first-child{text-align:center}
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register>div:first-child h2{display:none}
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register>div:first-child>p{max-width:760px;margin:12px auto 0}
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-event-meta{display:none}
+.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register-actions{width:100%;max-width:1100px;margin:auto}
 .mu-inline-form{max-width:1100px;margin:0 auto;padding:0!important;border:0!important;border-radius:0!important;background:linear-gradient(180deg,#070b1490,#070b1470)!important;box-shadow:none!important;backdrop-filter:none!important}
 .mu-inline-form h3{display:none}
 .mu-fields{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 22px}
@@ -112,9 +112,15 @@
   .dalal-page.open .dp-hero-copy{top:10%!important}
   .dalal-page.open .dp-hero h1{font-size:clamp(3.1rem,14vw,4.6rem)!important}
   .dc-era-caption{bottom:42%;left:7%;font-size:8px}
-  .committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) :is(.cp-section,.cp-do,.cp-awards,.cp-register){padding-inline:22px}
+  .committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) :is(.cp-section,.cp-do,.cp-awards,.cp-register){padding-inline:22px}
 }
-@media(max-width:800px){.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-awards{grid-template-columns:repeat(2,minmax(0,1fr))}.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-awards-head{grid-column:1/-1}}
+@media(max-width:800px){.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-awards{grid-template-columns:repeat(2,minmax(0,1fr))}.committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-awards-head{grid-column:1/-1}}
 
 /* Keep the fixed soundtrack control clear of the map heading and Dalal's quote board on phones. */
 @media(max-width:560px){.at-map .journey-music-toggle,body:has(#committeePage.open) .journey-music-toggle,body:has(#dalalCommitteePage.open) .journey-music-toggle{top:74px;right:12px;bottom:auto}.journey-music-toggle{min-width:42px;justify-content:center;padding:6px}.journey-music-label{display:none}}
+
+/* UNHRC / CCEP / STARTUP: the hero photo stays visible behind every section while scrolling */
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-scroll-backdrop{filter:brightness(.78) saturate(.9)}
+.committee-page.open[data-committee="UNHRC"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#0710208a,#07102080),url('../images/unhrc-geneva-cinematic.webp')!important}
+.committee-page.open[data-committee="CCEP"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#04181e88,#04181e7a),url('../images/ccep-singapore-cinematic.webp')!important}
+.committee-page.open[data-committee="STARTUP"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#14091f88,#14091f7a),url('../images/startup-san-francisco-cinematic.webp')!important}

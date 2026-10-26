@@ -198,3 +198,17 @@
 .ms-quotes{z-index:3}
 .cinema-hero-scene[data-code="UNHRC"] .ms-articles{display:none}
 .cinema-hero-scene[data-code="UNHRC"] .ms-flags span{opacity:1}
+/* IPL intro v2: bowled from us, shrinks away to the batter, is hit straight back and fills the screen */
+.mc-journey.playing[data-code="IPL"] .ms-ball{animation:msBall2 5.6s both;box-shadow:0 0 30px #ff4a3acc;transform-origin:50% 50%}
+.mc-journey.playing[data-code="IPL"] :is(.ms-trail,.ms-six){display:none}
+.mc-journey.playing[data-code="IPL"] .ms-batter{animation-name:msBatter2}
+@keyframes msBall2{
+ 0%,3%{opacity:0;transform:translate(-2vw,34vh) scale(14)}
+ 8%{opacity:1;transform:translate(-2vw,30vh) scale(12)}
+ 33%{opacity:1;transform:translate(10vw,-20vh) scale(1.2);animation-timing-function:cubic-bezier(.5,0,.9,.5)}
+ 34%{opacity:1;transform:translate(11vw,-22vh) scale(1)}
+ 48%{opacity:1;transform:translate(6vw,-14vh) scale(7);animation-timing-function:cubic-bezier(.6,0,.9,.4)}
+ 62%{opacity:1;transform:translate(0,0) scale(95)}
+ 76%{opacity:1;transform:translate(0,0) scale(120)}
+ 90%,100%{opacity:0;transform:translate(0,0) scale(140)}}
+@keyframes msBatter2{0%,6%{opacity:0;transform:translateX(-52%) translateY(30px) scale(.94)}20%{opacity:1;transform:translateX(-52%) scale(.98)}33%{transform:translateX(-52%) scale(.98) rotate(1deg)}36%{transform:translateX(-52%) scale(1.07) rotate(-2deg)}50%,100%{opacity:.95;transform:translateX(-52%) scale(1.02)}}
