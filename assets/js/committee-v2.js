@@ -29,21 +29,62 @@
     return `<form class="mu-inline-form" data-committee="${code}" novalidate>
       <h3>Reserve your place.</h3><p>Registration request for <strong>${label}</strong>. Payment will be arranged separately by the organising team.</p>${about?`<p class="mu-about">${about}</p>`:''}
       <div class="mu-fields">
-        <label>Full name <input name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Your full name"></label>
-        <label>Email address <input name="email" type="email" required maxlength="180" autocomplete="email" placeholder="you@example.com"></label>
-        <label>School / university <input name="institution" required maxlength="180" autocomplete="organization" placeholder="Your institution"></label>
-        <label>Delegate category <select name="category" required><option value="">Select category</option><option value="school">School</option><option value="college">College</option></select></label>
-        <label>Phone number <input name="phone" type="tel" inputmode="tel" required maxlength="16" pattern="[+]?[0-9]{7,15}" autocomplete="tel" title="Enter 7–15 digits, optionally starting with +; omit spaces." placeholder="+919876543210"></label>
-        ${code==='DALAL'?'<label>Your market instinct <textarea name="motivation" rows="3" required maxlength="1000" placeholder="What would you bring to the trading floor?"></textarea></label>':''}
+        <label>Full name <input name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Your full name"><small class="mu-err" role="alert"></small></label>
+        <label>Email address <input name="email" type="email" required maxlength="180" autocomplete="email" autocapitalize="none" spellcheck="false" inputmode="email" placeholder="you@example.com"><small class="mu-err" role="alert"></small></label>
+        <label>School / university <input name="institution" required minlength="2" maxlength="180" autocomplete="organization" placeholder="Your institution"><small class="mu-err" role="alert"></small></label>
+        <label>Delegate category <select name="category" required><option value="">Select category</option><option value="school">School</option><option value="college">College</option></select><small class="mu-err" role="alert"></small></label>
+        <label>Mobile number <input name="phone" type="tel" required inputmode="tel" maxlength="20" autocomplete="tel" placeholder="+91 98765 43210"><small class="mu-err" role="alert"></small></label>
+        ${code==='DALAL'?'<label>Your market instinct <textarea name="motivation" rows="3" required maxlength="1000" placeholder="What would you bring to the trading floor?"></textarea><small class="mu-err" role="alert"></small></label>':''}
       </div>
       <input name="website" class="mu-trap" tabindex="-1" autocomplete="off" aria-hidden="true" type="text">
-      <label class="mu-consent"><input type="checkbox" name="consent" required> I agree that the Masters' Union Nations team may contact me about this registration.</label>
+      <label class="mu-consent"><input type="checkbox" name="consent" required> I agree that the Masters' Union Nations team may contact me about this registration.</label><small class="mu-err mu-err-consent" role="alert"></small>
       <input type="hidden" name="applyingFor" value="${code}">
       <div class="mu-form-status" role="status" aria-live="polite"></div>
       <button class="mu-submit" type="submit">Submit registration request <span aria-hidden="true">↗</span></button>
       <small>Only a successful server confirmation counts as a submitted request. No payment is collected here.</small>
     </form>`;
   }
+
+  /* ---- field validation (the server repeats every rule) ---- */
+  const NAME_RE=/^[\p{L}][\p{L}\p{M} .'’-]{1,99}$/u;
+  const EMAIL_RE=/^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,24}$/;
+  const TYPOS={'gmial.com':'gmail.com','gmai.com':'gmail.com','gamil.com':'gmail.com','gmail.co':'gmail.com','gmail.con':'gmail.com','gnail.com':'gmail.com','hotmial.com':'hotmail.com','hotmal.com':'hotmail.com','yahooo.com':'yahoo.com','yaho.com':'yahoo.com','outlok.com':'outlook.com','outloook.com':'outlook.com'};
+  const squash=v=>String(v||'').replace(/\s+/g,' ').trim();
+  function normalizePhone(raw){
+    const v=String(raw||'').replace(/[\s().-]/g,'');
+    if(/^\+91[6-9]\d{9}$/.test(v))return v;
+    if(/^(?:91|0)?[6-9]\d{9}$/.test(v))return '+91'+v.slice(-10);
+    if(/^\+(?!91)[1-9]\d{7,14}$/.test(v))return v;
+    return '';
+  }
+  const RULES={
+    name:v=>NAME_RE.test(squash(v))?'':'Enter your full name using letters only.',
+    email:v=>{const e=squash(v).toLowerCase();if(!EMAIL_RE.test(e)||e.includes('..'))return 'Enter a valid email address, like you@example.com.';const fix=TYPOS[e.split('@')[1]];return fix?'Did you mean @'+fix+'?':''},
+    institution:v=>{const i=squash(v);return i.length>=2&&/\p{L}/u.test(i)?'':'Enter your school or university.'},
+    category:v=>v==='school'||v==='college'?'':'Choose School or College.',
+    phone:v=>normalizePhone(squash(v))?'':'Enter a valid mobile number (10 digits, or with a country code like +91).',
+    motivation:v=>squash(v).length>=3?'':'Tell us a little about your market instinct.',
+    consent:v=>v?'':'Please tick the consent box.'
+  };
+  function fieldOf(form,name){return form.elements[name]}
+  function errBox(form,name){if(name==='consent')return $('.mu-err-consent',form);const f=fieldOf(form,name);return f&&f.closest('label')&&$('.mu-err',f.closest('label'))}
+  function setError(form,name,msg){
+    const f=fieldOf(form,name),box=errBox(form,name);if(!f)return;
+    if(box)box.textContent=msg||'';
+    f.classList.toggle('mu-invalid',Boolean(msg));f.setAttribute('aria-invalid',msg?'true':'false');
+  }
+  function checkField(form,name){
+    const f=fieldOf(form,name);if(!f||!RULES[name])return '';
+    const msg=RULES[name](name==='consent'?f.checked:f.value);setError(form,name,msg);return msg;
+  }
+  function validateForm(form){
+    let first=null;
+    Object.keys(RULES).forEach(n=>{const m=checkField(form,n);if(m&&!first)first=fieldOf(form,n)});
+    return first;
+  }
+  document.addEventListener('focusout',e=>{const f=e.target;const form=f.closest&&f.closest('.mu-inline-form');if(form&&RULES[f.name])checkField(form,f.name)});
+  document.addEventListener('input',e=>{const f=e.target;const form=f.closest&&f.closest('.mu-inline-form');if(form&&RULES[f.name]&&f.classList.contains('mu-invalid'))checkField(form,f.name)});
+  document.addEventListener('change',e=>{const f=e.target;const form=f.closest&&f.closest('.mu-inline-form');if(form&&RULES[f.name]&&f.classList.contains('mu-invalid'))checkField(form,f.name)});
 
   function makeForm(code) {
     let form = $('.mu-inline-form',actions);
@@ -69,7 +110,7 @@
     setTimeout(()=>$('.mu-inline-form input[name="name"]',target)?.focus({preventScroll:true}),reduced()?0:450);
   }
   let jump = $('.mu-start-registration',hero);
-  if (!jump) {jump=document.createElement('button');jump.type='button';jump.className='mu-start-registration';jump.textContent='Start registration ↓';jump.addEventListener('click',gotoRegister);$('.mu-hero-actions',hero)?.append(jump);}
+  if (!jump) {jump=document.createElement('button');jump.type='button';jump.className='mu-start-registration';jump.textContent='Start registration ↓';jump.addEventListener('click',gotoRegister);const copy=$('.cp-hero-copy',hero),primary=copy&&$('.cp-primary',copy);if(primary){const row=document.createElement('div');row.className='cp-cta-row';primary.before(row);row.append(primary,jump)}else copy?.append(jump);}
   const dalalHero=$('.dp-hero-copy',dalal);
   if(dalalHero)$('.mu-dalal-register',dalalHero)?.addEventListener('click',gotoDalalRegister);
   function gotoDalalRegister(){
@@ -90,21 +131,33 @@
   async function postRegistration(form,code){
     const status=$('.mu-form-status',form)||$('#dalalFormNote');
     const button=$('[type="submit"]',form);
-    if (!form.reportValidity()) {if(status)status.textContent='Please complete the required fields.';return;}
-    const payload=Object.fromEntries(new FormData(form).entries());
-    payload.applyingFor=code;
-    payload.consent=$('[name="consent"]',form)?.checked||false;
-    button.disabled=true; if(status)status.textContent='Submitting securely…';
-    const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),12000);
+    if(form.dataset.busy==='1'||form.classList.contains('mu-submitted'))return;
+    const bad=validateForm(form);
+    if(bad){if(status)status.textContent='Please correct the highlighted fields.';bad.focus({preventScroll:false});return;}
+    const payload={
+      name:squash(form.elements.name.value),email:squash(form.elements.email.value).toLowerCase(),institution:squash(form.elements.institution.value),
+      category:form.elements.category.value,phone:normalizePhone(squash(form.elements.phone.value)),motivation:form.elements.motivation?squash(form.elements.motivation.value):'',
+      website:form.elements.website.value,applyingFor:code,consent:form.elements.consent.checked
+    };
+    form.dataset.busy='1';button.disabled=true;if(status)status.textContent='Submitting securely…';
+    const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),15000);
     try {
       const response=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:controller.signal});
       const result=await response.json().catch(()=>({}));
-      if(!response.ok||result.ok!==true)throw new Error(response.status===503?'Registration submissions are not open yet. Please check back after the team configures the database.':result.error||'The server did not confirm this registration. Please retry.');
+      if(!response.ok||result.ok!==true){
+        if(result.fields)Object.keys(result.fields).forEach(n=>setError(form,n,result.fields[n]));
+        const msg=response.status===503?'Registration submissions are not open yet. Please check back soon.':response.status===409?(result.error||'This email is already registered.'):(result.error||'The server did not confirm this registration. Please retry.');
+        const err=new Error(msg);err.handled=true;throw err;
+      }
       form.classList.add('mu-submitted');
       if(status)status.textContent='Your registration request was received. The team will contact you with the next steps. No payment has been collected.';
       button.textContent='Request received ✓';
-    }catch(e){if(status)status.textContent=e.name==='AbortError'?'The connection timed out. Please retry; do not assume your request was saved.':e.message;button.disabled=false;}
-    finally{clearTimeout(timeout);}
+      form.dispatchEvent(new CustomEvent('mun:registered',{bubbles:true,detail:{name:payload.name,email:payload.email,institution:payload.institution,category:payload.category,committee:code,delegate:result.delegate||null}}));
+    }catch(e){
+      if(status)status.textContent=e.name==='AbortError'?'The connection timed out. Please retry; do not assume your request was saved.':(e.handled?e.message:'We could not reach the server. Check your connection and retry.');
+      button.disabled=false;
+    }
+    finally{clearTimeout(timeout);form.dataset.busy='0';}
   }
   document.addEventListener('submit',e=>{const form=e.target.closest('.mu-inline-form');if(!form)return;e.preventDefault();postRegistration(form,form.dataset.committee);});
   const cpRegistration=$('#cpRegister');

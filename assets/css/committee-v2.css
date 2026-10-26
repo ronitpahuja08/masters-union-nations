@@ -153,3 +153,10 @@
 
 /* Pause expensive animations while an overlay is closed. */
 .committee-page:not(.open) .cinema-hero-scene *, .committee-page:not(.open) .mcc-scene *, .committee-page:not(.open) .ipl-scene *, .dalal-page:not(.open) .dp-scene *{animation-play-state:paused!important}
+
+/* form validation */
+.mu-inline-form .mu-err{display:block;min-height:0;margin-top:5px;font:600 .78rem/1.35 var(--sans,Arial);color:#ffb3a7;letter-spacing:.01em}
+.mu-inline-form .mu-err:empty{display:none}
+.mu-inline-form .mu-invalid{border-color:#ff8f7c!important;box-shadow:0 0 0 3px #ff8f7c33}
+.mu-inline-form .mu-err-consent{margin:-6px 0 0 2px}
+.mu-inline-form .mu-about{opacity:.85}

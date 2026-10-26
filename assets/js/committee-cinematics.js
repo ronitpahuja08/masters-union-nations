@@ -11,11 +11,11 @@
     AIPPM: { duration: 3800, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION' },
   };
   const HEROES = {
-    UNHRC: { hero: ['HUMAN RIGHTS', 'CANNOT WAIT.'], tag: 'JUSTICE WITHOUT BORDERS' },
-    CCEP: { hero: ['THE FUTURE', 'IS NEGOTIABLE.'], tag: 'THE COMMERCE OF TOMORROW' },
+    UNHRC: { hero: ['UNHRC', ''], tag: 'HUMAN RIGHTS CANNOT WAIT.' },
+    CCEP: { hero: ['CCEP', ''], tag: 'THE FUTURE IS NEGOTIABLE.' },
     AIPPM: { hero: ['AIPPM', ''], tag: 'POLITICS. POWER. POLICY.' },
     STARTUP: { hero: ['STARTUP', 'BOARDROOM.'], tag: 'BUILD THE NEXT BIG THING' },
-    IPL: { hero: null, tag: null, sceneOnly: true },
+    IPL: { hero: null, tag: 'EVERY BID BUILDS A CHAMPION.', sceneOnly: true },
     IP: { hero: ['INTERNATIONAL', 'PRESS'], tag: 'EVERY STORY CHANGES THE NARRATIVE.' }
   };
   const $ = (s, root = document) => root.querySelector(s);
@@ -93,6 +93,7 @@
   function decoratePage(code){
     const page=$('#committeePage');
     const hero=page && $('.cp-hero',page);
+    const brk=$('#cpTitle br'); if(brk) brk.style.display='';
     if (!hero) return;
     if (!HEROES[code]) {
       $('.cinema-hero-tag',hero)?.remove();
@@ -107,9 +108,8 @@
     scene.dataset.code=code;
     scene.innerHTML=(window.MUNScenes?.hero[code])||sceneBuild[code];
     const config=HEROES[code];
-    if(config.sceneOnly) return;
     const a=$('#cpHeroA'), b=$('#cpHeroB');
-    if(a && b) { a.textContent=config.hero[0];b.textContent=config.hero[1]; }
+    if(config.hero && a && b) { a.textContent=config.hero[0];b.textContent=config.hero[1]; if(!config.hero[1] && brk) brk.style.display='none'; }
     let tag=$('.cinema-hero-tag',hero);
     if(!tag) {
       tag=document.createElement('p');

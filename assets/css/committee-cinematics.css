@@ -143,7 +143,7 @@
 /* Keep the intro control clear of the global music toggle. */
 .mc-skip{left:clamp(16px,4vw,56px);right:auto;bottom:28px}
 .cinema-hero-tag{display:none}
-:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cinema-hero-tag{display:block;margin:0 0 14px;color:#fff6df;font:600 clamp(.62rem,.9vw,.85rem)/1.5 var(--mono,monospace);letter-spacing:.24em;text-shadow:0 4px 20px #000}
+:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"],.committee-page[data-committee="IPL"]) .cinema-hero-tag{display:block;margin:0 0 14px;color:#fff6df;font:600 clamp(.62rem,.9vw,.85rem)/1.5 var(--mono,monospace);letter-spacing:.24em;text-shadow:0 4px 20px #000}
 .committee-page[data-committee="STARTUP"] .ch-video{z-index:1}
 .committee-page[data-committee="STARTUP"] .ch-grid,.committee-page[data-committee="STARTUP"] .ch-funding,.committee-page[data-committee="STARTUP"] .ch-light{z-index:2}
 @media(max-width:500px){:is(.committee-page[data-committee="UNHRC"],.committee-page[data-committee="CCEP"],.committee-page[data-committee="AIPPM"],.committee-page[data-committee="STARTUP"],.committee-page[data-committee="IP"]) .cinema-hero-tag{max-width:30ch;letter-spacing:.14em}}
