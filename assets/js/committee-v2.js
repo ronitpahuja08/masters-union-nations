@@ -32,8 +32,7 @@
         <label>Email address <input name="email" type="email" required maxlength="180" autocomplete="email" placeholder="you@example.com"></label>
         <label>School / university <input name="institution" required maxlength="180" autocomplete="organization" placeholder="Your institution"></label>
         <label>Delegate category <select name="category" required><option value="">Select category</option><option value="school">School</option><option value="college">College</option></select></label>
-        <label>Phone (optional) <input name="phone" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="Contact number"></label>
-        <label>Why this committee? (optional) <textarea name="motivation" maxlength="750" rows="3" placeholder="A sentence about your interest"></textarea></label>
+        <label>Phone number <input name="phone" type="tel" inputmode="tel" required maxlength="16" pattern="[+]?[0-9]{7,15}" autocomplete="tel" title="Enter 7–15 digits, optionally starting with +; omit spaces." placeholder="+919876543210"></label>
       </div>
       <input name="website" class="mu-trap" tabindex="-1" autocomplete="off" aria-hidden="true" type="text">
       <label class="mu-consent"><input type="checkbox" name="consent" required> I agree that the Masters' Union Nations team may contact me about this registration.</label>
@@ -70,7 +69,7 @@
   let jump = $('.mu-start-registration',hero);
   if (!jump) {jump=document.createElement('button');jump.type='button';jump.className='mu-start-registration';jump.textContent='Start registration ↓';jump.addEventListener('click',gotoRegister);$('.cp-hero-copy',hero)?.append(jump);}
   const dalalHero=$('.dp-hero-copy',dalal);
-  if(dalalHero&&!$('.mu-dalal-register',dalalHero)){const button=document.createElement('button');button.type='button';button.className='mu-dalal-register';button.textContent='Start registration ↓';button.addEventListener('click',gotoDalalRegister);dalalHero.append(button);}
+  if(dalalHero)$('.mu-dalal-register',dalalHero)?.addEventListener('click',gotoDalalRegister);
   function gotoDalalRegister(){
     const scroller=$('#dalalPageScroll'),target=$('#dalalRegister');if(!scroller||!target)return;
     const offset=target.getBoundingClientRect().top-scroller.getBoundingClientRect().top+scroller.scrollTop;
@@ -142,6 +141,15 @@
     scene.insertAdjacentHTML('beforeend','<div class="mu-newsroom-stage" aria-hidden="true"></div>');
   }
 
+  let aippmObserver=null;
+  let aippmInView=false;
+  function syncAippmMotion(){
+    const play=page.classList.contains('open')&&page.dataset.committee==='AIPPM'&&aippmInView&&!document.hidden&&!reduced();
+    $$('.mu-character video',page).forEach(video=>play?video.play().catch(()=>{}):video.pause());
+  }
+  function $$(selector,parent=document){return [...parent.querySelectorAll(selector)];}
+  document.addEventListener('visibilitychange',syncAippmMotion);
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change',syncAippmMotion);
   function parliament(scene){
     if (!scene || $('.mu-parliament-stage',scene))return;
     scene.insertAdjacentHTML('beforeend',`<div class="mu-parliament-stage" aria-hidden="true">
@@ -149,29 +157,32 @@
       <div class="mu-character-stage"></div>
     </div>`);
     // The kit's photos and dance frames are references, not public artwork.
-    // Only explicitly approved full-body illustrations can fill these slots.
-    const approved=window.MUN_APPROVED_CHARACTER_SPRITES||{};
+    // Only cleared transparent motion loops with articulated limbs can fill these slots.
+    const approved=window.MUN_APPROVED_CHARACTER_MOTION||{};
     const placements=[
       ['shah','Amit Shah',12,23,'bench'],
       ['modi','Narendra Modi',28,25,'tea'],
       ['meloni','Giorgia Meloni',37,25,'tea-tilted'],
       ['ravi','Ravi Kishan',53,27,'dance'],
-      ['rahul','Rahul Gandhi',71,26,'walk'],
-      ['sonia','Sonia Gandhi',79,24,'walk'],
-      ['jaishankar','S. Jaishankar',92,25,'folder']
+      ['jaishankar','S. Jaishankar',67,25,'folder'],
+      ['rahul','Rahul Gandhi',82,26,'walk'],
+      ['sonia','Sonia Gandhi',91,24,'walk']
     ];
     const stage=$('.mu-character-stage',scene);
     placements.forEach(([key,name,x,height,action])=>{
       const src=approved[key];
-      if(typeof src!=='string'||!/^assets\/images\/aippm-characters\/[a-z0-9_-]+\.webp$/i.test(src))return;
+      if(typeof src!=='string'||!/^assets\/video\/aippm-characters\/[a-z0-9_-]+\.webm$/i.test(src))return;
       const figure=document.createElement('figure');figure.className=`mu-character mu-character-${key} mu-action-${action}`;
       figure.style.setProperty('--stage-x',`${x}%`);figure.style.setProperty('--figure-height',`${height}vh`);
-      const artwork=document.createElement('img');artwork.src=src;artwork.alt='';artwork.loading='eager';
+      const artwork=document.createElement('video');artwork.src=src;artwork.muted=true;artwork.loop=true;artwork.playsInline=true;artwork.preload='metadata';artwork.setAttribute('aria-hidden','true');
       const shadow=document.createElement('span');shadow.className='mu-character-shadow';
       const prop=document.createElement('span');prop.className='mu-character-prop';
       figure.append(shadow,artwork,prop);stage.append(figure);
       artwork.addEventListener('error',()=>figure.remove(),{once:true});
     });
+    aippmObserver?.disconnect();aippmInView=false;
+    aippmObserver=new IntersectionObserver(entries=>{aippmInView=entries.some(entry=>entry.isIntersecting);syncAippmMotion();},{root:$('#committeePageScroll'),threshold:.05});
+    aippmObserver.observe(scene);
     if(stage.children.length){
       const disclosure=document.createElement('p');disclosure.className='mu-illustration-label';
       disclosure.textContent='STYLIZED SATIRE · FICTIONAL SCENE';
@@ -194,22 +205,22 @@
     paintMarket();
   }).catch(()=>{});
   function board(){
-    const scene=$('.dp-scene');if(!scene||$('.mu-market-board',scene))return;
-    scene.insertAdjacentHTML('beforeend',`<div class="mu-market-board" aria-label="Fictional simulated market display">
+    const hero=$('.dp-hero',dalal);if(!hero||$('.mu-market-board',hero))return;
+    hero.insertAdjacentHTML('beforeend',`<div class="mu-market-board" aria-label="Fictional simulated market display">
       <div class="mu-market-top"><b>MU EXCHANGE</b><span>SIMULATED MARKET — NOT LIVE PRICES</span><time>SESSION 2026</time></div>
       <div class="mu-market-indices" aria-label="Simulated market indices"></div>
       <div class="mu-market-head"><span>SYMBOL</span><span>LAST PRICE</span><span>CHANGE</span><span>STATUS</span></div>
       <div class="mu-market-rows"></div>
       <div class="mu-market-bottom"><span>IPO DESK · GLOBAL BOARDROOM</span><span>THIS IS A FICTIONAL MARKET SIMULATION</span></div>
     </div>`);
-    const container=$('.mu-market-rows',scene);
+    const container=$('.mu-market-rows',hero);
     for(let i=0;i<5;i++){
       const r=document.createElement('div');r.className='mu-market-row';r.dataset.row=i;
       r.innerHTML='<span data-symbol></span><strong data-price></strong><span data-change></span><span data-status></span>';
       container.appendChild(r);
     }
     paintMarket();
-    const target=$('.mu-market-board',scene);
+    const target=$('.mu-market-board',hero);
     const observer=new IntersectionObserver(entries=>{marketInView=entries.some(entry=>entry.isIntersecting);if(marketInView)startMarket();else stopMarket();},{root:$('#dalalPageScroll'),threshold:.08});observer.observe(target);
   }
   function paintMarket(){
@@ -238,14 +249,16 @@
   new MutationObserver(()=>dalal.classList.contains('open')?startMarket():stopMarket()).observe(dalal,{attributes:true,attributeFilter:['class']});
 
   function refresh(){
-    if(!page.classList.contains('open'))return;
+    if(!page.classList.contains('open')){syncAippmMotion();return;}
     const code=page.dataset.committee||'';
     makeForm(code);
     jump.hidden=!TARGETS.has(code);
+    const mccTag=$('.mu-mcc-tagline',hero);if(mccTag)mccTag.hidden=code!=='MCC';
     // committee-cinematics.js reconstructs scene innerHTML whenever a page opens.
     const scene=$('.cinema-hero-scene',hero);
     if(code==='IP')newsroom(scene);
     if(code==='AIPPM')parliament(scene);
+    syncAippmMotion();
   }
   addIPNewspapers();board();
   const observer=new MutationObserver(refresh);observer.observe(page,{attributes:true,attributeFilter:['class','data-committee']});

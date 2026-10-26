@@ -20,16 +20,16 @@ module.exports = async function handler(req,res) {
   const input=typeof req.body==='object'&&req.body!==null?req.body:{};
   if(text(input.website,200))return reply(res,400,{error:'Invalid submission.'}); // honeypot
   const name=text(input.name,100), email=text(input.email,180).toLowerCase(), institution=text(input.institution,180),committee=text(input.applyingFor,10).toUpperCase();
-  const phone=text(input.phone,20), motivation=text(input.motivation,750), category=text(input.category,20)||'unspecified';
+  const phone=text(input.phone,16), category=text(input.category,20)||'unspecified';
   if(name.length<2||institution.length<2||!emailOK(email)||!ALLOWED.has(committee)||input.consent!==true) return reply(res,400,{error:'Please complete name, email, institution, consent and choose a valid committee.'});
   if(!['school','college','unspecified'].includes(category))return reply(res,400,{error:'Invalid category.'});
-  if(phone&&!/^[0-9+()\-\s]{7,20}$/.test(phone))return reply(res,400,{error:'Invalid phone number.'});
+  if(typeof input.phone!=='string'||input.phone.trim().length>16||!/^\+?[0-9]{7,15}$/.test(phone))return reply(res,400,{error:'Enter a phone number with 7–15 digits, optionally starting with +.'});
   const url=process.env.SUPABASE_URL;
   const key=process.env.SUPABASE_SERVICE_ROLE_KEY;
   if(!url||!key)return reply(res,503,{error:'Registration is not yet open. Backend configuration is pending.'});
   try {
     const db=new URL('/rest/v1/mun_registrations',url);
-    const upstream=await fetch(db,{method:'POST',headers:{'Content-Type':'application/json','apikey':key,'Authorization':`Bearer ${key}`,'Prefer':'return=minimal'},body:JSON.stringify({name,email,institution,phone:phone||null,motivation:motivation||null,category,committee,consented_at:new Date().toISOString(),payment_status:'not_requested'}),signal:AbortSignal.timeout(8000)});
+    const upstream=await fetch(db,{method:'POST',headers:{'Content-Type':'application/json','apikey':key,'Authorization':`Bearer ${key}`,'Prefer':'return=minimal'},body:JSON.stringify({name,email,institution,phone,motivation:null,category,committee,consented_at:new Date().toISOString(),payment_status:'not_requested'}),signal:AbortSignal.timeout(8000)});
     if(!upstream.ok){console.error('Registration DB write failed',upstream.status);return reply(res,502,{error:'Unable to save registration. Please retry or contact organisers.'});}
     return reply(res,201,{ok:true,message:'Registration request received; payment instructions pending.'});
   }catch(err){console.error('Registration network error',err.name);return reply(res,503,{error:'Registration service is unavailable. Please retry later.'});}
