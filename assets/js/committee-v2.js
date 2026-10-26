@@ -145,9 +145,22 @@
 
   let aippmObserver=null;
   let aippmInView=false;
+  let aippmFrame=0;
+  let aippmTimer=null;
+  const spritePositions=['0%','33.3333%','66.6667%','100%'];
+  function paintAippmSprites(){
+    $$('.mu-sprite-frame',page).forEach((sprite,index)=>{
+      sprite.style.backgroundPositionX=spritePositions[(aippmFrame+index)%4];
+    });
+  }
   function syncAippmMotion(){
     const play=page.classList.contains('open')&&page.dataset.committee==='AIPPM'&&aippmInView&&!document.hidden&&!reduced();
-    $$('.mu-character video',page).forEach(video=>play?video.play().catch(()=>{}):video.pause());
+    if(play&&!aippmTimer){
+      aippmTimer=setInterval(()=>{aippmFrame=(aippmFrame+1)%4;paintAippmSprites();},230);
+    }else if(!play&&aippmTimer){
+      clearInterval(aippmTimer);aippmTimer=null;
+    }
+    if(reduced()){aippmFrame=0;paintAippmSprites();}
   }
   function $$(selector,parent=document){return [...parent.querySelectorAll(selector)];}
   document.addEventListener('visibilitychange',syncAippmMotion);
@@ -156,32 +169,30 @@
     if (!scene || $('.mu-parliament-stage',scene))return;
     scene.insertAdjacentHTML('beforeend',`<div class="mu-parliament-stage" aria-hidden="true">
       <div class="mu-parliament-haze"></div><div class="mu-parliament-aisle"></div>
-      <div class="mu-character-stage"></div>
     </div>`);
-    // The kit's photos and dance frames are references, not public artwork.
-    // Only cleared transparent motion loops with articulated limbs can fill these slots.
-    const approved=window.MUN_APPROVED_CHARACTER_MOTION||{};
+    // Four-frame transparent sheets supplied for this AIPPM foreground.
+    // One timer updates only visible sprites; no video or canvas loop is needed.
     const placements=[
-      ['shah','Amit Shah',12,23,'bench'],
-      ['modi','Narendra Modi',28,25,'tea'],
-      ['meloni','Giorgia Meloni',37,25,'tea-tilted'],
-      ['ravi','Ravi Kishan',53,27,'dance'],
-      ['jaishankar','S. Jaishankar',67,25,'folder'],
-      ['rahul','Rahul Gandhi',82,26,'walk'],
-      ['sonia','Sonia Gandhi',91,24,'walk']
+      ['shah','amit_shah_dozing_bench_sprite_sheet.webp','11%'],
+      ['modi','modi_teacup_sprite_sheet.webp','29%'],
+      ['meloni','giorgia_meloni_teacup_sprite_sheet.webp','40%'],
+      ['ravi','ravi_kishan_dance_sprite_sheet.webp','55%'],
+      ['rahul','rahul_gandhi_walk_cycle.webp','78%'],
+      ['sonia','sonia_gandhi_walk_cycle.webp','89%']
     ];
-    const stage=$('.mu-character-stage',scene);
-    placements.forEach(([key,name,x,height,action])=>{
-      const src=approved[key];
-      if(typeof src!=='string'||!/^assets\/video\/aippm-characters\/[a-z0-9_-]+\.webm$/i.test(src))return;
-      const figure=document.createElement('figure');figure.className=`mu-character mu-character-${key} mu-action-${action}`;
-      figure.style.setProperty('--stage-x',`${x}%`);figure.style.setProperty('--figure-height',`${height}vh`);
-      const artwork=document.createElement('video');artwork.src=src;artwork.muted=true;artwork.loop=true;artwork.playsInline=true;artwork.preload='metadata';artwork.setAttribute('aria-hidden','true');
-      const shadow=document.createElement('span');shadow.className='mu-character-shadow';
-      const prop=document.createElement('span');prop.className='mu-character-prop';
-      figure.append(shadow,artwork,prop);stage.append(figure);
-      artwork.addEventListener('error',()=>figure.remove(),{once:true});
+    const hero=scene.closest('.cp-hero');
+    let stage=$(':scope > .mu-character-stage',hero);
+    if(!stage){stage=document.createElement('div');stage.className='mu-character-stage';stage.setAttribute('aria-hidden','true');hero.append(stage);}
+    stage.replaceChildren();
+    placements.forEach(([key,file,x])=>{
+      const figure=document.createElement('figure');figure.className=`mu-sprite-character mu-sprite-${key}`;
+      figure.style.setProperty('--stage-x',x);
+      const shadow=document.createElement('span');shadow.className='mu-sprite-shadow';
+      const artwork=document.createElement('span');artwork.className='mu-sprite-frame';
+      artwork.style.backgroundImage=`url("assets/images/aippm-sprites/${file}")`;
+      figure.append(shadow,artwork);stage.append(figure);
     });
+    aippmFrame=0;paintAippmSprites();
     aippmObserver?.disconnect();aippmInView=false;
     aippmObserver=new IntersectionObserver(entries=>{aippmInView=entries.some(entry=>entry.isIntersecting);syncAippmMotion();},{root:$('#committeePageScroll'),threshold:.05});
     aippmObserver.observe(scene);
