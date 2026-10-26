@@ -98,7 +98,7 @@
     try {
       const response=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:controller.signal});
       const result=await response.json().catch(()=>({}));
-      if(!response.ok)throw new Error(response.status===503?'Registration submissions are not open yet. Please check back after the team configures the database.':result.error||'Submission failed. Please retry.');
+      if(!response.ok||result.ok!==true)throw new Error(response.status===503?'Registration submissions are not open yet. Please check back after the team configures the database.':result.error||'The server did not confirm this registration. Please retry.');
       form.classList.add('mu-submitted');
       if(status)status.textContent='Your registration request was received. The team will contact you with the next steps. No payment has been collected.';
       button.textContent='Request received ✓';
@@ -146,58 +146,93 @@
     if (!scene || $('.mu-parliament-stage',scene))return;
     scene.insertAdjacentHTML('beforeend',`<div class="mu-parliament-stage" aria-hidden="true">
       <div class="mu-parliament-haze"></div><div class="mu-parliament-aisle"></div>
-      <div class="mu-podium mu-podium-left"><span>PARLIAMENTARY DEBATE</span></div>
-      <div class="mu-podium mu-podium-right"><span>NEW DELHI</span></div>
-      <div class="mu-leader-collage" data-label="Illustrative political montage, not real meeting footage"></div>
-      <div class="mu-illustration-label">ILLUSTRATIVE MONTAGE · NOT ACTUAL MEETING FOOTAGE</div>
+      <div class="mu-character-stage"></div>
     </div>`);
-    // Leave empty until organisers source LICENSED pictures. No missing-file 404s.
-    const licensed=window.MUN_APPROVED_LEADER_PHOTOS||{};
-    const portraits=[['modi','NARENDRA MODI'],['rahul','RAHUL GANDHI'],['shah','AMIT SHAH']];
-    const gallery=$('.mu-leader-collage',scene);
-    portraits.forEach(([key,name])=>{
-      const src=licensed[key];
-      if(typeof src!=='string'||!/^\/?assets\/images\/[a-z0-9_\/-]+\.webp$/i.test(src))return;
-      const fig=document.createElement('figure');fig.className='mu-leader mu-leader-'+key;
-      const img=document.createElement('img');img.src=src;img.alt='';img.loading='lazy';
-      const cap=document.createElement('figcaption');cap.textContent=name;
-      fig.append(img,cap);gallery.appendChild(fig);
-      img.addEventListener('error',()=>fig.remove(),{once:true});
+    // The kit's photos and dance frames are references, not public artwork.
+    // Only explicitly approved full-body illustrations can fill these slots.
+    const approved=window.MUN_APPROVED_CHARACTER_SPRITES||{};
+    const placements=[
+      ['shah','Amit Shah',12,23,'bench'],
+      ['modi','Narendra Modi',28,25,'tea'],
+      ['meloni','Giorgia Meloni',37,25,'tea-tilted'],
+      ['ravi','Ravi Kishan',53,27,'dance'],
+      ['rahul','Rahul Gandhi',71,26,'walk'],
+      ['sonia','Sonia Gandhi',79,24,'walk'],
+      ['jaishankar','S. Jaishankar',92,25,'folder']
+    ];
+    const stage=$('.mu-character-stage',scene);
+    placements.forEach(([key,name,x,height,action])=>{
+      const src=approved[key];
+      if(typeof src!=='string'||!/^assets\/images\/aippm-characters\/[a-z0-9_-]+\.webp$/i.test(src))return;
+      const figure=document.createElement('figure');figure.className=`mu-character mu-character-${key} mu-action-${action}`;
+      figure.style.setProperty('--stage-x',`${x}%`);figure.style.setProperty('--figure-height',`${height}vh`);
+      const artwork=document.createElement('img');artwork.src=src;artwork.alt='';artwork.loading='eager';
+      const shadow=document.createElement('span');shadow.className='mu-character-shadow';
+      const prop=document.createElement('span');prop.className='mu-character-prop';
+      figure.append(shadow,artwork,prop);stage.append(figure);
+      artwork.addEventListener('error',()=>figure.remove(),{once:true});
     });
-    if(!gallery.children.length){gallery.hidden=true;$('.mu-illustration-label',scene).hidden=true;}
-
+    if(stage.children.length){
+      const disclosure=document.createElement('p');disclosure.className='mu-illustration-label';
+      disclosure.textContent='STYLIZED SATIRE · FICTIONAL SCENE';
+      scene.append(disclosure);
+    }
   }
 
-  const symbols=[['MUN INDEX',18642.45],['ATLAS TECH',1745.85],['NATIONS CAP',263.70],['CYBER VENTURES',3912.10],['UNION ENERGY',812.35]];
-  let marketData=symbols.map(([symbol,price],i)=>({symbol,price,trend:i%3===1?-1:1}));
+  // Representative company names are from the local kit; every quote below is simulated.
+  const fallbackSymbols=['RELIANCE','TCS','HDFCBANK','ICICIBANK','INFY','SBIN','TATAMOTORS','TATASTEEL','ITC','BHARTIARTL','LT'];
+  const indexSymbols=['MU100','IPO-MU','MUFIN'];
+  const makeQuote=(symbol,i)=>({symbol,price:Math.round((185+i*173.71)*100)/100,change:0,trend:i%3===1?-1:1});
+  let marketData=fallbackSymbols.map(makeQuote);
+  let indexData=indexSymbols.map((symbol,i)=>({...makeQuote(symbol,i+16),price:Math.round((1800+i*6420.5)*100)/100}));
+  let marketOffset=0,marketTicks=0,marketInView=false;
+  fetch('assets/data/fictional_market_symbols.json').then(response=>{if(!response.ok)throw Error('Market symbol data unavailable');return response.json()}).then(feed=>{
+    const companies=(feed.companies||[]).map(item=>item.symbol).filter(symbol=>typeof symbol==='string'&&/^[A-Z0-9-]{2,16}$/.test(symbol));
+    const indices=(feed.indices||[]).map(item=>item.symbol).filter(symbol=>typeof symbol==='string'&&/^[A-Z0-9-]{2,16}$/.test(symbol));
+    if(companies.length>=5)marketData=companies.map(makeQuote);
+    if(indices.length)indexData=indices.map((symbol,i)=>({...makeQuote(symbol,i+16),price:Math.round((1800+i*6420.5)*100)/100}));
+    paintMarket();
+  }).catch(()=>{});
   function board(){
     const scene=$('.dp-scene');if(!scene||$('.mu-market-board',scene))return;
     scene.insertAdjacentHTML('beforeend',`<div class="mu-market-board" aria-label="Fictional simulated market display">
-      <div class="mu-market-top"><b>MU EXCHANGE</b><span>SIMULATED MARKET / NOT LIVE PRICES</span><time>SESSION 2026</time></div>
+      <div class="mu-market-top"><b>MU EXCHANGE</b><span>SIMULATED MARKET — NOT LIVE PRICES</span><time>SESSION 2026</time></div>
+      <div class="mu-market-indices" aria-label="Simulated market indices"></div>
       <div class="mu-market-head"><span>SYMBOL</span><span>LAST PRICE</span><span>CHANGE</span><span>STATUS</span></div>
       <div class="mu-market-rows"></div>
       <div class="mu-market-bottom"><span>IPO DESK · GLOBAL BOARDROOM</span><span>THIS IS A FICTIONAL MARKET SIMULATION</span></div>
     </div>`);
     const container=$('.mu-market-rows',scene);
-    marketData.forEach(({symbol,price,trend},i)=>{
+    for(let i=0;i<5;i++){
       const r=document.createElement('div');r.className='mu-market-row';r.dataset.row=i;
-      r.innerHTML=`<span>${symbol}</span><strong data-price>${price.toFixed(2)}</strong><span data-change class="${trend<0?'down':'up'}">${trend<0?'▼':'▲'} ${Math.abs(i*.13+.24).toFixed(2)}%</span><span data-status>${trend<0?'WATCH':'ACTIVE'}</span>`;
+      r.innerHTML='<span data-symbol></span><strong data-price></strong><span data-change></span><span data-status></span>';
       container.appendChild(r);
-    });
+    }
+    paintMarket();
     const target=$('.mu-market-board',scene);
-    const observer=new IntersectionObserver(entries=>{for(const e of entries){if(!e.isIntersecting)stopMarket();else startMarket();}},{threshold:.08});observer.observe(target);
+    const observer=new IntersectionObserver(entries=>{marketInView=entries.some(entry=>entry.isIntersecting);if(marketInView)startMarket();else stopMarket();},{root:$('#dalalPageScroll'),threshold:.08});observer.observe(target);
+  }
+  function paintMarket(){
+    const rows=dalal.querySelectorAll('.mu-market-row');
+    rows.forEach((row,i)=>{
+      const quote=marketData[(marketOffset+i)%marketData.length];if(!quote)return;
+      $('[data-symbol]',row).textContent=quote.symbol;
+      $('[data-price]',row).textContent=quote.price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+      const change=$('[data-change]',row);change.textContent=`${quote.trend>0?'▲':'▼'} ${Math.abs(quote.change).toFixed(2)}%`;change.className=quote.trend>0?'up':'down';
+      $('[data-status]',row).textContent=quote.trend>0?'ACTIVE':'WATCH';
+      row.classList.remove('market-tick');void row.offsetWidth;row.classList.add('market-tick');
+    });
+    const indexBar=$('.mu-market-indices',dalal);
+    if(indexBar)indexBar.replaceChildren(...indexData.map(item=>{const chip=document.createElement('span');chip.textContent=`${item.symbol} ${item.price.toLocaleString('en-IN',{maximumFractionDigits:0})} ${item.trend>0?'▲':'▼'}`;chip.className=item.trend>0?'up':'down';return chip;}));
   }
   function updateMarket(){
-    if (document.hidden||!dalal.classList.contains('open')){stopMarket();return;}
-    marketData=marketData.map((r,i)=>({...r,price:Math.max(1,r.price*(1+(Math.sin(Date.now()/2400+i*1.7)*.0013))),trend:Math.sin(Date.now()/4000+i)>=0?1:-1}));
-    for (let i=0;i<marketData.length;i++){
-      const row=dalal.querySelector(`.mu-market-row[data-row="${i}"]`);if(!row)continue;
-      const d=marketData[i];$('[data-price]',row).textContent=d.price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-      const change=$('[data-change]',row);change.textContent=(d.trend>0?'▲ ':'▼ ')+Math.abs(.12+Math.sin(Date.now()/5000+i)*.82).toFixed(2)+'%';change.className=d.trend>0?'up':'down';
-      $('[data-status]',row).textContent=d.trend>0?'ACTIVE':'WATCH';
-    }
+    if (document.hidden||!dalal.classList.contains('open')||!marketInView){stopMarket();return;}
+    const drift=quote=>{const change=(Math.random()-.5)*1.35;return {...quote,price:Math.max(1,quote.price*(1+change/100)),change,trend:change>=0?1:-1}};
+    marketData=marketData.map(drift);indexData=indexData.map(drift);
+    marketTicks++;if(marketTicks%4===0)marketOffset=(marketOffset+5)%marketData.length;
+    paintMarket();
   }
-  function startMarket(){if (marketTimer||reduced()||document.hidden||!dalal.classList.contains('open'))return;marketTimer=setInterval(updateMarket,2000);}
+  function startMarket(){if (marketTimer||reduced()||document.hidden||!marketInView||!dalal.classList.contains('open'))return;marketTimer=setInterval(updateMarket,1100);}
   function stopMarket(){if (marketTimer){clearInterval(marketTimer);marketTimer=null;}}
   document.addEventListener('visibilitychange',()=>document.hidden?stopMarket():startMarket());
   new MutationObserver(()=>dalal.classList.contains('open')?startMarket():stopMarket()).observe(dalal,{attributes:true,attributeFilter:['class']});
