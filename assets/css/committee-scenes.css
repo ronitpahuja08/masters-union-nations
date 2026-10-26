@@ -782,3 +782,9 @@
 .ms-podium .ms-gavel2{filter:drop-shadow(0 10px 12px #0009)}
 .ms-stagelight{inset:0;background:radial-gradient(ellipse 34% 52% at 50% 56%,#ffe9b844,#ffe9b800 70%);mix-blend-mode:screen}
 .ms-floor{left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#00000000,#0a1424ee 70%)}
+
+/* smooth hand-over: the page opens under the finished intro, then the intro dissolves away */
+body.xfade .mc-journey,body.xfade .dalal-crash,body.xfade .startup-launch,body.xfade .mcc-night-flight,body.xfade .committee-flight{transition:opacity .95s cubic-bezier(.4,0,.2,1),visibility .95s!important}
+body.xfade .committee-page{transition:opacity .7s ease,visibility .7s,transform .9s cubic-bezier(.2,.7,.2,1)!important}
+body.xfade .dalal-page{transition:opacity .8s ease,visibility .8s,transform .95s cubic-bezier(.2,.7,.2,1),filter .8s ease!important}
+.ip-cinematic.handoff{transition:opacity .95s cubic-bezier(.4,0,.2,1),visibility .95s!important}
