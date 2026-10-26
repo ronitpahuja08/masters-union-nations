@@ -6,7 +6,7 @@
 #mapStage.dragging{cursor:default!important}
 #cursorGlow,.pointer-light{display:none!important}
 /* Stop background pan following the cursor, but retain small editorial animations. */
-.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-hero-copy,.dalal-page .dp-hero-copy{transform:none!important}
+.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="IPL"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-hero-copy,.dalal-page .dp-hero-copy{transform:none!important}
 /* General readability: darkened glass at 93% readability, large types, no 0.5rem descriptions. */
 :is(.committee-page[data-committee="MCC"],.committee-page[data-committee="IP"],.committee-page[data-committee="AIPPM"],.dalal-page) :is(.cp-brief-copy,.cp-section-label,.cp-steps,.cp-do-head,.cp-awards-head,.cp-register>div,.dp-brief-copy,.dp-section-title,.dp-register-copy,.dp-form,.dp-playbook ol){
   background:linear-gradient(145deg,rgba(9,16,28,.85),rgba(16,20,31,.72))!important;
@@ -28,9 +28,9 @@
 .mu-start-registration{border:1px solid #ffffffb0;border-radius:999px;background:#f6e9e0;color:#13141a;font:800 clamp(.85rem,1.2vw,1.02rem) var(--sans,Arial);padding:14px 24px;margin-top:15px;cursor:pointer;box-shadow:0 12px 30px #0008;transition:transform .2s}
 .mu-start-registration:hover{transform:translateY(-2px)}.mu-start-registration[hidden]{display:none!important}
 /* Existing shared CTA hidden only for selected inline-form committees. */
-.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register-actions>.cp-apply,
-.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register-actions>small{display:none!important}
-.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-register-actions{display:block;align-self:start}
+.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="IPL"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register-actions>.cp-apply,
+.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="IPL"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register-actions>small{display:none!important}
+.committee-page:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"],[data-committee="IPL"],[data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"]) .cp-register-actions{display:block;align-self:start}
 /* Inline forms: tasteful machined glass; no extra page or payment step. */
 .mu-inline-form{width:100%;display:grid;gap:17px;padding:clamp(20px,3vw,34px);border:1px solid #d2bfd17a;border-radius:14px;background:rgba(9,15,26,.90);box-shadow:0 25px 65px #0009;backdrop-filter:blur(10px)}
 .mu-inline-form h3{margin:0;color:#fff;font:900 clamp(1.8rem,3vw,2.8rem)/1 var(--sans,Arial);letter-spacing:-.05em}

@@ -4,7 +4,7 @@
    to /api/register. No unapproved payment is initiated. */
 (() => {
   'use strict';
-  const TARGETS = new Set(['MCC', 'IP', 'AIPPM']);
+  const TARGETS = new Set(['MCC', 'IP', 'AIPPM', 'IPL', 'STARTUP', 'UNHRC', 'CCEP']);
   const $ = (selector, parent=document) => parent.querySelector(selector);
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const page = $('#committeePage');
@@ -24,7 +24,7 @@
   addEventListener('resize',alignMobileMap,{passive:true});
 
   function formMarkup(code) {
-    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet',DALAL:'Dalal Street'}[code]||code;
+    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet',IPL:'Indian Premier League',STARTUP:'Startup Boardroom',UNHRC:'UN Human Rights Council',CCEP:'CCEP',DALAL:'Dalal Street'}[code]||code;
     return `<form class="mu-inline-form" data-committee="${code}" novalidate>
       <h3>Reserve your place.</h3><p>Registration request for <strong>${label}</strong>. Payment will be arranged separately by the organising team.</p>
       <div class="mu-fields">
