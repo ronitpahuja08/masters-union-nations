@@ -42,11 +42,10 @@
   const wicket = `<div class="ms-grass"></div><div class="ms-pitch3"><i></i></div><div class="ms-wicket"><i class="s1"></i><i class="s2"></i><i class="s3"></i><em class="b1"></em><em class="b2"></em></div><div class="ms-dust"></div><div class="ms-shadow"></div><div class="ms-ball3"></div>`;
   const iplIntro = `${iplField}<div class="ms-ipl"><div class="ms-shade i"></div>${wicket}${paddles}${lot}</div><div class="ms-flash"></div>`;
   const placard = (cls, word, sub) => `<div class="ms-card ${cls}"><div class="pc"><b>${word}</b>${sub?`<small>${sub}</small>`:''}</div><i></i></div>`;
+  const squad = [['rcb','RCB','#d4202e'],['csk','CSK','#f7c61b'],['mi','MI','#1b6bd6'],['pbks','PBKS','#e0262d'],['lsg','LSG','#1d6fd0'],['srh','SRH','#f26a21']];
   const iplHero = `<div class="ms-sky"></div>${iplField}
     <div class="ms-pitch"></div>
-    ${placard('c1 six','6','SIX!')}${placard('c2 four','4','FOUR')}${placard('c3 out','OUT','HOWZAT')}
-    ${placard('c4 six','6','SIX!')}${placard('c5 four','4','FOUR')}${placard('c6 out','OUT','')}
-    <div class="ms-ticker"><span>● LIVE</span><span>FRANCHISE AUCTION</span><span>PURSE ₹120 CR</span><span>SOLD</span></div>`;
+    <div class="ms-squad">${squad.map(([f,t,c],i)=>`<figure class="ms-player" style="--i:${i};--c:${c}"><img src="assets/images/ipl-players/${f}.webp" alt="" loading="eager" decoding="async"><figcaption>${t}</figcaption></figure>`).join('')}</div>`;
 
   /* ---------- STARTUP: San Francisco demo day, the founder journey ---------- */
   const skyline = `<svg class="ms-skyline" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
