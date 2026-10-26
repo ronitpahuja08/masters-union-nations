@@ -56,9 +56,9 @@
     <div id="result" class="idle" role="status" aria-live="assertive">Ready. Scan a delegate&rsquo;s QR code.</div>
 
     <div class="card" style="margin-top:14px">
-      <div class="row"><button type="button" id="camBtn">Scan with this phone&rsquo;s camera</button><button type="button" class="ghost" id="camStop" hidden>Stop camera</button></div>
+      <div class="row"><button type="button" id="camBtn">Start the camera scanner</button><button type="button" class="ghost" id="camStop" hidden>Stop camera</button></div>
       <video id="video" playsinline muted hidden></video>
-      <p class="tip" id="camTip">No camera scanner in your browser? Just use your phone&rsquo;s normal Camera app on the delegate&rsquo;s QR: it opens this page and checks them in.</p>
+      <p class="tip" id="camTip">Allow the camera when asked. You can also use your phone&rsquo;s normal Camera app on the delegate&rsquo;s QR, or a handheld scanner.</p>
     </div>
 
     <div class="card" style="margin-top:14px">
@@ -70,6 +70,7 @@
   </section>
 </div>
 
+<script src="assets/vendor/jsQR-1.4.0.js"></script>
 <script>
 (function () {
   'use strict';
@@ -115,7 +116,7 @@
   function signOut(msg) { stopCam(); pin = ''; try { localStorage.removeItem('mun-desk'); } catch (e) {} $('desk').hidden = true; $('login').hidden = false; $('stat').hidden = true; $('loginMsg').textContent = msg || ''; }
   function enter() {
     $('login').hidden = true; $('desk').hidden = false; refreshStats();
-    if ('BarcodeDetector' in window && navigator.mediaDevices && !stream) startCam(true);
+    startCam(true);
     if (pending) { var t = pending; pending = ''; scan({ token: t }); }
   }
   function refreshStats() { post({ action: 'stats' }).then(function (r) { if (r.status === 200) setStat(r.j); else if (r.status === 401) signOut('Wrong PIN.'); }).catch(function () {}); }
@@ -143,18 +144,28 @@
   });
   $('matches').addEventListener('click', function (e) { var b = e.target.closest('button[data-id]'); if (b) scan({ id: b.dataset.id }); });
 
-  /* camera scanning (uses the browser's built-in QR detector where it exists) */
+  /* camera scanning inside the page (jsQR reads each video frame, so it works on iPhone Safari and Android alike) */
+  var cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently: true });
   function stopCam() { clearInterval(timer); timer = null; if (stream) stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; $('video').hidden = true; $('camStop').hidden = true; $('camBtn').hidden = false; }
+  function startCam(quiet) {
+    if (stream) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof jsQR !== 'function') { if (!quiet) $('camTip').textContent = 'This browser cannot open the camera here. Use your phone\u2019s normal Camera app on the QR, a handheld scanner, or the search box.'; return; }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }).then(function (s) {
+      stream = s; var v = $('video'); v.setAttribute('playsinline', ''); v.muted = true; v.srcObject = s; v.hidden = false; $('camBtn').hidden = true; $('camStop').hidden = false;
+      var p = v.play(); if (p && p.catch) p.catch(function () {});
+      $('camTip').textContent = 'Point the camera at the delegate\u2019s QR code. It scans by itself.';
+      timer = setInterval(function () {
+        if (busy || v.readyState < 2 || !v.videoWidth) return;
+        var w = Math.min(640, v.videoWidth), h = Math.round(w * v.videoHeight / v.videoWidth); cv.width = w; cv.height = h;
+        cx.drawImage(v, 0, 0, w, h);
+        var img = cx.getImageData(0, 0, w, h), code = jsQR(img.data, w, h, { inversionAttempts: 'dontInvert' });
+        if (code && code.data) onCode(code.data);
+      }, 160);
+    }).catch(function () { stream = null; if (!quiet) $('camTip').textContent = 'The camera is blocked. Allow camera access for this site in your browser settings (iPhone: Settings > Apps > Safari > Camera), or use the phone\u2019s Camera app.'; });
+  }
   $('camStop').addEventListener('click', stopCam);
   $('camBtn').addEventListener('click', function () { startCam(false); });
-  function startCam(quiet) {
-    if (!('BarcodeDetector' in window) || !navigator.mediaDevices) { $('camTip').textContent = 'This browser cannot scan inside the page. Use your phone’s normal Camera app on the QR: it opens this page and checks the delegate in. (Chrome on Android works here.)'; return; }
-    var det; try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { $('camTip').textContent = 'QR scanning is not available here. Use your phone’s Camera app on the QR.'; return; }
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }).then(function (s) {
-      stream = s; var v = $('video'); v.srcObject = s; v.hidden = false; v.play(); $('camBtn').hidden = true; $('camStop').hidden = false;
-      timer = setInterval(function () { if (busy || v.readyState < 2) return; det.detect(v).then(function (codes) { if (codes && codes[0]) onCode(codes[0].rawValue); }).catch(function () {}); }, 300);
-    }).catch(function () { $('camTip').textContent = 'Camera permission was blocked. Allow the camera for this site, or use the phone’s Camera app.'; });
-  }
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stopCam(); else if (!$('desk').hidden) startCam(true); });
 
   setInterval(function () { if (!$('desk').hidden && !document.hidden) refreshStats(); }, 30000);
   if (setup) { pin = setup; by = by || 'Desk'; post({ action: 'stats' }).then(function (r) { if (r.status === 200) { remember(); setStat(r.j); enter(); } else { pin = ''; $('loginMsg').textContent = r.j.error || 'That setup link is not valid.'; } }).catch(function () { pin = ''; $('loginMsg').textContent = 'No connection. Check the wifi and try again.'; }); }

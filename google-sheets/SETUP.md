@@ -52,7 +52,7 @@ How it works:
 
 Volunteer page: `https://<your-site>/checkin.html` (not linked anywhere on the site). A volunteer signs in with their name and the **desk PIN**, then can:
 - scan with the phone's normal Camera app (it opens the page and checks the delegate in, even on iPhone),
-- use the in-page camera button (Chrome on Android),
+- use the in-page camera scanner (works on iPhone and Android: sign in once, then keep pointing the phone at QR codes - it scans by itself and the camera stays open),
 - use a USB / Bluetooth handheld scanner (click the box, scan),
 - or search by name / email / ID when a QR will not scan.
 
@@ -75,3 +75,4 @@ Nothing is lost when the limit is reached:
 - `sendPendingEmails` sends everything that is `Queued` (and retries `Failed`) as soon as the limit resets. Run `installDailyEmailTrigger` once and it does this by itself every morning around 9am.
 
 To send more per day, own the sheet and script from your Workspace account (for example your mastersunion.org address), or move sending to an email service (Resend, Brevo, Amazon SES) later.
+Third-party code: `assets/vendor/jsQR-1.4.0.js` (QR reader, jsQR 1.4.0) and `assets/vendor/qrcode-generator-1.4.4.min.js` (QR drawing). Both are open-source libraries copied unchanged into the project so the event does not depend on an outside server.
