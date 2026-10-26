@@ -12,8 +12,8 @@
  *   SEND_EMAILS  optional - set to  yes  to email each delegate their iCard link (needs the Gmail send permission)
  */
 var ALL_TAB = 'All Registrations';
-var HEADERS = ['Timestamp', 'Committee', 'Name', 'Email', 'Institution', 'Category', 'Phone', 'Why this committee', 'Source', 'Repeat submission', 'Delegate ID', 'Token', 'Checked in', 'Check-in time', 'Checked in by'];
-var COL = { TIME: 1, COMMITTEE: 2, NAME: 3, EMAIL: 4, INSTITUTION: 5, CATEGORY: 6, PHONE: 7, WHY: 8, SOURCE: 9, REPEAT: 10, ID: 11, TOKEN: 12, IN: 13, IN_TIME: 14, IN_BY: 15 };
+var HEADERS = ['Timestamp', 'Committee', 'Name', 'Email', 'Institution', 'Category', 'Phone', 'Why this committee', 'Source', 'Repeat submission', 'Delegate ID', 'Token', 'Checked in', 'Check-in time', 'Checked in by', 'Email status'];
+var COL = { TIME: 1, COMMITTEE: 2, NAME: 3, EMAIL: 4, INSTITUTION: 5, CATEGORY: 6, PHONE: 7, WHY: 8, SOURCE: 9, REPEAT: 10, ID: 11, TOKEN: 12, IN: 13, IN_TIME: 14, IN_BY: 15, MAIL: 16 };
 // Same email can register again (a delegate may have typed wrong details the first time).
 // Repeats are flagged in the "Repeat submission" column. Set to true to block repeats instead.
 var BLOCK_DUPLICATES = false;
@@ -51,10 +51,11 @@ function register(d) {
   if (repeat && BLOCK_DUPLICATES) return reply({ ok: false, error: 'duplicate' });
   var id = nextId(), token = Utilities.getUuid().replace(/-/g, '');
   var row = [d.timestamp, committee, d.name, d.email, d.institution, d.category, d.phone, d.motivation, d.source,
-    repeat ? 'Repeat of an earlier email' : '', id, token, '', '', ''].map(safe);
+    repeat ? 'Repeat of an earlier email' : '', id, token, '', '', '', ''].map(safe);
   append(ALL_TAB, row);
   append(committee, row);
-  emailCard(d, id, token, committee);
+  var mail = emailCard(d, id, token, committee);
+  if (mail) { setMailStatus(ALL_TAB, token, mail); setMailStatus(committee, token, mail); }
   return reply({ ok: true, id: id, token: token });
 }
 
@@ -65,10 +66,15 @@ function nextId() {
   return 'MUN26-' + ('0000' + n).slice(-4);
 }
 
+/**
+ * Emails the delegate their iCard link. Returns '' (emails are off), 'Sent', 'Queued' (today's mail limit is used up,
+ * it is sent automatically by sendPendingEmails) or 'Failed'.
+ */
 function emailCard(d, id, token, committee) {
+  if (PropertiesService.getScriptProperties().getProperty('SEND_EMAILS') !== 'yes') return '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(d.email || ''))) return 'Failed';
   try {
-    if (PropertiesService.getScriptProperties().getProperty('SEND_EMAILS') !== 'yes') return;
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(d.email || ''))) return;
+    if (MailApp.getRemainingDailyQuota() < 1) return 'Queued';
     var link = 'https://' + String(d.source || '').replace(/[^a-z0-9.\-:]/gi, '') + '/card.html#' + token;
     var name = String(d.name || 'Delegate').replace(/[<>&"]/g, '');
     MailApp.sendEmail({
@@ -81,8 +87,42 @@ function emailCard(d, id, token, committee) {
         '<p>The organising team will be in touch with the next steps.</p>',
       body: 'Hi ' + name + ', your registration for ' + committee + ' is received (Delegate ID ' + id + '). Open your iCard: ' + link
     });
-  } catch (err) { /* a mail failure must never lose a registration */ }
+    return 'Sent';
+  } catch (err) { return 'Failed'; } // a mail problem must never lose a registration
 }
+
+function setMailStatus(tabName, token, status) {
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(tabName); if (!sh) return;
+  var r = rowByCol(sh, COL.TOKEN, token); if (r) sh.getRange(r, COL.MAIL).setValue(status);
+}
+
+/**
+ * Sends the emails that were Queued because the daily mail limit was reached (and retries Failed ones).
+ * Run it by hand any time, or run installDailyEmailTrigger() once and it runs every morning by itself.
+ */
+function sendPendingEmails() {
+  var sh = allSheet(), n = sh.getLastRow() - 1, sent = 0, left = 0;
+  if (n < 1) return;
+  var vals = sh.getRange(2, 1, n, HEADERS.length).getValues();
+  for (var i = 0; i < vals.length; i++) {
+    var v = vals[i], st = v[COL.MAIL - 1];
+    if (st !== 'Queued' && st !== 'Failed') continue;
+    if (MailApp.getRemainingDailyQuota() < 1) { left++; continue; }
+    var status = emailCard({ email: v[COL.EMAIL - 1], name: v[COL.NAME - 1], source: v[COL.SOURCE - 1] }, v[COL.ID - 1], v[COL.TOKEN - 1], v[COL.COMMITTEE - 1]);
+    if (status === 'Sent') sent++; else left++;
+    if (status) { sh.getRange(i + 2, COL.MAIL).setValue(status); setMailStatus(v[COL.COMMITTEE - 1], v[COL.TOKEN - 1], status); }
+  }
+  console.log('Sent ' + sent + ' queued emails; ' + left + ' still waiting. Mail left today: ' + MailApp.getRemainingDailyQuota());
+}
+
+/** Run once from the editor: makes sendPendingEmails run every morning. */
+function installDailyEmailTrigger() {
+  ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'sendPendingEmails') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('sendPendingEmails').timeBased().everyDays(1).atHour(9).create();
+}
+
+/** Run from the editor to see how many emails this account can still send today (View > Logs). */
+function showMailQuota() { console.log('Emails you can still send today: ' + MailApp.getRemainingDailyQuota()); }
 
 /* ---------------- delegate card ---------------- */
 function lookup(d) {

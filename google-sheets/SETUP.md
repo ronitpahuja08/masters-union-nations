@@ -66,3 +66,12 @@ Notes:
 - Registrations made before this update have no token, so they have no QR. Only new registrations get one.
 - If someone registers twice, each registration has its own QR and its own row (the later row is flagged "Repeat of an earlier email").
 - Change the PIN any time by editing `STAFF_PIN` in Vercel and redeploying.
+## Emails and the daily sending limit
+
+Apps Script sends each delegate their iCard link when the script property `SEND_EMAILS` is `yes`. Google caps how many emails an account can send per day: about **100** for a normal @gmail.com account and about **1,500** for a Google Workspace (school / company) account. Run `showMailQuota` in the Apps Script editor to see the exact number for your account.
+
+Nothing is lost when the limit is reached:
+- The **Email status** column in the sheet shows `Sent`, `Queued` (limit reached, waiting) or `Failed`.
+- `sendPendingEmails` sends everything that is `Queued` (and retries `Failed`) as soon as the limit resets. Run `installDailyEmailTrigger` once and it does this by itself every morning around 9am.
+
+To send more per day, own the sheet and script from your Workspace account (for example your mastersunion.org address), or move sending to an email service (Resend, Brevo, Amazon SES) later.
