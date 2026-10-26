@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
 
   const name = clean(input.name, 100), email = clean(input.email, 180).toLowerCase(), institution = clean(input.institution, 180);
   const committee = clean(input.applyingFor, 10).toUpperCase(), category = clean(input.category, 20);
-  const motivation = clean(input.motivation, 750), phone = normalizePhone(clean(input.phone, 24));
+  const motivation = clean(input.motivation, 1000), phone = normalizePhone(clean(input.phone, 24));
   const errors = {};
   if (!NAME_RE.test(name)) errors.name = 'Enter your full name using letters only.';
   if (!EMAIL_RE.test(email) || email.length > 180 || email.includes('..')) errors.email = 'Enter a valid email address.';
@@ -46,6 +46,7 @@ module.exports = async function handler(req, res) {
   if (institution.length < 2 || !/[\p{L}]/u.test(institution)) errors.institution = 'Enter your school or university.';
   if (!['school', 'college'].includes(category)) errors.category = 'Choose School or College.';
   if (!phone) errors.phone = 'Enter a valid mobile number (10 digits, or with a country code like +91).';
+  if (committee === 'DALAL' && motivation.length < 3) errors.motivation = 'Tell us a little about your market instinct.';
   if (input.consent !== true) errors.consent = 'Please tick the consent box.';
   if (!ALLOWED.has(committee)) return reply(res, 400, { error: 'Please choose a valid committee.' });
   if (Object.keys(errors).length) return reply(res, 400, { error: 'Please correct the highlighted fields.', fields: errors });

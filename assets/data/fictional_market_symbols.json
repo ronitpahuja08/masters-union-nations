@@ -1,0 +1,119 @@
+{
+  "disclaimer": "FICTIONAL SIMULATION — NOT LIVE PRICES OR INVESTMENT INFORMATION",
+  "dataset_type": "names_and_symbols_only",
+  "company_membership_note": "Representative Indian listed companies; do not claim current Nifty 100 membership from this file",
+  "display_rotation_seconds": 4,
+  "price_refresh_seconds": 1.1,
+  "indices": [
+    {
+      "symbol": "MU100",
+      "name": "MU Simulation 100"
+    },
+    {
+      "symbol": "IPO-MU",
+      "name": "MU IPO Simulation Index"
+    },
+    {
+      "symbol": "MUFIN",
+      "name": "MU Finance Index"
+    }
+  ],
+  "companies": [
+    {
+      "symbol": "RELIANCE",
+      "name": "Reliance Industries"
+    },
+    {
+      "symbol": "TCS",
+      "name": "Tata Consultancy Services"
+    },
+    {
+      "symbol": "HDFCBANK",
+      "name": "HDFC Bank"
+    },
+    {
+      "symbol": "INFY",
+      "name": "Infosys"
+    },
+    {
+      "symbol": "ICICIBANK",
+      "name": "ICICI Bank"
+    },
+    {
+      "symbol": "SBIN",
+      "name": "State Bank of India"
+    },
+    {
+      "symbol": "TATAMOTORS",
+      "name": "Tata Motors"
+    },
+    {
+      "symbol": "TATASTEEL",
+      "name": "Tata Steel"
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "name": "Bharti Airtel"
+    },
+    {
+      "symbol": "LT",
+      "name": "Larsen & Toubro"
+    },
+    {
+      "symbol": "ITC",
+      "name": "ITC Limited"
+    },
+    {
+      "symbol": "AXISBANK",
+      "name": "Axis Bank"
+    },
+    {
+      "symbol": "BAJFINANCE",
+      "name": "Bajaj Finance"
+    },
+    {
+      "symbol": "WIPRO",
+      "name": "Wipro"
+    },
+    {
+      "symbol": "SUNPHARMA",
+      "name": "Sun Pharma"
+    },
+    {
+      "symbol": "MARUTI",
+      "name": "Maruti Suzuki"
+    },
+    {
+      "symbol": "HINDUNILVR",
+      "name": "Hindustan Unilever"
+    },
+    {
+      "symbol": "KOTAKBANK",
+      "name": "Kotak Mahindra Bank"
+    },
+    {
+      "symbol": "NTPC",
+      "name": "NTPC"
+    },
+    {
+      "symbol": "ONGC",
+      "name": "ONGC"
+    },
+    {
+      "symbol": "ADANIPORTS",
+      "name": "Adani Ports"
+    },
+    {
+      "symbol": "JSWSTEEL",
+      "name": "JSW Steel"
+    },
+    {
+      "symbol": "HCLTECH",
+      "name": "HCLTech"
+    },
+    {
+      "symbol": "ULTRACEMCO",
+      "name": "UltraTech Cement"
+    }
+  ]
+}
