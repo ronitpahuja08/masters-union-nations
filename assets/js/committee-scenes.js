@@ -39,8 +39,8 @@
     <div class="who"><i></i><b>PLAYER<br>AUCTION</b></div><span>BASE PRICE ₹ 2.0 CR</span>
     <div class="ms-sold"><b>SOLD</b><small>₹ 12.0 CR · CHENNAI SUPER KINGS</small></div>
     <svg class="ms-gavel2" viewBox="0 0 120 120" aria-hidden="true"><g class="gv"><rect x="20" y="52" width="86" height="12" rx="6" fill="#8a5a2b"/><rect x="2" y="34" width="38" height="46" rx="8" fill="#e9c885"/></g></svg></div>`;
-  const wicket = `<div class="ms-pitch2"></div><div class="ms-wicket"><i class="s1"></i><i class="s2"></i><i class="s3"></i><em class="b1"></em><em class="b2"></em></div><div class="ms-ball2"></div>`;
-  const iplIntro = `${iplField}<div class="ms-shade i"></div>${wicket}${paddles}${lot}<div class="ms-flash"></div>`;
+  const wicket = `<div class="ms-grass"></div><div class="ms-pitch3"><i></i></div><div class="ms-wicket"><i class="s1"></i><i class="s2"></i><i class="s3"></i><em class="b1"></em><em class="b2"></em></div><div class="ms-dust"></div><div class="ms-shadow"></div><div class="ms-ball3"></div>`;
+  const iplIntro = `${iplField}<div class="ms-ipl"><div class="ms-shade i"></div>${wicket}${paddles}${lot}</div><div class="ms-flash"></div>`;
   const placard = (cls, word, sub) => `<div class="ms-card ${cls}"><div class="pc"><b>${word}</b>${sub?`<small>${sub}</small>`:''}</div><i></i></div>`;
   const iplHero = `<div class="ms-sky"></div>${iplField}
     <div class="ms-pitch"></div>

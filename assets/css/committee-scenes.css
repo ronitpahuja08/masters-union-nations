@@ -573,3 +573,86 @@
  32%,100%{opacity:1;transform:translateY(-46vh) rotate(0)}}
 .ms-paddle.win{width:clamp(130px,15vw,220px)}
 @media(max-width:850px){.ms-paddle{width:30vw}.ms-aucthead{display:none}}
+
+/* ======================= v6: IPL bowler's-eye delivery (after the reference clip) + slow paddles ======================= */
+.mc-journey.playing[data-code="IPL"] .mc-heading{animation-name:msTitleLate;animation-duration:8.2s}
+.mc-journey.playing[data-code="IPL"] .mc-photo{animation-duration:8.3s}
+.mc-journey.playing[data-code="IPL"] .ms-beam{animation-duration:8.2s}
+.ms-ipl{inset:0}
+.mc-journey.playing[data-code="IPL"] .ms-ipl{animation:msClear .5s 6.3s forwards}
+.ms-ipl .ms-shade.i{background:radial-gradient(ellipse at 50% 50%,#04101f33 0%,#04101f99 100%)}
+.ms-grass{left:0;right:0;top:34vh;bottom:0;background:repeating-linear-gradient(90deg,#134a2b 0 6vw,#165530 6vw 12vw),#134a2b;opacity:0;box-shadow:inset 0 14px 30px #0008}
+.ms-grass:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#04101f66,#04101f00 40%,#04101f55)}
+.ms-pitch3{left:0;right:0;top:34vh;bottom:0;clip-path:polygon(46.2% 0,53.8% 0,88% 100%,12% 100%);background:linear-gradient(180deg,#bba26e,#e9d6a8 40%,#f1e1b8);opacity:0}
+.ms-pitch3 i{position:absolute;left:46.2%;right:46.2%;top:3%;height:2px;background:#ffffffaa;box-shadow:0 0 0 0}
+.mc-journey.playing[data-code="IPL"] :is(.ms-grass,.ms-pitch3){animation:msFadeIn 1s both}
+/* stumps, far end of the pitch */
+.ms-wicket{left:50%;top:20vh;width:6vh;height:16vh;margin-left:-3vh}
+.ms-wicket i{width:.9vh}.ms-wicket .s1{left:0}.ms-wicket .s2{left:2.55vh}.ms-wicket .s3{left:5.1vh}
+.ms-wicket em{top:-.6vh;width:2.7vh;height:.5vh}.ms-wicket .b1{left:.3vh}.ms-wicket .b2{left:3vh}
+.mc-journey.playing[data-code="IPL"] .ms-wicket i{animation:msStumpUp .6s .3s ease-out both}
+.mc-journey.playing[data-code="IPL"] .ms-wicket .s1{animation:msStumpUp .6s .3s ease-out both,msScat1 8.2s both}
+.mc-journey.playing[data-code="IPL"] .ms-wicket .s2{animation:msStumpUp .6s .45s ease-out both,msScat2 8.2s both}
+.mc-journey.playing[data-code="IPL"] .ms-wicket .s3{animation:msStumpUp .6s .6s ease-out both,msScat3 8.2s both}
+.mc-journey.playing[data-code="IPL"] .ms-wicket .b1{animation:msBailA 8.2s both}
+.mc-journey.playing[data-code="IPL"] .ms-wicket .b2{animation:msBailB 8.2s both}
+@keyframes msScat1{0%,55.5%{translate:0 0;rotate:0deg;scale:1;animation-timing-function:cubic-bezier(.2,.7,.3,1)}100%{translate:-30vh 40vh;rotate:-430deg;scale:2.8}}
+@keyframes msScat2{0%,55.5%{translate:0 0;rotate:0deg;scale:1;animation-timing-function:cubic-bezier(.2,.7,.3,1)}100%{translate:5vh 50vh;rotate:210deg;scale:3}}
+@keyframes msScat3{0%,55.5%{translate:0 0;rotate:0deg;scale:1;animation-timing-function:cubic-bezier(.2,.7,.3,1)}100%{translate:32vh 36vh;rotate:400deg;scale:2.5}}
+@keyframes msBailA{0%,8%{opacity:0;translate:0 0}10%,55.5%{opacity:1;translate:0 0;rotate:0deg}66%{opacity:1;translate:-8vh -12vh;rotate:-360deg}100%{opacity:1;translate:-20vh 26vh;rotate:-900deg;scale:2.2}}
+@keyframes msBailB{0%,8%{opacity:0;translate:0 0}10%,55.5%{opacity:1;translate:0 0;rotate:0deg}66%{opacity:1;translate:11vh -14vh;rotate:380deg}100%{opacity:1;translate:22vh 30vh;rotate:980deg;scale:2.4}}
+/* the ball: huge near the camera, one bounce, shrinking down the pitch into the stumps */
+.ms-ball3{left:calc(50% - 1.5vmin);top:calc(36vh - 1.5vmin);width:3vmin;height:3vmin;border-radius:50%;background:radial-gradient(circle at 34% 28%,#ff9d89,#c8161d 52%,#650a0e);box-shadow:inset -.25vmin -.3vmin .6vmin #0007;opacity:0}
+.ms-ball3:before,.ms-ball3:after{content:"";position:absolute;top:6%;bottom:6%;width:34%;border-radius:50%;border:0 dashed #fff}
+.ms-ball3:before{left:6%;border-right-width:.22vmin}.ms-ball3:after{right:6%;border-left-width:.22vmin}
+.mc-journey.playing[data-code="IPL"] .ms-ball3{animation:msBall6 8.2s both}
+@keyframes msBall6{
+ 0%{opacity:0;transform:translate(0,-18vh) scale(16)}
+ 6%{opacity:1;transform:translate(0,-16vh) scale(16);animation-timing-function:cubic-bezier(.3,0,.6,1)}
+ 22%{opacity:1;transform:translate(0,-2vh) scale(10.5);animation-timing-function:cubic-bezier(.3,0,.7,1)}
+ 34%{opacity:1;transform:translate(0,8vh) scale(6.5);animation-timing-function:cubic-bezier(.45,0,.9,.6)}
+ 46%{opacity:1;transform:translate(0,13vh) scale(4);animation-timing-function:cubic-bezier(.1,.5,.4,1)}
+ 56%{opacity:1;transform:translate(-.5vh,-9vh) scale(1);animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+ 63%{opacity:1;transform:translate(4vh,-4vh) scale(.9);animation-timing-function:cubic-bezier(.5,0,.9,.6)}
+ 72%{opacity:1;transform:translate(10vh,2vh) scale(.9)}
+ 78%,100%{opacity:0;transform:translate(12vh,2vh) scale(.9)}}
+.ms-shadow{left:calc(50% - 2.1vmin);top:calc(36vh - .5vmin);width:4.2vmin;height:1.1vmin;border-radius:50%;background:radial-gradient(#000b,#0000 70%);opacity:0}
+.mc-journey.playing[data-code="IPL"] .ms-shadow{animation:msShadow6 8.2s both}
+@keyframes msShadow6{
+ 0%{opacity:0;transform:translate(0,40vh) scale(15)}
+ 8%{opacity:.5;transform:translate(0,38vh) scale(15)}
+ 22%{opacity:.55;transform:translate(0,30vh) scale(10.5)}
+ 34%{opacity:.6;transform:translate(0,22vh) scale(6.5)}
+ 46%{opacity:.7;transform:translate(0,19vh) scale(4.2)}
+ 56%{opacity:.45;transform:translate(0,2vh) scale(1.1)}
+ 62%,100%{opacity:0;transform:translate(0,2vh) scale(1)}}
+.ms-dust{left:calc(50% - 6vh);top:33vh;width:12vh;height:4vh;border-radius:50%;background:radial-gradient(#fffc,#fff0 70%);opacity:0}
+.mc-journey.playing[data-code="IPL"] .ms-dust{animation:msDust 8.2s both}
+@keyframes msDust{0%,55.5%{opacity:0;transform:scale(.3)}58%{opacity:.95;transform:scale(1)}72%,100%{opacity:0;transform:scale(3.2)}}
+/* paddles: slower, so each one can be read */
+.ms-paddle{left:var(--x)}
+.mc-journey.playing[data-code="IPL"] .ms-paddle{animation:msThrowSlow 3.9s calc(.5s + var(--i)*.62s) cubic-bezier(.22,.7,.3,1) both}
+.mc-journey.playing[data-code="IPL"] .ms-paddle.win{animation:msThrowWinSlow 2.2s calc(.5s + var(--i)*.62s) cubic-bezier(.22,.7,.3,1) both}
+@keyframes msThrowSlow{
+ 0%{opacity:0;transform:translateY(0) rotate(-14deg)}
+ 8%{opacity:1}
+ 36%{transform:translateY(-47vh) rotate(5deg)}
+ 48%{transform:translateY(-46vh) rotate(-3deg)}
+ 76%{opacity:1;transform:translateY(-46vh) rotate(2deg)}
+ 100%{opacity:0;transform:translateY(8vh) rotate(10deg)}}
+@keyframes msThrowWinSlow{
+ 0%{opacity:0;transform:translateY(0) rotate(-14deg)}
+ 8%{opacity:1}
+ 55%{transform:translateY(-47vh) rotate(5deg)}
+ 78%{transform:translateY(-46vh) rotate(-3deg)}
+ 100%{opacity:1;transform:translateY(-46vh) rotate(0)}}
+.ms-aucthead{top:12%}
+.mc-journey.playing[data-code="IPL"] .ms-aucthead small{animation:msFadeUp .8s .3s both}
+/* lot card, hammer and SOLD, timed to the stumps going down */
+.mc-journey.playing[data-code="IPL"] .ms-lot{animation:msLotIn 1.2s .8s cubic-bezier(.2,1,.3,1) both}
+.mc-journey.playing[data-code="IPL"] .ms-sold{animation:msSold6 8.2s both}
+.mc-journey.playing[data-code="IPL"] .ms-gavel2 .gv{animation:msGavel6 8.2s both}
+@keyframes msSold6{0%,55.5%{opacity:0;transform:translate(-50%,-50%) rotate(-9deg) scale(2.6)}59%,100%{opacity:1;transform:translate(-50%,-50%) rotate(-9deg) scale(1)}}
+@keyframes msGavel6{0%,48%{transform:rotate(-55deg)}55.5%{transform:rotate(8deg);animation-timing-function:ease-out}60%{transform:rotate(-14deg)}65%,100%{transform:rotate(-4deg)}}
+.mc-journey.playing[data-code="IPL"] .ms-flash{animation:msFlash6 8.2s both}
+@keyframes msFlash6{0%,74%{opacity:0}80%{opacity:.8}90%,100%{opacity:0}}
