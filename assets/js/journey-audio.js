@@ -20,9 +20,9 @@
   }, { once: true });
   let scene = '', progress = 0;
   let enabled = topToggle.getAttribute('aria-pressed') === 'true';
-  let duckTimer = 0, resetLinePlayed = false;
+  let duckTimer = 0, resetLinePlayed = false, voiceActive = false, fadeTimer = 0, voiceTimer = 0;
   const overlayMuted = () => document.body.classList.contains('overlay');
-  const desiredScene = () => progress >= .83 ? 'silence' : 'epic';
+  const desiredScene = () => 'epic';
 
   function updateButton() {
     const mapSilent = enabled && scene === 'silence';
@@ -33,7 +33,17 @@
   }
   function mixLevel() {
     const audible = enabled && !overlayMuted();
-    epic.volume = audible && scene === 'epic' ? .42 : 0;
+    clearInterval(fadeTimer);
+    epic.volume = audible && scene === 'epic' && !voiceActive ? .42 : 0;
+  }
+  function fadeEpic(to, ms) {
+    clearInterval(fadeTimer);
+    const from = epic.volume, t0 = performance.now();
+    fadeTimer = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      epic.volume = Math.max(0, Math.min(1, from + (to - from) * (k * k * (3 - 2 * k))));
+      if (k >= 1) clearInterval(fadeTimer);
+    }, 40);
   }
   function changeScene(next) {
     if (scene === next) return;
@@ -55,6 +65,7 @@
     else {
       clearTimeout(duckTimer);
       epic.pause();
+      voiceActive = false; clearTimeout(voiceTimer);
       explosion.pause(); explosion.currentTime = 0;
       resetLine.pause(); resetLine.currentTime = 0;
       mixLevel();
@@ -74,14 +85,19 @@
     if (resetLinePlayed) return;
     resetLinePlayed = true;
     clearTimeout(duckTimer);
-    epic.pause();
-    explosion.pause();
     if (!enabled || overlayMuted()) return;
-    resetLine.currentTime = 0;
-    resetLine.play().catch(() => {});
+    voiceActive = true;
+    fadeEpic(0, 700);            // the blast keeps ringing; the music dissolves under it
+    voiceTimer = setTimeout(() => { resetLine.currentTime = 0; resetLine.play().catch(() => { voiceActive = false; mixLevel(); }); }, 550);
   }
+  resetLine.addEventListener('ended', () => {
+    voiceActive = false;
+    if (enabled && !overlayMuted() && scene === 'epic') { if (epic.paused) epic.play().catch(() => {}); fadeEpic(.42, 2200); }
+  });
   function resetCycle() {
     resetLinePlayed = false;
+    clearTimeout(voiceTimer);
+    voiceActive = false;
     resetLine.pause();
     resetLine.currentTime = 0;
   }
@@ -106,7 +122,7 @@
     if (event.target.closest('#journeyMusicToggle,#soundToggle')) return;
     if (enabled && scene === 'epic' && epic.paused) epic.play().catch(() => updateButton());
   }, { once: true });
-  const voicePlaying = () => resetLinePlayed && !resetLine.paused && !resetLine.ended;
+  const voicePlaying = () => voiceActive && (!resetLine.ended);
   window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload, voicePlaying };
   progress = Number(getComputedStyle(document.getElementById('journeyStick')).getPropertyValue('--p')) || 0;
   updateButton();
