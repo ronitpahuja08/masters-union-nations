@@ -782,6 +782,3 @@
 .ms-podium .ms-gavel2{filter:drop-shadow(0 10px 12px #0009)}
 .ms-stagelight{inset:0;background:radial-gradient(ellipse 34% 52% at 50% 56%,#ffe9b844,#ffe9b800 70%);mix-blend-mode:screen}
 .ms-floor{left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#00000000,#0a1424ee 70%)}
-
-/* no committee-name title card at the end of the intros: the scene hands straight over to the page */
-.mc-journey .mc-heading,.mcc-flight-title,.dc-title,.ip-title-lockup{display:none!important}

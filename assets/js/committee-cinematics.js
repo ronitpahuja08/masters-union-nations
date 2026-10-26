@@ -4,11 +4,11 @@
   'use strict';
 
   const CONFIG = {
-    UNHRC: { duration: 6200, city: 'GENEVA / SWITZERLAND', eyebrow: 'THE EVIDENCE FILES', name: 'UNHRC', phrase: 'HUMAN RIGHTS CANNOT WAIT', hero: ['HUMAN RIGHTS', 'CANNOT WAIT.'] },
-    CCEP:  { duration: 5100, city: 'SINGAPORE / REPUBLIC OF SINGAPORE', eyebrow: 'A NEW WORLD ECONOMY', name: 'CCEP', phrase: 'THE FUTURE IS NEGOTIABLE', hero: ['THE FUTURE', 'IS NEGOTIABLE.'] },
-    IPL:   { duration: 7000, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
-    STARTUP: { duration: 4600, city: 'SAN FRANCISCO / USA', eyebrow: 'DEMO DAY', name: 'STARTUP', phrase: 'BUILD THE NEXT BIG THING', hero: ['STARTUP', 'BOARDROOM.'] },
-    AIPPM: { duration: 3000, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION' },
+    UNHRC: { duration: 7400, city: 'GENEVA / SWITZERLAND', eyebrow: 'THE EVIDENCE FILES', name: 'UNHRC', phrase: 'HUMAN RIGHTS CANNOT WAIT', hero: ['HUMAN RIGHTS', 'CANNOT WAIT.'] },
+    CCEP:  { duration: 6400, city: 'SINGAPORE / REPUBLIC OF SINGAPORE', eyebrow: 'A NEW WORLD ECONOMY', name: 'CCEP', phrase: 'THE FUTURE IS NEGOTIABLE', hero: ['THE FUTURE', 'IS NEGOTIABLE.'] },
+    IPL:   { duration: 8400, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
+    STARTUP: { duration: 6200, city: 'SAN FRANCISCO / USA', eyebrow: 'DEMO DAY', name: 'STARTUP', phrase: 'BUILD THE NEXT BIG THING', hero: ['STARTUP', 'BOARDROOM.'] },
+    AIPPM: { duration: 3800, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION' },
   };
   const HEROES = {
     UNHRC: { hero: ['UNHRC', ''], tag: 'HUMAN RIGHTS CANNOT WAIT.' },
