@@ -71,10 +71,10 @@
     body.classList.toggle('gb-on',gb>.04);
     body.classList.toggle('gb-strike',p>.32);
     var flash=smooth(p,.622,.64)*(1-smooth(p,.66,.70));
-    var blackout=smooth(p,.81,.845)*(1-smooth(p,.93,.99));
+    var blackout=smooth(p,.70,.745)*(1-smooth(p,.815,.865));   // the words ride over the breaking earth; no black cut
     $('#impactFlash').style.opacity=(flash*.82).toFixed(3);
     $('#impactVeil').style.opacity=blackout.toFixed(3);
-    var inBlackout=p>=.845&&p<.94;
+    var inBlackout=p>=.72&&p<.85;
     if(inBlackout!==blackoutEntered){
       blackoutEntered=inBlackout;
       body.classList.toggle('in-blackout',inBlackout);
@@ -88,10 +88,10 @@
     if(!landed&&p>=LAND)landed=true;
     else if(landed&&p<.93)landed=false;
     if(globeOn){
-      cv.style.opacity=String(smooth(p,.27,.34)*(1-smooth(p,.82,.93)));
-      main.style.opacity=smooth(p,.90,.985);
+      cv.style.opacity=String(smooth(p,.27,.34)*(1-smooth(p,.74,.88)));
+      main.style.opacity=smooth(p,.68,.86);   // the map comes up while the earth is still breaking apart
     }else{
-      main.style.opacity=smooth(p,.90,.985);
+      main.style.opacity=smooth(p,.68,.86);
       cv.style.opacity=0;
     }
     // Start the audio on the contact pose and first shock glow, before the
@@ -110,18 +110,17 @@
       var elapsed=now-handoffStart;
       if(reducedMotion){p=elapsed<460?.86:1;}
       else if(elapsed<260)p=handoffFrom+(.645-handoffFrom)*smooth(elapsed,0,260);
-      else if(elapsed<850)p=.645+(.86-.645)*smooth(elapsed,260,850);
-      else if(elapsed<2250)p=.86;
-      else p=.86+.14*smooth(elapsed,2250,2950);
+      else if(elapsed<1700)p=.645+(.86-.645)*smooth(elapsed,260,1700);
+      else p=.86+.14*smooth(elapsed,1700,2250);
       target=p;
       apply();
-      if(!mapScrollDone&&elapsed>=(reducedMotion?0:850)){
+      if(!mapScrollDone&&elapsed>=(reducedMotion?0:1700)){
         mapScrollDone=true;
         holdScrollY=journeyTop+range();
-        // Move the document once while the reset card fully covers the stage.
+        // Move the document once, when the map is already fully on screen.
         window.scrollTo({top:holdScrollY,behavior:'instant'});
       }
-      if(elapsed<(reducedMotion?460:2950)){raf=requestAnimationFrame(step);return;}
+      if(elapsed<(reducedMotion?460:2250)){raf=requestAnimationFrame(step);return;}
       phase='map';p=target=1;apply();return;
     }
     var d=target-p;
