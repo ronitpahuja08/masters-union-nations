@@ -6,7 +6,7 @@
   const epic = new Audio('assets/audio/theseus-athenian-hero.mp3');
   const explosion = new Audio('assets/audio/bomb-blast.mp3');
   // Replace this self-contained cue with a mastered voice asset without changing the timeline.
-  const resetLine = new Audio('assets/audio/world-resets-voice.wav');
+  const resetLine = new Audio('assets/audio/world-resets-voice.mp3');
   epic.loop = true;
   epic.preload = 'metadata';
   epic.volume = .42;
@@ -106,7 +106,8 @@
     if (event.target.closest('#journeyMusicToggle,#soundToggle')) return;
     if (enabled && scene === 'epic' && epic.paused) epic.play().catch(() => updateButton());
   }, { once: true });
-  window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload };
+  const voicePlaying = () => resetLinePlayed && !resetLine.paused && !resetLine.ended;
+  window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload, voicePlaying };
   progress = Number(getComputedStyle(document.getElementById('journeyStick')).getPropertyValue('--p')) || 0;
   updateButton();
 })();
