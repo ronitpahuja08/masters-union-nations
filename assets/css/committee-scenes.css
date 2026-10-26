@@ -789,5 +789,5 @@ body.xfade .committee-page{transition:opacity .7s ease,visibility .7s,transform 
 body.xfade .dalal-page{transition:opacity .8s ease,visibility .8s,transform .95s cubic-bezier(.2,.7,.2,1),filter .8s ease!important}
 .ip-cinematic.handoff{transition:opacity .95s cubic-bezier(.4,0,.2,1),visibility .95s!important}
 
-.committee-brand-mark{width:auto;height:50px;aspect-ratio:240/290;object-fit:contain;border-radius:10px}
-@media(max-width:800px){.committee-brand-mark{height:44px}}
+.committee-brand-mark{width:44px;height:44px;aspect-ratio:1;object-fit:cover;border-radius:50%}
+@media(max-width:800px){.committee-brand-mark{width:40px;height:40px}}
