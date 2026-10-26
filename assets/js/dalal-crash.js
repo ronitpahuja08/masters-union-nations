@@ -21,7 +21,7 @@ if (root && canvas) {
   }
   function draw(now) {
     if (!active || !ctx) return;
-    const elapsed = now - started, digital = elapsed >= 850, crash = elapsed >= 1750, title = elapsed >= 2650, travel = Math.max(0, (elapsed - 1750) / 1000);
+    const elapsed = now - started, digital = elapsed >= 850, crash = elapsed >= 1750, title = elapsed >= 2500, travel = Math.max(0, (elapsed - 1750) / 1000);
     root.classList.toggle('market-awake', elapsed > 0);
     root.classList.toggle('market-digital', digital);
     root.classList.toggle('market-falling', crash);

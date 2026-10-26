@@ -57,6 +57,7 @@
 .committee-page.open[data-committee="AIPPM"] .mu-parliament-stage .mu-podium{display:none!important}
 
 /* Dalal Street: historic trading floor, title and controls above a restrained simulated quote board. */
+.dalal-page:not(.open) .dp-hero:before,.dalal-page:not(.open) .dp-bse-panorama,.dalal-page:not(.open) .dp-scroll{background-image:none!important}
 .dalal-page.open .dp-scroll{background:linear-gradient(180deg,#090a0bd1,#090a0bc2),url('../images/dalal-trading-floor-v3.webp') center/cover fixed no-repeat!important}
 .dalal-page.open .dp-hero:before{z-index:-2;background-image:linear-gradient(90deg,#080909bb 0,#08090950 48%,#08090924 100%),linear-gradient(0deg,#080909ed,transparent 42%,#08090941),url('../images/dalal-trading-floor-v3.webp')!important;background-position:center;background-size:cover;background-repeat:no-repeat;animation:dpHeroArrival 1.5s ease both}
 .dalal-page.open .dp-hero:after{z-index:-1;background:linear-gradient(0deg,#090a0be0,transparent 67%,#090a0b48)!important}
@@ -143,7 +144,7 @@
 .committee-page.open:is([data-committee="MCC"],[data-committee="IP"],[data-committee="AIPPM"]) .cp-awards article b{margin:4px 0 10px}
 .committee-page.open[data-committee="MCC"] .cp-steps li>i{font-size:13px;line-height:1.5;padding-top:2px}
 .committee-page.open[data-committee="MCC"] .mu-mcc-tagline{display:block;margin:0 0 14px;color:#ede5ff;font:600 clamp(11px,1vw,14px)/1.6 var(--mono,monospace);letter-spacing:.19em;text-shadow:0 3px 22px #5e438e99}
-.committee-page .mu-mcc-tagline[hidden]{display:none!important}
+.committee-page:not([data-committee="MCC"]) .mu-mcc-tagline{display:none!important}
 .committee-page.open[data-committee="AIPPM"] .cp-hero h1{font-size:clamp(3.2rem,7.9vw,7.6rem)!important;max-width:1100px}
 .committee-page.open[data-committee="AIPPM"] .cp-hero-copy{margin-bottom:clamp(90px,15vh,150px)}
 
@@ -193,6 +194,34 @@
   .committee-page[data-committee="AIPPM"] .mu-sprite-ravi{left:50%;width:clamp(82px,25vw,114px)}
   .committee-page[data-committee="AIPPM"] .mu-sprite-sonia{left:81%}
   .committee-page[data-committee="AIPPM"] .mu-illustration-label{font-size:7px;bottom:1%}
+}
+
+/* The four editorial heroes share one aligned action row. Other committees retain their layout. */
+.mu-hero-actions{display:contents}
+.committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .mu-hero-actions{display:flex;align-items:stretch;justify-content:center;gap:16px;margin-top:22px;flex-wrap:wrap}
+.committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .mu-hero-actions :is(.cp-primary,.mu-start-registration){display:inline-flex;align-items:center;justify-content:space-between;gap:18px;min-width:220px;min-height:52px;margin:0;padding:13px 21px;border-radius:999px;font:700 13px/1.2 var(--sans,Arial);white-space:nowrap}
+.committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .mu-hero-actions .mu-start-registration{border-color:#f5e8d4;background:#f5e8d4;color:#16141a}
+.committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .cp-hero-copy{align-items:center;text-align:center}
+.committee-page.open[data-committee="AIPPM"] .cp-hero h1 br{display:none}
+.committee-page.open[data-committee="AIPPM"] .cp-hero h1 em:empty{display:none}
+.committee-page.open[data-committee="IP"] .cp-hero h1{font-size:clamp(3.4rem,8vw,8rem)!important}
+.committee-page.open[data-committee="AIPPM"] .cp-hero-copy{margin-bottom:clamp(100px,16vh,150px)}
+.dalal-page.open .dp-hero-actions{gap:16px}
+.dalal-page.open .dp-hero-actions :is(.dp-primary,.mu-dalal-register){min-height:52px;min-width:220px;padding:13px 21px}
+.mcc-flight-title h1{font-size:clamp(2.5rem,5.6vw,5.8rem);line-height:1.04;letter-spacing:-.055em}
+.dalal-crash .dc-title h1{font-size:clamp(2.8rem,7vw,7rem);line-height:.96;letter-spacing:-.065em}
+.mc-journey[data-code="AIPPM"] .mc-heading h2{max-width:min(1100px,90vw);font-size:clamp(2.8rem,7.5vw,7.2rem);line-height:.97;letter-spacing:-.065em}
+.mc-journey.playing[data-code="AIPPM"] .mc-heading{animation:muAippmTagReveal 3.8s cubic-bezier(.18,.7,.2,1) both}
+@keyframes muAippmTagReveal{0%,34%{opacity:0;transform:translateY(-35%) scale(.95);filter:blur(12px)}48%,100%{opacity:1;transform:translateY(-50%) scale(1);filter:none}}
+@media(max-width:560px){
+  .committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .mu-hero-actions{flex-direction:column;width:min(280px,100%);gap:11px;margin-inline:auto}
+  .committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .mu-hero-actions :is(.cp-primary,.mu-start-registration){width:100%;min-width:0;min-height:46px;padding:11px 18px;font-size:12px}
+  .committee-page.open[data-committee="AIPPM"] .cp-hero h1{font-size:clamp(3.3rem,16vw,5.2rem)!important}
+  .committee-page.open[data-committee="AIPPM"] .cp-hero-copy{margin-bottom:5vh}
+  .dalal-page.open .dp-hero-actions :is(.dp-primary,.mu-dalal-register){min-height:46px;min-width:0;padding:11px 18px}
+  .mcc-flight-title h1{font-size:clamp(1.85rem,7.5vw,3.5rem)}
+  .dalal-crash .dc-title h1{font-size:clamp(2rem,8.5vw,4.2rem)}
+  .mc-journey[data-code="AIPPM"] .mc-heading h2{font-size:clamp(2.35rem,11vw,4rem)}
 }
 
 /* UNHRC / CCEP / STARTUP: the hero photo stays visible behind every section while scrolling */

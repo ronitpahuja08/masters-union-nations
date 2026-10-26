@@ -9,7 +9,7 @@ const mix = (a, b, t) => a + (b - a) * t;
 
 try {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1 : 1.2));
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -23,9 +23,11 @@ try {
   const fill = new THREE.DirectionalLight(0x8a283f, .32); fill.position.set(2, -1, -3); scene.add(fill);
 
   const loader = new THREE.TextureLoader();
+  let textureReady = false, poseCount = 0, lastRenderedP = -1;
   const atlas = loader.load('assets/images/world-atlas-india-focus.png', texture => {
     colorizeFragments(texture.image);
-    render(currentP);
+    textureReady = true;
+    render(currentP, true);
   }, undefined, () => window.dispatchEvent(new Event('globe-failed')));
   atlas.colorSpace = THREE.SRGBColorSpace;
   atlas.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
@@ -72,7 +74,7 @@ try {
   // Thousands of small surface fragments create the illusion of a much larger burst.
   // Their depth accelerates toward the camera so the globe appears to break through the screen.
   const random = n => { const x = Math.sin(n * 127.1 + 78.233) * 43758.5453; return x - Math.floor(x); };
-  const fragmentCount = innerWidth < 700 ? 8200 : 16800;
+  const fragmentCount = innerWidth < 700 ? 3800 : 9000;
   const fragmentBase = new Float32Array(fragmentCount * 3);
   const fragmentData = new Float32Array(fragmentCount * 3);
   const fragmentColors = new Float32Array(fragmentCount * 3);
@@ -96,7 +98,7 @@ try {
   fragments.renderOrder = 4;
   scene.add(fragments);
 
-  const sparkCount = innerWidth < 700 ? 1300 : 2600;
+  const sparkCount = innerWidth < 700 ? 650 : 1300;
   const sparkData = new Float32Array(sparkCount * 3);
   const sparkColors = new Float32Array(sparkCount * 3);
   for (let i = 0; i < sparkCount; i++) {
@@ -114,7 +116,7 @@ try {
   sparks.renderOrder = 6;
   scene.add(sparks);
 
-  const trailCount = innerWidth < 700 ? 120 : 240;
+  const trailCount = innerWidth < 700 ? 80 : 140;
   const trailData = new Float32Array(trailCount * 6);
   const trailGeo = new THREE.BufferGeometry();
   trailGeo.setAttribute('position', new THREE.BufferAttribute(trailData, 3));
@@ -124,7 +126,7 @@ try {
   trails.renderOrder = 7;
   scene.add(trails);
 
-  const chipCount = innerWidth < 700 ? 180 : 360;
+  const chipCount = innerWidth < 700 ? 110 : 200;
   const chipMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, depthTest: false });
   const chips = new THREE.InstancedMesh(new THREE.TetrahedronGeometry(.018, 0), chipMaterial, chipCount);
   chips.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -170,8 +172,9 @@ try {
       texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
       material.map = texture;
       material.needsUpdate = true;
-      render(currentP);
-    });
+      poseCount++;
+      render(currentP, true);
+    }, undefined, () => window.dispatchEvent(new Event('globe-failed')));
     return mesh;
   }
   const windupPose = pose('assets/images/mun-statue-two-hand-windup.webp', 1.4);
@@ -189,13 +192,16 @@ try {
     renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
     if (camera.aspect < 1) { camera.position.z = 10.2; planet.position.set(.48, .02, 0); figure.position.x = -1.08; figure.scale.setScalar(.84); }
     else { camera.position.z = 8.6; planet.position.set(.95, -.23, 0); figure.position.x = -1.35; figure.scale.setScalar(1.12); }
-    render(currentP);
+    render(currentP, true);
   }
 
   let currentP = 0;
-  function render(p = currentP) {
+  function render(p = currentP, force = false) {
     currentP = p;
-    if (!renderer) return;
+    // Keep the last progress while offscreen. Draw only after every pose and the atlas are ready.
+    if (!renderer || !textureReady || poseCount < 2 || document.hidden || p < .255 || p > .965) return;
+    if (!force && Math.abs(p - lastRenderedP) < .0008) return;
+    lastRenderedP = p;
     const globeIn = prefersReduced ? (p > .27 ? 1 : 0) : smooth(p, .27, .36);
     const actorIn = prefersReduced ? 0 : smooth(p, .32, .43) * (1 - smooth(p, .73, .86));
     const windup = smooth(p, .45, .54);
@@ -287,6 +293,7 @@ try {
   resize();
   addEventListener('resize', resize, { passive: true });
   addEventListener('journey', e => render(e.detail));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(currentP, true); });
   render(0);
 } catch (err) {
   console.warn('3D hammer journey unavailable; using the accessible fade transition.', err);

@@ -8,15 +8,15 @@
     CCEP:  { duration: 6400, city: 'SINGAPORE / REPUBLIC OF SINGAPORE', eyebrow: 'A NEW WORLD ECONOMY', name: 'CCEP', phrase: 'THE FUTURE IS NEGOTIABLE', hero: ['THE FUTURE', 'IS NEGOTIABLE.'] },
     IPL:   { duration: 8400, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
     STARTUP: { duration: 6200, city: 'SAN FRANCISCO / USA', eyebrow: 'DEMO DAY', name: 'STARTUP', phrase: 'BUILD THE NEXT BIG THING', hero: ['STARTUP', 'BOARDROOM.'] },
-    AIPPM: { duration: 3800, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION', hero: ['THE HOUSE', 'IS IN SESSION.'] },
+    AIPPM: { duration: 3800, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'THE HOUSE IS IN SESSION.', phrase: 'AIPPM · NEW DELHI' },
   };
   const HEROES = {
     UNHRC: { hero: ['HUMAN RIGHTS', 'CANNOT WAIT.'], tag: 'JUSTICE WITHOUT BORDERS' },
     CCEP: { hero: ['THE FUTURE', 'IS NEGOTIABLE.'], tag: 'THE COMMERCE OF TOMORROW' },
-    AIPPM: { hero: ['THE HOUSE', 'IS IN SESSION.'], tag: 'POLITICS. POLICY. POWER.' },
+    AIPPM: { hero: ['AIPPM', ''], tag: 'POLITICS. POWER. POLICY.' },
     STARTUP: { hero: ['STARTUP', 'BOARDROOM.'], tag: 'BUILD THE NEXT BIG THING' },
     IPL: { hero: null, tag: null, sceneOnly: true },
-    IP: { hero: ['THE WORLD', 'IS WATCHING.'], tag: 'THE STORY STARTS HERE' }
+    IP: { hero: ['INTERNATIONAL', 'PRESS'], tag: 'EVERY STORY CHANGES THE NARRATIVE.' }
   };
   const $ = (s, root = document) => root.querySelector(s);
   const videoSrc = 'assets/video/san-francisco-golden-gate-pexels.mp4';
@@ -93,7 +93,12 @@
   function decoratePage(code){
     const page=$('#committeePage');
     const hero=page && $('.cp-hero',page);
-    if (!hero || !HEROES[code]) return;
+    if (!hero) return;
+    if (!HEROES[code]) {
+      $('.cinema-hero-tag',hero)?.remove();
+      $('.cinema-hero-scene',hero)?.remove();
+      return;
+    }
     let scene=$('.cinema-hero-scene',hero);
     if (!scene) {
       scene=document.createElement('div');scene.className='cinema-hero-scene';scene.setAttribute('aria-hidden','true');
