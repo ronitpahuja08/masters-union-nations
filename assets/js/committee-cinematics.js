@@ -6,7 +6,7 @@
   const CONFIG = {
     UNHRC: { duration: 7400, city: 'GENEVA / SWITZERLAND', eyebrow: 'THE EVIDENCE FILES', name: 'UNHRC', phrase: 'HUMAN RIGHTS CANNOT WAIT', hero: ['HUMAN RIGHTS', 'CANNOT WAIT.'] },
     CCEP:  { duration: 5400, city: 'SINGAPORE / REPUBLIC OF SINGAPORE', eyebrow: 'A NEW WORLD ECONOMY', name: 'CCEP', phrase: 'THE FUTURE IS NEGOTIABLE', hero: ['THE FUTURE', 'IS NEGOTIABLE.'] },
-    IPL:   { duration: 5600, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
+    IPL:   { duration: 6400, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
     STARTUP: { duration: 7600, city: 'SAN FRANCISCO / USA', eyebrow: 'DEMO DAY', name: 'STARTUP', phrase: 'BUILD THE NEXT BIG THING', hero: ['STARTUP', 'BOARDROOM.'] },
     AIPPM: { duration: 3800, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION', hero: ['THE HOUSE', 'IS IN SESSION.'] },
   };
@@ -81,6 +81,7 @@
     $('#mcHeadingTitle',root).textContent=cfg.name;
     $('#mcHeadingSub',root).textContent=cfg.phrase;
     $('#mcPlayfield',root).innerHTML=(window.MUNScenes?.intro[code])||timelineScreens[code];
+    window.MUNScenes?.onPlay?.(code,root);
     root.setAttribute('aria-hidden','false');
     // Restart CSS timeline even when the same committee is opened twice.
     void root.offsetWidth;

@@ -33,12 +33,14 @@
       <circle cx="252" cy="220" r="13" fill="#d9a17a"/>
     </g>
   </svg>`;
-  const iplIntro = `${iplField}
-    <img class="ms-batter2" src="assets/images/ipl-batsman.png" alt="">
-    <svg class="ms-swoosh" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="swg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff6c8"/></linearGradient></defs><path d="M40 60 C36 32 48 13 61.5 18.3" pathLength="1"/></svg>
-    <div class="ms-ball"></div>
-    <div class="ms-impact"></div>
-    <div class="ms-scoreboard"><span>LIVE · MASTERS UNION PREMIER LEAGUE</span><b>MUN 184/3</b><small>OVER 19.4</small></div>`;
+  const bids = [['MUN KNIGHTS','#e8222c','2.0'],['GURU GIANTS','#2f7bff','4.5'],['DLF DAREDEVILS','#f6a21b','7.0'],['CYBER KINGS','#1fbf8a','9.5'],['UNION TITANS','#b06bff','12.0']];
+  const ladder = `<div class="ms-ladder"><small>LIVE AUCTION · BIDDING</small>${bids.map(([n,c,v],i)=>`<div class="bid" style="--c:${c};--i:${i}"><i></i><span>${n}</span><b>₹ ${v} CR</b></div>`).join('')}</div>`;
+  const lot = `<div class="ms-lot"><small>LOT 07 · ALL-ROUNDER</small>
+    <div class="who"><i></i><b>PLAYER<br>AUCTION</b></div><span>BASE PRICE ₹ 2.0 CR</span>
+    <div class="ms-sold"><b>SOLD</b><small>₹ 12.0 CR · UNION TITANS</small></div>
+    <svg class="ms-gavel2" viewBox="0 0 120 120" aria-hidden="true"><g class="gv"><rect x="20" y="52" width="86" height="12" rx="6" fill="#8a5a2b"/><rect x="2" y="34" width="38" height="46" rx="8" fill="#e9c885"/></g></svg></div>`;
+  const wicket = `<div class="ms-pitch2"></div><div class="ms-wicket"><i class="s1"></i><i class="s2"></i><i class="s3"></i><em class="b1"></em><em class="b2"></em></div><div class="ms-ball2"></div>`;
+  const iplIntro = `${iplField}<div class="ms-shade i"></div>${wicket}${ladder}${lot}<div class="ms-flash"></div>`;
   const placard = (cls, word, sub) => `<div class="ms-card ${cls}"><div class="pc"><b>${word}</b>${sub?`<small>${sub}</small>`:''}</div><i></i></div>`;
   const iplHero = `<div class="ms-sky"></div>${iplField}
     <div class="ms-pitch"></div>
@@ -77,11 +79,11 @@
   const wreath = `<svg class="ms-wreath" viewBox="-120 -120 240 240" aria-hidden="true"><g fill="#cfe9ff">${Array.from({length:22},(_,i)=>{const a=i*(360/22);return `<g transform="rotate(${a}) rotate(${i%2?18:-18} 0 -92)"><ellipse class="lf" style="--d:${(i*.045).toFixed(2)}s" cx="0" cy="-92" rx="5" ry="14"/></g>`}).join('')}</g></svg>`;
   const rings = `<div class="ms-rings"><i></i><i></i><i></i><i></i></div>`;
   const pops = [['HUMAN RIGHTS','ENGLISH','en'],['LIBERTÉ','FRANÇAIS','fr'],['СВОБОДА','РУССКИЙ','ru'],['كرامة','العربية','ar'],['正义','中文','zh'],['JUSTICIA','ESPAÑOL','es'],['DIGNITY','ENGLISH','en'],['ÉGALITÉ','FRANÇAIS','fr'],['РАВЕНСТВО','РУССКИЙ','ru'],['عدالة','العربية','ar'],['平等','中文','zh'],['PAZ','ESPAÑOL','es']];
-  const popHTML = pops.map(([w,n,l],i)=>`<div class="ms-pop ${i%2?'r':'l'}" style="--i:${i};--y:${[16,30,46,62,76,38][i%6]}%" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('');
+  const popHTML = pops.map(([w,n,l],i)=>`<div class="ms-pop ${i%2?'r':'l'}" style="--i:${i};--y:${[12,26,40,54,64,33][i%6]}%" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('');
   const globe = `<svg class="ms-globe" viewBox="-60 -60 120 120" aria-hidden="true"><circle r="50" fill="#0b2a52" fill-opacity=".55" stroke="#9ed0ff" stroke-width="1.4"/>
     <g fill="none" stroke="#9ed0ff" stroke-width=".8" opacity=".85"><ellipse class="m m1" rx="50" ry="50"/><ellipse class="m m2" rx="50" ry="50"/><ellipse class="m m3" rx="50" ry="50"/><path d="M-50 0H50M-43 -25H43M-43 25H43M-26 -43H26M-26 43H26"/></g></svg>`;
   const unhrcIntro = `<div class="ms-shade u"></div>${rings}${wreath}${globe}
-    <div class="ms-udhr"><small>UNIVERSAL DECLARATION OF HUMAN RIGHTS</small><div class="ms-art"></div></div>
+    <div class="ms-udhr"><small>UNIVERSAL DECLARATION OF HUMAN RIGHTS · 30 ARTICLES</small><div class="ms-art"></div></div>
     ${popHTML}${flagRow}<div class="ms-stars" style="inset:0">${stars(26, 11)}</div>`;
   const unhrcHero = `<div class="ms-shade u"></div>${rings}${langHTML('hero')}${flagRow}<div class="ms-stars" style="inset:0">${stars(18, 2)}</div>`;
 
@@ -97,8 +99,22 @@
     <div class="ms-ledger"><small>GLOBAL TRADE NETWORK</small><b>DEAL CLOSED</b><span>POLICY · ENTERPRISE · COMMERCE</span></div>`;
   const ccepHero = `<div class="ms-grid3"></div>${arcSVG}${ship}<div class="ms-skyline2"></div>${ccepTicker}`;
 
+  const onPlay = (code, root) => {
+    if (code !== 'STARTUP') return;
+    const el = root.querySelector('.ms-vnum'); if (!el) return;
+    const t0 = performance.now() + 350, dur = 5400, a = 1e4, b = 1e8;
+    const fmt = v => v >= 1e6 ? '$' + (v / 1e6).toFixed(v >= 1e7 ? 0 : 1).replace(/\.0$/, '') + 'M' : '$' + Math.round(v / 1e3) + 'K';
+    el.textContent = fmt(a);
+    const timer = setInterval(() => {
+      if (!el.isConnected || !root.classList.contains('playing')) { clearInterval(timer); return; }
+      const p = Math.min(1, Math.max(0, (performance.now() - t0) / dur));
+      el.textContent = p >= 1 ? '$100M' : fmt(a * Math.pow(b / a, p));
+      if (p >= 1) clearInterval(timer);
+    }, 40);
+  };
   window.MUNScenes = {
-    durations: { IPL: 5600, STARTUP: 7600, UNHRC: 7400, CCEP: 5400 },
+    onPlay,
+    durations: { IPL: 6400, STARTUP: 7600, UNHRC: 7400, CCEP: 5400 },
     intro: { IPL: iplIntro, STARTUP: startupIntro, UNHRC: unhrcIntro, CCEP: ccepIntro },
     hero:  { IPL: iplHero, STARTUP: startupHero, UNHRC: unhrcHero, CCEP: ccepHero }
   };
