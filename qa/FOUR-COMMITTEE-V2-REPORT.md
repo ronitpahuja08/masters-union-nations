@@ -16,24 +16,24 @@ Environment: local static server (`127.0.0.1:8765`), desktop 1440 × 900 and mob
 
 | Flow | Desktop | Mobile | Result |
 | --- | --- | --- | --- |
-| MCC | [Hero](screenshots/mcc-desktop.png), [scrolled content](screenshots/mcc-scroll-desktop.png) | [Hero](screenshots/mcc-mobile.png) | Entrance opened the existing page automatically; hero registration button reached the inline form. |
-| International Press | [Hero](screenshots/ip-desktop.png), [scrolled content](screenshots/ip-scroll-desktop.png) | [Hero](screenshots/ip-mobile.png) | Entrance opened the page automatically; newsroom hero and content remained readable. |
-| AIPPM | [Hero](screenshots/aippm-desktop.png), [registration](screenshots/aippm-register-desktop.png) | [Hero](screenshots/aippm-mobile.png) | Entrance opened the page automatically; Parliament hero and form were usable. |
-| Dalal Street | [Hero](screenshots/dalal-desktop.png), [scrolled content](screenshots/dalal-scroll-desktop.png) | [Hero](screenshots/dalal-mobile.png), [registration](screenshots/dalal-register-mobile.png) | Entrance opened the page automatically; ticker stayed below the title; form replaced the old payment path. |
-| World map | [Desktop](screenshots/map-desktop.png) | [Mobile](screenshots/map-mobile.png) | Eight pins remained clickable. A pointer drag left desktop map bounds unchanged; mobile horizontal swipe preserved aspect ratio. |
+| MCC | [Hero](screenshots/mcc-repair-desktop.png) | [Hero](screenshots/mcc-repair-mobile.png) | Video transition handed off to the existing page. New York backdrop, moving train and registration entry point fit the mobile viewport. |
+| International Press | [Hero](screenshots/ip-repair-desktop.png) | [Hero](screenshots/ip-mobile.png) | Newspaper intro handed off to the newsroom page. Desktop frame and committee content were readable. |
+| AIPPM | [Hero](screenshots/aippm-repair-desktop.png) | [Hero](screenshots/aippm-repair-mobile.png) | Parliament transition handed off to the page. Removed the empty side podium panels; the mobile hero has no horizontal overflow. |
+| Dalal Street | [Hero](screenshots/dalal-repair-desktop.png), [registration](screenshots/dalal-register-repair-desktop.png) | [Hero](screenshots/dalal-repair-mobile.png), [registration](screenshots/dalal-register-repair-mobile.png) | Market transition handed off to the page. Historic trading floor, moving simulated quote board and shared registration form render at both sizes. |
+| World map | [Desktop](screenshots/map-repair-desktop.png) | [Mobile](screenshots/map-repair-mobile.png) | Eight destination pins and rail remain available. Desktop map fills the frame; mobile map keeps geographic proportions and can be swiped horizontally. Prize-pool copy and audio control no longer collide on mobile. |
 
-The transition handoffs and Skip control were exercised in the browser. Screenshots above show the resulting pages, rather than unverified in-between frames. Scrolling to content and registration was exercised for all four committees. The four forms were submitted with disposable test data against the local static server, which has no `/api/register` handler; each displayed a failure rather than claiming a saved request. No payment interface was invoked. One browser console check showed no warnings or errors.
+All four entrance-to-page handoffs were observed. The MCC intro exposed its Skip control; all page Start Registration controls reached the shared inline form. Dalal required-field validation was exercised without transmitting data. The registration API mock suite passes its 503, 400, CORS rejection and database-success cases; the local static preview has no `/api/register` handler, so no real registration was submitted. No payment interface was invoked. Browser console had no errors or warnings during the final mobile check. Desktop Dalal and mobile views were checked for horizontal overflow; both matched viewport width.
 
 ## Performance observations
 
-Local browser, warm cache, no network or CPU throttling:
+Previous local browser smoke measurements (warm cache, no network or CPU throttling; before the final CSS-only mobile control adjustment):
 
 | Viewport | First contentful paint | Largest contentful paint | Layout shift | DOM content loaded |
 | --- | ---: | ---: | ---: | ---: |
 | 1440 × 900 | 324 ms | 1,588 ms | 0 | 484 ms |
 | 390 × 844 | 600 ms | 1,832 ms | 0 | 922 ms |
 
-A sampled desktop click interaction measured 32 ms. These are local observations, not Lighthouse scores or cold-load benchmarks. The existing `assets/` directory totals approximately 67 MiB; the added compressed newsroom WebP is 213,828 bytes. Ambient cursor movement and eager loading of unrelated committee backgrounds were reduced. No before/after baseline trace exists, so a measured performance improvement cannot be claimed.
+A sampled desktop click interaction measured 32 ms. These are local observations, not Lighthouse scores or cold-load benchmarks, and were not repeated after the final small CSS adjustment. The existing `assets/` directory totals approximately 67 MiB; the added compressed newsroom WebP is 213,828 bytes. The new trading-floor WebP is 192,234 bytes. Ambient cursor movement and eager loading of unrelated committee backgrounds were reduced. No before/after baseline trace exists, so a measured performance improvement cannot be claimed.
 
 ## Still incomplete before production approval
 

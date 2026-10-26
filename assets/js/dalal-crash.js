@@ -9,7 +9,7 @@ if (root && canvas) {
   const glyphs = [];
   const rand = (a, b) => a + Math.random() * (b - a);
   let active = false, frame = 0, started = 0, complete = null, soundTimer = 0, dpr = 1, w = 1, h = 1;
-  for (let i = 0; i < 110; i++) glyphs.push({ x: rand(-1, 1), y: rand(-1, 1), z: rand(.12, 1), n: String(Math.floor(rand(0, 10000))).padStart(4, '0'), speed: rand(.35, 1.5) });
+  for (let i = 0; i < 58; i++) glyphs.push({ x: rand(-1, 1), y: rand(-1, 1), z: rand(.12, 1), n: String(Math.floor(rand(0, 10000))).padStart(4, '0'), speed: rand(.35, 1.5) });
   function resize() { dpr = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1.2 : 1.6); w = root.clientWidth || innerWidth; h = root.clientHeight || innerHeight; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); canvas.style.width = `${w}px`; canvas.style.height = `${h}px`; ctx?.setTransform(dpr, 0, 0, dpr, 0, 0); }
   addEventListener('resize', resize, { passive: true }); resize();
   function impact() {
@@ -21,8 +21,9 @@ if (root && canvas) {
   }
   function draw(now) {
     if (!active || !ctx) return;
-    const elapsed = now - started, t = elapsed / duration, crash = elapsed >= 1050, title = elapsed >= 2580, travel = Math.max(0, (elapsed - 1050) / 1000);
+    const elapsed = now - started, digital = elapsed >= 850, crash = elapsed >= 1750, title = elapsed >= 2650, travel = Math.max(0, (elapsed - 1750) / 1000);
     root.classList.toggle('market-awake', elapsed > 0);
+    root.classList.toggle('market-digital', digital);
     root.classList.toggle('market-falling', crash);
     root.classList.toggle('title-assembling', title);
     root.classList.toggle('title-expanding', elapsed >= 3300);
@@ -52,17 +53,17 @@ if (root && canvas) {
     if (elapsed < duration) frame = requestAnimationFrame(draw);
     else { active = false; complete?.(); complete = null; }
   }
-  function stop() { active = false; cancelAnimationFrame(frame); clearTimeout(soundTimer); video?.pause(); video?.classList.remove('is-playing'); root.classList.remove('market-awake', 'market-falling', 'title-assembling', 'title-expanding', 'reduced-motion'); complete = null; }
+  function stop() { active = false; cancelAnimationFrame(frame); clearTimeout(soundTimer); video?.pause(); video?.classList.remove('is-playing'); root.classList.remove('market-awake', 'market-digital', 'market-falling', 'title-assembling', 'title-expanding', 'reduced-motion'); complete = null; }
   window.MUNMarketCrash = {
     play({ onComplete, soundEnabled = false } = {}) {
       if (active) return; stop(); active = true; complete = onComplete || null; started = performance.now(); window.__munSoundEnabled = !!soundEnabled;
       root.classList.add('active'); root.classList.remove('reduced-motion');
-      if (video) { video.currentTime = 0; video.playbackRate = 1; video.classList.add('is-playing'); video.play().catch(() => {}); }
+      if (video) { video.currentTime = 0; video.playbackRate = 1; video.classList.add('is-playing'); video.play().catch(error => console.warn('Dalal market footage unavailable; the trading-floor scene will continue without it.', error)); }
       const ticker = document.querySelector('#dcIndex');
-      if (ticker) ticker.innerHTML = 'SENSEX&nbsp; 74,382.15&nbsp; <em>▲ 1.42%</em>';
+      if (ticker) ticker.innerHTML = 'MU INDEX&nbsp; 18,642.45&nbsp; <em>▲ 0.42%</em>';
       if (reduced.matches) { root.classList.add('reduced-motion', 'market-awake', 'title-assembling'); setTimeout(() => { if (active) { active = false; complete?.(); complete = null; } }, 260); return; }
-      soundTimer = setTimeout(impact, 1050); frame = requestAnimationFrame(draw);
-      const update = () => { if (!active) return; const e = performance.now() - started; if (ticker) { const crash = e >= 1050; const value = crash ? 69804.62 - Math.max(0, e - 1050) * .31 : 74382.15 + Math.sin(e / 31) * 24; ticker.innerHTML = `SENSEX&nbsp; ${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}&nbsp; <em>${crash ? '▼ 3.82%' : '▲ 1.42%'}</em>`; } if (active) setTimeout(update, 70); };
+      soundTimer = setTimeout(impact, 1750); frame = requestAnimationFrame(draw);
+      const update = () => { if (!active) return; const e = performance.now() - started; if (ticker) { const crash = e >= 1750; const value = crash ? 18040.22 - Math.max(0, e - 1750) * .16 : 18642.45 + Math.sin(e / 260) * 12; ticker.innerHTML = `MU INDEX&nbsp; ${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}&nbsp; <em>${crash ? '▼ 3.82%' : '▲ 0.42%'}</em>`; } if (active) setTimeout(update, 650); };
       update();
     },
     stop

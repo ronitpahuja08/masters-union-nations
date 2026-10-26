@@ -24,7 +24,7 @@
   addEventListener('resize',alignMobileMap,{passive:true});
 
   function formMarkup(code) {
-    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet'}[code]||code;
+    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet',DALAL:'Dalal Street'}[code]||code;
     return `<form class="mu-inline-form" data-committee="${code}" novalidate>
       <h3>Reserve your place.</h3><p>Registration request for <strong>${label}</strong>. Payment will be arranged separately by the organising team.</p>
       <div class="mu-fields">
@@ -52,6 +52,14 @@
     actions.insertAdjacentHTML('beforeend',formMarkup(code));
   }
 
+  // Replace the legacy Dalal-only form with the same validated form used above.
+  const legacyDalalForm=$('#dalalInlineForm');
+  if(legacyDalalForm){
+    const template=document.createElement('template');template.innerHTML=formMarkup('DALAL').trim();
+    const sharedForm=template.content.firstElementChild;sharedForm.id='dalalInlineForm';sharedForm.classList.add('dp-form');
+    legacyDalalForm.replaceWith(sharedForm);
+  }
+
   function gotoRegister() {
     const scroller=$('#committeePageScroll'),target=$('#cpRegister');
     if (!scroller || !target) return;
@@ -60,11 +68,16 @@
     setTimeout(()=>$('.mu-inline-form input[name="name"]',target)?.focus({preventScroll:true}),reduced()?0:450);
   }
   let jump = $('.mu-start-registration',hero);
-  if (!jump) {
-    jump=document.createElement('button');jump.type='button';jump.className='mu-start-registration';
-    jump.textContent='Start registration ↓';jump.addEventListener('click',gotoRegister);
-    $('.cp-hero-copy',hero)?.append(jump);
+  if (!jump) {jump=document.createElement('button');jump.type='button';jump.className='mu-start-registration';jump.textContent='Start registration ↓';jump.addEventListener('click',gotoRegister);$('.cp-hero-copy',hero)?.append(jump);}
+  const dalalHero=$('.dp-hero-copy',dalal);
+  if(dalalHero&&!$('.mu-dalal-register',dalalHero)){const button=document.createElement('button');button.type='button';button.className='mu-dalal-register';button.textContent='Start registration ↓';button.addEventListener('click',gotoDalalRegister);dalalHero.append(button);}
+  function gotoDalalRegister(){
+    const scroller=$('#dalalPageScroll'),target=$('#dalalRegister');if(!scroller||!target)return;
+    const offset=target.getBoundingClientRect().top-scroller.getBoundingClientRect().top+scroller.scrollTop;
+    scroller.scrollTo({top:Math.max(0,offset-18),behavior:reduced()?'instant':'smooth'});
+    setTimeout(()=>$('#dalalInlineForm input[name="name"]',target)?.focus({preventScroll:true}),reduced()?0:450);
   }
+  dalal.addEventListener('click',e=>{const control=e.target.closest('.dp-nav-cta');if(!control)return;e.preventDefault();gotoDalalRegister();},true);
   // Keep the existing registration CTA for other committees. Intercept only MCC.
   page.addEventListener('click',e=>{
     if(!TARGETS.has(page.dataset.committee)) return;
@@ -92,25 +105,11 @@
     }catch(e){if(status)status.textContent=e.name==='AbortError'?'The connection timed out. Please retry; do not assume your request was saved.':e.message;button.disabled=false;}
     finally{clearTimeout(timeout);}
   }
-  actions.addEventListener('submit',e=>{if (!e.target.matches('.mu-inline-form'))return;e.preventDefault();postRegistration(e.target,e.target.dataset.committee);});
-
-  // This is intentionally a capture handler to override the legacy Dalal
-  // submit which currently opens a payment studio without a persisted record.
-  const dalalForm=$('#dalalInlineForm');
-  if (dalalForm) {
-    dalalForm.addEventListener('submit',e=>{
-      e.preventDefault();e.stopImmediatePropagation();
-      const consent=$('[name="consent"]',dalalForm);
-      if (!consent?.checked) { $('#dalalFormNote').textContent='Please agree to the registration contact notice.';consent?.focus();return; }
-      postRegistration(dalalForm,'DALAL');
-    },true);
-    if (!$('[name="consent"]',dalalForm)) {
-      const control=document.createElement('label');control.className='mu-consent';control.innerHTML='<input type="checkbox" name="consent" required> I agree that the Masters\' Union Nations team may contact me about this registration.';
-      const note=$('#dalalFormNote');note.before(control);
-      const old=dalalForm.querySelector('small:last-child');if(old)old.textContent='No payment is collected. The team will share payment instructions later.';
-      const copy=$('.dp-register-copy>p');if(copy)copy.textContent='Send your registration request here. Payment instructions will be shared once the organising team finalises them.';
-    }
-  }
+  document.addEventListener('submit',e=>{const form=e.target.closest('.mu-inline-form');if(!form)return;e.preventDefault();postRegistration(form,form.dataset.committee);});
+  const cpRegistration=$('#cpRegister');
+  if(cpRegistration){const label=$('small',cpRegistration);if(label)label.textContent='DELEGATE REGISTRATION';const copy=$('p',cpRegistration);if(copy)copy.textContent='Share your details to reserve a place. The organising team will contact you with the next steps; no payment is collected here.';}
+  const dalalRegistrationCopy=$('.dp-register-copy',dalal);
+  if(dalalRegistrationCopy){const label=$('small',dalalRegistrationCopy);if(label)label.textContent='DELEGATE REGISTRATION';const heading=$('h2',dalalRegistrationCopy);if(heading)heading.hidden=true;const copy=$('p',dalalRegistrationCopy);if(copy)copy.textContent='Share your details to reserve a place. The organising team will contact you with the next steps; no payment is collected here.';}
 
   const dalalRegister=$('#dalalRegister');
   if(dalalRegister){
@@ -207,7 +206,7 @@
     if(!page.classList.contains('open'))return;
     const code=page.dataset.committee||'';
     makeForm(code);
-    jump.hidden=code!=='MCC';
+    jump.hidden=!TARGETS.has(code);
     // committee-cinematics.js reconstructs scene innerHTML whenever a page opens.
     const scene=$('.cinema-hero-scene',hero);
     if(code==='IP')newsroom(scene);
