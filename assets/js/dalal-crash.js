@@ -5,7 +5,7 @@ const video = document.querySelector('#dcMarketVideo');
 if (root && canvas) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const ctx = canvas.getContext('2d', { alpha: true });
-  const duration = 3500;
+  const duration = 2450;
   const glyphs = [];
   const rand = (a, b) => a + Math.random() * (b - a);
   let active = false, frame = 0, started = 0, complete = null, soundTimer = 0, dpr = 1, w = 1, h = 1;
