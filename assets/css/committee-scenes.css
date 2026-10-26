@@ -1,0 +1,200 @@
+/* Bespoke scenes for IPL / STARTUP / UNHRC / CCEP (see committee-scenes.js).
+   Intro scenes live in #mcPlayfield and play once; hero scenes loop behind the committee page. */
+:is(#mcPlayfield,.cinema-hero-scene) [class^="ms-"],:is(#mcPlayfield,.cinema-hero-scene) [class*=" ms-"]{position:absolute;box-sizing:border-box}
+:is(#mcPlayfield,.cinema-hero-scene) :is(.ms-crowd,.ms-coins,.ms-stars) i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:0;animation:msTwinkle 2.4s ease-in-out infinite}
+@keyframes msTwinkle{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.95;transform:scale(1.6)}}
+:is(#mcPlayfield,.cinema-hero-scene) :is(.ms-crowd,.ms-coins){inset:0}
+
+/* longer timeline for the four new intros: title lands after the scene has played */
+.mc-journey.playing:is([data-code="IPL"],[data-code="STARTUP"],[data-code="UNHRC"],[data-code="CCEP"]) .mc-heading{animation-duration:5.6s}
+.mc-journey.playing:is([data-code="IPL"],[data-code="STARTUP"],[data-code="UNHRC"],[data-code="CCEP"]) .mc-photo{animation-duration:5.7s}
+.mc-journey[data-code="STARTUP"]{--mc-accent:#ffb48a}
+.mc-journey[data-code="STARTUP"] .mc-photo{background-image:linear-gradient(0deg,#1a0c28d9,#53213366),url('../images/startup-san-francisco-cinematic.webp')}
+
+/* ================= IPL ================= */
+:is(#mcPlayfield,.cinema-hero-scene) .ms-beam{top:-10%;width:22vw;height:120%;background:linear-gradient(180deg,#fff6c8aa,#fff6c800 75%);clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);mix-blend-mode:screen;opacity:0;transform-origin:50% 0}
+.ms-beam.b1{left:6%}.ms-beam.b2{left:40%}.ms-beam.b3{right:6%}
+:is(#mcPlayfield,.cinema-hero-scene) .ms-batter{height:88%;bottom:-3%;left:50%;transform:translateX(-52%);mix-blend-mode:screen;opacity:0;filter:saturate(1.1) contrast(1.05)}
+:is(#mcPlayfield,.cinema-hero-scene) .ms-ball{width:2.6vmin;height:2.6vmin;border-radius:50%;left:50%;top:40%;opacity:0;background:radial-gradient(circle at 35% 30%,#ff8e7d,#c4161c 55%,#6d0a0e);box-shadow:0 0 14px #ff4a3a99}
+:is(#mcPlayfield,.cinema-hero-scene) .ms-trail{left:50%;top:40%;width:30vmin;height:2px;background:linear-gradient(90deg,#fff0,#fff);opacity:0;transform-origin:100% 50%;filter:blur(1px)}
+:is(#mcPlayfield,.cinema-hero-scene) .ms-impact{left:50%;top:40%;width:30vmin;height:30vmin;margin:-15vmin;border-radius:50%;border:3px solid #fff3c4;opacity:0;box-shadow:0 0 60px #ffe8a0,inset 0 0 40px #ffe8a0}
+:is(#mcPlayfield,.cinema-hero-scene) .ms-six{left:0;right:0;top:20%;text-align:center;opacity:0;font-family:var(--sans,Arial)}
+.ms-six b{display:block;font:900 clamp(7rem,26vw,22rem)/.8 var(--sans,Arial);letter-spacing:-.08em;color:#ffd24a;-webkit-text-stroke:3px #7a2a00;text-shadow:0 8px 0 #7a2a00,0 0 60px #ff9a1f}
+.ms-six small{display:block;margin-top:14px;font:700 clamp(10px,1vw,14px) var(--mono,monospace);letter-spacing:.4em;color:#fff3c4}
+:is(#mcPlayfield) .ms-scoreboard{right:5vw;bottom:15vh;padding:12px 18px;border:1px solid #ffd24a88;background:#071a2fc4;backdrop-filter:blur(8px);font:700 11px var(--mono,monospace);letter-spacing:.18em;color:#cfe3ff;opacity:0;display:grid;gap:4px;text-align:right}
+.ms-scoreboard b{font:900 clamp(1.4rem,3vw,2.4rem) var(--sans,Arial);letter-spacing:-.03em;color:#ffd24a}
+.ms-sky{inset:0;background:linear-gradient(180deg,#02070f,#0a2036 60%,#0d3a2c);opacity:.55}
+.ms-pitch{left:0;right:0;bottom:0;height:20%;background:linear-gradient(0deg,#0b4a2bcc,#0b4a2b00);animation:none}
+.ms-ticker{left:0;right:0;bottom:3.5vh;display:flex;gap:26px;justify-content:center;font:700 11px var(--mono,monospace);letter-spacing:.22em;color:#ffe9a8;text-shadow:0 2px 10px #000;opacity:.8}
+
+/* intro timeline (5.6s) */
+.mc-journey.playing[data-code="IPL"] .ms-beam{animation:msBeam 5.6s ease-in-out both}
+.mc-journey.playing[data-code="IPL"] .ms-beam.b2{animation-delay:.2s}.mc-journey.playing[data-code="IPL"] .ms-beam.b3{animation-delay:.4s}
+.mc-journey.playing[data-code="IPL"] .ms-batter{animation:msBatterIn 5.6s cubic-bezier(.2,.7,.2,1) both}
+.mc-journey.playing[data-code="IPL"] .ms-ball{animation:msBall 5.6s cubic-bezier(.4,0,.5,1) both}
+.mc-journey.playing[data-code="IPL"] .ms-trail{animation:msTrail 5.6s linear both}
+.mc-journey.playing[data-code="IPL"] .ms-impact{animation:msImpact 5.6s ease-out both}
+.mc-journey.playing[data-code="IPL"] .ms-six{animation:msSix 5.6s both}
+.mc-journey.playing[data-code="IPL"] .ms-scoreboard{animation:msBoard 5.6s both}
+@keyframes msBeam{0%{opacity:0;transform:rotate(-14deg)}18%{opacity:.8}60%{opacity:.55;transform:rotate(11deg)}100%{opacity:.25;transform:rotate(-6deg)}}
+@keyframes msBatterIn{0%{opacity:0;transform:translateX(-52%) translateY(40px) scale(.92)}16%{opacity:1;transform:translateX(-52%) translateY(0) scale(.98)}34%{transform:translateX(-52%) scale(1.06) rotate(-1.5deg)}42%,100%{opacity:.9;transform:translateX(-52%) scale(1)}}
+@keyframes msBall{0%,8%{opacity:0;transform:translate(-30vw,-4vh) scale(.3)}10%{opacity:1;transform:translate(-30vw,-4vh) scale(.3)}33%,34%{opacity:1;transform:translate(11vw,-22vh) scale(1.5)}56%{opacity:1;transform:translate(26vw,-58vh) scale(4)}70%,100%{opacity:0;transform:translate(36vw,-84vh) scale(6)}}
+@keyframes msTrail{0%,34%{opacity:0;transform:translate(11vw,-22vh) rotate(-58deg) scaleX(0)}38%{opacity:.9;transform:translate(11vw,-22vh) rotate(-58deg) scaleX(1)}60%,100%{opacity:0;transform:translate(26vw,-56vh) rotate(-58deg) scaleX(1.6)}}
+@keyframes msImpact{0%,33%{opacity:0;transform:translate(11vw,-22vh) scale(.1)}36%{opacity:1;transform:translate(11vw,-22vh) scale(.7)}56%,100%{opacity:0;transform:translate(11vw,-22vh) scale(2.6)}}
+@keyframes msSix{0%,36%{opacity:0;transform:scale(2.2) rotate(-6deg)}41%{opacity:1;transform:scale(1) rotate(-3deg)}62%{opacity:1;transform:scale(1.04) rotate(-3deg)}70%,100%{opacity:0;transform:scale(1.18) rotate(-3deg);filter:blur(10px)}}
+@keyframes msBoard{0%,12%{opacity:0;transform:translateX(40px)}22%,70%{opacity:1;transform:none}80%,100%{opacity:0}}
+/* hero loop (9s) */
+.cinema-hero-scene[data-code="IPL"] .ms-beam{animation:msBeamLoop 9s ease-in-out infinite alternate}
+.cinema-hero-scene[data-code="IPL"] .ms-beam.b2{animation-delay:-3s}.cinema-hero-scene[data-code="IPL"] .ms-beam.b3{animation-delay:-6s}
+.cinema-hero-scene[data-code="IPL"] .ms-batter{height:92%;left:auto;right:3%;transform:none;animation:msHeroBatter 9s ease-in-out infinite}
+.cinema-hero-scene[data-code="IPL"] .ms-ball{left:70%;top:40%;animation:msHeroBall 9s cubic-bezier(.4,0,.5,1) infinite}
+.cinema-hero-scene[data-code="IPL"] .ms-trail{left:70%;animation:msHeroTrail 9s linear infinite}
+.cinema-hero-scene[data-code="IPL"] .ms-impact{left:70%;top:58%;animation:msHeroImpact 9s ease-out infinite}
+.cinema-hero-scene[data-code="IPL"] .ms-six{left:auto;right:3%;width:42%;top:14%;animation:msHeroSix 9s infinite}
+.cinema-hero-scene[data-code="IPL"] .ms-six b{font-size:clamp(5rem,14vw,12rem)}
+@keyframes msBeamLoop{from{opacity:.25;transform:rotate(-12deg)}to{opacity:.7;transform:rotate(12deg)}}
+@keyframes msHeroBatter{0%,10%{opacity:0;transform:translateY(20px)}22%,88%{opacity:.88;transform:none}34%{transform:scale(1.04) rotate(-1deg)}100%{opacity:0}}
+@keyframes msHeroBall{0%,18%{opacity:0;transform:translate(-18vw,-10vh) scale(.3)}20%{opacity:1}34%{opacity:1;transform:translate(0,14vh) scale(1.2)}58%{opacity:1;transform:translate(14vw,-50vh) scale(3.4)}66%,100%{opacity:0;transform:translate(20vw,-70vh) scale(5)}}
+@keyframes msHeroTrail{0%,34%{opacity:0;transform:translate(0,14vh) rotate(-60deg) scaleX(0)}38%{opacity:.8;transform:translate(0,14vh) rotate(-60deg) scaleX(1)}58%,100%{opacity:0;transform:translate(10vw,-40vh) rotate(-60deg) scaleX(1.5)}}
+@keyframes msHeroImpact{0%,33%{opacity:0;transform:scale(.1)}36%{opacity:.9;transform:scale(.6)}56%,100%{opacity:0;transform:scale(2.4)}}
+@keyframes msHeroSix{0%,36%{opacity:0;transform:scale(2) rotate(-6deg)}40%{opacity:.95;transform:scale(1) rotate(-3deg)}58%{opacity:.95}66%,100%{opacity:0;filter:blur(8px)}}
+.committee-page[data-committee="IPL"] .ipl-scene{display:none!important}
+.committee-page[data-committee="IPL"] .cp-hero .cinema-hero-scene{display:block;z-index:0}
+.committee-page[data-committee="IPL"] .cinema-hero-scene{background:#05101d url('../images/ipl-stadium-cinematic.png') center/cover;animation:chPan 26s ease-in-out infinite alternate}
+
+/* ================= STARTUP: San Francisco demo day ================= */
+.ms-sun{left:50%;bottom:20%;width:60vmin;height:60vmin;margin-left:-30vmin;border-radius:50%;background:radial-gradient(circle,#ffb27a,#ff6a4d 45%,#ff6a4d00 70%);filter:blur(3px);opacity:.0;mix-blend-mode:screen}
+.ms-bridge,.ms-skyline{left:0;right:0;bottom:0;width:100%}
+.ms-bridge{height:56%;opacity:0}.ms-skyline{height:38%;opacity:0}
+.ms-skyline .w{opacity:0;animation:msWin 4s ease-in-out infinite}
+@keyframes msWin{0%,40%{opacity:0}50%,100%{opacity:.9}}
+.ms-fog{left:-20%;right:-20%;height:34%;background:radial-gradient(ellipse at 50% 50%,#ffffff55,#ffffff00 68%);filter:blur(14px);opacity:.0}
+.ms-fog.f1{bottom:20%}.ms-fog.f2{bottom:4%}
+.ms-deck{width:clamp(180px,22vw,300px);aspect-ratio:16/10;padding:14px;background:#fff7ee;color:#1b1030;border-radius:10px;box-shadow:0 24px 60px #000a;opacity:0;display:grid;align-content:space-between}
+.ms-deck small{font:700 9px var(--mono,monospace);letter-spacing:.2em;color:#ff5a3c}
+.ms-deck b{font:900 clamp(1rem,2vw,1.7rem)/1 var(--sans,Arial);letter-spacing:-.04em}.ms-deck b span{color:#ff5a3c;font-size:.55em}
+.ms-deck svg{width:100%;height:auto}.ms-deck svg path{fill:none;stroke:#ff5a3c;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.ms-deck.d1{left:8vw;top:24vh}.ms-deck.d2{left:50%;margin-left:calc(clamp(180px,22vw,300px)/-2);top:18vh}.ms-deck.d3{right:8vw;top:26vh}
+.ms-demo{left:0;right:0;top:12vh;text-align:center;opacity:0;font:700 11px var(--mono,monospace);letter-spacing:.34em;color:#ffd7be}
+.ms-demo b{display:block;margin-top:8px;font:800 clamp(1rem,2vw,1.6rem) var(--sans,Arial);letter-spacing:.2em;color:#fff}
+.ms-term{left:50%;top:44%;width:min(300px,70vw);margin-left:calc(min(300px,70vw)/-2);padding:18px;background:#fffaf2;color:#1b1030;border-radius:6px;display:grid;gap:9px;opacity:0;box-shadow:0 30px 70px #000b}
+.ms-term small{font:700 10px var(--mono,monospace);letter-spacing:.2em;color:#7b6a8a}.ms-term i{display:block;height:6px;background:#ddd2e6;border-radius:3px}.ms-term i.s{width:46%;background:#1b1030;height:3px;margin-top:10px}
+.ms-term em{position:absolute;right:-8px;bottom:12px;padding:4px 12px;border:4px solid #e0382a;color:#e0382a;font:900 22px var(--sans,Arial);letter-spacing:.06em;font-style:normal;transform:rotate(-12deg) scale(2.4);opacity:0}
+.mc-journey.playing[data-code="STARTUP"] .ms-sun{animation:msSun 5.6s ease-out both}
+.mc-journey.playing[data-code="STARTUP"] .ms-bridge{animation:msRise 5.6s ease-out both}
+.mc-journey.playing[data-code="STARTUP"] .ms-skyline{animation:msRise 5.6s .15s ease-out both}
+.mc-journey.playing[data-code="STARTUP"] .ms-fog{animation:msFog 5.6s ease-in-out both}
+.mc-journey.playing[data-code="STARTUP"] .ms-deck.d1{animation:msDeck 5.6s .9s both}
+.mc-journey.playing[data-code="STARTUP"] .ms-deck.d2{animation:msDeck 5.6s 1.3s both}
+.mc-journey.playing[data-code="STARTUP"] .ms-deck.d3{animation:msDeck 5.6s 1.7s both}
+.mc-journey.playing[data-code="STARTUP"] .ms-deck svg path{animation:msDraw 1.2s 1.9s ease-out both}
+.mc-journey.playing[data-code="STARTUP"] .ms-demo{animation:msFade 5.6s both}
+.mc-journey.playing[data-code="STARTUP"] .ms-term{animation:msTerm 5.6s both}
+.mc-journey.playing[data-code="STARTUP"] .ms-term em{animation:msStamp 5.6s both}
+@keyframes msSun{0%{opacity:0;transform:translateY(40%)}40%,100%{opacity:.85;transform:none}}
+@keyframes msRise{0%{opacity:0;transform:translateY(30px)}25%,100%{opacity:1;transform:none}}
+@keyframes msFog{0%{opacity:0;transform:translateX(-8%)}30%,70%{opacity:.7}100%{opacity:.5;transform:translateX(8%)}}
+@keyframes msDeck{0%{opacity:0;transform:translateY(60px) rotate(-6deg) scale(.9)}8%,38%{opacity:1;transform:none}48%,100%{opacity:0;transform:translateY(-30px) scale(.92)}}
+@keyframes msDraw{to{stroke-dashoffset:0}}
+@keyframes msFade{0%,6%{opacity:0;transform:translateY(-10px)}16%,52%{opacity:1;transform:none}62%,100%{opacity:0}}
+@keyframes msTerm{0%,44%{opacity:0;transform:translateY(40px) rotate(2deg)}52%,70%{opacity:1;transform:rotate(-2deg)}78%,100%{opacity:0;transform:translateY(-20px) rotate(-2deg)}}
+@keyframes msStamp{0%,56%{opacity:0;transform:rotate(-12deg) scale(2.4)}60%,100%{opacity:1;transform:rotate(-12deg) scale(1)}}
+/* hero */
+.cinema-hero-scene[data-code="STARTUP"] .ms-sun{opacity:.7;animation:msSunLoop 14s ease-in-out infinite alternate}
+.cinema-hero-scene[data-code="STARTUP"] .ms-bridge,.cinema-hero-scene[data-code="STARTUP"] .ms-skyline{opacity:1}
+.cinema-hero-scene[data-code="STARTUP"] .ms-fog{opacity:.5;animation:msFogLoop 16s ease-in-out infinite alternate}
+.cinema-hero-scene[data-code="STARTUP"] .ms-fog.f2{animation-duration:22s;animation-direction:alternate-reverse}
+.cinema-hero-scene[data-code="STARTUP"] .ms-ticker{color:#ffd7be}
+@keyframes msSunLoop{from{transform:translateY(8%) scale(.96)}to{transform:translateY(-6%) scale(1.06)}}
+@keyframes msFogLoop{from{transform:translateX(-10%)}to{transform:translateX(10%)}}
+
+/* ================= UNHRC: Geneva ================= */
+.ms-mount{left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,#07162a,#07162a00),conic-gradient(from 200deg at 50% 100%,#0a2038 0 8%,#0e2d4f 8% 20%,#0a2038 20% 31%,#134063 31% 42%,#0a2038 42%);clip-path:polygon(0 100%,0 62%,14% 38%,26% 56%,40% 22%,54% 52%,66% 30%,80% 54%,92% 40%,100% 58%,100% 100%);opacity:0}
+.ms-lake{left:0;right:0;bottom:0;height:16%;background:linear-gradient(0deg,#0d2c4acc,#0d2c4a00);opacity:0}
+.ms-flags{left:6%;right:6%;bottom:14%;display:flex;justify-content:space-between;align-items:flex-end}
+.ms-flags span{position:relative;flex:0 0 auto;width:2px;height:clamp(110px,26vh,230px);background:#cfd8e3;opacity:0}
+.ms-flags span em{position:absolute;left:2px;top:0;width:clamp(30px,5vw,64px);height:clamp(20px,3.4vw,44px);background:var(--c);transform-origin:0 50%;animation:msWave 2.6s ease-in-out infinite;animation-delay:calc(var(--i)*-.3s);box-shadow:inset -8px 0 14px #0004}
+@keyframes msWave{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(5deg) scaleX(.9)}}
+.ms-dove{left:-16vw;top:30%;width:clamp(90px,14vw,190px);opacity:0;filter:drop-shadow(0 0 20px #bfe3ffcc)}
+.ms-article{left:0;right:0;top:56%;text-align:center;padding:0 7vw;opacity:0}
+.ms-article small{display:block;font:700 11px var(--mono,monospace);letter-spacing:.3em;color:#a6d5fa;margin-bottom:12px}
+.ms-article p{margin:0;font:800 clamp(1.1rem,2.6vw,2.1rem)/1.25 var(--sans,Arial);letter-spacing:-.01em;color:#eaf5ff}
+.ms-article span{display:inline-block;opacity:0;transform:translateY(14px)}
+.ms-gavel{left:50%;top:20%;width:90px;height:90px;margin-left:-45px;opacity:0}
+.ms-gavel i{display:block;width:100%;height:100%;border-radius:50%;border:2px solid #a6d5fa;box-shadow:0 0 40px #a6d5fa}
+.ms-stars i{background:#dfeeff}
+.mc-journey.playing[data-code="UNHRC"] .ms-mount{animation:msFadeIn 5.6s both}
+.mc-journey.playing[data-code="UNHRC"] .ms-lake{animation:msFadeIn 5.6s .2s both}
+.mc-journey.playing[data-code="UNHRC"] .ms-flags span{animation:msPole 5.6s calc(.3s + var(--i)*.1s) cubic-bezier(.2,.8,.2,1) both}
+.mc-journey.playing[data-code="UNHRC"] .ms-dove{animation:msDove 5.6s ease-in-out both}
+.mc-journey.playing[data-code="UNHRC"] .ms-article{animation:msFade 5.6s both}
+.mc-journey.playing[data-code="UNHRC"] .ms-article span{animation:msWord 5.6s both}
+.mc-journey.playing[data-code="UNHRC"] .ms-article span:nth-of-type(1){animation-delay:.2s}.mc-journey.playing[data-code="UNHRC"] .ms-article span:nth-of-type(2){animation-delay:.5s}.mc-journey.playing[data-code="UNHRC"] .ms-article span:nth-of-type(3){animation-delay:.8s}
+.mc-journey.playing[data-code="UNHRC"] .ms-gavel{animation:msGavel 5.6s both}
+@keyframes msFadeIn{0%{opacity:0;transform:translateY(30px)}25%,100%{opacity:1;transform:none}}
+@keyframes msPole{0%{opacity:0;transform:scaleY(0);transform-origin:50% 100%}30%,100%{opacity:1;transform:scaleY(1)}}
+@keyframes msDove{0%{opacity:0;transform:translate(0,0) rotate(8deg)}8%{opacity:1}55%{opacity:1;transform:translate(70vw,-14vh) rotate(-6deg)}75%,100%{opacity:0;transform:translate(120vw,-26vh) rotate(-8deg)}}
+@keyframes msWord{0%,22%{opacity:0;transform:translateY(14px)}34%,100%{opacity:1;transform:none}}
+@keyframes msGavel{0%,58%{opacity:0;transform:scale(.2)}62%{opacity:1;transform:scale(1)}78%,100%{opacity:0;transform:scale(4)}}
+.cinema-hero-scene[data-code="UNHRC"]{background:linear-gradient(0deg,#071527b0,#14314833),url('../images/unhrc-geneva-cinematic.webp') center/cover,#081626}
+.cinema-hero-scene[data-code="UNHRC"] :is(.ms-mount,.ms-lake){opacity:1}
+.cinema-hero-scene[data-code="UNHRC"] .ms-flags span{opacity:.85}
+.cinema-hero-scene[data-code="UNHRC"] .ms-dove{animation:msDoveLoop 22s linear infinite}
+.cinema-hero-scene[data-code="UNHRC"] .ms-articles{left:5%;bottom:5vh;display:grid;gap:7px;font:700 10px var(--mono,monospace);letter-spacing:.2em;color:#a6d5fa;opacity:.7}
+@keyframes msDoveLoop{0%{opacity:0;transform:translate(0,0)}6%{opacity:.9}50%{opacity:.9;transform:translate(70vw,-12vh) rotate(-4deg)}94%{opacity:.9}100%{opacity:0;transform:translate(125vw,-22vh)}}
+
+/* ================= CCEP: Singapore trade ================= */
+.ms-grid3{inset:0;opacity:.0;background:linear-gradient(#5af3d622 1px,transparent 1px),linear-gradient(90deg,#5af3d622 1px,transparent 1px);background-size:70px 70px;mask-image:radial-gradient(ellipse at 50% 50%,#000,transparent 75%)}
+.ms-arcs{inset:0;width:100%;height:100%}
+.ms-arcs path{fill:none;stroke:#5af3d6;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 6px #5af3d6)}
+.ms-arcs circle{fill:#aaffea;opacity:0;transform-box:fill-box;transform-origin:center}
+.ms-ship{left:-30vw;bottom:15%;width:clamp(150px,24vw,330px);opacity:0}.ms-ship svg{width:100%;height:auto;display:block}
+.ms-skyline2{left:0;right:0;bottom:0;height:20%;background:linear-gradient(0deg,#041a22,#041a2200);clip-path:polygon(0 100%,0 70%,6% 70%,6% 40%,10% 40%,10% 62%,16% 62%,16% 30%,20% 30%,20% 66%,28% 66%,28% 50%,34% 50%,34% 22%,38% 10%,42% 22%,42% 54%,50% 54%,50% 36%,56% 36%,56% 64%,66% 64%,66% 44%,72% 44%,72% 18%,76% 18%,76% 60%,84% 60%,84% 38%,90% 38%,90% 70%,100% 70%,100% 100%);background-color:#041a22;opacity:0}
+.ms-quotes{left:0;right:0;bottom:4vh;overflow:hidden;white-space:nowrap;opacity:0;font:700 11px var(--mono,monospace);letter-spacing:.16em;color:#9dfff0}
+.ms-quotes>div{display:inline-block;animation:msTape 26s linear infinite}.ms-quotes span{margin-right:44px}
+@keyframes msTape{to{transform:translateX(-50%)}}
+.ms-ledger{left:0;right:0;top:46%;text-align:center;opacity:0;font-family:var(--sans,Arial)}
+.ms-ledger small{display:block;font:700 11px var(--mono,monospace);letter-spacing:.32em;color:#5ae9d0}
+.ms-ledger b{display:block;margin:10px 0;font:900 clamp(2rem,6vw,5rem)/1 var(--sans,Arial);letter-spacing:-.04em;color:#eafffb;text-shadow:0 0 40px #2fd0b4aa}
+.ms-ledger span{font:700 11px var(--mono,monospace);letter-spacing:.24em;color:#bfeee5}
+.mc-journey.playing[data-code="CCEP"] .ms-grid3{animation:msGridIn 5.6s both}
+.mc-journey.playing[data-code="CCEP"] .ms-arcs path{animation:msArc 5.6s calc(.4s + var(--d)) ease-in-out both}
+.mc-journey.playing[data-code="CCEP"] .ms-arcs circle{animation:msPort 5.6s calc(.3s + var(--d)) both}
+.mc-journey.playing[data-code="CCEP"] .ms-ship{animation:msShip 5.6s ease-in-out both}
+.mc-journey.playing[data-code="CCEP"] .ms-skyline2{animation:msRise 5.6s both}
+.mc-journey.playing[data-code="CCEP"] .ms-quotes{animation:msFadeIn 5.6s .6s both}
+.mc-journey.playing[data-code="CCEP"] .ms-ledger{animation:msLedger 5.6s both}
+@keyframes msGridIn{0%{opacity:0}25%,100%{opacity:.6}}
+@keyframes msArc{0%{stroke-dashoffset:1;opacity:1}28%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:.5}}
+@keyframes msPort{0%{opacity:0;transform:scale(0)}12%{opacity:1;transform:scale(1.8)}20%,100%{opacity:1;transform:scale(1)}}
+@keyframes msShip{0%{opacity:0;transform:translateX(0)}8%{opacity:1}100%{opacity:1;transform:translateX(150vw)}}
+@keyframes msLedger{0%,40%{opacity:0;transform:scale(.92)}50%,64%{opacity:1;transform:none}74%,100%{opacity:0;transform:scale(1.06)}}
+.cinema-hero-scene[data-code="CCEP"] .ms-grid3{opacity:.55;animation:msGridMove 20s linear infinite}
+.cinema-hero-scene[data-code="CCEP"] .ms-arcs path{animation:msArcLoop 7s calc(var(--d)) ease-in-out infinite}
+.cinema-hero-scene[data-code="CCEP"] .ms-arcs circle{opacity:1;animation:msPulse 2.4s calc(var(--d)) ease-in-out infinite}
+.cinema-hero-scene[data-code="CCEP"] .ms-ship{opacity:.9;animation:msShipLoop 38s linear infinite}
+.cinema-hero-scene[data-code="CCEP"] .ms-skyline2{opacity:1}
+.cinema-hero-scene[data-code="CCEP"] .ms-quotes{opacity:.85}
+@keyframes msGridMove{to{background-position:70px 70px}}
+@keyframes msArcLoop{0%{stroke-dashoffset:1;opacity:1}40%{stroke-dashoffset:0;opacity:1}85%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes msPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.9)}}
+@keyframes msShipLoop{from{transform:translateX(0)}to{transform:translateX(160vw)}}
+
+@media(max-width:850px){.ms-scoreboard,.ms-articles,.ms-demo{display:none}.ms-deck.d1{left:3vw}.ms-deck.d3{right:3vw}.ms-batter{height:70%}}
+@media(prefers-reduced-motion:reduce){:is(#mcPlayfield,.cinema-hero-scene) [class^="ms-"],:is(#mcPlayfield,.cinema-hero-scene) [class*=" ms-"]{animation:none!important}}
+/* the photo already carries the Golden Gate; keep the drawn bridge out */
+.ms-bridge{display:none}
+.cinema-hero-scene:is([data-code="STARTUP"],[data-code="CCEP"],[data-code="UNHRC"]){background-size:cover;background-position:center}
+.cinema-hero-scene[data-code="STARTUP"]{background:linear-gradient(0deg,#170d2688,#38172e33),url('../images/startup-san-francisco-cinematic.webp') center/cover,#150d22;animation:chPan 26s ease-in-out infinite alternate}
+.cinema-hero-scene[data-code="CCEP"]{background:#06222a url('../images/ccep-singapore-cinematic.webp') center/cover;animation:chPan 26s ease-in-out infinite alternate}
+.cinema-hero-scene[data-code="UNHRC"]{animation:chPan 30s ease-in-out infinite alternate}
+.mc-journey.playing[data-code="STARTUP"] .ms-deck.d1,.mc-journey.playing[data-code="STARTUP"] .ms-deck.d2,.mc-journey.playing[data-code="STARTUP"] .ms-deck.d3{animation-name:msDeck2}
+@keyframes msDeck2{0%{opacity:0;transform:translateY(60px) rotate(-6deg) scale(.9)}8%,26%{opacity:1;transform:none}36%,100%{opacity:0;transform:translateY(-30px) scale(.92)}}
+/* UNHRC: the Palais photo is the set; flags + article sit on it */
+.ms-mount,.ms-lake,.ms-gavel{display:none!important}
+.ms-flags{bottom:3%;z-index:2}.ms-flags span{height:clamp(90px,20vh,180px)}
+.ms-article{top:38%;z-index:3;text-shadow:0 3px 18px #000,0 0 40px #000c}
+.ms-article p{color:#fff}
+.ms-quotes{z-index:3}
+.cinema-hero-scene[data-code="UNHRC"] .ms-articles{display:none}
+.cinema-hero-scene[data-code="UNHRC"] .ms-flags span{opacity:1}
