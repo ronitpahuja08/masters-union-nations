@@ -46,7 +46,7 @@
     <div class="ms-ring2"></div>
     <div class="ms-sold"><b>SOLD</b><small>₹ 12.0 CR · CHENNAI SUPER KINGS</small></div>
     <svg class="ms-gavel2" viewBox="0 0 120 120" aria-hidden="true"><g class="gv"><rect x="20" y="52" width="86" height="12" rx="6" fill="#8a5a2b"/><rect x="2" y="34" width="38" height="46" rx="8" fill="#e9c885"/></g></svg></div>`;
-  const iplIntro = `${iplField}<div class="ms-ipl"><div class="ms-shade i"></div><div class="ms-aucthead"><small>LIVE · PLAYER AUCTION</small></div>${seats}${podium}</div><div class="ms-flash"></div>`;
+  const iplIntro = `${iplField}<div class="ms-ipl"><div class="ms-shade i"></div><div class="ms-stagelight"></div><div class="ms-floor"></div><div class="ms-aucthead"><small>LIVE · PLAYER AUCTION</small></div>${seats}${podium}</div><div class="ms-flash"></div>`;
   const placard = (cls, word, sub) => `<div class="ms-card ${cls}"><div class="pc"><b>${word}</b>${sub?`<small>${sub}</small>`:''}</div><i></i></div>`;
   const squad = [['rcb','RCB','#d4202e'],['csk','CSK','#f7c61b'],['mi','MI','#1b6bd6'],['pbks','PBKS','#e0262d'],['lsg','LSG','#1d6fd0'],['srh','SRH','#f26a21']];
   const iplHero = `<div class="ms-sky"></div>${iplField}
@@ -83,7 +83,7 @@
   const langHTML = (cls) => `<div class="ms-lang ${cls}">${langs.map(([w,n,l],i)=>`<div style="--i:${i}" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('')}</div>`;
   const wreath = `<svg class="ms-wreath" viewBox="-120 -120 240 240" aria-hidden="true"><g fill="#cfe9ff">${Array.from({length:22},(_,i)=>{const a=i*(360/22);return `<g transform="rotate(${a}) rotate(${i%2?18:-18} 0 -92)"><ellipse class="lf" style="--d:${(i*.045).toFixed(2)}s" cx="0" cy="-92" rx="5" ry="14"/></g>`}).join('')}</g></svg>`;
   const rings = `<div class="ms-rings"><i></i><i></i><i></i><i></i></div>`;
-  const pops = [['HUMAN RIGHTS','ENGLISH','en'],['LIBERTÉ','FRANÇAIS','fr'],['СВОБОДА','РУССКИЙ','ru'],['كرامة','العربية','ar'],['正义','中文','zh'],['JUSTICIA','ESPAÑOL','es'],['DIGNITY','ENGLISH','en'],['ÉGALITÉ','FRANÇAIS','fr'],['РАВЕНСТВО','РУССКИЙ','ru'],['عدالة','العربية','ar'],['平等','中文','zh'],['PAZ','ESPAÑOL','es']];
+  const pops = [['HUMAN RIGHTS','ENGLISH','en'],['LIBERTÉ','FRANÇAIS','fr'],['СВОБОДА','РУССКИЙ','ru'],['كرامة','العربية','ar'],['FREEDOM','ENGLISH','en'],['正义','中文','zh'],['JUSTICIA','ESPAÑOL','es'],['DIGNITY','ENGLISH','en'],['EQUALITY','ENGLISH','en'],['ÉGALITÉ','FRANÇAIS','fr']];
   const popHTML = pops.slice(0,10).map(([w,n,l],i)=>`<div class="ms-pop ${i%2?'r':'l'}" style="--i:${i};--y:${[12,26,40,54,64,33][i%6]}%" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('');
   const globe = `<svg class="ms-globe" viewBox="-60 -60 120 120" aria-hidden="true"><circle r="50" fill="#0b2a52" fill-opacity=".55" stroke="#9ed0ff" stroke-width="1.4"/>
     <g fill="none" stroke="#9ed0ff" stroke-width=".8" opacity=".85"><ellipse class="m m1" rx="50" ry="50"/><ellipse class="m m2" rx="50" ry="50"/><ellipse class="m m3" rx="50" ry="50"/><path d="M-50 0H50M-43 -25H43M-43 25H43M-26 -43H26M-26 43H26"/></g></svg>`;
@@ -96,7 +96,31 @@
   const ports = [[120,330],[300,170],[500,250],[700,130],[880,280],[640,360]];
   const arcs = ports.slice(0,-1).map((p,i)=>{const q=ports[i+1];return `<path d="M${p[0]} ${p[1]} Q${(p[0]+q[0])/2} ${Math.min(p[1],q[1])-110} ${q[0]} ${q[1]}" pathLength="1" style="--d:${i*.45}s"/>`}).join('');
   const arcSVG = `<svg class="ms-arcs" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g>${arcs}</g>${ports.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" style="--d:${i*.4}s"/>`).join('')}</svg>`;
-  const ship = `<div class="ms-ship"><svg viewBox="0 0 220 70" aria-hidden="true"><path d="M4 44 H216 L196 64 H26 Z" fill="#12313a"/><g>${['#ff5a3c','#2fd0b4','#f5c542','#4aa3ff','#ff5a3c','#2fd0b4','#f5c542','#4aa3ff'].map((c,i)=>`<rect x="${30+i*22}" y="${i%2?24:32}" width="20" height="${i%2?20:12}" fill="${c}"/>`).join('')}<rect x="30" y="12" width="20" height="12" fill="#2fd0b4"/></g></svg></div>`;
+  const ship = (() => {
+    const pal = ['#d9412b','#1f8fd1','#f1b21c','#2da36b','#e8e2d4','#8a3fb0','#e0662a','#2a5fa8'];
+    let box = '', k = 7;
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 15; c++) {
+      k = (k * 37 + 11) % 97; const col = pal[k % pal.length], x = 44 + c * 22.4, y = 118 - (r + 1) * 17;
+      box += `<g><rect x="${x}" y="${y}" width="21.4" height="16.2" fill="${col}"/><path d="M${x+4} ${y}V${y+16.2}M${x+8.5} ${y}V${y+16.2}M${x+13} ${y}V${y+16.2}M${x+17.5} ${y}V${y+16.2}" stroke="#0004" stroke-width=".9"/><rect x="${x}" y="${y}" width="21.4" height="2.2" fill="#fff3"/><rect x="${x}" y="${y+14}" width="21.4" height="2.2" fill="#0003"/></g>`;
+    }
+    return `<div class="ms-ship"><svg viewBox="0 0 640 230" aria-hidden="true">
+      <defs><linearGradient id="shH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c3f52"/><stop offset=".55" stop-color="#16222f"/><stop offset="1" stop-color="#0a121b"/></linearGradient>
+      <linearGradient id="shW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bf2a22"/><stop offset="1" stop-color="#6f1612"/></linearGradient>
+      <linearGradient id="shB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f4f6f8"/><stop offset="1" stop-color="#c9d1d9"/></linearGradient>
+      <linearGradient id="shSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f4a5c" stop-opacity=".85"/><stop offset="1" stop-color="#062630" stop-opacity="0"/></linearGradient></defs>
+      <path d="M0 196 Q80 188 160 196 T320 196 T480 196 T640 196 V230 H0Z" fill="url(#shSea)"/>
+      <path d="M12 118 H624 L600 186 Q596 198 580 198 H64 Q44 198 34 182 Z" fill="url(#shH)"/>
+      <path d="M26 168 H610 L600 186 Q596 198 580 198 H64 Q44 198 34 182 Z" fill="url(#shW)"/>
+      <path d="M12 118 H624" stroke="#8fa3b5" stroke-width="2"/><path d="M44 134H600" stroke="#ffffff22" stroke-width="1.4"/>
+      ${box}
+      <rect x="430" y="40" width="64" height="80" rx="3" fill="url(#shB)"/><rect x="424" y="34" width="76" height="12" rx="2" fill="#dfe5ea"/>
+      <g fill="#14303f">${[0,1,2,3].map(i=>`<rect x="${436+i*14}" y="52" width="9" height="6"/>`).join('')}${[0,1,2,3].map(i=>`<rect x="${436+i*14}" y="68" width="9" height="6"/>`).join('')}${[0,1,2,3].map(i=>`<rect x="${436+i*14}" y="84" width="9" height="6"/>`).join('')}</g>
+      <rect x="500" y="62" width="30" height="58" fill="#1f5f8b"/><rect x="500" y="62" width="30" height="9" fill="#d9412b"/>
+      <path d="M462 34V10M462 10H478M462 22H474" stroke="#cfd6dd" stroke-width="2"/><circle cx="462" cy="9" r="2" fill="#ff4a3a"/>
+      <path d="M624 118 L640 128 L618 134Z" fill="#0f1a24"/>
+      <path d="M0 197 Q60 190 120 197 T240 197" stroke="#ffffffaa" stroke-width="2.4" fill="none" opacity=".55"/><path d="M60 205 Q140 199 220 205 T380 205" stroke="#ffffff55" stroke-width="2" fill="none"/>
+    </svg></div>`;
+  })();
   const quotes = ['USD/SGD 1.34 ▲','BRENT 82.4 ▼','GDP +4.2%','TARIFF 0%','FTA SIGNED','SOX 5,120 ▲','TEU 39.0M ▲'];
   const ccepTicker = `<div class="ms-quotes"><div>${quotes.concat(quotes).map(q=>`<span>${q}</span>`).join('')}</div></div>`;
   const ccepIntro = `<div class="ms-grid3"></div>${arcSVG}${ship}${ccepTicker}
@@ -107,7 +131,7 @@
   const onPlay = (code, root) => {
     if (code !== 'STARTUP') return;
     const el = root.querySelector('.ms-vnum'); if (!el) return;
-    const t0 = performance.now() + 350, dur = 5400, a = 1e4, b = 1e8;
+    const t0 = performance.now() + 350, dur = 3200, a = 1e4, b = 1e8;
     const fmt = v => v >= 1e6 ? '$' + (v / 1e6).toFixed(v >= 1e7 ? 0 : 1).replace(/\.0$/, '') + 'M' : '$' + Math.round(v / 1e3) + 'K';
     el.textContent = fmt(a);
     const timer = setInterval(() => {

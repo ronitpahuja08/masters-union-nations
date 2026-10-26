@@ -514,16 +514,16 @@
 
 /* Startup: once the valuation hits $100M everything clears, then the title lands */
 .mc-journey.playing[data-code="STARTUP"] .ms-node{animation-name:msNodeIn,msClear;animation-duration:.7s,.45s;animation-fill-mode:both,forwards}
-.mc-journey.playing[data-code="STARTUP"] .ms-node.n1{animation-delay:.4s,5.85s}
-.mc-journey.playing[data-code="STARTUP"] .ms-node.n2{animation-delay:1s,5.85s}
-.mc-journey.playing[data-code="STARTUP"] .ms-node.n3{animation-delay:2.2s,5.85s}
-.mc-journey.playing[data-code="STARTUP"] .ms-node.n4{animation-delay:1.6s,5.85s}
-.mc-journey.playing[data-code="STARTUP"] .ms-links{animation:msClear .45s 5.85s forwards}
-.mc-journey.playing[data-code="STARTUP"] .ms-core{animation:msClear .45s 5.85s forwards}
-.mc-journey.playing[data-code="STARTUP"] .ms-coins{animation:msClear .45s 5.85s forwards}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n1{animation-delay:.4s,4.1s}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n2{animation-delay:1s,4.1s}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n3{animation-delay:2.2s,4.1s}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n4{animation-delay:1.6s,4.1s}
+.mc-journey.playing[data-code="STARTUP"] .ms-links{animation:msClear .45s 4.1s forwards}
+.mc-journey.playing[data-code="STARTUP"] .ms-core{animation:msClear .45s 4.1s forwards}
+.mc-journey.playing[data-code="STARTUP"] .ms-coins{animation:msClear .45s 4.1s forwards}
 @keyframes msClear{to{opacity:0}}
 :is(#mcPlayfield) .ms-node{--k:1}
-.mc-journey.playing[data-code="STARTUP"] .ms-heading,.mc-journey.playing[data-code="STARTUP"] .mc-heading{animation-duration:8s}
+.mc-journey.playing[data-code="STARTUP"] .mc-heading{animation-duration:6.2s}
 /* UNHRC: clear the scene before the title lands so nothing sits behind it */
 .mc-journey.playing[data-code="UNHRC"] .ms-pop{animation:msPopSide2 2s cubic-bezier(.2,.8,.2,1) calc(.3s + var(--i)*.4s) both}
 .mc-journey.playing[data-code="UNHRC"] .ms-rings{animation:msClear .45s 5.7s forwards}
@@ -743,3 +743,42 @@
 .ms-player:nth-child(1),.ms-player:nth-child(6){width:clamp(105px,14.5vw,280px)}
 .ms-player:nth-child(3),.ms-player:nth-child(4){margin-bottom:-.8vw}
 @media(max-width:850px){.ms-player{width:26vw;margin:0 -2vw}.ms-player:nth-child(1),.ms-player:nth-child(6){width:27vw}}
+
+/* ======================= v9 ======================= */
+/* ---- UNHRC: side words closer in, no cards, soft dissolve in and out ---- */
+.ms-pop{padding:0;background:none;border:0;border-radius:0;box-shadow:none;max-width:21vw}
+.ms-pop.l{left:12vw;text-align:left}.ms-pop.r{right:12vw;text-align:right}
+.ms-pop b{text-shadow:0 3px 22px #000,0 0 30px #1a4f8a99}
+.mc-journey.playing[data-code="UNHRC"] .ms-pop{animation:msPopSide3 2.3s ease-out calc(.3s + var(--i)*.4s) both}
+@keyframes msPopSide3{0%{opacity:0;transform:translateY(18px);letter-spacing:-.04em;filter:blur(0)}14%{opacity:1;transform:none;letter-spacing:0}70%{opacity:1;transform:translateY(-4px);filter:blur(0);letter-spacing:0}100%{opacity:0;transform:translateY(-26px);filter:blur(7px);letter-spacing:.08em}}
+
+/* ---- CCEP: bigger centred "DEAL CLOSED" that clears before the title, new ship ---- */
+.mc-journey.playing[data-code="CCEP"] .mc-heading{animation-name:msTitleLate;animation-duration:6.4s}
+.mc-journey.playing[data-code="CCEP"] .mc-photo{animation-duration:6.5s}
+:is(#mcPlayfield) .ms-ledger{left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;padding:0 5vw}
+.ms-ledger small{font-size:clamp(12px,1.5vw,20px);letter-spacing:.4em}
+.ms-ledger b{display:block;margin:clamp(10px,1.4vw,22px) 0;font:900 clamp(3.4rem,11.5vw,10.5rem)/.95 var(--sans,Arial);letter-spacing:-.05em;white-space:nowrap;text-shadow:0 0 70px #2fd0b4cc,0 10px 40px #000a}
+.ms-ledger span{font-size:clamp(11px,1.4vw,19px);letter-spacing:.3em}
+.mc-journey.playing[data-code="CCEP"] .ms-ledger{animation:msLedger2 6.4s both}
+@keyframes msLedger2{0%,34%{opacity:0;transform:translateY(-46%) scale(.94)}42%,70%{opacity:1;transform:translateY(-50%) scale(1)}78%,100%{opacity:0;transform:translateY(-54%) scale(1.04)}}
+.mc-journey.playing[data-code="CCEP"] .ms-quotes{animation:msFadeIn 6.4s .6s both}
+:is(#mcPlayfield,.cinema-hero-scene) .ms-ship{left:-40vw;bottom:11%;width:clamp(300px,38vw,640px);opacity:0;filter:drop-shadow(0 18px 24px #0009)}
+.ms-ship svg{display:block;width:100%;height:auto}
+.mc-journey.playing[data-code="CCEP"] .ms-ship{animation:msShip2 6.4s ease-in-out both}
+@keyframes msShip2{0%{opacity:0;transform:translateX(0)}6%{opacity:1}100%{opacity:1;transform:translateX(165vw)}}
+.cinema-hero-scene[data-code="CCEP"] .ms-ship{animation:msShipLoop2 42s linear infinite;opacity:1}
+@keyframes msShipLoop2{from{transform:translateX(0)}to{transform:translateX(185vw)}}
+
+/* ---- IPL: richer, more realistic paddles, lot card and gavel ---- */
+.ms-seat .pd{position:relative;background:linear-gradient(155deg,color-mix(in srgb,var(--bg) 78%,#fff) 0%,var(--bg) 42%,color-mix(in srgb,var(--bg) 70%,#000) 100%);border:3px solid #ffffffee;border-radius:10px;box-shadow:0 22px 44px #000b,inset 0 0 0 3px #00000026,inset 0 2px 0 #ffffff80;overflow:hidden}
+.ms-seat .pd:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,#ffffff55 0%,#ffffff00 36%,#ffffff00 64%,#ffffff22 100%);pointer-events:none}
+.ms-seat .pd b{text-shadow:0 3px 0 #0004,0 8px 14px #0006}
+.ms-seat>i{width:9px;border-radius:2px 2px 5px 5px;background:linear-gradient(90deg,#5b3a1d,#c79a5e 38%,#8a5d2f 62%,#4a2e16);box-shadow:0 8px 14px #0008;position:relative}
+.ms-seat>i:before{content:"";position:absolute;left:-2px;right:-2px;top:0;height:9px;background:linear-gradient(90deg,#8d949b,#e6eaee 45%,#7b838b);border-radius:2px}
+.ms-podium{background:linear-gradient(160deg,#fffaf0 0%,#fbe7c2 55%,#f0cf92 100%);border:3px solid #e5bd6a;box-shadow:0 40px 90px #000d,0 0 0 1px #fff8 inset,0 0 0 8px #0000,0 0 120px #ffd24a44;overflow:visible}
+.ms-podium:before{content:"";position:absolute;inset:7px;border:1px solid #b0842f77;border-radius:11px;pointer-events:none}
+.ms-podium .who i{box-shadow:inset 0 -10px 16px #0003,0 6px 16px #0005}
+.ms-podium .cb b{background:linear-gradient(180deg,#2a1a4a,#0e0620);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ms-podium .ms-gavel2{filter:drop-shadow(0 10px 12px #0009)}
+.ms-stagelight{inset:0;background:radial-gradient(ellipse 34% 52% at 50% 56%,#ffe9b844,#ffe9b800 70%);mix-blend-mode:screen}
+.ms-floor{left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#00000000,#0a1424ee 70%)}
