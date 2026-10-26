@@ -26,7 +26,7 @@
     root.style.setProperty('--night-alpha-low', String(progress * .42));
     root.style.setProperty('--night-lights', String(progress * .55));
     root.classList.toggle('nightfall', progress >= .45);
-    if (elapsed >= 3500) root.classList.add('title-reveal');
+    if (elapsed >= 4120) root.classList.add('title-reveal');
     raf = requestAnimationFrame(tick);
   }
   window.MUNMCCNightFlight = {

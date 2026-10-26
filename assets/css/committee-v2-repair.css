@@ -208,20 +208,18 @@
 .committee-page.open[data-committee="AIPPM"] .cp-hero-copy{margin-bottom:clamp(100px,16vh,150px)}
 .dalal-page.open .dp-hero-actions{gap:16px}
 .dalal-page.open .dp-hero-actions :is(.dp-primary,.mu-dalal-register){min-height:52px;min-width:220px;padding:13px 21px}
-.mcc-flight-title h1{font-size:clamp(2.5rem,5.6vw,5.8rem);line-height:1.04;letter-spacing:-.055em}
+.mcc-flight-tagline{display:block;margin:clamp(20px,3vh,32px) auto 0;color:#ead5ad;font:700 clamp(10px,1vw,15px)/1.55 var(--mono,monospace);letter-spacing:.19em;text-transform:uppercase;text-shadow:0 6px 24px #000;max-width:90vw}
 .dalal-crash .dc-title h1{font-size:clamp(2.8rem,7vw,7rem);line-height:.96;letter-spacing:-.065em}
-.mc-journey[data-code="AIPPM"] .mc-heading h2{max-width:min(1100px,90vw);font-size:clamp(2.8rem,7.5vw,7.2rem);line-height:.97;letter-spacing:-.065em}
-.mc-journey.playing[data-code="AIPPM"] .mc-heading{animation:muAippmTagReveal 3.8s cubic-bezier(.18,.7,.2,1) both}
-@keyframes muAippmTagReveal{0%,34%{opacity:0;transform:translateY(-35%) scale(.95);filter:blur(12px)}48%,100%{opacity:1;transform:translateY(-50%) scale(1);filter:none}}
+.mc-journey.playing[data-code="AIPPM"] .mc-heading{animation:muAippmNameReveal 3.8s ease-out both}
+@keyframes muAippmNameReveal{0%,78%{opacity:0;transform:translateY(-37%) scale(.93);filter:blur(18px)}86%,100%{opacity:1;transform:translateY(-50%) scale(1);filter:none}}
 @media(max-width:560px){
   .committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .mu-hero-actions{flex-direction:column;width:min(280px,100%);gap:11px;margin-inline:auto}
   .committee-page.open:is([data-committee="MCC"],[data-committee="AIPPM"],[data-committee="IP"]) .mu-hero-actions :is(.cp-primary,.mu-start-registration){width:100%;min-width:0;min-height:46px;padding:11px 18px;font-size:12px}
   .committee-page.open[data-committee="AIPPM"] .cp-hero h1{font-size:clamp(3.3rem,16vw,5.2rem)!important}
   .committee-page.open[data-committee="AIPPM"] .cp-hero-copy{margin-bottom:5vh}
   .dalal-page.open .dp-hero-actions :is(.dp-primary,.mu-dalal-register){min-height:46px;min-width:0;padding:11px 18px}
-  .mcc-flight-title h1{font-size:clamp(1.85rem,7.5vw,3.5rem)}
+  .mcc-flight-tagline{max-width:300px;font-size:10px;letter-spacing:.1em;margin-top:18px}
   .dalal-crash .dc-title h1{font-size:clamp(2rem,8.5vw,4.2rem)}
-  .mc-journey[data-code="AIPPM"] .mc-heading h2{font-size:clamp(2.35rem,11vw,4rem)}
 }
 
 /* UNHRC / CCEP / STARTUP: the hero photo stays visible behind every section while scrolling */
