@@ -7,7 +7,10 @@
  * committee (UNHRC, MCC, CCEP, IPL, AIPPM, DALAL, STARTUP, IP). Tabs are created automatically.
  */
 var ALL_TAB = 'All Registrations';
-var HEADERS = ['Timestamp', 'Committee', 'Name', 'Email', 'Institution', 'Category', 'Phone', 'Why this committee', 'Source'];
+var HEADERS = ['Timestamp', 'Committee', 'Name', 'Email', 'Institution', 'Category', 'Phone', 'Why this committee', 'Source', 'Repeat submission'];
+// Same email can register again (a delegate may have typed wrong details the first time).
+// Repeats are flagged in the last column so you can tell which row is the newer one. Set to true to block repeats instead.
+var BLOCK_DUPLICATES = false;
 var COMMITTEES = ['UNHRC', 'MCC', 'CCEP', 'IPL', 'AIPPM', 'DALAL', 'STARTUP', 'IP'];
 
 function doPost(e) {
@@ -19,8 +22,9 @@ function doPost(e) {
     if (!secret || d.secret !== secret) return reply({ ok: false, error: 'unauthorized' });
     var committee = String(d.committee || '').toUpperCase();
     if (COMMITTEES.indexOf(committee) === -1) return reply({ ok: false, error: 'unknown committee' });
-    if (isDuplicate(d.email)) return reply({ ok: false, error: 'duplicate' });
-    var row = [d.timestamp, committee, d.name, d.email, d.institution, d.category, d.phone, d.motivation, d.source].map(safe);
+    var repeat = isDuplicate(d.email);
+    if (repeat && BLOCK_DUPLICATES) return reply({ ok: false, error: 'duplicate' });
+    var row = [d.timestamp, committee, d.name, d.email, d.institution, d.category, d.phone, d.motivation, d.source, repeat ? 'Repeat of an earlier email' : ''].map(safe);
     append(ALL_TAB, row);
     append(committee, row);
     return reply({ ok: true });
@@ -57,6 +61,7 @@ function doGet() { return reply({ ok: true, service: 'mun-registrations' }); }
 function append(tabName, row) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(tabName) || ss.insertSheet(tabName);
+  if (sh.getLastRow() > 0 && sh.getRange(1, HEADERS.length).getValue() === '') sh.getRange(1, HEADERS.length).setValue(HEADERS[HEADERS.length - 1]).setFontWeight('bold');
   if (sh.getLastRow() === 0) {
     sh.appendRow(HEADERS);
     sh.setFrozenRows(1);

@@ -41,7 +41,7 @@
       <input type="hidden" name="applyingFor" value="${code}">
       <div class="mu-form-status" role="status" aria-live="polite"></div>
       <button class="mu-submit" type="submit">Submit registration request <span aria-hidden="true">↗</span></button>
-      <small>Only a successful server confirmation counts as a submitted request. No payment is collected here. One registration per email address.</small>
+      <small>Only a successful server confirmation counts as a submitted request. No payment is collected here.</small>
     </form>`;
   }
 

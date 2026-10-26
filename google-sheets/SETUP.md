@@ -36,8 +36,8 @@ project, service account or paid service is needed.
 - If you would rather use a real Google Form, open the form > Responses > **Link to Sheets**. That needs no backend
   at all, but then the site's own form is bypassed and delegates leave the site to fill it in.
 
-## Duplicate emails
+## Repeat emails
 
-- The script rejects a second registration with the same email address (for any committee). Gmail dots and +tags are ignored, so `a.b+x@gmail.com` and `ab@gmail.com` count as the same person.
-- The check reads the **Email** column of the All Registrations tab, so delete any test rows from that tab (and the committee tabs) before launch, otherwise those test emails stay blocked.
-- After changing `Code.gs` you must publish it again: **Deploy > Manage deployments > pencil icon > Version: New version > Deploy**. The URL stays the same.
+- The same email address **can** register more than once, in case a delegate typed the wrong details the first time. When an email appears again, the new row is marked **Repeat of an earlier email** in the last column, so you can tell which row is the newer one.
+- To block repeats instead, set `var BLOCK_DUPLICATES = true;` at the top of `Code.gs` and publish a new version.
+- After changing `Code.gs` publish it again: **Deploy > Manage deployments > pencil icon > Version: New version > Deploy**. The URL stays the same.
