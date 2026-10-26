@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d0810">
+<title>Check-in · Masters' Union Nations 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<style>
+  :root{--sans:'Manrope',Arial,sans-serif;--mono:'DM Mono',ui-monospace,monospace;--gold:#d2a95c}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 0,#4a102655,transparent 55%),#0a060d;color:#f6efe4;font-family:var(--sans)}
+  .wrap{width:min(560px,100%);margin:0 auto;padding:16px 14px 40px;display:grid;gap:14px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .brand{margin:0;font:700 10px var(--mono);letter-spacing:.28em;color:var(--gold)}h1{margin:2px 0 0;font:900 1.35rem var(--sans);letter-spacing:-.02em}
+  .stat{padding:8px 14px;border-radius:12px;border:1px solid #d2a95c40;background:#d2a95c14;text-align:right;font:700 .8rem var(--mono);letter-spacing:.06em}.stat b{display:block;font:900 1.35rem var(--sans);letter-spacing:-.02em;color:#fff}
+  .card{padding:16px;border-radius:16px;border:1px solid #ffffff1f;background:#ffffff08;display:grid;gap:10px}
+  label{display:grid;gap:6px;font:700 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid #ffffff33;background:#00000050;color:#fff;font:600 1rem var(--sans)}
+  input:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  button{padding:13px 18px;border-radius:12px;border:0;background:#f6e9e0;color:#1a0d12;font:800 1rem var(--sans);cursor:pointer}button:hover{background:#fff}
+  button.ghost{background:#ffffff12;color:#f6efe4;border:1px solid #ffffff33}button:disabled{opacity:.5}
+  .msg{margin:0;min-height:1.3em;font:700 .9rem var(--sans);color:#ffb3a7}
+  #result{border-radius:18px;padding:22px 18px;text-align:center;display:grid;gap:6px;border:2px solid transparent}
+  #result .big{font:900 clamp(1.4rem,6vw,2rem)/1.05 var(--sans);letter-spacing:-.02em}#result .name{font:900 clamp(1.7rem,8vw,2.6rem)/1.05 var(--sans);letter-spacing:-.03em;overflow-wrap:anywhere}
+  #result .meta{font:700 .95rem var(--sans);opacity:.95}#result .small{font:600 .85rem var(--mono);letter-spacing:.06em;opacity:.85}
+  #result.ok{background:#0f3a26;border-color:#4be39a;color:#d9ffe9}#result.already{background:#40300a;border-color:#ffc94d;color:#fff1c9}#result.bad{background:#3c0f16;border-color:#ff6b7d;color:#ffdfe3}
+  #result.idle{background:#ffffff08;border-color:#ffffff1f;color:#b9aab6;padding:16px}
+  video{width:100%;max-height:46vh;border-radius:14px;background:#000;object-fit:cover}
+  .row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}
+  ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#ffffff0a;border:1px solid #ffffff1a}
+  li span{display:block;font:600 .8rem var(--sans);color:#b9aab6}li b{font:800 .95rem var(--sans)}li button{padding:9px 14px;font-size:.85rem;flex:none}
+  .tip{margin:0;font:600 .8rem/1.5 var(--sans);color:#a99aa6}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><div><p class="brand">MASTERS&rsquo; UNION NATIONS 2026</p><h1>Registration desk</h1></div><div class="stat" id="stat" hidden>CHECKED IN<b id="statN">0 / 0</b></div></header>
+
+  <form class="card" id="login" autocomplete="off">
+    <label>Your name<input id="by" maxlength="40" placeholder="e.g. Riya" autocomplete="name" required></label>
+    <label>Desk PIN<input id="pin" type="password" inputmode="numeric" maxlength="32" placeholder="Ask the organiser" autocomplete="off" required></label>
+    <button type="submit">Start checking in</button>
+    <p class="msg" id="loginMsg" role="alert"></p>
+    <p class="tip">Volunteers only. This page marks delegates as checked in.</p>
+  </form>
+
+  <section id="desk" hidden>
+    <div id="result" class="idle" role="status" aria-live="assertive">Ready. Scan a delegate&rsquo;s QR code.</div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="row"><button type="button" id="camBtn">Scan with this phone&rsquo;s camera</button><button type="button" class="ghost" id="camStop" hidden>Stop camera</button></div>
+      <video id="video" playsinline muted hidden></video>
+      <p class="tip" id="camTip">No camera scanner in your browser? Just use your phone&rsquo;s normal Camera app on the delegate&rsquo;s QR: it opens this page and checks them in.</p>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <label>Handheld scanner, or paste a code<input id="wedge" placeholder="Scan here, then press Enter" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+      <label>QR won&rsquo;t scan? Search by name, email or ID<input id="q" placeholder="Type at least 2 letters" autocomplete="off"></label>
+      <ul id="matches"></ul>
+    </div>
+    <p style="text-align:center;margin-top:10px"><button type="button" class="ghost" id="logout">Sign out</button></p>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var pin = '', by = '', busy = false, lastTok = '', lastAt = 0, stream = null, timer = null, pending = '';
+  try { pin = sessionStorage.getItem('mun-pin') || ''; by = sessionStorage.getItem('mun-by') || ''; } catch (e) {}
+  var hashTok = ((location.hash || '').slice(1).match(/[a-f0-9]{32}/) || [])[0] || '';
+  if (hashTok) { pending = hashTok; history.replaceState(null, '', location.pathname); }
+
+  function post(body) {
+    return fetch('/api/checkin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ pin: pin }, body)) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; }); });
+  }
+  function beep(ok) {
+    try { var c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = ok ? 880 : 220; g.gain.value = 0.08; o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + (ok ? 0.12 : 0.35)); } catch (e) {}
+    if (navigator.vibrate) navigator.vibrate(ok ? 60 : [120, 60, 120]);
+  }
+  function show(cls, html) { var r = $('result'); r.className = cls; r.innerHTML = html; }
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  function setStat(j) { if (j && typeof j.total === 'number') { $('stat').hidden = false; $('statN').textContent = j.checkedIn + ' / ' + j.total; } }
+  function time(iso) { var d = new Date(iso); return isNaN(d) ? '' : d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+  function handle(res) {
+    if (res.status === 401 || res.status === 429) { signOut(res.j.error || 'Please sign in again.'); return; }
+    var j = res.j; if (res.status >= 400 || j.error) { show('bad', '<div class="big">Could not check in</div><div class="meta">' + esc(j.error || 'Please scan again.') + '</div>'); beep(false); return; }
+    setStat(j); var d = j.delegate;
+    if (j.status === 'ok') { show('ok', '<div class="big">&#10003; CHECKED IN</div><div class="name">' + esc(d.name) + '</div><div class="meta">' + esc(d.committee) + ' &middot; ' + esc(d.institution) + '</div><div class="small">' + esc(d.id) + '</div>'); beep(true); }
+    else if (j.status === 'already') { show('already', '<div class="big">ALREADY CHECKED IN</div><div class="name">' + esc(d.name) + '</div><div class="meta">' + esc(d.committee) + '</div><div class="small">' + esc(d.id) + ' &middot; at ' + esc(time(d.checkedInAt)) + (d.checkedInBy ? ' by ' + esc(d.checkedInBy) : '') + '</div>'); beep(false); }
+    else { show('bad', '<div class="big">NOT RECOGNISED</div><div class="meta">This QR is not on the list. Try searching by name below.</div>'); beep(false); }
+  }
+  function scan(body) {
+    if (busy) return; busy = true; show('idle', 'Checking&hellip;');
+    post(Object.assign({ action: 'scan', by: by }, body)).then(handle).catch(function () { show('bad', '<div class="big">No connection</div><div class="meta">Check the wifi and scan again.</div>'); beep(false); }).then(function () { busy = false; });
+  }
+  function tokenFrom(text) { var m = String(text || '').match(/[a-f0-9]{32}/i); return m ? m[0].toLowerCase() : ''; }
+  function onCode(text) { var t = tokenFrom(text), now = Date.now(); if (!t) { if (/^MUN26-\d{4}$/i.test(String(text).trim())) return scan({ id: String(text).trim().toUpperCase() }); return; } if (t === lastTok && now - lastAt < 4000) return; lastTok = t; lastAt = now; scan({ token: t }); }
+
+  function signOut(msg) { stopCam(); pin = ''; try { sessionStorage.removeItem('mun-pin'); } catch (e) {} $('desk').hidden = true; $('login').hidden = false; $('stat').hidden = true; $('loginMsg').textContent = msg || ''; }
+  function enter() {
+    $('login').hidden = true; $('desk').hidden = false; $('wedge').focus(); refreshStats();
+    if (pending) { var t = pending; pending = ''; scan({ token: t }); }
+  }
+  function refreshStats() { post({ action: 'stats' }).then(function (r) { if (r.status === 200) setStat(r.j); else if (r.status === 401) signOut('Wrong PIN.'); }).catch(function () {}); }
+
+  $('login').addEventListener('submit', function (e) {
+    e.preventDefault(); var p = $('pin').value.trim(), n = $('by').value.trim(); if (!p || !n) return;
+    $('loginMsg').textContent = 'Checking PIN…'; pin = p; by = n;
+    post({ action: 'stats' }).then(function (r) {
+      if (r.status === 200) { try { sessionStorage.setItem('mun-pin', pin); sessionStorage.setItem('mun-by', by); } catch (e) {} $('pin').value = ''; $('loginMsg').textContent = ''; setStat(r.j); enter(); }
+      else { pin = ''; $('loginMsg').textContent = r.j.error || 'Could not sign in.'; }
+    }).catch(function () { pin = ''; $('loginMsg').textContent = 'No connection. Check the wifi and try again.'; });
+  });
+  $('by').value = by;
+  $('logout').addEventListener('click', function () { signOut(''); });
+
+  $('wedge').addEventListener('keydown', function (e) { if (e.key === 'Enter') { var v = this.value; this.value = ''; onCode(v); e.preventDefault(); } });
+  var st; $('q').addEventListener('input', function () {
+    clearTimeout(st); var v = this.value.trim(), ul = $('matches'); if (v.length < 2) { ul.innerHTML = ''; return; }
+    st = setTimeout(function () {
+      post({ action: 'search', q: v }).then(function (r) {
+        if (r.status !== 200) { ul.innerHTML = '<li><span>' + esc(r.j.error || 'Search failed') + '</span></li>'; return; }
+        ul.innerHTML = (r.j.matches || []).map(function (m) { return '<li><div><b>' + esc(m.name) + '</b><span>' + esc(m.committee) + ' &middot; ' + esc(m.institution) + ' &middot; ' + esc(m.id) + (m.checkedIn ? ' &middot; checked in' : '') + '</span></div><button type="button" data-id="' + esc(m.id) + '">' + (m.checkedIn ? 'Re-check' : 'Check in') + '</button></li>'; }).join('') || '<li><span>No one found.</span></li>';
+      }).catch(function () { ul.innerHTML = '<li><span>No connection.</span></li>'; });
+    }, 300);
+  });
+  $('matches').addEventListener('click', function (e) { var b = e.target.closest('button[data-id]'); if (b) scan({ id: b.dataset.id }); });
+
+  /* camera scanning (uses the browser's built-in QR detector where it exists) */
+  function stopCam() { clearInterval(timer); timer = null; if (stream) stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; $('video').hidden = true; $('camStop').hidden = true; $('camBtn').hidden = false; }
+  $('camStop').addEventListener('click', stopCam);
+  $('camBtn').addEventListener('click', function () {
+    if (!('BarcodeDetector' in window) || !navigator.mediaDevices) { $('camTip').textContent = 'This browser cannot scan inside the page. Use your phone’s normal Camera app on the QR: it opens this page and checks the delegate in. (Chrome on Android works here.)'; return; }
+    var det; try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { $('camTip').textContent = 'QR scanning is not available here. Use your phone’s Camera app on the QR.'; return; }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }).then(function (s) {
+      stream = s; var v = $('video'); v.srcObject = s; v.hidden = false; v.play(); $('camBtn').hidden = true; $('camStop').hidden = false;
+      timer = setInterval(function () { if (busy || v.readyState < 2) return; det.detect(v).then(function (codes) { if (codes && codes[0]) onCode(codes[0].rawValue); }).catch(function () {}); }, 300);
+    }).catch(function () { $('camTip').textContent = 'Camera permission was blocked. Allow the camera for this site, or use the phone’s Camera app.'; });
+  });
+
+  setInterval(function () { if (!$('desk').hidden && !document.hidden) refreshStats(); }, 30000);
+  if (pin && by) { post({ action: 'stats' }).then(function (r) { if (r.status === 200) { setStat(r.j); enter(); } else signOut(''); }).catch(function () { enter(); }); }
+})();
+</script>
+</body>
+</html>

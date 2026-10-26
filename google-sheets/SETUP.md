@@ -41,3 +41,28 @@ project, service account or paid service is needed.
 - The same email address **can** register more than once, in case a delegate typed the wrong details the first time. When an email appears again, the new row is marked **Repeat of an earlier email** in the last column, so you can tell which row is the newer one.
 - To block repeats instead, set `var BLOCK_DUPLICATES = true;` at the top of `Code.gs` and publish a new version.
 - After changing `Code.gs` publish it again: **Deploy > Manage deployments > pencil icon > Version: New version > Deploy**. The URL stays the same.
+
+## On-the-day check-in (personal QR on every iCard)
+
+How it works:
+1. A delegate registers. The sheet script gives them a **Delegate ID** (MUN26-0001 ...) and a private **Token** (long random string, a new one per registration). The token is their personal QR code.
+2. The iCard shows that QR. The same QR is on their personal page `https://<your-site>/card.html#<token>`, which is the link in their email.
+3. On the day the delegate opens their card on their phone. A volunteer scans the QR; the delegate is marked **Checked in**, with the time and the volunteer's name, in the "Checked in" columns of the sheet.
+4. A second scan shows "Already checked in at ..." so nobody is counted twice. A QR that is not on the list shows "Not recognised".
+
+Volunteer page: `https://<your-site>/checkin.html` (not linked anywhere on the site). A volunteer signs in with their name and the **desk PIN**, then can:
+- scan with the phone's normal Camera app (it opens the page and checks the delegate in, even on iPhone),
+- use the in-page camera button (Chrome on Android),
+- use a USB / Bluetooth handheld scanner (click the box, scan),
+- or search by name / email / ID when a QR will not scan.
+
+Setup (one time):
+1. Replace the script in Extensions > Apps Script with the new `Code.gs`, then **Deploy > Manage deployments > pencil > Version: New version > Deploy**. New columns (Delegate ID, Token, Checked in, Check-in time, Checked in by) are added to the sheet automatically.
+2. In Vercel > Settings > Environment Variables add `STAFF_PIN` (a PIN of your choice, 6+ digits; share it only with volunteers) and redeploy.
+3. Optional, to email every delegate their iCard link: in Apps Script > Project Settings > Script properties add `SEND_EMAILS` = `yes`. The first time a registration runs, Google asks you to approve sending email. Free Gmail accounts can send about 100 emails a day, Google Workspace accounts about 1,500; beyond that emails silently stop but registrations still save.
+4. Test with your own registration before the event: register, open the card page, sign in to `checkin.html`, scan.
+
+Notes:
+- Registrations made before this update have no token, so they have no QR. Only new registrations get one.
+- If someone registers twice, each registration has its own QR and its own row (the later row is flagged "Repeat of an earlier email").
+- Change the PIN any time by editing `STAFF_PIN` in Vercel and redeploying.

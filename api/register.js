@@ -56,14 +56,14 @@ module.exports = async function handler(req, res) {
   const useSheet = Boolean(sheetUrl && sheetSecret), useDb = Boolean(dbUrl && dbKey);
   if (!useSheet && !useDb) return reply(res, 503, { error: 'Registration is not yet open. Backend configuration is pending.' });
   const consentedAt = new Date().toISOString();
-  let saved = false;
+  let saved = false, delegate = null;
 
   if (useSheet) {
     try {
       const r = await fetch(sheetUrl, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ secret: sheetSecret, timestamp: consentedAt, committee, name, email, institution, category, phone, motivation, source: host }), signal: AbortSignal.timeout(12000) });
       const out = await r.json().catch(() => ({}));
       if (out.error === 'duplicate') return reply(res, 409, { error: 'This email address has already been used to register. If that was not you, or you need to change something, please contact the organisers.', fields: { email: 'This email is already registered.' } });
-      if (r.ok && out.ok === true) saved = true; else console.error('Registration sheet write failed', r.status, out.error || '');
+      if (r.ok && out.ok === true) { saved = true; if (out.token && out.id) delegate = { id: String(out.id), token: String(out.token) }; } else console.error('Registration sheet write failed', r.status, out.error || '');
     } catch (err) { console.error('Registration sheet error', err.name); }
   }
   if (useDb && (saved || !useSheet)) {
@@ -72,6 +72,6 @@ module.exports = async function handler(req, res) {
       if (r.ok) saved = true; else console.error('Registration DB write failed', r.status);
     } catch (err) { console.error('Registration DB error', err.name); }
   }
-  if (saved) return reply(res, 201, { ok: true, message: 'Registration request received; payment instructions pending.' });
+  if (saved) return reply(res, 201, { ok: true, message: 'Registration request received; payment instructions pending.', delegate });
   return reply(res, 502, { error: 'Unable to save registration. Please retry or contact organisers.' });
 };

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d0810">
+<title>Your iCard · Masters' Union Nations 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/icard.css?v=8">
+<style>
+  :root{--sans:'Manrope',Arial,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px 16px;background:radial-gradient(ellipse at 50% 0,#4a102655,transparent 60%),#0a060d;color:#f6efe4;font-family:var(--sans)}
+  main{width:min(420px,100%);text-align:center;display:grid;gap:14px;justify-items:center}
+  .brand{font:700 10px var(--mono);letter-spacing:.3em;color:#d2a95c;margin:0}
+  h1{margin:0;font:900 clamp(1.6rem,6vw,2.2rem)/1.05 var(--sans);letter-spacing:-.03em}
+  .sub{margin:0;font:600 .9rem var(--sans);color:#b9aab6}
+  .qr{width:min(78vw,320px);aspect-ratio:1;padding:6px;border-radius:16px;background:#fff;box-shadow:0 20px 60px #000a}.qr svg{display:block;width:100%;height:100%}
+  .who{margin:2px 0 0;font:800 1rem var(--sans)}.id{margin:0;font:700 .85rem var(--mono);letter-spacing:.12em;color:#d2a95c}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;border:1px solid #ffffff3d;background:#ffffff0c;font:700 .82rem var(--sans)}
+  .chip.in{border-color:#4be39a;background:#4be39a1f;color:#b8ffd9}
+  .tip{margin:0;font:600 .8rem/1.5 var(--sans);color:#a99aa6;max-width:34ch}
+  .btn{padding:12px 24px;border-radius:999px;border:0;background:#f6e9e0;color:#1a0d12;font:800 .95rem var(--sans);cursor:pointer}.btn:hover{background:#fff}.btn:focus-visible{outline:2px solid #d2a95c;outline-offset:3px}
+  .err{color:#ffb3a7;font:700 1rem var(--sans)}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite">
+  <p class="brand">MASTERS&rsquo; UNION NATIONS 2026</p>
+  <p class="sub" id="msg">Opening your iCard&hellip;</p>
+</main>
+<script src="assets/vendor/qrcode-generator-1.4.4.min.js"></script>
+<script src="assets/js/icard.js?v=7"></script>
+<script>
+(function () {
+  var app = document.getElementById('app');
+  var token = ((location.hash || '').slice(1).match(/[a-f0-9]{32}/) || [])[0];
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  function fail(t) { app.innerHTML = '<p class="brand">MASTERS&rsquo; UNION NATIONS 2026</p><p class="err">' + esc(t) + '</p><p class="tip">Open the link from your registration email again, or ask the organisers at the desk.</p>'; }
+  if (!token) return fail('This card link is not complete.');
+  fetch('/api/delegate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: token }) })
+    .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+    .then(function (res) {
+      if (!res.ok || !res.j.delegate) return fail(res.j.error || 'We could not open this card.');
+      var d = res.j.delegate, canDesign = window.MUNICard && window.MUNICard.enabled.indexOf(d.committee) > -1;
+      app.innerHTML =
+        '<p class="brand">MASTERS&rsquo; UNION NATIONS 2026</p><h1>Your check-in pass</h1>' +
+        '<p class="sub">Show this QR code at the registration desk.</p>' +
+        '<div class="qr">' + window.MUNICard.qrSVG(window.MUNICard.checkinUrl(token)) + '</div>' +
+        '<p class="who">' + esc(d.name) + ' &middot; ' + esc(d.committee) + '</p><p class="id">' + esc(d.id) + '</p>' +
+        '<span class="chip' + (d.checkedIn ? ' in' : '') + '">' + (d.checkedIn ? 'Checked in &#10003;' : 'Not checked in yet') + '</span>' +
+        (canDesign ? '<button class="btn" id="design" type="button">Design my iCard</button>' : '') +
+        '<p class="tip">Turn your screen brightness up. This QR is personal to you, so please do not share it.</p>';
+      var b = document.getElementById('design');
+      if (b) b.addEventListener('click', function () { window.MUNICard.open({ name: d.name, email: d.email, institution: d.institution, committee: d.committee, id: d.id, token: token }); });
+    })
+    .catch(function () { fail('No connection. Please check your internet and reload.'); });
+})();
+</script>
+</body>
+</html>

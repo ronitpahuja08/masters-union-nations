@@ -39,6 +39,21 @@
   function accent() { return state.accent || ENABLED[ctx.committee].accent; }
   function status(t) { var s = $('#icStatus'); if (s) s.textContent = t || ''; }
 
+  /* ---------- personal QR ---------- */
+  function checkinUrl(token) { return location.origin + '/checkin.html#' + token; }
+  function cardUrl(token) { return location.origin + '/card.html#' + token; }
+  function qrSVG(text) {
+    if (typeof window.qrcode !== 'function') return '';
+    var q = window.qrcode(0, 'L'); q.addData(text); q.make();
+    var n = q.getModuleCount(), pad = 2, size = n + pad * 2, d = '';
+    for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) d += 'M' + (c + pad) + ' ' + (r + pad) + 'h1v1h-1z';
+    return '<svg viewBox="0 0 ' + size + ' ' + size + '" shape-rendering="crispEdges" role="img" aria-label="Your personal check-in QR code"><rect width="' + size + '" height="' + size + '" fill="#fff"/><path d="' + d + '" fill="#000"/></svg>';
+  }
+  function showBigQR() {
+    if (!ctx.token) return; var b = $('#icQrBig'); b.querySelector('.mic-qrbig-code').innerHTML = qrSVG(checkinUrl(ctx.token));
+    b.querySelector('.mic-qrbig-id').textContent = ctx.id + ' · ' + ctx.name; b.hidden = false; b.querySelector('button').focus({ preventScroll: true });
+  }
+
   /* ---------- UI ---------- */
   function swatches(id, list, key, allowNull) {
     var box = $(id);
@@ -62,8 +77,10 @@
       '<h3>Text</h3><div class="mic-swatches" id="icInk" role="radiogroup" aria-label="Text colour"></div></section>' +
       '<section data-pane="style" hidden><h3>Background style</h3><div class="mic-styles" id="icStyles" role="radiogroup" aria-label="Background style"></div>' +
       '<h3>Font</h3><div class="mic-fonts" id="icFonts" role="radiogroup" aria-label="Font"></div></section>' +
+      '<div class="mic-linkbox" id="icLink" hidden><p>Your personal QR code is on the card. On the day, open your card on your phone and show the QR at the registration desk. <b>Keep it to yourself.</b></p><button class="mic-btn" id="icCopy" type="button">Copy my card link</button></div>' +
       '<div class="mic-actions"><button class="mic-btn ghost" id="icSurprise" type="button">Surprise me</button><button class="mic-btn ghost" id="icReset" type="button">Reset</button></div>' +
       '<p class="mic-status" id="icStatus" role="status" aria-live="polite"></p></aside></div>' +
+      '<div class="mic-qrbig" id="icQrBig" hidden role="dialog" aria-modal="true" aria-label="Your check-in QR code"><div class="mic-qrbig-box"><div class="mic-qrbig-code"></div><p class="mic-qrbig-id"></p><p class="mic-qrbig-tip">Turn your screen brightness up and show this at the registration desk.</p><button type="button" class="mic-btn primary">Done</button></div></div>' +
       '<input id="icFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>' +
       '<div class="mic-crop" id="icCrop" hidden role="dialog" aria-modal="true" aria-label="Frame your photo"><div class="mic-crop-box"><h3>Frame your photo</h3><p>Drag to move, use the slider to zoom.</p>' +
       '<div class="mic-crop-view" id="icCropView"><canvas id="icCropCv" width="280" height="280"></canvas><i class="mic-crop-ring"></i></div>' +
@@ -83,12 +100,20 @@
       root.querySelectorAll('.mic-tabs button').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-selected', String(on)); });
       root.querySelectorAll('[data-pane]').forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.tab; });
     });
+    $('#icQrBig').addEventListener('click', function () { $('#icQrBig').hidden = true; });
+    $('#icCopy').addEventListener('click', function () {
+      var link = ctx.token ? cardUrl(ctx.token) : ''; if (!link) return;
+      var done = function () { status('Link copied. Keep it safe: it opens your card and QR.'); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done, function () { window.prompt('Copy your card link:', link); });
+      else window.prompt('Copy your card link:', link);
+    });
+    card.addEventListener('click', function (e) { if (e.target.closest('.mic-qr[data-token]')) showBigQR(); });
     $('#icSurprise').addEventListener('click', surprise);
     $('#icReset').addEventListener('click', function () { var p = state.photo; state = fresh(); state.photo = p; render(); status('Back to the starting design.'); });
     $('#icSave').addEventListener('click', function () { status(save() ? 'Saved on this device. You can come back and change it any time.' : 'Could not save in this browser, but your card is ready.'); });
     $('.mic-close', root).addEventListener('click', close);
     root.addEventListener('mousedown', function (e) { if (e.target === root) close(); });
-    document.addEventListener('keydown', function (e) { if (root.hidden) return; if (e.key === 'Escape') { if (!$('#icCrop').hidden) closeCrop(); else close(); } else if (e.key === 'Tab') trap(e); });
+    document.addEventListener('keydown', function (e) { if (root.hidden) return; if (e.key === 'Escape') { if (!$('#icQrBig').hidden) $('#icQrBig').hidden = true; else if (!$('#icCrop').hidden) closeCrop(); else close(); } else if (e.key === 'Tab') trap(e); });
 
     // photo: upload button on the card, then a framing panel
     card.addEventListener('click', function (e) { if (e.target.closest('.mic-upload')) $('#icFile').click(); });
@@ -152,7 +177,8 @@
     if (e.shiftKey && document.activeElement === a) { z.focus(); e.preventDefault(); } else if (!e.shiftKey && document.activeElement === z) { a.focus(); e.preventDefault(); }
   }
   function render(light) {
-    var acc = accent(), meta = ENABLED[ctx.committee], id = 'MUN26-' + ctx.committee + '-' + hash(ctx.email + ctx.committee).toString(16).slice(0, 4).toUpperCase();
+    var acc = accent(), meta = ENABLED[ctx.committee], id = ctx.id || ('MUN26-' + ctx.committee + '-' + hash(ctx.email + ctx.committee).toString(16).slice(0, 4).toUpperCase());
+    var qr = ctx.token ? qrSVG(checkinUrl(ctx.token)) : '';
     var font = FONTS.filter(function (f) { return f[0] === state.font; })[0][2];
     card.dataset.style = state.style;
     card.style.setProperty('--bg', state.bg); card.style.setProperty('--bg2', shade(state.bg, lum(state.bg) > 0.5 ? -0.12 : -0.45)); card.style.setProperty('--acc', acc);
@@ -168,9 +194,10 @@
         '<p class="mic-role">DELEGATE</p><h3 class="mic-name">' + esc(ctx.name) + '</h3>' +
         '<p class="mic-committee"><i></i>' + esc(meta.code) + '</p>' +
         '<dl class="mic-info"><div><dt>SCHOOL / UNIVERSITY</dt><dd>' + esc(ctx.institution) + '</dd></div><div><dt>EMAIL</dt><dd>' + esc(ctx.email) + '</dd></div></dl>' +
-        '<div class="mic-foot"><div class="mic-idbox"><b>' + esc(id) + '</b><span>28&ndash;29 NOV 2026</span><span>GURUGRAM</span></div><div class="mic-qr" role="img" aria-label="Space reserved for your QR code"><span>QR</span></div></div>';
+        '<div class="mic-foot"><div class="mic-idbox"><b>' + esc(id) + '</b><span>28&ndash;29 NOV 2026</span><span>GURUGRAM</span></div>' + (qr ? '<button type="button" class="mic-qr live" data-token="1" aria-label="Show my check-in QR code bigger">' + qr + '</button>' : '<div class="mic-qr" role="img" aria-label="QR code appears once registration is confirmed"><span>QR</span></div>') + '</div>';
     }
     // panel state
+    $('#icLink').hidden = !ctx.token;
     var mark = function (id, list, key, cur) {
       var box = $(id); box.querySelectorAll('button.mic-sw').forEach(function (b, i) { var v = list[i][1] || ENABLED[ctx.committee].accent; b.style.background = v; b.setAttribute('aria-checked', String(list[i][1] === cur || (list[i][1] == null && cur == null))); });
       var inp = box.querySelector('input'); var shown = cur || ENABLED[ctx.committee].accent; if (inp.value !== shown) inp.value = shown; box.querySelector('.mic-custom').style.background = 'conic-gradient(#ff5e5e,#ffd24a,#4be37b,#38d0ff,#8a6bff,#ff5ec4,#ff5e5e)';
@@ -183,7 +210,9 @@
   }
 
   function open(detail) {
-    ctx = { name: detail.name, email: String(detail.email || '').toLowerCase(), institution: detail.institution, committee: detail.committee };
+    ctx = { name: detail.name, email: String(detail.email || '').toLowerCase(), institution: detail.institution, committee: detail.committee, id: detail.id || '', token: /^[a-f0-9]{32}$/.test(detail.token || '') ? detail.token : '' };
+    if (!ctx.token) { try { var sv = JSON.parse(localStorage.getItem('mun-delegate:' + ctx.email) || 'null'); if (sv && /^[a-f0-9]{32}$/.test(sv.token)) { ctx.token = sv.token; ctx.id = sv.id; } } catch (e) {} }
+    else { try { localStorage.setItem('mun-delegate:' + ctx.email, JSON.stringify({ id: ctx.id, token: ctx.token })); } catch (e) {} }
     if (!root) build();
     state = load(); card.innerHTML = ''; status(''); $('#icCrop').hidden = true; crop = null;
     prevFocus = document.activeElement; root.hidden = false; document.body.classList.add('mic-open');
@@ -198,10 +227,11 @@
     var s = form.querySelector('.mu-form-status'); (s || form.lastElementChild).insertAdjacentElement('afterend', b);
   }
   document.addEventListener('mun:registered', function (e) {
-    var d = e.detail || {}; if (!ENABLED[d.committee]) return;
+    var d = Object.assign({}, e.detail || {}); if (!ENABLED[d.committee]) return;
+    if (d.delegate) { d.id = d.delegate.id; d.token = d.delegate.token; }
     var form = e.target && e.target.closest ? e.target.closest('form') : null;
     if (form) addReopen(form, d);
     setTimeout(function () { open(d); }, reduce() ? 0 : 700);
   });
-  window.MUNICard = { open: open, enabled: Object.keys(ENABLED) };
+  window.MUNICard = { open: open, enabled: Object.keys(ENABLED), qrSVG: qrSVG, checkinUrl: checkinUrl, cardUrl: cardUrl };
 })();

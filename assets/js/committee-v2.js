@@ -152,7 +152,7 @@
       form.classList.add('mu-submitted');
       if(status)status.textContent='Your registration request was received. The team will contact you with the next steps. No payment has been collected.';
       button.textContent='Request received ✓';
-      form.dispatchEvent(new CustomEvent('mun:registered',{bubbles:true,detail:{name:payload.name,email:payload.email,institution:payload.institution,category:payload.category,committee:code}}));
+      form.dispatchEvent(new CustomEvent('mun:registered',{bubbles:true,detail:{name:payload.name,email:payload.email,institution:payload.institution,category:payload.category,committee:code,delegate:result.delegate||null}}));
     }catch(e){
       if(status)status.textContent=e.name==='AbortError'?'The connection timed out. Please retry; do not assume your request was saved.':(e.handled?e.message:'We could not reach the server. Check your connection and retry.');
       button.disabled=false;
