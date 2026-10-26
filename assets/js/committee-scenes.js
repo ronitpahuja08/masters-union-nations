@@ -33,7 +33,9 @@
       <circle cx="252" cy="220" r="13" fill="#d9a17a"/>
     </g>
   </svg>`;
-  const iplIntro = `${iplField}${batter}
+  const iplIntro = `${iplField}
+    <img class="ms-batter2" src="assets/images/ipl-batsman.png" alt="">
+    <svg class="ms-swoosh" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="swg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff6c8"/></linearGradient></defs><path d="M40 60 C36 32 48 13 61.5 18.3" pathLength="1"/></svg>
     <div class="ms-ball"></div>
     <div class="ms-impact"></div>
     <div class="ms-scoreboard"><span>LIVE · MASTERS UNION PREMIER LEAGUE</span><b>MUN 184/3</b><small>OVER 19.4</small></div>`;
@@ -51,14 +53,18 @@
     <g fill="#ffcf8a">${Array.from({length:60},(_,i)=>`<rect class="w" x="${(i*53)%1160+14}" y="${70+(i*37)%130}" width="4" height="5" style="animation-delay:${(i%9)*.35}s"/>`).join('')}</g>
   </svg>`;
   const beat = (cls, step, big, sub, extra='') => `<div class="ms-beat ${cls}"><small>${step}</small><b>${big}</b><span>${sub}</span>${extra}</div>`;
+  const card = (cls, step, title, sub) => `<div class="ms-node ${cls}"><small>${step}</small><b>${title}</b><span>${sub}</span></div>`;
   const startupIntro = `<div class="ms-sun"></div><div class="ms-fog f1"></div><div class="ms-fog f2"></div>${skyline}<div class="ms-shade"></div>
-    ${beat('bA','STEP 01 · THE SPARK','HAVE AN <em>IDEA</em>','Big enough to quit your plans for.','<div class="ms-bulb"><i></i><i></i><i></i><i></i><i></i><i></i></div>')}
-    ${beat('bB','STEP 02 · MVP','BUILD AN <em>MVP</em>','Minimum viable product. Ship it ugly, ship it fast.','<div class="ms-code"><i></i><i></i><i></i><i></i></div>')}
-    ${beat('bC','STEP 03 · DEMO DAY','PITCH IN <em>2:00</em>','Two minutes. Twelve slides. One shot.','<svg class="ms-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/></svg>')}
-    ${beat('bD','STEP 04 · INVESTORS','THE <em>TERM SHEET</em>','Equity, runway and a handshake.','<div class="ms-shake"><i></i><i></i><i></i></div>')}
-    <div class="ms-beat bE"><small>STEP 05 · VALUATION</small>
-      <div class="ms-val"><b class="v v1">$1M</b><b class="v v2">$10M</b><b class="v v3">$100M</b><b class="v v4">$1B</b></div>
-      <span class="ms-uni">UNICORN STATUS UNLOCKED</span><div class="ms-coins">${stars(22, 3)}</div></div>`;
+    <svg class="ms-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path class="l1" pathLength="1" d="M17 31 V69"/><path class="l2" pathLength="1" d="M17 69 H83"/><path class="l3" pathLength="1" d="M83 69 V31"/><path class="l4" pathLength="1" d="M83 31 H17"/>
+      <path class="sp s1" pathLength="1" d="M26 31 L50 49"/><path class="sp s2" pathLength="1" d="M26 69 L50 49"/><path class="sp s3" pathLength="1" d="M74 31 L50 49"/><path class="sp s4" pathLength="1" d="M74 69 L50 49"/>
+    </svg>
+    ${card('n1','01 · THE SPARK','IDEA','Big enough to quit your plans for.')}
+    ${card('n2','02 · BUILD','MVP','Ship it ugly. Ship it fast.')}
+    ${card('n3','03 · DEMO DAY','PITCH','Two minutes. One shot.')}
+    ${card('n4','04 · INVESTORS','TERM SHEET','Equity, runway, a handshake.')}
+    <div class="ms-core"><small>VALUATION</small><div class="ms-vnum" aria-hidden="true"></div><div class="ms-vfinal">$1B</div><span class="ms-uni">UNICORN STATUS UNLOCKED</span></div>
+    <div class="ms-coins">${stars(22, 3)}</div>`;
   const startupHero = `<div class="ms-sun"></div><div class="ms-fog f1"></div><div class="ms-fog f2"></div>${skyline}
     <div class="ms-ticker"><span>SEED $2M</span><span>SERIES A $14M</span><span>SERIES B $60M</span><span>VALUATION $1B</span></div>
     <div class="ms-coins">${stars(14, 5)}</div>`;
@@ -70,9 +76,13 @@
   const langHTML = (cls) => `<div class="ms-lang ${cls}">${langs.map(([w,n,l],i)=>`<div style="--i:${i}" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('')}</div>`;
   const wreath = `<svg class="ms-wreath" viewBox="-120 -120 240 240" aria-hidden="true"><g fill="#cfe9ff">${Array.from({length:22},(_,i)=>{const a=i*(360/22);return `<g transform="rotate(${a}) rotate(${i%2?18:-18} 0 -92)"><ellipse class="lf" style="--d:${(i*.045).toFixed(2)}s" cx="0" cy="-92" rx="5" ry="14"/></g>`}).join('')}</g></svg>`;
   const rings = `<div class="ms-rings"><i></i><i></i><i></i><i></i></div>`;
-  const unhrcIntro = `<div class="ms-shade u"></div>${rings}${wreath}${langHTML('')}
-    <div class="ms-count"><div><b>30</b><small>ARTICLES</small></div><div><b>193</b><small>NATIONS</small></div><div><b>1</b><small>DECLARATION</small></div></div>${flagRow}
-    <div class="ms-stars" style="inset:0">${stars(26, 11)}</div>`;
+  const pops = [['HUMAN RIGHTS','ENGLISH','en'],['LIBERTÉ','FRANÇAIS','fr'],['СВОБОДА','РУССКИЙ','ru'],['كرامة','العربية','ar'],['正义','中文','zh'],['JUSTICIA','ESPAÑOL','es'],['DIGNITY','ENGLISH','en'],['ÉGALITÉ','FRANÇAIS','fr'],['РАВЕНСТВО','РУССКИЙ','ru'],['عدالة','العربية','ar'],['平等','中文','zh'],['PAZ','ESPAÑOL','es']];
+  const popHTML = pops.map(([w,n,l],i)=>`<div class="ms-pop ${i%2?'r':'l'}" style="--i:${i};--y:${[16,30,46,62,76,38][i%6]}%" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('');
+  const globe = `<svg class="ms-globe" viewBox="-60 -60 120 120" aria-hidden="true"><circle r="50" fill="#0b2a52" fill-opacity=".55" stroke="#9ed0ff" stroke-width="1.4"/>
+    <g fill="none" stroke="#9ed0ff" stroke-width=".8" opacity=".85"><ellipse class="m m1" rx="50" ry="50"/><ellipse class="m m2" rx="50" ry="50"/><ellipse class="m m3" rx="50" ry="50"/><path d="M-50 0H50M-43 -25H43M-43 25H43M-26 -43H26M-26 43H26"/></g></svg>`;
+  const unhrcIntro = `<div class="ms-shade u"></div>${rings}${wreath}${globe}
+    <div class="ms-udhr"><small>UNIVERSAL DECLARATION OF HUMAN RIGHTS</small><div class="ms-art"></div></div>
+    ${popHTML}${flagRow}<div class="ms-stars" style="inset:0">${stars(26, 11)}</div>`;
   const unhrcHero = `<div class="ms-shade u"></div>${rings}${langHTML('hero')}${flagRow}<div class="ms-stars" style="inset:0">${stars(18, 2)}</div>`;
 
   /* ---------- CCEP: Singapore harbour, trade arcs, ships, tickers ---------- */
