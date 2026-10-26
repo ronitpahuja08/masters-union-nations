@@ -33,14 +33,14 @@
       <circle cx="252" cy="220" r="13" fill="#d9a17a"/>
     </g>
   </svg>`;
-  const bids = [['MUN KNIGHTS','#e8222c','2.0'],['GURU GIANTS','#2f7bff','4.5'],['DLF DAREDEVILS','#f6a21b','7.0'],['CYBER KINGS','#1fbf8a','9.5'],['UNION TITANS','#b06bff','12.0']];
-  const ladder = `<div class="ms-ladder"><small>LIVE AUCTION · BIDDING</small>${bids.map(([n,c,v],i)=>`<div class="bid" style="--c:${c};--i:${i}"><i></i><span>${n}</span><b>₹ ${v} CR</b></div>`).join('')}</div>`;
+  const teams = [['MI','MUMBAI INDIANS','#1b6bd6','#fff','2.0',3],['RCB','ROYAL CHALLENGERS','#d4202e','#fff','3.5',17],['KKR','KOLKATA KNIGHT RIDERS','#5b2a86','#ffd24a','5.0',7],['SRH','SUNRISERS HYDERABAD','#f26a21','#1b1030','7.5',21],['RR','RAJASTHAN ROYALS','#e8338b','#fff','9.5',12],['CSK','CHENNAI SUPER KINGS','#f7c61b','#1a2a6c','12.0',24]];
+  const paddles = `<div class="ms-aucthead"><small>LIVE · PLAYER AUCTION · PADDLES UP</small></div>` + teams.map(([c,n,bg,fg,v,x],i)=>`<div class="ms-paddle ${i===teams.length-1?'win':''}" style="--bg:${bg};--fg:${fg};--x:${x}vw;--i:${i}"><div class="pd"><b>${c}</b><small>${n}</small><em>₹ ${v} CR</em></div><i></i></div>`).join('');
   const lot = `<div class="ms-lot"><small>LOT 07 · ALL-ROUNDER</small>
     <div class="who"><i></i><b>PLAYER<br>AUCTION</b></div><span>BASE PRICE ₹ 2.0 CR</span>
-    <div class="ms-sold"><b>SOLD</b><small>₹ 12.0 CR · UNION TITANS</small></div>
+    <div class="ms-sold"><b>SOLD</b><small>₹ 12.0 CR · CHENNAI SUPER KINGS</small></div>
     <svg class="ms-gavel2" viewBox="0 0 120 120" aria-hidden="true"><g class="gv"><rect x="20" y="52" width="86" height="12" rx="6" fill="#8a5a2b"/><rect x="2" y="34" width="38" height="46" rx="8" fill="#e9c885"/></g></svg></div>`;
   const wicket = `<div class="ms-pitch2"></div><div class="ms-wicket"><i class="s1"></i><i class="s2"></i><i class="s3"></i><em class="b1"></em><em class="b2"></em></div><div class="ms-ball2"></div>`;
-  const iplIntro = `${iplField}<div class="ms-shade i"></div>${wicket}${ladder}${lot}<div class="ms-flash"></div>`;
+  const iplIntro = `${iplField}<div class="ms-shade i"></div>${wicket}${paddles}${lot}<div class="ms-flash"></div>`;
   const placard = (cls, word, sub) => `<div class="ms-card ${cls}"><div class="pc"><b>${word}</b>${sub?`<small>${sub}</small>`:''}</div><i></i></div>`;
   const iplHero = `<div class="ms-sky"></div>${iplField}
     <div class="ms-pitch"></div>
