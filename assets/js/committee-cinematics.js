@@ -4,9 +4,10 @@
   'use strict';
 
   const CONFIG = {
-    UNHRC: { duration: 3800, city: 'GENEVA / SWITZERLAND', eyebrow: 'THE EVIDENCE FILES', name: 'UNHRC', phrase: 'HUMAN RIGHTS CANNOT WAIT', hero: ['HUMAN RIGHTS', 'CANNOT WAIT.'] },
-    CCEP:  { duration: 3800, city: 'SINGAPORE / REPUBLIC OF SINGAPORE', eyebrow: 'A NEW WORLD ECONOMY', name: 'CCEP', phrase: 'THE FUTURE IS NEGOTIABLE', hero: ['THE FUTURE', 'IS NEGOTIABLE.'] },
-    IPL:   { duration: 3700, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
+    UNHRC: { duration: 7400, city: 'GENEVA / SWITZERLAND', eyebrow: 'THE EVIDENCE FILES', name: 'UNHRC', phrase: 'HUMAN RIGHTS CANNOT WAIT', hero: ['HUMAN RIGHTS', 'CANNOT WAIT.'] },
+    CCEP:  { duration: 6400, city: 'SINGAPORE / REPUBLIC OF SINGAPORE', eyebrow: 'A NEW WORLD ECONOMY', name: 'CCEP', phrase: 'THE FUTURE IS NEGOTIABLE', hero: ['THE FUTURE', 'IS NEGOTIABLE.'] },
+    IPL:   { duration: 8400, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
+    STARTUP: { duration: 6200, city: 'SAN FRANCISCO / USA', eyebrow: 'DEMO DAY', name: 'STARTUP', phrase: 'BUILD THE NEXT BIG THING', hero: ['STARTUP', 'BOARDROOM.'] },
     AIPPM: { duration: 3800, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION', hero: ['THE HOUSE', 'IS IN SESSION.'] },
   };
   const HEROES = {
@@ -14,6 +15,7 @@
     CCEP: { hero: ['THE FUTURE', 'IS NEGOTIABLE.'], tag: 'THE COMMERCE OF TOMORROW' },
     AIPPM: { hero: ['THE HOUSE', 'IS IN SESSION.'], tag: 'POLITICS. POLICY. POWER.' },
     STARTUP: { hero: ['STARTUP', 'BOARDROOM.'], tag: 'BUILD THE NEXT BIG THING' },
+    IPL: { hero: null, tag: null, sceneOnly: true },
     IP: { hero: ['THE WORLD', 'IS WATCHING.'], tag: 'THE STORY STARTS HERE' }
   };
   const $ = (s, root = document) => root.querySelector(s);
@@ -78,7 +80,8 @@
     $('#mcHeadingKicker',root).textContent=cfg.eyebrow;
     $('#mcHeadingTitle',root).textContent=cfg.name;
     $('#mcHeadingSub',root).textContent=cfg.phrase;
-    $('#mcPlayfield',root).innerHTML=timelineScreens[code];
+    $('#mcPlayfield',root).innerHTML=(window.MUNScenes?.intro[code])||timelineScreens[code];
+    window.MUNScenes?.onPlay?.(code,root);
     root.setAttribute('aria-hidden','false');
     // Restart CSS timeline even when the same committee is opened twice.
     void root.offsetWidth;
@@ -97,8 +100,9 @@
       hero.insertBefore(scene,hero.firstChild);
     }
     scene.dataset.code=code;
-    scene.innerHTML=sceneBuild[code];
+    scene.innerHTML=(window.MUNScenes?.hero[code])||sceneBuild[code];
     const config=HEROES[code];
+    if(config.sceneOnly) return;
     const a=$('#cpHeroA'), b=$('#cpHeroB');
     if(a && b) { a.textContent=config.hero[0];b.textContent=config.hero[1]; }
     let tag=$('.cinema-hero-tag',hero);

@@ -4,7 +4,7 @@
    to /api/register. No unapproved payment is initiated. */
 (() => {
   'use strict';
-  const TARGETS = new Set(['MCC', 'IP', 'AIPPM']);
+  const TARGETS = new Set(['MCC', 'IP', 'AIPPM', 'IPL', 'STARTUP', 'UNHRC', 'CCEP']);
   const $ = (selector, parent=document) => parent.querySelector(selector);
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const page = $('#committeePage');
@@ -24,15 +24,17 @@
   addEventListener('resize',alignMobileMap,{passive:true});
 
   function formMarkup(code) {
-    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet',DALAL:'Dalal Street'}[code]||code;
+    const about={CCEP:'Navigating corporate options, funding battles, crisis management and policy negotiations where every decision shapes business and political outcomes.',STARTUP:'Transforming bold ideas into viable startups through business strategy, model development and high-stakes pitches to bring entrepreneurial visions to life.'}[code]||'';
+    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet',IPL:'Indian Premier League',STARTUP:'Startup Boardroom',UNHRC:'UN Human Rights Council',CCEP:'Corporate Engagement and Policy Making',DALAL:'Dalal Street'}[code]||code;
     return `<form class="mu-inline-form" data-committee="${code}" novalidate>
-      <h3>Reserve your place.</h3><p>Registration request for <strong>${label}</strong>. Payment will be arranged separately by the organising team.</p>
+      <h3>Reserve your place.</h3><p>Registration request for <strong>${label}</strong>. Payment will be arranged separately by the organising team.</p>${about?`<p class="mu-about">${about}</p>`:''}
       <div class="mu-fields">
         <label>Full name <input name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Your full name"></label>
         <label>Email address <input name="email" type="email" required maxlength="180" autocomplete="email" placeholder="you@example.com"></label>
         <label>School / university <input name="institution" required maxlength="180" autocomplete="organization" placeholder="Your institution"></label>
         <label>Delegate category <select name="category" required><option value="">Select category</option><option value="school">School</option><option value="college">College</option></select></label>
         <label>Phone number <input name="phone" type="tel" inputmode="tel" required maxlength="16" pattern="[+]?[0-9]{7,15}" autocomplete="tel" title="Enter 7–15 digits, optionally starting with +; omit spaces." placeholder="+919876543210"></label>
+        ${code==='DALAL'?'<label>Your market instinct <textarea name="motivation" rows="3" required maxlength="1000" placeholder="What would you bring to the trading floor?"></textarea></label>':''}
       </div>
       <input name="website" class="mu-trap" tabindex="-1" autocomplete="off" aria-hidden="true" type="text">
       <label class="mu-consent"><input type="checkbox" name="consent" required> I agree that the Masters' Union Nations team may contact me about this registration.</label>
