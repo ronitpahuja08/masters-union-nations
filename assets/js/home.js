@@ -12,41 +12,51 @@
   var range=function(){return journeyRange;};
   function measureJourney(){journeyTop=journey.offsetTop;journeyRange=journey.offsetHeight-innerHeight;}
   var target=0,p=0,raf=0,globeOn=true,lastFrame=0,strikeAssetsWarmed=false,starsReady=false;
+  var warmedImages=[];
   function warmStrikeAssets(){
     if(strikeAssetsWarmed)return;
     strikeAssetsWarmed=true;
-    ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.png'].forEach(function(src){var image=new Image();image.decoding='async';image.src=src;});
+    ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.png'].forEach(function(src){
+      var image=new Image();image.decoding='async';image.src=src;warmedImages.push(image);
+      if(image.decode)image.decode().catch(function(){});
+    });
+    window.MUNJourneyAudio?.preload();
   }
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
 
-  var LAND=.975,landed=false,struck=false;
-  var autoPlayed=false,autoActive=false,autoStart=0,autoFrom=0;
+  var LAND=.985,landed=false,struck=false,blackoutEntered=false,lastDispatched=-1;
+  var phase='browsing',handoffStart=0,handoffFrom=0,holdScrollY=0,mapScrollDone=false;
   var reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var revealActive=false,revealComplete=false,revealTimer=0,revealAnchor=.19;
+  var revealComplete=false,revealTimer=0,revealCleanupTimer=0,revealAnchor=.19;
   var lastUserScroll=-1e5;
   ['wheel','touchstart','pointerdown','keydown'].forEach(function(type){window.addEventListener(type,function(){lastUserScroll=performance.now();},{passive:true});});
   function beginThemeReveal(){
-    revealActive=true;target=p=revealAnchor;
+    phase='theme';target=p=revealAnchor;
+    cancelAnimationFrame(raf);raf=0;
+    $('#timeSeconds').textContent='00';
+    home.classList.add('time-stopped');
     themeReveal.classList.remove('is-exiting');
     themeReveal.classList.add('is-playing');
     themeReveal.setAttribute('aria-hidden','false');
-    window.scrollTo(0,journeyTop+range()*revealAnchor);
+    window.scrollTo({top:journeyTop+range()*revealAnchor,behavior:'instant'});
     apply();
     clearTimeout(revealTimer);
+    clearTimeout(revealCleanupTimer);
     revealTimer=setTimeout(function(){
-      revealActive=false;revealComplete=true;
-      // The reveal is the title beat; hand off beneath its fade to the
-      // already established globe scene instead of showing the old title beat.
+      phase='browsing';revealComplete=true;
       target=p=.38;
-      window.scrollTo(0,journeyTop+range()*p);
+      window.scrollTo({top:journeyTop+range()*p,behavior:'instant'});
       apply();
       themeReveal.classList.add('is-exiting');
-      setTimeout(function(){themeReveal.classList.remove('is-playing','is-exiting');themeReveal.setAttribute('aria-hidden','true');},650);
+      revealCleanupTimer=setTimeout(function(){themeReveal.classList.remove('is-playing','is-exiting');themeReveal.setAttribute('aria-hidden','true');},650);
       onScroll();
-    },reducedMotion?750:4200);
+    },reducedMotion?650:3300);
   }
   function thud(){
-    stick.classList.remove('thud');void stick.offsetWidth;stick.classList.add('thud');
+    if(!reducedMotion)$('.thud-ring').animate(
+      [{opacity:.65,transform:'scale(.25)'},{opacity:0,transform:'scale(4.2)'}],
+      {duration:780,easing:'cubic-bezier(.2,.6,.3,1)'}
+    );
     window.MUNJourneyAudio?.blast();
   }
   function apply(){
@@ -56,83 +66,107 @@
     content.style.transform='scale('+(1+.08*(1-c))+')';
     // Opacity and transform retain the handoff without repainting a full-screen blur.
     content.style.visibility=c<=0.01?'hidden':'visible';
-    var gb=smooth(p,.48,.53)*(1-smooth(p,.76,.83));
-    stick.style.setProperty('--gb',gb.toFixed(3));   // GLOBAL / BOARDROOM words
+    var gb=smooth(p,.46,.52)*(1-smooth(p,.73,.81));
+    stick.style.setProperty('--gb',gb.toFixed(3));
     body.classList.toggle('gb-on',gb>.04);
     body.classList.toggle('gb-strike',p>.32);
-    var flash=smooth(p,.632,.648)*(1-smooth(p,.666,.706));
-    var blackout=smooth(p,.81,.85)*(1-smooth(p,.89,.935));
+    var flash=smooth(p,.622,.64)*(1-smooth(p,.66,.70));
+    var blackout=smooth(p,.81,.845)*(1-smooth(p,.93,.99));
     $('#impactFlash').style.opacity=(flash*.82).toFixed(3);
     $('#impactVeil').style.opacity=blackout.toFixed(3);
-    body.classList.toggle('in-blackout',p>.835&&p<.93);
-    dusk.style.opacity=smooth(p,.14,.78).toFixed(3);   // wine backdrop turns to navy before the map lands
+    var inBlackout=p>=.845&&p<.94;
+    if(inBlackout!==blackoutEntered){
+      blackoutEntered=inBlackout;
+      body.classList.toggle('in-blackout',inBlackout);
+      $('#impactVeil').setAttribute('aria-hidden',String(!inBlackout));
+      if(inBlackout)window.MUNJourneyAudio?.resetVoice();
+    }
+    dusk.style.opacity=smooth(p,.14,.78).toFixed(3);
     var dk=1-smooth(p,0,.09);   // bottom ticker, line, corners and scroll marker leave before the words arrive
     decos.forEach(function(e){e.style.opacity=dk;e.style.visibility=dk<=.01?'hidden':'visible';});
     var cv=$('#globeCanvas');
-    var now=p>=LAND;
+    if(!landed&&p>=LAND)landed=true;
+    else if(landed&&p<.93)landed=false;
     if(globeOn){
-      cv.style.opacity=String(smooth(p,.27,.34)*(1-smooth(p,.87,.96)));
-      main.style.opacity=smooth(p,.89,.965);
+      cv.style.opacity=String(smooth(p,.27,.34)*(1-smooth(p,.82,.93)));
+      main.style.opacity=smooth(p,.90,.985);
     }else{
-      main.style.opacity=smooth(p,.89,.965);
+      main.style.opacity=smooth(p,.90,.985);
       cv.style.opacity=0;
     }
     // Start the audio on the contact pose and first shock glow, before the
     // globe's fragment animation reaches its full extent.
-    var hit=p>=.62;
+    var hit=p>=.622;
     if(hit&&!struck)thud();
     struck=hit;
-    if(now!==landed){landed=now;}
     body.classList.toggle('on-home',p<.25);
     body.classList.toggle('at-map',landed);
-    if(p>.245&&p<.97)window.dispatchEvent(new CustomEvent('journey',{detail:p}));
+    if(Math.abs(p-lastDispatched)>.001){lastDispatched=p;window.dispatchEvent(new CustomEvent('journey',{detail:p}));}
   }
   function step(now){
-    if(revealActive){raf=0;return;}
-    if(autoActive){
-      var elapsed=Math.min(1,(performance.now()-autoStart)/2750);
-      p=autoFrom+(1-autoFrom)*elapsed;
+    raf=0;
+    if(phase==='theme')return;
+    if(phase==='handoff'){
+      var elapsed=now-handoffStart;
+      if(reducedMotion){p=elapsed<460?.86:1;}
+      else if(elapsed<260)p=handoffFrom+(.645-handoffFrom)*smooth(elapsed,0,260);
+      else if(elapsed<850)p=.645+(.86-.645)*smooth(elapsed,260,850);
+      else if(elapsed<2250)p=.86;
+      else p=.86+.14*smooth(elapsed,2250,2950);
       target=p;
-      window.scrollTo(0,journeyTop+range()*p);
       apply();
-      if(elapsed<1){raf=requestAnimationFrame(step);return;}
-      autoActive=false;target=p=1;raf=0;return;
+      if(!mapScrollDone&&elapsed>=(reducedMotion?0:850)){
+        mapScrollDone=true;
+        holdScrollY=journeyTop+range();
+        // Move the document once while the reset card fully covers the stage.
+        window.scrollTo({top:holdScrollY,behavior:'instant'});
+      }
+      if(elapsed<(reducedMotion?460:2950)){raf=requestAnimationFrame(step);return;}
+      phase='map';p=target=1;apply();return;
     }
     var d=target-p;
-    if(Math.abs(d)<.0004){p=target;apply();raf=0;return;}
+    if(Math.abs(d)<.0004){p=target;apply();return;}
     // Time-based damping follows a wheel gesture in about 150 ms, independent of refresh rate.
     var dt=lastFrame?Math.min(50,now-lastFrame):16;lastFrame=now;
-    p+=d*(1-Math.exp(-dt/48));apply();raf=requestAnimationFrame(step);
-    if(!autoPlayed&&p>=.60&&target>=.61){
-      autoPlayed=true;
-      if(reducedMotion){autoActive=false;target=p=1;window.scrollTo(0,journey.offsetTop+range());apply();}
-      else{autoActive=true;autoStart=performance.now();autoFrom=p;}
+    p+=d*(1-Math.exp(-dt/48));apply();
+    if(p>=.60&&target>=.61){
+      phase='handoff';handoffStart=performance.now();handoffFrom=p;holdScrollY=scrollY;mapScrollDone=false;
     }
+    raf=requestAnimationFrame(step);
   }
   function onScroll(){
-    if(autoActive)return;
+    if(phase==='handoff'||phase==='theme'){
+      var anchor=phase==='handoff'?holdScrollY:journeyTop+range()*revealAnchor;
+      if(Math.abs(scrollY-anchor)>2)window.scrollTo({top:anchor,behavior:'instant'});
+      return;
+    }
     var r=range(),next=r>0?clamp((scrollY-journeyTop)/r,0,1):0;
-    if(revealActive){if(Math.abs(next-revealAnchor)>.005)window.scrollTo(0,journeyTop+r*revealAnchor);return;}
-    if(next<.04)revealComplete=false;
+    if(phase==='map'&&next<.93)phase='browsing';
+    if(next<.04){if(revealComplete)window.MUNJourneyAudio?.resetCycle();revealComplete=false;home.classList.remove('time-stopped');$('#timeSeconds').textContent='59';}
     if(!revealComplete&&next>=.16&&next<.96&&next>p+.003&&performance.now()-lastUserScroll<2000){beginThemeReveal();return;}
     target=next;
     if(next>.055)warmStrikeAssets();
     if(starsReady)syncStars();
-    if(target<.2)autoPlayed=false;
     hud.classList.toggle('scrolled',scrollY>40);
     if(!raf){lastFrame=0;raf=requestAnimationFrame(step);}
   }
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',function(){measureJourney();onScroll();});
+  if('requestIdleCallback' in window)requestIdleCallback(warmStrikeAssets,{timeout:1800});
   onScroll();apply();
 
   function goto(where){
+    clearTimeout(revealTimer);clearTimeout(revealCleanupTimer);cancelAnimationFrame(raf);raf=0;
+    themeReveal.classList.remove('is-playing','is-exiting');themeReveal.setAttribute('aria-hidden','true');
     if(where==='map'){
-      clearTimeout(revealTimer);revealActive=false;revealComplete=true;
-      themeReveal.classList.remove('is-playing','is-exiting');themeReveal.setAttribute('aria-hidden','true');
+      revealComplete=true;phase='map';p=target=1;
+      window.scrollTo({top:journeyTop+range(),behavior:'instant'});
+    }else{
+      revealComplete=false;phase='browsing';p=target=0;struck=false;
+      window.MUNJourneyAudio?.resetCycle();
+      window.scrollTo({top:0,behavior:'instant'});
     }
-    var top=where==='map'?journeyTop+range():0;
-    window.scrollTo({top:top,behavior:'smooth'});
+    apply();
   }
   Array.prototype.forEach.call(document.querySelectorAll('[data-goto]'),function(el){
     el.addEventListener('click',function(e){e.preventDefault();hud.classList.remove('open');goto(el.dataset.goto);});
@@ -156,7 +190,7 @@
   /* ---- endless ticker: always enough copies to overfill the screen, shifted by exactly one set ---- */
   (function(){
     var track=$('#tickerTrack');if(!track)return;
-    var items=['DIPLOMACY','DEBATE','DECISIONS','08 COMMITTEES','02 DAYS','ONE BOARDROOM'];
+    var items=['ZERO','THE WORLD RESET','DIPLOMACY','DEBATE','08 COMMITTEES','THE FUTURE BEGINS'];
     function set(){var d=document.createElement('div');d.className='set';items.forEach(function(t){var a=document.createElement('span');a.textContent=t;var b=document.createElement('span');b.textContent='\u2726';d.appendChild(a);d.appendChild(b);});return d;}
     function build(){
       track.innerHTML='';var first=set();track.appendChild(first);

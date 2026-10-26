@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07100f">
-<meta name="description" content="Masters Union Nations — The Global Boardroom. 28–29 November 2026, Gurugram.">
-<title>Masters Union Nations — The Global Boardroom</title>
+<meta name="theme-color" content="#100407">
+<meta name="description" content="Masters' Union Nations — ZERO: The World Reset. 28–29 November 2026, Gurugram.">
+<title>Masters' Union Nations — ZERO: The World Reset</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="stylesheet" href="assets/css/boardroom.css?v=committee-worlds-1">
-<link rel="stylesheet" href="assets/css/home.css?v=cinematic-polish-2">
+<link rel="stylesheet" href="assets/css/home.css?v=zero-reset-2">
 <link rel="stylesheet" href="assets/css/theme-modals.css">
 <link rel="stylesheet" href="assets/css/committee-cinematics.css?v=3">
 
@@ -27,7 +27,7 @@
 <header class="hud ronit" id="hud">
   <nav class="topnav" id="topnav">
     <a href="#home" data-goto="top">Home</a>
-    <a href="#boardroom" data-goto="map">Boardroom</a>
+    <a href="#boardroom" data-goto="map">World map</a>
   </nav>
   <a class="landing-campaign-mark" href="#home" data-goto="top" aria-label="Masters' Union Nations — The World Reset"><img src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset"></a>
   <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -44,7 +44,7 @@
 <span class="live-dot">
 </span> Diplomatic network · 2026</p>
 <h1 id="accessTitle">Your seat at the<br>
-<em>Global Boardroom</em>
+<em>ZERO — The World Reset</em>
 </h1>
 <p>Identity clearance is required to enter the summit.</p>
 <div class="access-meta">
@@ -120,9 +120,12 @@
   <div class="scroll-hint" aria-hidden="true"><span>SCROLL</span><i></i></div>
   <div class="hero-ticker" aria-hidden="true"><div class="track" id="tickerTrack"></div></div>
   <div class="zero-line" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="time-dial" aria-hidden="true"><i class="time-dial-hand"></i><b>00</b><b>06</b><b>12</b><b>18</b></div>
+  <div class="time-readout" aria-hidden="true"><span>WORLD CLOCK / 2026</span><strong>23:59:<em id="timeSeconds">59</em></strong><small>THE FINAL SECOND</small></div>
   <div class="lobby-content">
-    <h2 class="lobby-title"><span class="t1">Masters Union</span><span class="t2" data-t="Nations">Nations</span></h2>
-    <p class="lobby-sub">A two-day Model United Nations conference for young leaders &mdash; diplomacy, debate and decision-making.</p>
+    <p class="lobby-kicker">MASTERS' UNION NATIONS <span>·</span> THE 2026 THEME</p>
+    <h1 class="lobby-title"><span class="t1">ZERO</span><span class="t2">THE WORLD RESET</span></h1>
+    <p class="lobby-sub">The moment the old world stops defining the future. The people willing to question it begin to shape what comes next.</p>
     <div class="pass" role="group" aria-label="Event details">
       <div class="pass-seg">
         <small>Dates</small>
@@ -154,14 +157,14 @@
 <div class="dusk" aria-hidden="true"></div>
 <canvas class="globe-canvas" id="globeCanvas" aria-hidden="true"></canvas>
 <div class="impact-flash" id="impactFlash" aria-hidden="true"></div>
-<div class="impact-veil" id="impactVeil" aria-hidden="true"></div>
-<div class="gb-words" aria-hidden="true"><span class="gb-word gb-l" data-t="Global">Global</span><span class="gb-word gb-r" data-t="Boardroom">Boardroom</span></div>
+<div class="impact-veil" id="impactVeil" aria-hidden="true"><strong>THE WORLD RESETS</strong></div>
+<div class="gb-words" aria-hidden="true"><span class="gb-word gb-l">ZERO</span><span class="gb-word gb-r">THE WORLD RESET</span></div>
 <section class="theme-reveal" id="themeReveal" aria-hidden="true" aria-label="2026 theme reveal">
-  <div class="theme-reveal-orbit" aria-hidden="true"></div>
+  <div class="theme-reveal-orbit" aria-hidden="true"><i></i></div>
   <div class="theme-reveal-inner">
-    <div class="theme-reveal-top"><span>MASTERS' UNION NATIONS</span><span>THEME / 2026</span></div>
-    <div class="theme-reveal-title"><p>THE WORLD ENTERS</p><h2><span>Global</span><em>Boardroom.</em></h2><i aria-hidden="true"></i><p class="theme-reveal-deck">Eight rooms. One world. Every decision matters.</p></div>
-    <div class="theme-reveal-bottom"><span>28—29 NOVEMBER 2026</span><span>SCROLL TO ENTER THE BOARDROOM ↓</span></div>
+    <div class="theme-reveal-top"><span>MASTERS' UNION NATIONS</span><span>TIME / 00:00:00</span></div>
+    <div class="theme-reveal-title"><p>THE FINAL SECOND</p><h2><span>ZERO</span><em>THE WORLD RESET</em></h2><i aria-hidden="true"></i><p class="theme-reveal-deck">The old order ends. The future is yours to shape.</p></div>
+    <div class="theme-reveal-bottom"><span>28—29 NOVEMBER 2026</span><span>SCROLL TO WITNESS THE RESET ↓</span></div>
   </div>
 </section>
 <div class="thud-ring" aria-hidden="true"></div>
@@ -264,7 +267,7 @@
 </section>
 
 <section class="dalal-page" id="dalalCommitteePage" role="dialog" aria-modal="true" aria-labelledby="dpTitle" aria-hidden="true">
-<header class="dp-nav"><button id="dalalPageClose" type="button" aria-label="Return to committee map">← <span>Global Boardroom</span></button><a class="dp-brand" href="#dalalTop">MU <i>/</i> MUN</a><div class="dp-nav-right"><a class="dp-nav-cta" href="#dalalRegister">Register <span>↗</span></a><img class="committee-brand-mark" src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset"></div></header>
+<header class="dp-nav"><button id="dalalPageClose" type="button" aria-label="Return to committee map">← <span>World map</span></button><a class="dp-brand" href="#dalalTop">MU <i>/</i> MUN</a><div class="dp-nav-right"><a class="dp-nav-cta" href="#dalalRegister">Register <span>↗</span></a><img class="committee-brand-mark" src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset"></div></header>
 <main class="dp-scroll" id="dalalPageScroll">
 
 <section class="dp-hero" id="dalalTop"><div class="dp-scene" aria-hidden="true"><div class="dp-bse-panorama"></div><div class="dp-market-display"><div class="dp-market-tape"><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span></div></div><svg class="dp-chart" viewBox="0 0 480 160" preserveAspectRatio="none"><path d="M0 132 L35 117 L61 122 L94 86 L128 94 L156 78 L190 93 L228 56 L264 66 L300 45 L325 68 L355 28 L388 43 L420 19 L480 5"/></svg></div><div class="dp-hero-glow"></div><div class="dp-hero-copy"><p class="dp-eyebrow"><i></i> COMMITTEE 06 &nbsp;·&nbsp; MUMBAI, INDIA</p><h1 id="dpTitle" aria-label="DALAL STREET"><span>DALAL</span><br><em>STREET</em></h1><p class="dp-hero-tagline">WHERE EVERY DECISION MOVES THE MARKET.</p><div class="dp-meta"><span>28—29 NOV 2026</span><span>MASTERS' UNION · GURUGRAM</span></div><div class="dp-hero-actions"><a class="dp-primary" href="#dalalBrief">Explore the committee <b>↓</b></a><button class="mu-dalal-register" type="button">Start registration <b>↓</b></button></div></div><div class="dp-hero-caption"><span>THE BOMBAY STOCK EXCHANGE</span><i>19°04′34″N &nbsp; 72°52′40″E</i></div></section>
@@ -282,7 +285,7 @@
 
 <section class="committee-page" id="committeePage" role="dialog" aria-modal="true" aria-labelledby="cpTitle" aria-hidden="true">
 <header class="cp-nav">
-<button class="cp-back" id="committeePageClose" type="button"><span aria-hidden="true">←</span> Global Boardroom</button>
+<button class="cp-back" id="committeePageClose" type="button"><span aria-hidden="true">←</span> World map</button>
 <div class="cp-nav-right">
 <a class="cp-nav-register" href="#cpRegister">Register <span aria-hidden="true">↗</span></a>
 <img class="committee-brand-mark" src="assets/img/zero-world-reset-mark.png" alt="ZERO — The World Reset">
@@ -451,11 +454,11 @@
 </div>
 <button class="journey-music-toggle" id="journeyMusicToggle" type="button" aria-pressed="false" aria-label="Turn on soundtrack"><span class="journey-music-icon" aria-hidden="true">♫</span><span class="journey-music-label">Music off</span></button>
 <script src="assets/js/soundscape.js"></script>
-<script src="assets/js/home.js?v=cinematic-polish-1"></script>
+<script src="assets/js/home.js?v=zero-reset-2"></script>
 <script src="assets/js/boardroom.js?v=merged-cinematic-1">
 </script>
-<script src="assets/js/journey-audio.js"></script>
-<script type="module" src="assets/js/globe-journey.js?v=cinematic-polish-1"></script>
+<script src="assets/js/journey-audio.js?v=zero-reset-2"></script>
+<script type="module" src="assets/js/globe-journey.js?v=zero-reset-2"></script>
 <script type="module" src="assets/js/dalal-crash.js?v=cinematic-polish-1"></script>
 <script type="module" src="assets/js/startup-launch.js?v=startup-launch-3"></script>
 <script src="assets/js/mcc-night-flight.js?v=cinematic-polish-2"></script>

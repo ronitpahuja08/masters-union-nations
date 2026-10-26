@@ -8,8 +8,8 @@ const smooth = (v, a, b) => { const t = clamp((v - a) / (b - a), 0, 1); return t
 const mix = (a, b, t) => a + (b - a) * t;
 
 try {
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1 : 1.2));
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(1);
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -37,9 +37,9 @@ try {
   planet.position.set(.95, .02, 0);
   scene.add(planet);
   const earthMaterial = new THREE.MeshStandardMaterial({ map: atlas, emissiveMap: atlas, emissive: 0x9f766f, emissiveIntensity: .34, roughness: 1, metalness: 0, transparent: true });
-  const earth = new THREE.Mesh(new THREE.SphereGeometry(planetRadius, 72, 54), earthMaterial);
+  const earth = new THREE.Mesh(new THREE.SphereGeometry(planetRadius, 48, 36), earthMaterial);
   planet.add(earth);
-  const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(planetRadius * 1.065, 64, 48), new THREE.MeshBasicMaterial({ color: 0xaa3153, side: THREE.BackSide, transparent: true, opacity: .11, blending: THREE.AdditiveBlending, depthWrite: false }));
+  const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(planetRadius * 1.065, 40, 30), new THREE.MeshBasicMaterial({ color: 0xaa3153, side: THREE.BackSide, transparent: true, opacity: .11, blending: THREE.AdditiveBlending, depthWrite: false }));
   planet.add(atmosphere);
 
   // Eight committee beacons glow across the globe before the map opens.
@@ -71,14 +71,16 @@ try {
   const shock = new THREE.Mesh(new THREE.TorusGeometry(.15, .012, 8, 64), new THREE.MeshBasicMaterial({ color: 0xffd58f, transparent: true, opacity: 0, blending: THREE.AdditiveBlending }));
   shock.position.copy(planet.position).add(impactSurface); scene.add(shock);
 
-  // Thousands of small surface fragments create the illusion of a much larger burst.
-  // Their depth accelerates toward the camera so the globe appears to break through the screen.
+  // A bounded point cloud keeps the impact dense without rebuilding nine thousand
+  // positions on every frame of the map handoff.
   const random = n => { const x = Math.sin(n * 127.1 + 78.233) * 43758.5453; return x - Math.floor(x); };
-  const fragmentCount = innerWidth < 700 ? 3800 : 9000;
+  const fragmentCount = innerWidth < 700 ? 950 : 2400;
   const fragmentBase = new Float32Array(fragmentCount * 3);
   const fragmentData = new Float32Array(fragmentCount * 3);
   const fragmentColors = new Float32Array(fragmentCount * 3);
   const fragmentSpeed = new Float32Array(fragmentCount);
+  const fragmentJitterX = new Float32Array(fragmentCount);
+  const fragmentJitterY = new Float32Array(fragmentCount);
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < fragmentCount; i++) {
     const y = 1 - 2 * (i + .5) / fragmentCount;
@@ -88,6 +90,8 @@ try {
     fragmentBase[i * 3 + 1] = y;
     fragmentBase[i * 3 + 2] = Math.sin(angle) * r;
     fragmentSpeed[i] = .66 + random(i + 53) * .85;
+    fragmentJitterX[i] = (random(i + 240) - .5) * .32;
+    fragmentJitterY[i] = (random(i + 710) - .5) * .32;
   }
   const fragmentGeo = new THREE.BufferGeometry();
   fragmentGeo.setAttribute('position', new THREE.BufferAttribute(fragmentData, 3));
@@ -98,7 +102,7 @@ try {
   fragments.renderOrder = 4;
   scene.add(fragments);
 
-  const sparkCount = innerWidth < 700 ? 650 : 1300;
+  const sparkCount = innerWidth < 700 ? 180 : 400;
   const sparkData = new Float32Array(sparkCount * 3);
   const sparkColors = new Float32Array(sparkCount * 3);
   for (let i = 0; i < sparkCount; i++) {
@@ -116,7 +120,7 @@ try {
   sparks.renderOrder = 6;
   scene.add(sparks);
 
-  const trailCount = innerWidth < 700 ? 80 : 140;
+  const trailCount = innerWidth < 700 ? 28 : 55;
   const trailData = new Float32Array(trailCount * 6);
   const trailGeo = new THREE.BufferGeometry();
   trailGeo.setAttribute('position', new THREE.BufferAttribute(trailData, 3));
@@ -126,7 +130,7 @@ try {
   trails.renderOrder = 7;
   scene.add(trails);
 
-  const chipCount = innerWidth < 700 ? 110 : 200;
+  const chipCount = innerWidth < 700 ? 42 : 80;
   const chipMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, depthTest: false });
   const chips = new THREE.InstancedMesh(new THREE.TetrahedronGeometry(.018, 0), chipMaterial, chipCount);
   chips.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -235,8 +239,8 @@ try {
       for (let i = 0; i < fragmentCount; i++) {
         const k = i * 3, speed = fragmentSpeed[i], x = fragmentBase[k], y = fragmentBase[k + 1], z = fragmentBase[k + 2];
         const radius = planetRadius * (1 + burst * (3.1 + speed * 1.1));
-        fragmentData[k] = planet.position.x + x * radius + Math.sin(i * .67 + burst * 4) * burst * .16;
-        fragmentData[k + 1] = planet.position.y + y * radius + Math.cos(i * .42 + burst * 5) * burst * .16;
+        fragmentData[k] = planet.position.x + x * radius + fragmentJitterX[i] * burst;
+        fragmentData[k + 1] = planet.position.y + y * radius + fragmentJitterY[i] * burst;
         fragmentData[k + 2] = z * planetRadius + depthT * (3.2 + speed * 2.3);
       }
       fragmentGeo.attributes.position.needsUpdate = true;

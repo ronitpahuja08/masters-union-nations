@@ -5,18 +5,22 @@
   if (!toggle || !topToggle) return;
   const epic = new Audio('assets/audio/theseus-athenian-hero.mp3');
   const explosion = new Audio('assets/audio/bomb-blast.mp3');
+  // Replace this self-contained cue with a mastered voice asset without changing the timeline.
+  const resetLine = new Audio('assets/audio/world-resets-voice.wav');
   epic.loop = true;
   epic.preload = 'metadata';
   epic.volume = .42;
   explosion.preload = 'auto';
   explosion.volume = .76;
+  resetLine.preload = 'auto';
+  resetLine.volume = .95;
   const explosionCue = .16;
   explosion.addEventListener('loadedmetadata', () => {
     if (explosion.duration > explosionCue) explosion.currentTime = explosionCue;
   }, { once: true });
   let scene = '', progress = 0;
   let enabled = topToggle.getAttribute('aria-pressed') === 'true';
-  let duckTimer = 0;
+  let duckTimer = 0, resetLinePlayed = false;
   const overlayMuted = () => document.body.classList.contains('overlay');
   const desiredScene = () => progress >= .83 ? 'silence' : 'epic';
 
@@ -52,6 +56,7 @@
       clearTimeout(duckTimer);
       epic.pause();
       explosion.pause(); explosion.currentTime = 0;
+      resetLine.pause(); resetLine.currentTime = 0;
       mixLevel();
       updateButton();
     }
@@ -64,6 +69,25 @@
     explosion.currentTime = explosionCue;
     explosion.play().catch(() => {});
     duckTimer = setTimeout(mixLevel, 1800);
+  }
+  function resetVoice() {
+    if (resetLinePlayed) return;
+    resetLinePlayed = true;
+    clearTimeout(duckTimer);
+    epic.pause();
+    explosion.pause();
+    if (!enabled || overlayMuted()) return;
+    resetLine.currentTime = 0;
+    resetLine.play().catch(() => {});
+  }
+  function resetCycle() {
+    resetLinePlayed = false;
+    resetLine.pause();
+    resetLine.currentTime = 0;
+  }
+  function preload() {
+    explosion.load();
+    resetLine.load();
   }
   toggle.addEventListener('click', () => {
     topToggle.click();
@@ -82,7 +106,7 @@
     if (event.target.closest('#journeyMusicToggle,#soundToggle')) return;
     if (enabled && scene === 'epic' && epic.paused) epic.play().catch(() => updateButton());
   }, { once: true });
-  window.MUNJourneyAudio = { blast };
+  window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload };
   progress = Number(getComputedStyle(document.getElementById('journeyStick')).getPropertyValue('--p')) || 0;
   updateButton();
 })();
