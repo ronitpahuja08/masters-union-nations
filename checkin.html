@@ -44,9 +44,10 @@
   <header><div><p class="brand">MASTERS&rsquo; UNION NATIONS 2026</p><h1>Registration desk</h1></div><div class="stat" id="stat" hidden>CHECKED IN<b id="statN">0 / 0</b></div></header>
 
   <form class="card" id="login" autocomplete="off">
-    <label>Your name<input id="by" maxlength="40" placeholder="e.g. Riya" autocomplete="name" required></label>
+    <label>Your name (optional)<input id="by" maxlength="40" placeholder="e.g. Riya" autocomplete="name"></label>
     <label>Desk PIN<input id="pin" type="password" inputmode="numeric" maxlength="32" placeholder="Ask the organiser" autocomplete="off" required></label>
     <button type="submit">Start checking in</button>
+    <p class="tip">Volunteers sign in <b>once</b> on their phone. This device then stays signed in for 12 hours, so every delegate after that is just scan and done.</p>
     <p class="msg" id="loginMsg" role="alert"></p>
     <p class="tip">Volunteers only. This page marks delegates as checked in.</p>
   </form>
@@ -74,9 +75,13 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   var pin = '', by = '', busy = false, lastTok = '', lastAt = 0, stream = null, timer = null, pending = '';
-  try { pin = sessionStorage.getItem('mun-pin') || ''; by = sessionStorage.getItem('mun-by') || ''; } catch (e) {}
+  var KEEP = 12 * 3600 * 1000;
+  try { var kept = JSON.parse(localStorage.getItem('mun-desk') || 'null'); if (kept && kept.exp > Date.now() && kept.pin) { pin = kept.pin; by = kept.by || ''; } else localStorage.removeItem('mun-desk'); } catch (e) {}
+  var setup = (location.hash.match(/[#&]setup=([^&]+)/) || [])[1] || '';
+  if (setup) { try { setup = decodeURIComponent(setup); } catch (e) {} }
   var hashTok = ((location.hash || '').slice(1).match(/[a-f0-9]{32}/) || [])[0] || '';
-  if (hashTok) { pending = hashTok; history.replaceState(null, '', location.pathname); }
+  if (hashTok) { pending = hashTok; }
+  if (hashTok || setup) history.replaceState(null, '', location.pathname);
 
   function post(body) {
     return fetch('/api/checkin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ pin: pin }, body)) })
@@ -106,18 +111,20 @@
   function tokenFrom(text) { var m = String(text || '').match(/[a-f0-9]{32}/i); return m ? m[0].toLowerCase() : ''; }
   function onCode(text) { var t = tokenFrom(text), now = Date.now(); if (!t) { if (/^MUN26-\d{4}$/i.test(String(text).trim())) return scan({ id: String(text).trim().toUpperCase() }); return; } if (t === lastTok && now - lastAt < 4000) return; lastTok = t; lastAt = now; scan({ token: t }); }
 
-  function signOut(msg) { stopCam(); pin = ''; try { sessionStorage.removeItem('mun-pin'); } catch (e) {} $('desk').hidden = true; $('login').hidden = false; $('stat').hidden = true; $('loginMsg').textContent = msg || ''; }
+  function remember() { try { localStorage.setItem('mun-desk', JSON.stringify({ pin: pin, by: by, exp: Date.now() + KEEP })); } catch (e) {} }
+  function signOut(msg) { stopCam(); pin = ''; try { localStorage.removeItem('mun-desk'); } catch (e) {} $('desk').hidden = true; $('login').hidden = false; $('stat').hidden = true; $('loginMsg').textContent = msg || ''; }
   function enter() {
-    $('login').hidden = true; $('desk').hidden = false; $('wedge').focus(); refreshStats();
+    $('login').hidden = true; $('desk').hidden = false; refreshStats();
+    if ('BarcodeDetector' in window && navigator.mediaDevices && !stream) startCam(true);
     if (pending) { var t = pending; pending = ''; scan({ token: t }); }
   }
   function refreshStats() { post({ action: 'stats' }).then(function (r) { if (r.status === 200) setStat(r.j); else if (r.status === 401) signOut('Wrong PIN.'); }).catch(function () {}); }
 
   $('login').addEventListener('submit', function (e) {
-    e.preventDefault(); var p = $('pin').value.trim(), n = $('by').value.trim(); if (!p || !n) return;
+    e.preventDefault(); var p = $('pin').value.trim(), n = $('by').value.trim() || 'Desk'; if (!p) return;
     $('loginMsg').textContent = 'Checking PIN…'; pin = p; by = n;
     post({ action: 'stats' }).then(function (r) {
-      if (r.status === 200) { try { sessionStorage.setItem('mun-pin', pin); sessionStorage.setItem('mun-by', by); } catch (e) {} $('pin').value = ''; $('loginMsg').textContent = ''; setStat(r.j); enter(); }
+      if (r.status === 200) { remember(); $('pin').value = ''; $('loginMsg').textContent = ''; setStat(r.j); enter(); }
       else { pin = ''; $('loginMsg').textContent = r.j.error || 'Could not sign in.'; }
     }).catch(function () { pin = ''; $('loginMsg').textContent = 'No connection. Check the wifi and try again.'; });
   });
@@ -139,17 +146,19 @@
   /* camera scanning (uses the browser's built-in QR detector where it exists) */
   function stopCam() { clearInterval(timer); timer = null; if (stream) stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; $('video').hidden = true; $('camStop').hidden = true; $('camBtn').hidden = false; }
   $('camStop').addEventListener('click', stopCam);
-  $('camBtn').addEventListener('click', function () {
+  $('camBtn').addEventListener('click', function () { startCam(false); });
+  function startCam(quiet) {
     if (!('BarcodeDetector' in window) || !navigator.mediaDevices) { $('camTip').textContent = 'This browser cannot scan inside the page. Use your phone’s normal Camera app on the QR: it opens this page and checks the delegate in. (Chrome on Android works here.)'; return; }
     var det; try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { $('camTip').textContent = 'QR scanning is not available here. Use your phone’s Camera app on the QR.'; return; }
     navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }).then(function (s) {
       stream = s; var v = $('video'); v.srcObject = s; v.hidden = false; v.play(); $('camBtn').hidden = true; $('camStop').hidden = false;
       timer = setInterval(function () { if (busy || v.readyState < 2) return; det.detect(v).then(function (codes) { if (codes && codes[0]) onCode(codes[0].rawValue); }).catch(function () {}); }, 300);
     }).catch(function () { $('camTip').textContent = 'Camera permission was blocked. Allow the camera for this site, or use the phone’s Camera app.'; });
-  });
+  }
 
   setInterval(function () { if (!$('desk').hidden && !document.hidden) refreshStats(); }, 30000);
-  if (pin && by) { post({ action: 'stats' }).then(function (r) { if (r.status === 200) { setStat(r.j); enter(); } else signOut(''); }).catch(function () { enter(); }); }
+  if (setup) { pin = setup; by = by || 'Desk'; post({ action: 'stats' }).then(function (r) { if (r.status === 200) { remember(); setStat(r.j); enter(); } else { pin = ''; $('loginMsg').textContent = r.j.error || 'That setup link is not valid.'; } }).catch(function () { pin = ''; $('loginMsg').textContent = 'No connection. Check the wifi and try again.'; }); }
+  if (pin && !setup) { post({ action: 'stats' }).then(function (r) { if (r.status === 200) { setStat(r.j); enter(); } else signOut(''); }).catch(function () { enter(); }); }
 })();
 </script>
 </body>
