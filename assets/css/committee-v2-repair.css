@@ -200,3 +200,14 @@
 .committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li{margin:0!important;padding:22px 24px 22px 24px!important;grid-template-columns:48px minmax(0,1fr)!important;gap:14px!important;box-sizing:border-box}
 .committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li>i{display:block;width:48px;min-width:0;margin:0!important;padding:3px 0 0 0!important;text-align:left;font-size:14px;letter-spacing:.08em}
 @media(max-width:560px){.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li{padding:18px 18px!important;grid-template-columns:40px minmax(0,1fr)!important;gap:12px!important}.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li>i{width:40px}}
+/* ===== steps: plain numbered rows with thin dividers (same as IP), for UNHRC / CCEP / STARTUP / IPL ===== */
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps{display:block!important;gap:0!important;padding:0!important;margin:0!important;border:0!important;background:none!important;box-shadow:none!important}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li{position:static!important;display:grid!important;grid-template-columns:48px minmax(0,1fr)!important;gap:16px!important;align-items:normal!important;padding:22px 0!important;margin:0!important;border:0!important;border-bottom:1px solid #ffffff42!important;border-radius:0!important;background:none!important;box-shadow:none!important;backdrop-filter:none!important;transform:none!important}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li>i{display:block!important;width:auto!important;margin:0!important;padding:0!important;font-size:.67rem!important;font-weight:500!important;line-height:normal!important;letter-spacing:normal!important;color:#f0e9db!important;text-align:start}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li b{font-size:1rem!important}
+@media(max-width:560px){.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li{padding:18px 0!important;grid-template-columns:40px minmax(0,1fr)!important;gap:12px!important}}
+
+/* ===== hero buttons side by side on every committee ===== */
+.cp-cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-top:12px}
+.cp-cta-row>*{margin:0!important}
+@media(max-width:420px){.cp-cta-row{flex-direction:column}}

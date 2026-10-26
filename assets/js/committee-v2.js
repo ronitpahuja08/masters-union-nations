@@ -110,7 +110,7 @@
     setTimeout(()=>$('.mu-inline-form input[name="name"]',target)?.focus({preventScroll:true}),reduced()?0:450);
   }
   let jump = $('.mu-start-registration',hero);
-  if (!jump) {jump=document.createElement('button');jump.type='button';jump.className='mu-start-registration';jump.textContent='Start registration ↓';jump.addEventListener('click',gotoRegister);$('.cp-hero-copy',hero)?.append(jump);}
+  if (!jump) {jump=document.createElement('button');jump.type='button';jump.className='mu-start-registration';jump.textContent='Start registration ↓';jump.addEventListener('click',gotoRegister);const copy=$('.cp-hero-copy',hero),primary=copy&&$('.cp-primary',copy);if(primary){const row=document.createElement('div');row.className='cp-cta-row';primary.before(row);row.append(primary,jump)}else copy?.append(jump);}
   const dalalHero=$('.dp-hero-copy',dalal);
   if(dalalHero)$('.mu-dalal-register',dalalHero)?.addEventListener('click',gotoDalalRegister);
   function gotoDalalRegister(){
