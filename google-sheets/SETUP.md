@@ -35,3 +35,9 @@ project, service account or paid service is needed.
   written to both; if only one is set, only that one is used.
 - If you would rather use a real Google Form, open the form > Responses > **Link to Sheets**. That needs no backend
   at all, but then the site's own form is bypassed and delegates leave the site to fill it in.
+
+## Duplicate emails
+
+- The script rejects a second registration with the same email address (for any committee). Gmail dots and +tags are ignored, so `a.b+x@gmail.com` and `ab@gmail.com` count as the same person.
+- The check reads the **Email** column of the All Registrations tab, so delete any test rows from that tab (and the committee tabs) before launch, otherwise those test emails stay blocked.
+- After changing `Code.gs` you must publish it again: **Deploy > Manage deployments > pencil icon > Version: New version > Deploy**. The URL stays the same.
