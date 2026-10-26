@@ -212,3 +212,118 @@
  76%{opacity:1;transform:translate(0,0) scale(120)}
  90%,100%{opacity:0;transform:translate(0,0) scale(140)}}
 @keyframes msBatter2{0%,6%{opacity:0;transform:translateX(-52%) translateY(30px) scale(.94)}20%{opacity:1;transform:translateX(-52%) scale(.98)}33%{transform:translateX(-52%) scale(.98) rotate(1deg)}36%{transform:translateX(-52%) scale(1.07) rotate(-2deg)}50%,100%{opacity:.95;transform:translateX(-52%) scale(1.02)}}
+
+/* ======================= v2: IPL animated batter + fan placards ======================= */
+.ms-bat{left:50%;bottom:4vh;height:78vh;width:52vh;overflow:visible;transform:translateX(-50%);opacity:0}
+.ms-bat .bt-arms{transform-origin:200px 220px;transform:rotate(-120deg)}
+.ms-bat .bt-body{transform-origin:200px 335px}
+.mc-journey.playing[data-code="IPL"] .ms-bat{animation:msBatIn 5.6s both}
+.mc-journey.playing[data-code="IPL"] .ms-bat .bt-arms{animation:btSwing 5.6s both}
+.mc-journey.playing[data-code="IPL"] .ms-bat .bt-body{animation:btLean 5.6s both}
+@keyframes msBatIn{0%{opacity:0;transform:translateX(-50%) translateY(30px)}10%,86%{opacity:1;transform:translateX(-50%)}100%{opacity:0;transform:translateX(-50%)}}
+@keyframes btSwing{0%{transform:rotate(-120deg)}18%{transform:rotate(-128deg);animation-timing-function:ease-in-out}26%{transform:rotate(-168deg);animation-timing-function:cubic-bezier(.45,0,.8,.7)}33%{transform:rotate(-34deg);animation-timing-function:cubic-bezier(.1,.6,.3,1)}46%{transform:rotate(32deg)}100%{transform:rotate(38deg)}}
+@keyframes btLean{0%,20%{transform:rotate(0)}27%{transform:rotate(-5deg)}34%{transform:rotate(5deg)}100%{transform:rotate(2deg)}}
+.mc-journey.playing[data-code="IPL"] .ms-ball{animation-name:msBall3}
+.mc-journey.playing[data-code="IPL"] .ms-impact{animation-name:msImpact3}
+@keyframes msBall3{
+ 0%,3%{opacity:0;transform:translate(-2vw,34vh) scale(14)}
+ 8%{opacity:1;transform:translate(-2vw,30vh) scale(12)}
+ 33%,34%{opacity:1;transform:translate(19.5vh,1.2vh) scale(1.2)}
+ 48%{opacity:1;transform:translate(10vh,.6vh) scale(8);animation-timing-function:cubic-bezier(.6,0,.9,.4)}
+ 62%{opacity:1;transform:translate(0,0) scale(95)}
+ 76%{opacity:1;transform:translate(0,0) scale(120)}
+ 90%,100%{opacity:0;transform:translate(0,0) scale(140)}}
+@keyframes msImpact3{0%,32%{opacity:0;transform:translate(19.5vh,1.2vh) scale(.1)}35%{opacity:1;transform:translate(19.5vh,1.2vh) scale(.7)}54%,100%{opacity:0;transform:translate(19.5vh,1.2vh) scale(2.6)}}
+/* hero: fan placards pop up out of the crowd */
+.cinema-hero-scene[data-code="IPL"] .ms-card{bottom:0;width:clamp(86px,12.5vw,170px);transform-origin:50% 100%;opacity:0;animation:msCard 11s ease-in-out infinite}
+.ms-card .pc{position:relative;aspect-ratio:1/1.08;display:grid;place-content:center;text-align:center;border-radius:10px;border:4px solid #fff;box-shadow:0 14px 30px #0009;font-family:var(--sans,Arial)}
+.ms-card .pc b{font:900 clamp(2.6rem,7vw,5.6rem)/.9 var(--sans,Arial);letter-spacing:-.04em;color:#fff;text-shadow:0 4px 0 #0005}
+.ms-card.out .pc b{font-size:clamp(1.8rem,4.6vw,3.8rem)}
+.ms-card .pc small{font:800 clamp(8px,.9vw,12px) var(--mono,monospace);letter-spacing:.2em;color:#fff;margin-top:6px}
+.ms-card i{display:block;width:6px;height:clamp(60px,12vh,130px);margin:0 auto;background:linear-gradient(90deg,#b99067,#7a5a3a)}
+.ms-card.six .pc{background:linear-gradient(145deg,#e8222c,#9b0d16)}
+.ms-card.four .pc{background:linear-gradient(145deg,#2f7bff,#1740a6)}
+.ms-card.out .pc{background:linear-gradient(145deg,#222,#000);border-color:#ff4a3a}
+.ms-card.c1{left:3%;animation-delay:0s}.ms-card.c2{left:20%;animation-delay:-3.7s}.ms-card.c3{left:11%;animation-delay:-7.4s}
+.ms-card.c4{right:4%;animation-delay:-1.8s}.ms-card.c5{right:21%;animation-delay:-5.5s}.ms-card.c6{right:12%;animation-delay:-9.2s}
+@keyframes msCard{0%,6%{opacity:0;transform:translateY(115%) rotate(0)}12%{opacity:1;transform:translateY(8%) rotate(-7deg)}18%{transform:translateY(-2%) rotate(6deg)}24%{transform:translateY(-2%) rotate(-5deg)}30%{transform:translateY(-2%) rotate(5deg)}36%{transform:translateY(-2%) rotate(-4deg)}42%{opacity:1;transform:translateY(-2%) rotate(3deg)}50%,100%{opacity:0;transform:translateY(115%) rotate(0)}}
+
+/* ======================= v2: STARTUP founder journey ======================= */
+.mc-journey.playing[data-code="STARTUP"] .mc-heading{animation-name:msTitleLate;animation-duration:7.6s}
+.mc-journey.playing[data-code="STARTUP"] .mc-photo{animation-duration:7.7s}
+@keyframes msTitleLate{0%,83%{opacity:0;transform:translateY(-37%) scale(.93);filter:blur(18px)}92%,100%{opacity:1;transform:translateY(-50%) scale(1);filter:blur(0)}}
+.ms-shade{inset:0;background:radial-gradient(ellipse at 50% 46%,#0d0618d9 0%,#0d061899 45%,#0d061833 100%)}
+.ms-shade.u{background:radial-gradient(ellipse at 50% 46%,#030d1c99 0%,#030d1c66 48%,#030d1c22 100%)}
+:is(#mcPlayfield) .ms-beat{left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;opacity:0;padding:0 6vw}
+.ms-beat small{display:block;font:700 clamp(10px,1vw,14px) var(--mono,monospace);letter-spacing:.34em;color:#ffb48a;margin-bottom:16px}
+.ms-beat>b{display:block;font:900 clamp(3rem,10vw,9rem)/.88 var(--sans,Arial);letter-spacing:-.06em;color:#fff;text-shadow:0 8px 40px #000a}
+.ms-beat>b em{font-style:normal;color:#ff9a62;white-space:nowrap}
+.ms-beat>span{display:block;margin-top:22px;font:600 clamp(.95rem,1.7vw,1.35rem) var(--sans,Arial);color:#f4e8ee}
+.mc-journey.playing[data-code="STARTUP"] .ms-beat:not(.bE){animation:msBeat 1.08s cubic-bezier(.2,.8,.2,1) both}
+.mc-journey.playing[data-code="STARTUP"] .ms-beat.bA{animation-delay:.3s}.mc-journey.playing[data-code="STARTUP"] .ms-beat.bB{animation-delay:1.3s}
+.mc-journey.playing[data-code="STARTUP"] .ms-beat.bC{animation-delay:2.3s}.mc-journey.playing[data-code="STARTUP"] .ms-beat.bD{animation-delay:3.3s}
+@keyframes msBeat{0%{opacity:0;transform:translateY(-38%) scale(.88);filter:blur(10px)}16%{opacity:1;transform:translateY(-50%) scale(1);filter:blur(0)}84%{opacity:1;transform:translateY(-50%) scale(1.03)}100%{opacity:0;transform:translateY(-62%) scale(1.1);filter:blur(8px)}}
+.ms-bulb{position:relative;height:0}.ms-bulb i{position:absolute;left:50%;top:-34vh;width:3px;height:clamp(40px,9vh,90px);background:linear-gradient(#ffd89a,#ffd89a00);transform-origin:50% 130%;opacity:0}
+.ms-bulb i:nth-child(1){transform:rotate(-60deg)}.ms-bulb i:nth-child(2){transform:rotate(-36deg)}.ms-bulb i:nth-child(3){transform:rotate(-12deg)}.ms-bulb i:nth-child(4){transform:rotate(12deg)}.ms-bulb i:nth-child(5){transform:rotate(36deg)}.ms-bulb i:nth-child(6){transform:rotate(60deg)}
+.mc-journey.playing[data-code="STARTUP"] .bA .ms-bulb i{animation:msRay 1.08s .35s ease-out both}
+@keyframes msRay{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+.ms-code{display:grid;gap:7px;width:min(380px,70vw);margin:26px auto 0}.ms-code i{display:block;height:9px;border-radius:5px;background:linear-gradient(90deg,#35d39a,#7be3b9);transform-origin:0 50%;transform:scaleX(0)}
+.ms-code i:nth-child(2){width:70%;background:linear-gradient(90deg,#ff9a62,#ffd0a8)}.ms-code i:nth-child(3){width:84%}.ms-code i:nth-child(4){width:46%;background:linear-gradient(90deg,#8fa8ff,#c4d1ff)}
+.mc-journey.playing[data-code="STARTUP"] .bB .ms-code i{animation:msType .45s ease-out both}
+.mc-journey.playing[data-code="STARTUP"] .bB .ms-code i:nth-child(1){animation-delay:1.45s}.mc-journey.playing[data-code="STARTUP"] .bB .ms-code i:nth-child(2){animation-delay:1.6s}.mc-journey.playing[data-code="STARTUP"] .bB .ms-code i:nth-child(3){animation-delay:1.75s}.mc-journey.playing[data-code="STARTUP"] .bB .ms-code i:nth-child(4){animation-delay:1.9s}
+@keyframes msType{to{transform:scaleX(1)}}
+.ms-ring{width:clamp(70px,10vw,120px);margin:22px auto 0;display:block;transform:rotate(-90deg)}.ms-ring circle{fill:none;stroke:#ff9a62;stroke-width:6;stroke-linecap:round;stroke-dasharray:276;stroke-dashoffset:0;filter:drop-shadow(0 0 8px #ff9a62)}
+.mc-journey.playing[data-code="STARTUP"] .bC .ms-ring circle{animation:msRingDown 1s 2.3s linear both}
+@keyframes msRingDown{to{stroke-dashoffset:276}}
+.ms-shake{display:flex;justify-content:center;gap:10px;margin-top:24px}.ms-shake i{display:block;width:clamp(40px,6vw,70px);height:6px;border-radius:3px;background:#fff;transform:scaleX(0)}
+.ms-shake i:nth-child(2){background:#ff9a62}
+.mc-journey.playing[data-code="STARTUP"] .bD .ms-shake i{animation:msType .4s ease-out both}.mc-journey.playing[data-code="STARTUP"] .bD .ms-shake i:nth-child(1){animation-delay:3.5s}.mc-journey.playing[data-code="STARTUP"] .bD .ms-shake i:nth-child(2){animation-delay:3.7s}.mc-journey.playing[data-code="STARTUP"] .bD .ms-shake i:nth-child(3){animation-delay:3.9s}
+.mc-journey.playing[data-code="STARTUP"] .ms-beat.bE{animation:msBeatE 3.2s 4.3s ease-out both}
+@keyframes msBeatE{0%{opacity:0;transform:translateY(-44%)}8%,80%{opacity:1;transform:translateY(-50%)}100%{opacity:0;transform:translateY(-54%) scale(1.06)}}
+.ms-val{position:relative;height:clamp(5rem,16vw,14rem)}
+.ms-val .v{position:absolute;left:0;right:0;top:0;opacity:0;font:900 clamp(5rem,16vw,14rem)/1 var(--sans,Arial);letter-spacing:-.06em;color:#fff;text-shadow:0 0 60px #ff9a62aa}
+.mc-journey.playing[data-code="STARTUP"] .ms-val .v{animation:msVal .5s ease-out both}
+.mc-journey.playing[data-code="STARTUP"] .ms-val .v1{animation-delay:4.4s}.mc-journey.playing[data-code="STARTUP"] .ms-val .v2{animation-delay:4.9s}.mc-journey.playing[data-code="STARTUP"] .ms-val .v3{animation-delay:5.4s}
+.mc-journey.playing[data-code="STARTUP"] .ms-val .v4{animation:msValLast .7s 5.9s ease-out both;color:#ffd78a}
+@keyframes msVal{0%{opacity:0;transform:scale(.7)}20%{opacity:1;transform:scale(1.05)}85%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}
+@keyframes msValLast{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+.ms-uni{display:inline-block!important;padding:8px 20px;border:2px solid #ffd78a;border-radius:999px;color:#ffd78a!important;font:800 clamp(10px,1.1vw,14px) var(--mono,monospace)!important;letter-spacing:.3em!important;opacity:0}
+.mc-journey.playing[data-code="STARTUP"] .ms-uni{animation:msFadeUp .5s 6.3s both}
+@keyframes msFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.ms-beat.bE .ms-coins{inset:-30vh -10vw}
+
+/* ======================= v2: UNHRC six languages ======================= */
+.mc-journey.playing[data-code="UNHRC"] .mc-heading{animation-name:msTitleLate;animation-duration:7.4s}
+.mc-journey.playing[data-code="UNHRC"] .mc-photo{animation-duration:7.5s}
+.ms-rings{left:50%;top:48%;width:0;height:0}
+.ms-rings i{position:absolute;left:-30vmin;top:-30vmin;width:60vmin;height:60vmin;border-radius:50%;border:2px solid #7fc2ff;opacity:0;transform:scale(.2)}
+.mc-journey.playing[data-code="UNHRC"] .ms-rings i{animation:msRipple 3s ease-out infinite}
+.cinema-hero-scene[data-code="UNHRC"] .ms-rings i{animation:msRipple 6s ease-out infinite}
+.ms-rings i:nth-child(2){animation-delay:.75s!important}.ms-rings i:nth-child(3){animation-delay:1.5s!important}.ms-rings i:nth-child(4){animation-delay:2.25s!important}
+@keyframes msRipple{0%{opacity:.85;transform:scale(.15)}100%{opacity:0;transform:scale(2.4)}}
+.ms-wreath{left:50%;top:48%;width:clamp(260px,56vmin,560px);margin:calc(clamp(260px,56vmin,560px)/-2) 0 0 calc(clamp(260px,56vmin,560px)/-2);opacity:.9}
+.ms-wreath .lf{opacity:0;transform-box:fill-box;transform-origin:center}
+.mc-journey.playing[data-code="UNHRC"] .ms-wreath .lf{animation:msLeaf .5s calc(.3s + var(--d)) ease-out both}
+@keyframes msLeaf{from{opacity:0;transform:scale(0)}to{opacity:.95;transform:scale(1)}}
+.mc-journey.playing[data-code="UNHRC"] .ms-wreath{animation:msWreath 7.4s ease-in-out both}
+@keyframes msWreath{0%{transform:rotate(-20deg) scale(.85)}60%{transform:rotate(0) scale(1)}100%{transform:rotate(8deg) scale(1.15);opacity:0}}
+.ms-lang{inset:0}
+.ms-lang>div{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;opacity:0;padding:0 5vw}
+.ms-lang b{display:block;font:900 clamp(2.4rem,8.6vw,7.4rem)/1 var(--sans,Arial);letter-spacing:-.02em;color:#fff;text-shadow:0 6px 40px #000c,0 0 50px #4aa3ff77}
+.ms-lang small{display:block;margin-top:14px;font:700 clamp(10px,1.1vw,15px) var(--mono,monospace);letter-spacing:.4em;color:#9ed0ff}
+.mc-journey.playing[data-code="UNHRC"] .ms-lang>div{animation:msWord2 .95s cubic-bezier(.2,.8,.2,1) calc(.4s + var(--i)*.85s) both}
+@keyframes msWord2{0%{opacity:0;transform:translateY(-36%) scale(.92);filter:blur(10px)}16%{opacity:1;transform:translateY(-50%) scale(1);filter:blur(0)}82%{opacity:1;transform:translateY(-50%)}100%{opacity:0;transform:translateY(-62%);filter:blur(8px)}}
+.ms-count{left:0;right:0;top:50%;transform:translateY(-50%);display:flex;justify-content:center;gap:clamp(18px,5vw,70px);opacity:0}
+.ms-count b{display:block;font:900 clamp(3.4rem,9vw,8rem)/1 var(--sans,Arial);letter-spacing:-.04em;color:#fff;text-align:center}
+.ms-count small{display:block;text-align:center;font:700 clamp(10px,1vw,14px) var(--mono,monospace);letter-spacing:.3em;color:#9ed0ff}
+.mc-journey.playing[data-code="UNHRC"] .ms-count{animation:msCountIn 1.4s 5.55s ease-out both}
+@keyframes msCountIn{0%{opacity:0;transform:translateY(-44%)}25%,80%{opacity:1;transform:translateY(-50%)}100%{opacity:0}}
+.cinema-hero-scene[data-code="UNHRC"] .ms-lang>div{animation:msLangLoop 18s linear infinite;animation-delay:calc(var(--i)*3s);top:auto;bottom:19%;transform:none}
+.cinema-hero-scene[data-code="UNHRC"] .ms-lang b{font-size:clamp(1.2rem,3vw,2.4rem);color:#d8ecff;text-shadow:0 2px 20px #000}
+@keyframes msLangLoop{0%{opacity:0;transform:translateY(10px)}2%,15%{opacity:.85;transform:none}18%,100%{opacity:0}}
+.ms-article,.ms-dove,.ms-articles{display:none!important}
+
+.ms-beat :is(.ms-code,.ms-ring,.ms-shake,.ms-val,.ms-bulb,.ms-uni){position:relative!important}
+.ms-beat .ms-val .v{position:absolute!important}
+.ms-lang>div,.ms-count>div{position:relative}
+.ms-lang>div{position:absolute}

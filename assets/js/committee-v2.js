@@ -24,9 +24,10 @@
   addEventListener('resize',alignMobileMap,{passive:true});
 
   function formMarkup(code) {
-    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet',IPL:'Indian Premier League',STARTUP:'Startup Boardroom',UNHRC:'UN Human Rights Council',CCEP:'CCEP',DALAL:'Dalal Street'}[code]||code;
+    const about={CCEP:'Navigating corporate options, funding battles, crisis management and policy negotiations where every decision shapes business and political outcomes.',STARTUP:'Transforming bold ideas into viable startups through business strategy, model development and high-stakes pitches to bring entrepreneurial visions to life.'}[code]||'';
+    const label={MCC:'Midnight Crisis Committee',IP:'International Press',AIPPM:'All India Political Parties Meet',IPL:'Indian Premier League',STARTUP:'Startup Boardroom',UNHRC:'UN Human Rights Council',CCEP:'Corporate Engagement and Policy Making',DALAL:'Dalal Street'}[code]||code;
     return `<form class="mu-inline-form" data-committee="${code}" novalidate>
-      <h3>Reserve your place.</h3><p>Registration request for <strong>${label}</strong>. Payment will be arranged separately by the organising team.</p>
+      <h3>Reserve your place.</h3><p>Registration request for <strong>${label}</strong>. Payment will be arranged separately by the organising team.</p>${about?`<p class="mu-about">${about}</p>`:''}
       <div class="mu-fields">
         <label>Full name <input name="name" required minlength="2" maxlength="100" autocomplete="name" placeholder="Your full name"></label>
         <label>Email address <input name="email" type="email" required maxlength="180" autocomplete="email" placeholder="you@example.com"></label>
