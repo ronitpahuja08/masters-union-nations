@@ -183,3 +183,16 @@
 .committee-page.open[data-committee="UNHRC"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#0710208a,#07102080),url('../images/unhrc-geneva-cinematic.webp')!important}
 .committee-page.open[data-committee="CCEP"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#04181e88,#04181e7a),url('../images/ccep-singapore-cinematic.webp')!important}
 .committee-page.open[data-committee="STARTUP"] .cp-scroll-backdrop{background-image:linear-gradient(180deg,#14091f88,#14091f7a),url('../images/startup-san-francisco-cinematic.webp')!important}
+
+/* ===== UNHRC / CCEP / STARTUP / IPL: lower page matches the MCC layout (steps as glass cards, MCC label sizes, no duplicate register heading) ===== */
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps{display:grid;gap:12px;padding:0!important;border:0!important;background:transparent!important}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li{grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start;padding:22px 20px;border:1px solid color-mix(in srgb,var(--committee-accent) 50%,transparent)!important;border-radius:3px;background:linear-gradient(105deg,color-mix(in srgb,var(--committee-accent) 16%,transparent),#ffffff05 28%,#101322e8 100%);box-shadow:inset 0 1px 0 #ffffff66,inset 0 -1px 0 #05070c99,0 9px 24px #0006}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li>i{width:44px;font-size:13px;line-height:1.5;padding-top:2px}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li b{font-size:16px}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) :is(.cp-section-label small,.cp-do-head>small,.cp-awards-head>small,.cp-register>div>small,.cp-awards article small){font-size:12px;font-weight:700;letter-spacing:.12em}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) :is(.cp-awards article span,.cp-awards-head>p,.cp-steps li small){font-size:clamp(.9rem,1.1vw,1.02rem)}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-awards article small{margin-bottom:8px;align-self:flex-start}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-awards article b{margin:4px 0 10px}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-register>div:first-child h2{display:none}
+.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-event-meta{display:none}
+@media(max-width:560px){.committee-page.open:is([data-committee="UNHRC"],[data-committee="CCEP"],[data-committee="STARTUP"],[data-committee="IPL"]) .cp-steps li{padding-inline:15px}}
