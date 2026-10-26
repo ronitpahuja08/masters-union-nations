@@ -511,3 +511,16 @@
 .mc-journey.playing[data-code="IPL"] .ms-flash{animation:msFlashIPL 6.4s both}
 @keyframes msFlashIPL{0%,74%{opacity:0}84%{opacity:.95}100%{opacity:0}}
 @media(max-width:850px){.ms-ladder{width:36vw;top:20%}.ms-lot{width:36vw;top:18%}.ms-ladder .bid span{display:none}}
+
+/* Startup: once the valuation hits $100M everything clears, then the title lands */
+.mc-journey.playing[data-code="STARTUP"] .ms-node{animation-name:msNodeIn,msClear;animation-duration:.7s,.45s;animation-fill-mode:both,forwards}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n1{animation-delay:.4s,5.85s}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n2{animation-delay:1s,5.85s}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n3{animation-delay:2.2s,5.85s}
+.mc-journey.playing[data-code="STARTUP"] .ms-node.n4{animation-delay:1.6s,5.85s}
+.mc-journey.playing[data-code="STARTUP"] .ms-links{animation:msClear .45s 5.85s forwards}
+.mc-journey.playing[data-code="STARTUP"] .ms-core{animation:msClear .45s 5.85s forwards}
+.mc-journey.playing[data-code="STARTUP"] .ms-coins{animation:msClear .45s 5.85s forwards}
+@keyframes msClear{to{opacity:0}}
+:is(#mcPlayfield) .ms-node{--k:1}
+.mc-journey.playing[data-code="STARTUP"] .ms-heading,.mc-journey.playing[data-code="STARTUP"] .mc-heading{animation-duration:8s}
