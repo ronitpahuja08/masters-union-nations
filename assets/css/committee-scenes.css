@@ -672,3 +672,68 @@
 @media(prefers-reduced-motion:reduce){.ms-player{animation:none!important}}
 
 .cinema-hero-scene .ms-squad .ms-player{position:relative!important}
+
+/* ======================= v8: IPL auction room only - lot in the middle, franchises on an arc ======================= */
+.mc-journey.playing[data-code="IPL"] .mc-heading{animation-name:msTitleLate;animation-duration:8.4s}
+.mc-journey.playing[data-code="IPL"] .mc-photo{animation-duration:8.5s}
+.mc-journey.playing[data-code="IPL"] .ms-beam{animation-duration:8.4s}
+.mc-journey.playing[data-code="IPL"] .ms-ipl{animation:msClear .5s 6.6s forwards}
+.ms-ipl .ms-shade.i{background:radial-gradient(ellipse at 50% 55%,#04101f55 0%,#04101fcc 100%)}
+.ms-aucthead{left:0;right:0;top:5.5vh;text-align:center}
+.ms-aucthead small{font:800 clamp(10px,1.1vw,15px) var(--mono,monospace);letter-spacing:.34em;color:#ffd24a}
+/* franchise paddles on a semicircle */
+:is(#mcPlayfield) .ms-seat{left:var(--x);top:var(--y);width:clamp(96px,11vw,170px);transform:translate(-50%,-50%);opacity:0}
+.mc-journey.playing[data-code="IPL"] .ms-seat{animation:msSeatIn .9s calc(.15s + var(--i)*.12s) cubic-bezier(.2,.9,.3,1) both}
+@keyframes msSeatIn{from{opacity:0;transform:translate(-50%,-30%) scale(.85)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.ms-seat .pd{aspect-ratio:1/1.02;display:grid;align-content:center;justify-items:center;gap:3px;padding:8px;border-radius:12px;border:4px solid #fff;background:var(--bg);color:var(--fg);box-shadow:0 16px 36px #000a;text-align:center;filter:brightness(.62) saturate(.8);transform-origin:50% 100%}
+.ms-seat .pd b{font:900 clamp(1.7rem,3.8vw,3.4rem)/.9 var(--sans,Arial);letter-spacing:-.03em}
+.ms-seat .pd small{font:800 clamp(5px,.62vw,9px) var(--mono,monospace);letter-spacing:.08em;line-height:1.25}
+.ms-seat .pd em{font:900 clamp(.8rem,1.35vw,1.2rem) var(--sans,Arial);font-style:normal;margin-top:3px;padding:2px 10px;border-radius:999px;background:#0009;color:#ffd24a;opacity:0}
+.ms-seat>i{display:block;width:6px;height:clamp(40px,8vh,90px);margin:0 auto;background:linear-gradient(90deg,#b99067,#7a5a3a);border-radius:0 0 4px 4px}
+.mc-journey.playing[data-code="IPL"] .ms-seat .pd{animation:msRaise 1.7s var(--t) cubic-bezier(.3,.8,.3,1) both}
+.mc-journey.playing[data-code="IPL"] .ms-seat .pd em{animation:msEm 1.7s var(--t) both}
+.mc-journey.playing[data-code="IPL"] .ms-seat .pd.win{animation:msRaiseWin 1.2s var(--t) cubic-bezier(.3,.8,.3,1) both}
+.mc-journey.playing[data-code="IPL"] .ms-seat .pd.win em{animation:msEmWin .4s var(--t) both}
+@keyframes msRaise{
+ 0%{transform:translateY(0) rotate(0) scale(1);filter:brightness(.62) saturate(.8)}
+ 22%{transform:translateY(-7vh) rotate(var(--r)) scale(1.16);filter:brightness(1.05) saturate(1.1);box-shadow:0 0 40px #ffd24a99,0 16px 36px #000a}
+ 42%{transform:translateY(-6vh) rotate(calc(var(--r) * -.5)) scale(1.14);filter:brightness(1.05) saturate(1.1)}
+ 70%{transform:translateY(-6.4vh) rotate(calc(var(--r) * .4)) scale(1.15);filter:brightness(1.05) saturate(1.1)}
+ 100%{transform:translateY(0) rotate(0) scale(1);filter:brightness(.62) saturate(.8)}}
+@keyframes msRaiseWin{
+ 0%{transform:translateY(0) rotate(0) scale(1);filter:brightness(.62) saturate(.8)}
+ 35%{transform:translateY(-8vh) rotate(var(--r)) scale(1.22);filter:brightness(1.1) saturate(1.15);box-shadow:0 0 60px #ffd24acc,0 16px 36px #000a}
+ 100%{transform:translateY(-7vh) rotate(0) scale(1.2);filter:brightness(1.1) saturate(1.15);box-shadow:0 0 60px #ffd24acc,0 16px 36px #000a}}
+@keyframes msEm{0%,10%{opacity:0}28%,66%{opacity:1}100%{opacity:0}}
+@keyframes msEmWin{from{opacity:0}to{opacity:1}}
+/* the lot, front and centre */
+.ms-podium{left:50%;top:54vh;width:clamp(260px,29vw,440px);transform:translate(-50%,-50%);padding:clamp(16px,1.8vw,26px);border-radius:16px;background:linear-gradient(145deg,#fff7ee,#ffe9c9);color:#1b1030;box-shadow:0 30px 80px #000c,0 0 0 2px #ffd24a66;opacity:0}
+.mc-journey.playing[data-code="IPL"] .ms-podium{animation:msPodiumIn 1.2s .3s cubic-bezier(.2,1,.3,1) both,msPodiumShake 8.4s both}
+@keyframes msPodiumIn{from{opacity:0;transform:translate(-50%,-40%) scale(.85)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes msPodiumShake{0%,59%{translate:0 0}60%{translate:0 6px}61%{translate:-4px -2px}62.5%{translate:3px 1px}64%,100%{translate:0 0}}
+.ms-podium>small{display:block;font:800 clamp(8px,.9vw,12px) var(--mono,monospace);letter-spacing:.18em;color:#c4161c}
+.ms-podium .who{display:flex;align-items:center;gap:14px;margin:12px 0}
+.ms-podium .who i{display:block;width:clamp(46px,5.2vw,76px);height:clamp(46px,5.2vw,76px);border-radius:50%;background:radial-gradient(circle at 50% 36%,#7a5a3a 0 22%,transparent 23%),linear-gradient(180deg,#d9b36e,#8a6a35);flex:none}
+.ms-podium .who b{font:900 clamp(1.3rem,2.4vw,2.2rem)/1 var(--sans,Arial);letter-spacing:-.03em}
+.ms-podium .curr{border-top:2px dashed #1b103033;padding-top:10px}
+.ms-podium .curr>span{display:block;font:800 clamp(8px,.85vw,11px) var(--mono,monospace);letter-spacing:.24em;color:#4a3a5a}
+.ms-podium .cbs{position:relative;height:clamp(3.6rem,6.6vw,6rem);margin-top:4px}
+.ms-podium .cb{position:absolute;inset:0;opacity:0}
+.ms-podium .cb b{display:block;font:900 clamp(2.3rem,4.8vw,4.2rem)/1 var(--sans,Arial);letter-spacing:-.04em;color:#1b1030;font-variant-numeric:tabular-nums}
+.ms-podium .cb em{display:inline-block;margin-top:2px;padding:3px 12px;border-radius:999px;background:var(--bg);color:var(--fg);font:800 clamp(7px,.8vw,11px) var(--mono,monospace);font-style:normal;letter-spacing:.12em}
+.mc-journey.playing[data-code="IPL"] .ms-podium .cb{animation:msCb .6s var(--t) both}
+.mc-journey.playing[data-code="IPL"] .ms-podium .cb.last{animation:msCbLast .5s var(--t) both}
+@keyframes msCb{0%{opacity:0;transform:translateY(10px) scale(.94)}16%,84%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-8px)}}
+@keyframes msCbLast{0%{opacity:0;transform:translateY(10px) scale(.94)}100%{opacity:1;transform:none}}
+.ms-ring2{left:50%;top:50%;width:20%;aspect-ratio:1;margin:-10% 0 0 -10%;border-radius:50%;border:4px solid #ffd24a;opacity:0}
+.mc-journey.playing[data-code="IPL"] .ms-ring2{animation:msShock 8.4s both}
+@keyframes msShock{0%,59%{opacity:0;transform:scale(.3)}60%{opacity:.95;transform:scale(1)}72%,100%{opacity:0;transform:scale(9)}}
+.ms-podium .ms-sold{left:50%;top:60%;width:92%;transform:translate(-50%,-50%) rotate(-9deg) scale(2.6);text-align:center;opacity:0;border:5px solid #d8161f;border-radius:10px;padding:6px 8px;background:#fff7eef5}
+.mc-journey.playing[data-code="IPL"] .ms-podium .ms-sold{animation:msSold8 8.4s both}
+@keyframes msSold8{0%,59.5%{opacity:0;transform:translate(-50%,-50%) rotate(-9deg) scale(2.6)}63%,100%{opacity:1;transform:translate(-50%,-50%) rotate(-9deg) scale(1)}}
+.ms-podium .ms-gavel2{top:-70px;right:-52px;width:clamp(90px,10vw,150px);overflow:visible;z-index:3}
+.mc-journey.playing[data-code="IPL"] .ms-podium .ms-gavel2 .gv{animation:msGavel8 8.4s both}
+@keyframes msGavel8{0%,50%{transform:rotate(-55deg)}59.5%{transform:rotate(10deg);animation-timing-function:ease-out}64%{transform:rotate(-14deg)}69%,100%{transform:rotate(-4deg)}}
+.mc-journey.playing[data-code="IPL"] .ms-flash{animation:msFlash8 8.4s both}
+@keyframes msFlash8{0%,76%{opacity:0}82%{opacity:.8}91%,100%{opacity:0}}
+@media(max-width:850px){.ms-seat{width:21vw}.ms-podium{width:56vw}.ms-aucthead{display:none}}
