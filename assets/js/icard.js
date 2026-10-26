@@ -7,7 +7,11 @@
     IPL: { code: 'IPL', accent: '#f0c14b' },
     STARTUP: { code: 'STARTUP', accent: '#ff9a7a' },
     UNHRC: { code: 'UNHRC', accent: '#6fb4ee' },
-    CCEP: { code: 'CCEP', accent: '#3fd6bb' }
+    CCEP: { code: 'CCEP', accent: '#3fd6bb' },
+    MCC: { code: 'MCC', accent: '#a48cff' },
+    AIPPM: { code: 'AIPPM', accent: '#ff8c4b' },
+    IP: { code: 'IP', accent: '#f0e9db' },
+    DALAL: { code: 'DALAL', accent: '#65e778' }
   };
   var BG = [['Midnight', '#10121f'], ['Navy', '#0b1f3a'], ['Wine', '#3a0f26'], ['Forest', '#0d2a20'], ['Plum', '#2a1650'], ['Cream', '#f6efe2'], ['White', '#ffffff']];
   var ACCENT = [['Committee', null], ['Gold', '#e9b949'], ['Crimson', '#e0405a'], ['Ocean', '#3c8cf0'], ['Emerald', '#27b574'], ['Violet', '#9a6bff'], ['Sunset', '#ff7a45'], ['Pink', '#ff6fa8']];

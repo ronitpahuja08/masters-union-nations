@@ -68,8 +68,8 @@
   function complete(){
     if (!active) return;
     const cb=onComplete;
-    stop();
-    if (typeof cb==='function') cb();
+    if (typeof cb==='function') { if (timer) { clearTimeout(timer); timer=null; } onComplete=null; active=false; cb(); }
+    else stop();
   }
   function play(code, opts={}) {
     if (!CONFIG[code]) { opts.onComplete?.(); return; }

@@ -12,7 +12,7 @@
   };
   video.addEventListener('error',()=>showFallback(video.error));
   video.addEventListener('playing',()=>{if(active)root.classList.remove('video-fallback');});
-  const finish = () => { if (!active) return; active = false; clearTimeout(timer); cancelAnimationFrame(raf); video.pause(); root.classList.remove('active', 'nightfall', 'title-reveal', 'reduced-motion', 'video-fallback'); clearGrade(); complete?.(); complete = null; };
+  const finish = () => { if (!active) return; active = false; clearTimeout(timer); cancelAnimationFrame(raf); video.pause(); const cb = complete; complete = null; if (cb) { cb(); } else { root.classList.remove('active', 'nightfall', 'title-reveal', 'reduced-motion', 'video-fallback'); clearGrade(); } };
   function tick() {
     if (!active) return;
     const elapsed = performance.now() - started;
