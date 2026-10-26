@@ -524,3 +524,11 @@
 @keyframes msClear{to{opacity:0}}
 :is(#mcPlayfield) .ms-node{--k:1}
 .mc-journey.playing[data-code="STARTUP"] .ms-heading,.mc-journey.playing[data-code="STARTUP"] .mc-heading{animation-duration:8s}
+/* UNHRC: clear the scene before the title lands so nothing sits behind it */
+.mc-journey.playing[data-code="UNHRC"] .ms-pop{animation:msPopSide2 2s cubic-bezier(.2,.8,.2,1) calc(.3s + var(--i)*.4s) both}
+.mc-journey.playing[data-code="UNHRC"] .ms-rings{animation:msClear .45s 5.7s forwards}
+.mc-journey.playing[data-code="UNHRC"] .ms-wreath{animation-name:msWreath,msClear;animation-duration:7.4s,.45s;animation-delay:0s,5.7s;animation-fill-mode:both,forwards}
+.mc-journey.playing[data-code="UNHRC"] .ms-globe{animation-name:msFadeIn,msClear;animation-duration:7.4s,.45s;animation-delay:0s,5.7s;animation-fill-mode:both,forwards}
+.mc-journey.playing[data-code="UNHRC"] .ms-udhr{animation-name:msFadeIn,msClear;animation-duration:7.4s,.45s;animation-delay:.3s,5.7s;animation-fill-mode:both,forwards}
+.mc-journey.playing[data-code="UNHRC"] .ms-art{animation:msArt 5.1s .4s linear both}
+.mc-journey.playing[data-code="UNHRC"] .ms-flags{animation:msClear .45s 5.7s forwards}

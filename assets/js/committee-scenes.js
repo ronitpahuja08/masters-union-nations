@@ -79,7 +79,7 @@
   const wreath = `<svg class="ms-wreath" viewBox="-120 -120 240 240" aria-hidden="true"><g fill="#cfe9ff">${Array.from({length:22},(_,i)=>{const a=i*(360/22);return `<g transform="rotate(${a}) rotate(${i%2?18:-18} 0 -92)"><ellipse class="lf" style="--d:${(i*.045).toFixed(2)}s" cx="0" cy="-92" rx="5" ry="14"/></g>`}).join('')}</g></svg>`;
   const rings = `<div class="ms-rings"><i></i><i></i><i></i><i></i></div>`;
   const pops = [['HUMAN RIGHTS','ENGLISH','en'],['LIBERTÉ','FRANÇAIS','fr'],['СВОБОДА','РУССКИЙ','ru'],['كرامة','العربية','ar'],['正义','中文','zh'],['JUSTICIA','ESPAÑOL','es'],['DIGNITY','ENGLISH','en'],['ÉGALITÉ','FRANÇAIS','fr'],['РАВЕНСТВО','РУССКИЙ','ru'],['عدالة','العربية','ar'],['平等','中文','zh'],['PAZ','ESPAÑOL','es']];
-  const popHTML = pops.map(([w,n,l],i)=>`<div class="ms-pop ${i%2?'r':'l'}" style="--i:${i};--y:${[12,26,40,54,64,33][i%6]}%" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('');
+  const popHTML = pops.slice(0,10).map(([w,n,l],i)=>`<div class="ms-pop ${i%2?'r':'l'}" style="--i:${i};--y:${[12,26,40,54,64,33][i%6]}%" lang="${l}"><b>${w}</b><small>${n}</small></div>`).join('');
   const globe = `<svg class="ms-globe" viewBox="-60 -60 120 120" aria-hidden="true"><circle r="50" fill="#0b2a52" fill-opacity=".55" stroke="#9ed0ff" stroke-width="1.4"/>
     <g fill="none" stroke="#9ed0ff" stroke-width=".8" opacity=".85"><ellipse class="m m1" rx="50" ry="50"/><ellipse class="m m2" rx="50" ry="50"/><ellipse class="m m3" rx="50" ry="50"/><path d="M-50 0H50M-43 -25H43M-43 25H43M-26 -43H26M-26 43H26"/></g></svg>`;
   const unhrcIntro = `<div class="ms-shade u"></div>${rings}${wreath}${globe}
