@@ -36,7 +36,7 @@
   var phase='browsing',voiceHold=0,handoffStart=0,handoffFrom=0,holdScrollY=0,mapScrollDone=false;
   var reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var revealComplete=false,revealTimer=0,revealCleanupTimer=0,revealAnchor=.19;
-  var lastUserScroll=-1e5;
+  var lastUserScroll=-1e5,MAX_SPEED=.34;
   ['wheel','touchstart','pointerdown','keydown'].forEach(function(type){window.addEventListener(type,function(){lastUserScroll=performance.now();},{passive:true});});
   function beginThemeReveal(){
     warmStrikeAssets();
@@ -149,7 +149,10 @@
     if(Math.abs(d)<.0004){p=target;apply();return;}
     // Time-based damping follows a wheel gesture in about 150 ms, independent of refresh rate.
     var dt=lastFrame?Math.min(50,now-lastFrame):16;lastFrame=now;
-    p+=d*(1-Math.exp(-dt/48));apply();
+    // The journey has a top speed: however fast the wheel or trackpad flings, progress travels at a steady, smooth pace.
+    var move=d*(1-Math.exp(-dt/48)),cap=MAX_SPEED*dt/1000;
+    p+=Math.max(-cap,Math.min(cap,move));apply();
+    if(!revealComplete&&phase==='browsing'&&p>=.16&&target>p+.003&&performance.now()-lastUserScroll<2500){beginThemeReveal();return;}
     if(p>=.60&&target>=.61){
       phase='handoff';handoffStart=performance.now();voiceHold=0;handoffFrom=p;holdScrollY=scrollY;mapScrollDone=false;
     }
@@ -164,7 +167,6 @@
     var r=range(),next=r>0?clamp((scrollY-journeyTop)/r,0,1):0;
     if(phase==='map'&&next<.93)phase='browsing';
     if(next<.04){if(revealComplete)window.MUNJourneyAudio?.resetCycle();revealComplete=false;home.classList.remove('time-stopped');$('#timeSeconds').textContent='59';}
-    if(!revealComplete&&next>=.16&&next<.96&&next>p+.003&&performance.now()-lastUserScroll<2000){beginThemeReveal();return;}
     target=next;
     if(next>.055)warmStrikeAssets();
     if(starsReady)syncStars();
