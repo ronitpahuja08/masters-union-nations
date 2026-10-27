@@ -18,7 +18,8 @@
     if (explosion.duration > explosionCue) explosion.currentTime = explosionCue;
   }, { once: true });
   let scene = '';
-  let enabled = topToggle.getAttribute('aria-pressed') === 'true';
+  let enabled = true;
+  try { enabled = localStorage.getItem('mun26-sound-choice') !== 'off'; } catch (e) { /* sound defaults to on */ }
   let blastTimer = 0, duckTimer = 0, resetLinePlayed = false, voiceActive = false, voicePending = false, fadeTimer = 0, voiceTimer = 0;
   let voiceContext = null, voiceGain = null, musicAttempt = null;
   const overlayMuted = () => document.body.classList.contains('overlay');
