@@ -12,7 +12,7 @@ if (root && canvas) {
   const rand = (a, b) => a + Math.random() * (b - a);
   let active = false, frame = 0, started = 0, complete = null, soundTimer = 0, dpr = 1, w = 1, h = 1;
   for (let i = 0; i < 58; i++) glyphs.push({ x: rand(-1, 1), y: rand(-1, 1), z: rand(.12, 1), n: String(Math.floor(rand(0, 10000))).padStart(4, '0'), speed: rand(.35, 1.5) });
-  function resize() { dpr = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1.2 : 1.6); w = root.clientWidth || innerWidth; h = root.clientHeight || innerHeight; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); canvas.style.width = `${w}px`; canvas.style.height = `${h}px`; ctx?.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  function resize() { dpr = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1 : 1.25); w = root.clientWidth || innerWidth; h = root.clientHeight || innerHeight; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); canvas.style.width = `${w}px`; canvas.style.height = `${h}px`; ctx?.setTransform(dpr, 0, 0, dpr, 0, 0); }
   addEventListener('resize', () => { if (active) resize(); }, { passive: true });
   function impact() {
     if (!window.__munSoundEnabled) return;

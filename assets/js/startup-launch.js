@@ -8,7 +8,7 @@ if (root && bridge && boardroom && canvas) {
   const duration = 3500;
   let active = false, frame = 0, started = 0, complete = null, w = 1, h = 1, dpr = 1;
   const dust = Array.from({ length: innerWidth < 700 ? 45 : 84 }, () => ({ x: Math.random(), y: Math.random(), z: Math.random(), s: Math.random() * 1.7 + .3 }));
-  function resize() { dpr = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1.2 : 1.5); w = root.clientWidth || innerWidth; h = root.clientHeight || innerHeight; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); ctx?.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  function resize() { dpr = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1 : 1.25); w = root.clientWidth || innerWidth; h = root.clientHeight || innerHeight; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); ctx?.setTransform(dpr, 0, 0, dpr, 0, 0); }
   addEventListener('resize', () => { if (active) resize(); }, { passive: true });
   function playMedia(video) { video.currentTime = 0; video.playbackRate = 1; video.play().catch(() => {}); }
   function render(now) {
