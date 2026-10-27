@@ -96,7 +96,19 @@ try {
   const fragmentGeo = new THREE.BufferGeometry();
   fragmentGeo.setAttribute('position', new THREE.BufferAttribute(fragmentData, 3));
   fragmentGeo.setAttribute('color', new THREE.BufferAttribute(fragmentColors, 3));
-  const fragmentMaterial = new THREE.PointsMaterial({ size: .027, vertexColors: true, transparent: true, opacity: 0, depthWrite: false, depthTest: false });
+  const particleCanvas = document.createElement('canvas');
+  particleCanvas.width = particleCanvas.height = 64;
+  const particleContext = particleCanvas.getContext('2d');
+  const particleGlow = particleContext.createRadialGradient(32, 32, 1, 32, 32, 32);
+  particleGlow.addColorStop(0, 'rgba(255,255,255,1)');
+  particleGlow.addColorStop(.48, 'rgba(255,255,255,.9)');
+  particleGlow.addColorStop(.82, 'rgba(255,255,255,.48)');
+  particleGlow.addColorStop(1, 'rgba(255,255,255,0)');
+  particleContext.fillStyle = particleGlow;
+  particleContext.fillRect(0, 0, 64, 64);
+  const particleTexture = new THREE.CanvasTexture(particleCanvas);
+  particleTexture.colorSpace = THREE.SRGBColorSpace;
+  const fragmentMaterial = new THREE.PointsMaterial({ map: particleTexture, size: .027, vertexColors: true, transparent: true, opacity: 0, depthWrite: false, depthTest: false });
   const fragments = new THREE.Points(fragmentGeo, fragmentMaterial);
   fragments.frustumCulled = false;
   fragments.renderOrder = 4;
@@ -114,7 +126,7 @@ try {
   const sparkGeo = new THREE.BufferGeometry();
   sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkData, 3));
   sparkGeo.setAttribute('color', new THREE.BufferAttribute(sparkColors, 3));
-  const sparkMaterial = new THREE.PointsMaterial({ size: .04, vertexColors: true, transparent: true, opacity: 0, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending });
+  const sparkMaterial = new THREE.PointsMaterial({ map: particleTexture, size: .04, vertexColors: true, transparent: true, opacity: 0, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending });
   const sparks = new THREE.Points(sparkGeo, sparkMaterial);
   sparks.frustumCulled = false;
   sparks.renderOrder = 6;
@@ -210,8 +222,9 @@ try {
     const actorIn = prefersReduced ? 0 : smooth(p, .32, .43) * (1 - smooth(p, .73, .86));
     const windup = smooth(p, .45, .54);
     const strike = prefersReduced ? 0 : smooth(p, .55, .635);
-    const burst = prefersReduced ? 0 : smooth(p, .635, .81);
-    const fragmentOpacity = smooth(p, .64, .675) * (1 - smooth(p, .84, .93));
+    const burst = prefersReduced ? 1 : smooth(p, .635, .93);
+    // Keep the foreground debris visible through the screen-covering blackout.
+    const fragmentOpacity = prefersReduced ? 0 : smooth(p, .64, .675) * (1 - smooth(p, .96, .995));
     const impactGlow = smooth(p, .615, .638) * (1 - smooth(p, .67, .735));
 
     planet.scale.setScalar(Math.max(.0001, globeIn));
@@ -231,9 +244,12 @@ try {
     chips.visible = fragments.visible;
     trails.visible = fragments.visible;
     fragmentMaterial.opacity = fragmentOpacity * .94;
+    fragmentMaterial.size = .027 + burst * .105;
+    fragmentMaterial.color.setRGB(.24 + (1 - burst) * .76, .16 + (1 - burst) * .84, .2 + (1 - burst) * .8);
     sparkMaterial.opacity = fragmentOpacity * .72;
+    sparkMaterial.size = .04 + burst * .028;
     chipMaterial.opacity = fragmentOpacity * .64;
-    trailMaterial.opacity = fragmentOpacity * smooth(p, .70, .765) * (1 - smooth(p, .83, .92)) * .38;
+    trailMaterial.opacity = fragmentOpacity * smooth(p, .70, .765) * (1 - smooth(p, .94, .985)) * .38;
     if (fragments.visible) {
       const depthT = burst * burst;
       for (let i = 0; i < fragmentCount; i++) {

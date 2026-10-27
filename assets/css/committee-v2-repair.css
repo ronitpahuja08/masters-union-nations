@@ -256,3 +256,45 @@
 .cp-cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-top:12px}
 .cp-cta-row>*{margin:0!important}
 @media(max-width:420px){.cp-cta-row{flex-direction:column}}
+
+/* Targeted final art pass: retain existing committee sections, panels, and geometry. */
+.committee-page.open[data-committee="CCEP"] .cp-scroll-backdrop{
+  background-image:linear-gradient(180deg,#03101aa8 0%,#06131b8c 42%,#03090fdd 100%),url('../images/ccep-port-night-v1.webp')!important;
+  background-position:center 52%;filter:brightness(.88) saturate(1.06) contrast(1.04);
+  animation:committeeBackdropDrift 38s ease-in-out infinite alternate;
+}
+.committee-page.open[data-committee="STARTUP"] .cp-scroll-backdrop{
+  background-image:linear-gradient(180deg,#110c1c8c 0%,#13101a78 42%,#090b13df 100%),url('../images/startup-sf-boardroom-golden-v1.webp')!important;
+  background-position:center 54%;filter:brightness(.88) saturate(.94) contrast(1.03);
+  animation:committeeBackdropDrift 42s ease-in-out infinite alternate;
+}
+.mc-journey[data-code="CCEP"] .mc-photo{
+  background-image:linear-gradient(0deg,#03131cd9 0%,#08202a24 58%,#03081352 100%),url('../images/ccep-port-night-v1.webp')!important;
+}
+.committee-page.open[data-committee="CCEP"] .cinema-hero-scene[data-code="CCEP"]{
+  background:#06131b url('../images/ccep-port-night-v1.webp') center/cover no-repeat!important;
+}
+.committee-page.open[data-committee="CCEP"] .cinema-hero-scene[data-code="CCEP"] .ch-photo{
+  background-image:linear-gradient(0deg,#031722bf 0%,#06151a1c 56%,#06121a55 100%),url('../images/ccep-port-night-v1.webp')!important;
+}
+.committee-page.open[data-committee="STARTUP"] .cinema-hero-scene[data-code="STARTUP"]{
+  background:linear-gradient(0deg,#100c19b8,#281b2a24),url('../images/startup-sf-boardroom-golden-v1.webp') center/cover no-repeat!important;
+}
+.committee-page.open[data-committee="STARTUP"] .cinema-hero-scene[data-code="STARTUP"] .ch-photo{
+  background-image:linear-gradient(0deg,#0a0b13b8 0%,#221a2822 56%,#17101a49 100%),url('../images/startup-sf-boardroom-golden-v1.webp')!important;
+}
+.committee-page.open[data-committee="CCEP"] :is(.cp-section,.cp-do,.cp-awards,.cp-register){
+  background-image:radial-gradient(ellipse at 92% 8%,#d9b76519,transparent 37%),linear-gradient(118deg,#c7e5e516 0%,transparent 19%,#050b123b 45%,#d9b76513 71%,transparent 86%),repeating-linear-gradient(132deg,#ffffff05 0 1px,transparent 1px 8px),linear-gradient(135deg,#20292c 0%,#11171b 43%,#25282a 60%,#0f1519 100%);
+}
+.committee-page.open[data-committee="CCEP"] :is(.cp-section-label,.cp-brief-copy,.cp-do-head,.cp-steps,.cp-awards-head,.cp-awards article,.cp-register>div){
+  border-color:#c6b57970;background:linear-gradient(145deg,#e0d09b18,#ffffff04 32%,#060d13b4 74%),linear-gradient(120deg,#30363a,#171c20 48%,#282b2d);
+}
+.committee-page.open[data-committee="STARTUP"] :is(.cp-section,.cp-do,.cp-awards,.cp-register){
+  background-image:radial-gradient(ellipse at 10% 0%,#dcaa6530,transparent 36%),linear-gradient(118deg,#e7cfaa16 0%,transparent 18%,#05070c38 46%,#d4b47716 70%,transparent 85%),repeating-linear-gradient(132deg,#ffffff05 0 1px,transparent 1px 8px),linear-gradient(135deg,#2a2627 0%,#14151a 42%,#2a2428 60%,#101218 100%);
+}
+.committee-page.open[data-committee="STARTUP"] :is(.cp-section-label,.cp-brief-copy,.cp-do-head,.cp-steps,.cp-awards-head,.cp-awards article,.cp-register>div){
+  border-color:#d5b87970;background:linear-gradient(145deg,#f0d6a11d,#ffffff04 32%,#090b12b5 74%),linear-gradient(120deg,#393233,#18191e 48%,#30292a);
+}
+@media(prefers-reduced-motion:reduce){
+  .committee-page.open:is([data-committee="CCEP"],[data-committee="STARTUP"]) .cp-scroll-backdrop{animation:none}
+}

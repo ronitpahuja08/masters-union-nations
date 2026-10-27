@@ -110,8 +110,9 @@
     voiceActive = true;
     clearTimeout(blastTimer);
     if (!explosion.paused) fadeOut(explosion, 300);   // the blast never overlaps the voice
-    fadeEpic(0, 500);
-    voiceTimer = setTimeout(() => { boostVoice(); resetLine.currentTime = 0; resetLine.play().catch(() => { voiceActive = false; mixLevel(); }); }, 650);
+    fadeEpic(0, 280);
+    // Start the spoken line as the reset title begins to emerge from the debris.
+    voiceTimer = setTimeout(() => { boostVoice(); resetLine.currentTime = 0; resetLine.play().catch(() => { voiceActive = false; mixLevel(); }); }, 250);
   }
   resetLine.addEventListener('ended', () => {
     voiceActive = false;
@@ -145,7 +146,7 @@
     if (event.target.closest('#journeyMusicToggle,#soundToggle')) return;
     if (enabled && scene === 'epic' && epic.paused) epic.play().catch(() => updateButton());
   }, { once: true });
-  const voicePlaying = () => voiceActive && (!resetLine.ended);
+  const voicePlaying = () => voiceActive && !resetLine.paused && !resetLine.ended && !resetLine.error;
   window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload, voicePlaying };
   progress = Number(getComputedStyle(document.getElementById('journeyStick')).getPropertyValue('--p')) || 0;
   updateButton();

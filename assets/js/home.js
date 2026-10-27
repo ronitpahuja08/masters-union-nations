@@ -70,11 +70,13 @@
     stick.style.setProperty('--gb',gb.toFixed(3));
     body.classList.toggle('gb-on',gb>.04);
     body.classList.toggle('gb-strike',p>.32);
+    body.classList.toggle('gb-shatter',p>=.64&&p<.92);
     var flash=smooth(p,.622,.64)*(1-smooth(p,.66,.70));
-    var blackout=smooth(p,.81,.845)*(1-smooth(p,.93,.99));
-    $('#impactFlash').style.opacity=(flash*.82).toFixed(3);
+    // Let the debris fill the viewport first, then pull the red scene down to black.
+    var blackout=smooth(p,.78,.92)*(1-smooth(p,.985,1));
+    $('#impactFlash').style.opacity=(flash*.5).toFixed(3);
     $('#impactVeil').style.opacity=blackout.toFixed(3);
-    var inBlackout=p>=.845&&p<.94;
+    var inBlackout=p>=.92&&p<.99;
     if(inBlackout!==blackoutEntered){
       blackoutEntered=inBlackout;
       body.classList.toggle('in-blackout',inBlackout);
@@ -109,21 +111,25 @@
     if(phase==='handoff'){
       var elapsed=now-handoffStart-voiceHold;
       // the black 'The World Resets' screen stays until the spoken line has finished
-      if(!reducedMotion&&elapsed>=2200&&now-handoffStart<12000&&window.MUNJourneyAudio&&window.MUNJourneyAudio.voicePlaying()){voiceHold=now-handoffStart-2200;elapsed=2200;}
-      if(reducedMotion){p=elapsed<460?.86:1;}
+      var voiceGate=reducedMotion?700:3300;
+      if(elapsed>=voiceGate&&now-handoffStart<12000&&window.MUNJourneyAudio&&window.MUNJourneyAudio.voicePlaying()){voiceHold=now-handoffStart-voiceGate;elapsed=voiceGate;}
+      if(reducedMotion){p=elapsed<1150?.925:1;}
       else if(elapsed<260)p=handoffFrom+(.645-handoffFrom)*smooth(elapsed,0,260);
-      else if(elapsed<850)p=.645+(.86-.645)*smooth(elapsed,260,850);
-      else if(elapsed<2250)p=.86;
-      else p=.86+.14*smooth(elapsed,2250,2950);
+      // Give the globe debris nearly three seconds to surge toward and across the screen.
+      else if(elapsed<2850)p=.645+(.91-.645)*smooth(elapsed,260,2850);
+      else if(elapsed<3100)p=.91+(.925-.91)*smooth(elapsed,2850,3100);
+      // Hold the reset title for the voice line; a media failure never traps the visitor.
+      else if(elapsed<3950)p=.925;
+      else p=.925+.075*smooth(elapsed,3950,4800);
       target=p;
       apply();
-      if(!mapScrollDone&&elapsed>=(reducedMotion?0:850)){
+      if(!mapScrollDone&&elapsed>=(reducedMotion?0:3950)){
         mapScrollDone=true;
         holdScrollY=journeyTop+range();
         // Move the document once while the reset card fully covers the stage.
         window.scrollTo({top:holdScrollY,behavior:'instant'});
       }
-      if(elapsed<(reducedMotion?460:2950)){raf=requestAnimationFrame(step);return;}
+      if(elapsed<(reducedMotion?1150:4800)){raf=requestAnimationFrame(step);return;}
       phase='map';p=target=1;apply();return;
     }
     var d=target-p;
