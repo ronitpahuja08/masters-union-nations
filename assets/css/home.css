@@ -97,7 +97,7 @@ body:not(.on-home) .journey-stick #home .hero-tag{opacity:0;visibility:hidden}
   radial-gradient(ellipse 46% 9% at 8% 40%,rgba(214,152,92,.26),transparent 72%),
   radial-gradient(ellipse 40% 8% at 94% 22%,rgba(214,152,92,.2),transparent 72%),
   linear-gradient(180deg,#1b070d,#2b0c15 46%,#150508)}
-#home::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:url(../images/world-atlas-india-focus.png) center/cover no-repeat;opacity:.1;mix-blend-mode:screen;filter:grayscale(1) sepia(1) saturate(2.4) hue-rotate(-52deg) brightness(.85)}
+#home::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:url(../images/world-atlas-india-focus.webp) center/cover no-repeat;opacity:.1;mix-blend-mode:screen;filter:grayscale(1) sepia(1) saturate(2.4) hue-rotate(-52deg) brightness(.85)}
 #home .lobby-glow.a{background:#8f1d3340}
 #home .lobby-glow.b{background:#c9904a2e}
 #home .lobby-sub{color:#ecd8d6}
@@ -250,20 +250,20 @@ body.in-blackout .hud{opacity:0;pointer-events:none}
 #home::before{background:
   linear-gradient(90deg,#120711ed 0%,#160811d0 32%,#16081178 56%,#1608111c 100%),
   linear-gradient(0deg,#100710a8 0%,transparent 36%),
-  url("../images/mun-nations-hero-art.png") 75% center/cover no-repeat}
+  url("../images/mun-nations-hero-art.webp") 75% center/cover no-repeat}
 #home .lobby-content{position:relative;z-index:2;width:min(58vw,760px);max-width:760px;margin-right:auto;margin-left:clamp(20px,6vw,96px);text-align:left}
 #home .lobby-title{align-items:flex-start}
 #home .lobby-title .t1{margin-right:0;letter-spacing:.24em}
 #home .lobby-title .t2{font-size:clamp(3.6rem,min(13vw,25vh),11rem)}
 #home .lobby-sub{margin-left:0;text-align:left}
 #home .pass{margin-left:0}
-@media(max-width:760px){.campaign-mark-link{width:42px;height:42px;margin-left:auto}.landing-campaign-mark{right:68px;top:10px;width:40px;height:40px}#home::before{background:linear-gradient(90deg,#120711ec 0%,#160811cf 44%,#16081155 100%),linear-gradient(0deg,#100710bd 0%,transparent 45%),url("../images/mun-nations-hero-art.png") 81% center/cover no-repeat}#home .lobby-content{margin-inline:20px;width:min(100%,600px)}#home .lobby-title{align-items:flex-start}#home .lobby-title .t2{font-size:clamp(2.8rem,10vw,4.8rem)}}
+@media(max-width:760px){.campaign-mark-link{width:42px;height:42px;margin-left:auto}.landing-campaign-mark{right:68px;top:10px;width:40px;height:40px}#home::before{background:linear-gradient(90deg,#120711ec 0%,#160811cf 44%,#16081155 100%),linear-gradient(0deg,#100710bd 0%,transparent 45%),url("../images/mun-nations-hero-art.webp") 81% center/cover no-repeat}#home .lobby-content{margin-inline:20px;width:min(100%,600px)}#home .lobby-title{align-items:flex-start}#home .lobby-title .t2{font-size:clamp(2.8rem,10vw,4.8rem)}}
 @media(prefers-reduced-motion:reduce){#home .lobby-title,#home .lobby-sub,#home .lobby-meta,#home .countdown,#home .lobby-cta,#home .pass{animation:none!important}}
 .map-stage::after{z-index:2;background:radial-gradient(ellipse 82% 78% at 50% 50%,transparent 46%,rgba(128,18,48,.5) 78%,rgba(92,10,36,.88) 100%),linear-gradient(180deg,rgba(96,10,36,.55),transparent 16%,transparent 84%,rgba(96,10,36,.6))}
 
 /* Timed theme interlude between the landing artwork and the hammer scene. */
 .theme-reveal{position:absolute;inset:0;z-index:7;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;color:#f8eee4;background:radial-gradient(ellipse 58% 62% at 50% 43%,#681b2b 0%,#2a0b19 48%,#09050a 100%);transition:opacity .58s ease,visibility .58s}
-.theme-reveal::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#050307b8,transparent 34%,transparent 66%,#050307b8),url("../images/world-atlas-india-focus.png") center/cover;opacity:.13;mix-blend-mode:screen;filter:grayscale(1) sepia(1) hue-rotate(320deg)}
+.theme-reveal::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#050307b8,transparent 34%,transparent 66%,#050307b8),url("../images/world-atlas-india-focus.webp") center/cover;opacity:.13;mix-blend-mode:screen;filter:grayscale(1) sepia(1) hue-rotate(320deg)}
 .theme-reveal::after{content:"";position:absolute;inset:-25%;background:linear-gradient(105deg,transparent 40%,#f0c99115 49%,#fff3ce35 50%,#f0c99115 51%,transparent 60%);transform:translateX(-95%) rotate(-12deg)}
 .theme-reveal.is-playing{opacity:1;visibility:visible}.theme-reveal.is-exiting{opacity:0}
 .theme-reveal.is-playing::after{animation:themeLightSweep 2.5s cubic-bezier(.2,.64,.4,1) .55s both}
@@ -335,7 +335,7 @@ body.at-map .map-stage::after{opacity:1}
 @media(max-width:760px){.gb-strike .gb-words{right:auto;left:50%;bottom:clamp(22px,4vh,38px);max-width:95vw;align-items:center}.gb-strike .gb-r{font-size:clamp(1.7rem,7vw,3rem);letter-spacing:-.065em}}
 
 /* Base wine color and type balance for the 2026 reveal. */
-#home::before{background:linear-gradient(90deg,#180810f2 0%,#260b18d9 35%,#26101a80 62%,#18081032 100%),linear-gradient(0deg,#18080dd1 0%,transparent 39%),url("../images/mun-nations-hero-art.png") 75% center/cover no-repeat}
+#home::before{background:linear-gradient(90deg,#180810f2 0%,#260b18d9 35%,#26101a80 62%,#18081032 100%),linear-gradient(0deg,#18080dd1 0%,transparent 39%),url("../images/mun-nations-hero-art.webp") 75% center/cover no-repeat}
 .dusk{background:radial-gradient(ellipse 105% 72% at 50% 110%,#812b37a8,transparent 62%),radial-gradient(ellipse 85% 78% at 50% 45%,#3a1224 0%,#190d1a 55%,#080609 100%)}
 .theme-reveal{background:radial-gradient(ellipse 58% 60% at 50% 43%,#712338 0%,#2e0d1d 51%,#080609 100%)}
 .theme-reveal-title h2{gap:clamp(7px,1.5vh,17px)}
@@ -343,11 +343,11 @@ body.at-map .map-stage::after{opacity:1}
 .theme-reveal-title h2 em{color:#eacb9d;text-shadow:0 10px 36px #000b}
 .gb-l{font-weight:700;letter-spacing:.48em;color:#dfbb83;background:none;-webkit-text-fill-color:currentColor;filter:none}
 .gb-r{color:#f5e5ce;background:none;-webkit-text-fill-color:currentColor;filter:drop-shadow(0 8px 22px #080407aa)}
-@media(max-width:760px){#home::before{background:linear-gradient(90deg,#180810f5 0%,#220b16db 49%,#1b0a145c 100%),linear-gradient(0deg,#16080dce,transparent 42%),url("../images/mun-nations-hero-art.png") 81% center/cover no-repeat}.theme-reveal-title h2 span{font-size:clamp(2.35rem,9.5vw,4.5rem)}}
+@media(max-width:760px){#home::before{background:linear-gradient(90deg,#180810f5 0%,#220b16db 49%,#1b0a145c 100%),linear-gradient(0deg,#16080dce,transparent 42%),url("../images/mun-nations-hero-art.webp") 81% center/cover no-repeat}.theme-reveal-title h2 span{font-size:clamp(2.35rem,9.5vw,4.5rem)}}
 
 /* ZERO / THE WORLD RESET — the existing art and map remain mounted throughout. */
 #home,.journey-stick{background:#070305}
-#home::before{background:linear-gradient(90deg,#090407f5 0%,#17060cde 32%,#26050ea8 58%,#10030722 100%),linear-gradient(0deg,#080305dd 0%,transparent 44%),url("../images/mun-nations-hero-art.png") 76% center/cover no-repeat}
+#home::before{background:linear-gradient(90deg,#090407f5 0%,#17060cde 32%,#26050ea8 58%,#10030722 100%),linear-gradient(0deg,#080305dd 0%,transparent 44%),url("../images/mun-nations-hero-art.webp") 76% center/cover no-repeat}
 #home::after{display:none}
 #home .lobby-glow.a{background:#a7193340;filter:blur(85px)}
 #home .lobby-glow.b{background:#c1573030;filter:blur(100px)}
@@ -384,7 +384,7 @@ body:not(.on-home) #home .time-dial,body:not(.on-home) #home .time-readout{opaci
 @keyframes clockApproach{to{transform:rotate(185deg)}}
 
 .theme-reveal{background:radial-gradient(ellipse 52% 62% at 50% 45%,#4a0e1c 0%,#13060c 57%,#020203 100%)}
-.theme-reveal::before{background:radial-gradient(circle at center,transparent 22%,#08020688 77%),url("../images/world-atlas-india-focus.png") center/cover;opacity:.09;filter:none}
+.theme-reveal::before{background:radial-gradient(circle at center,transparent 22%,#08020688 77%),url("../images/world-atlas-india-focus.webp") center/cover;opacity:.09;filter:none}
 .theme-reveal-orbit{width:min(70vmin,660px);transform:translate(-50%,-50%);border:1px solid #deb68b63;border-radius:50%;box-shadow:0 0 95px #b8273d44;opacity:.6}
 .theme-reveal-orbit::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(#dfad78b3 0 .5deg,transparent .5deg 15deg);mask-image:radial-gradient(circle,transparent 88%,#000 89%)}
 .theme-reveal-orbit i{position:absolute;left:50%;top:10%;height:40%;width:2px;background:#e9bd90;transform-origin:bottom;transform:rotate(5deg)}
@@ -411,7 +411,7 @@ body.in-blackout .journey-music-toggle{opacity:0;pointer-events:none}
 body.at-map .node{animation:none}
 
 @media(max-width:760px){
-  #home::before{background:linear-gradient(180deg,#0b040899 0%,#11050bdc 40%,#100408f2 76%),url("../images/mun-nations-hero-art.png") 72% top/auto 70% no-repeat}
+  #home::before{background:linear-gradient(180deg,#0b040899 0%,#11050bdc 40%,#100408f2 76%),url("../images/mun-nations-hero-art.webp") 72% top/auto 70% no-repeat}
   #home .lobby-content{width:calc(100% - 36px);margin-inline:18px}
   .lobby-kicker{font-size:.49rem;letter-spacing:.12em;margin-bottom:12px}
   #home .lobby-title .t1{font-size:clamp(5.2rem,23vw,8.5rem)}

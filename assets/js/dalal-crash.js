@@ -13,7 +13,7 @@ if (root && canvas) {
   let active = false, frame = 0, started = 0, complete = null, soundTimer = 0, dpr = 1, w = 1, h = 1;
   for (let i = 0; i < 58; i++) glyphs.push({ x: rand(-1, 1), y: rand(-1, 1), z: rand(.12, 1), n: String(Math.floor(rand(0, 10000))).padStart(4, '0'), speed: rand(.35, 1.5) });
   function resize() { dpr = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1.2 : 1.6); w = root.clientWidth || innerWidth; h = root.clientHeight || innerHeight; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); canvas.style.width = `${w}px`; canvas.style.height = `${h}px`; ctx?.setTransform(dpr, 0, 0, dpr, 0, 0); }
-  addEventListener('resize', resize, { passive: true }); resize();
+  addEventListener('resize', () => { if (active) resize(); }, { passive: true });
   function impact() {
     if (!window.__munSoundEnabled) return;
     try { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; const ac = impact.ac || (impact.ac = new AC()); if (ac.state === 'suspended') ac.resume(); const t = ac.currentTime;
@@ -55,10 +55,10 @@ if (root && canvas) {
     if (elapsed < duration) frame = requestAnimationFrame(draw);
     else { active = false; complete?.(); complete = null; }
   }
-  function stop() { active = false; cancelAnimationFrame(frame); clearTimeout(soundTimer); video?.pause(); video?.classList.remove('is-playing'); root.classList.remove('market-awake', 'market-digital', 'market-falling', 'title-assembling', 'title-expanding', 'reduced-motion'); complete = null; }
+  function stop() { active = false; cancelAnimationFrame(frame); clearTimeout(soundTimer); video?.pause(); video?.classList.remove('is-playing'); canvas.width = canvas.height = 1; root.classList.remove('market-awake', 'market-digital', 'market-falling', 'title-assembling', 'title-expanding', 'reduced-motion'); complete = null; }
   window.MUNMarketCrash = {
     play({ onComplete, soundEnabled = false } = {}) {
-      if (active) return; stop(); active = true; complete = onComplete || null; started = performance.now(); window.__munSoundEnabled = !!soundEnabled;
+      if (active) return; stop(); active = true; resize(); complete = onComplete || null; started = performance.now(); window.__munSoundEnabled = !!soundEnabled;
       root.classList.add('active'); root.classList.remove('reduced-motion');
       if (video) { video.currentTime = 0; video.playbackRate = 1; video.classList.add('is-playing'); video.play().catch(error => console.warn('Dalal market footage unavailable; the trading-floor scene will continue without it.', error)); }
       const ticker = document.querySelector('#dcIndex');

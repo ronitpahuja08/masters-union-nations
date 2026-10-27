@@ -46,7 +46,7 @@
 @keyframes mcCCEPLabel{0%,18%{opacity:0;transform:translate(-50%,-40%) scale(.93)}32%,52%{opacity:1;transform:translate(-50%,-50%) scale(1)}78%,100%{opacity:0;transform:translate(-50%,-58%) scale(1.3)}}
 /* IPL — auction-room event, not another cricket match */
 .mc-journey[data-code="IPL"]{--mc-accent:#fbd56b}
-.mc-journey[data-code="IPL"] .mc-photo{background-image:linear-gradient(0deg,#081a2fbe,#081a2e56),url('../images/ipl-stadium-cinematic.png')}
+.mc-journey[data-code="IPL"] .mc-photo{background-image:linear-gradient(0deg,#081a2fbe,#081a2e56),url('../images/ipl-stadium-cinematic.webp')}
 .mc-stadium-beam{position:absolute;inset:-30% 50% -30% -50%;background:linear-gradient(105deg,transparent 30%,#fffbd131 50%,transparent 69%);transform:translateX(-60%) rotate(-15deg);mix-blend-mode:screen}
 .mc-stadium-beam.beam-two{transform:translateX(50%) rotate(15deg)}
 .mc-journey.playing .beam-one{animation:mcSweep 2.8s .15s ease-in-out both}
@@ -60,7 +60,7 @@
 @keyframes mcSold{0%,31%{opacity:0;transform:scale(1.5)}44%,59%{opacity:1;transform:scale(1)}75%,100%{opacity:0;transform:scale(1.18)}}
 /* AIPPM — Parliament doors open and reveal the House */
 .mc-journey[data-code="AIPPM"]{--mc-accent:#ffd09b}
-.mc-journey[data-code="AIPPM"] .mc-photo{background-image:linear-gradient(0deg,#210f0ac4,#39241755),url('../images/aippm-parliament-live.png')}
+.mc-journey[data-code="AIPPM"] .mc-photo{background-image:linear-gradient(0deg,#210f0ac4,#39241755),url('../images/aippm-parliament-live.webp')}
 .mc-door{position:absolute;z-index:4;top:0;bottom:0;width:50.2%;background:linear-gradient(90deg,#312014,#886745 48%,#382314);box-shadow:inset 0 0 60px #0007,0 0 35px #0006}
 .mc-left{left:0;transform-origin:left center}.mc-right{right:0;transform-origin:right center}
 .mc-door::after{content:"";position:absolute;inset:9% 10%;border:2px solid #d4ad7d35;box-shadow:inset 0 0 0 17px #28170d55}
@@ -94,9 +94,9 @@
 /* The same photographic treatment stays subtly visible while users scroll, like MCC / IPL. */
 .committee-page[data-committee="UNHRC"] .cp-scroll-backdrop{background-image:linear-gradient(#0b1427bb,#071221c9),url('../images/unhrc-geneva-cinematic.webp')}
 .committee-page[data-committee="CCEP"] .cp-scroll-backdrop{background-image:linear-gradient(#052626c9,#061922c9),url('../images/ccep-singapore-cinematic.webp')}
-.committee-page[data-committee="AIPPM"] .cp-scroll-backdrop{background-image:linear-gradient(#29170fbd,#140e0acf),url('../images/aippm-parliament-live.png')}
+.committee-page[data-committee="AIPPM"] .cp-scroll-backdrop{background-image:linear-gradient(#29170fbd,#140e0acf),url('../images/aippm-parliament-live.webp')}
 .committee-page[data-committee="STARTUP"] .cp-scroll-backdrop{background-image:linear-gradient(#190d23c1,#090d20d8),url('../images/startup-san-francisco-cinematic.webp')}
-.committee-page[data-committee="IP"] .cp-scroll-backdrop{background-image:linear-gradient(#161714d5,#0d1110e3),url('../images/ip-press-camera.png')}
+.committee-page[data-committee="IP"] .cp-scroll-backdrop{background-image:linear-gradient(#161714d5,#0d1110e3),url('../images/ip-press-camera.webp')}
 /* THEME 1: Geneva — solemn and urgent. */
 .committee-page[data-committee="UNHRC"]{--committee-accent:#a6d5fa;background:#081626}
 .committee-page[data-committee="UNHRC"] .ch-photo{background-image:linear-gradient(0deg,#071527b0,#14314844),url('../images/unhrc-geneva-cinematic.webp')}
@@ -113,7 +113,7 @@
 .ch-market{position:absolute;right:3%;bottom:17%;display:grid;gap:8px;opacity:.65;text-align:right;font:700 10px monospace;color:#9dfff0;letter-spacing:.13em}.ch-market b{font-size:12px}
 /* THEME 3: Parliament — ceremonial and neutral, no party politics. */
 .committee-page[data-committee="AIPPM"]{--committee-accent:#f7c37d;background:#25140d}
-.committee-page[data-committee="AIPPM"] .ch-photo{background-image:linear-gradient(0deg,#2c150cb7,#45201343),url('../images/aippm-parliament-live.png')}
+.committee-page[data-committee="AIPPM"] .ch-photo{background-image:linear-gradient(0deg,#2c150cb7,#45201343),url('../images/aippm-parliament-live.webp')}
 .committee-page[data-committee="AIPPM"] .cp-hero h1{font-size:clamp(3.7rem,12.2vw,10.8rem)}
 .committee-page[data-committee="AIPPM"] .cp-hero h1 em{color:#ffe2b0}
 .ch-parliament-bar{position:absolute;bottom:14%;left:5%;display:grid;gap:6px;text-align:left;color:#ffdbad;opacity:.55;letter-spacing:.18em;font:700 10px monospace}
@@ -127,7 +127,7 @@
 .ch-funding i{width:24px;height:1px;background:#ffe3da}.ch-funding b{color:#ffe0b5}
 /* THEME 5: Press — moving broadsheets and film-noir flash. */
 .committee-page[data-committee="IP"]{--committee-accent:#f1d9a6;background:#0d1110}
-.committee-page[data-committee="IP"] .ch-photo{background-image:linear-gradient(0deg,#101213d4,#0b1116a3),url('../images/ip-press-camera.png');background-size:cover,contain;background-repeat:no-repeat;background-position:center,20% 50%;filter:grayscale(1)}
+.committee-page[data-committee="IP"] .ch-photo{background-image:linear-gradient(0deg,#101213d4,#0b1116a3),url('../images/ip-press-camera.webp');background-size:cover,contain;background-repeat:no-repeat;background-position:center,20% 50%;filter:grayscale(1)}
 .committee-page[data-committee="IP"] .cp-hero h1{font-size:clamp(3.8rem,11.8vw,10.5rem)}
 .ch-paper{position:absolute;left:-2%;top:19%;width:min(310px,27vw);min-height:230px;padding:22px;background:#e7e1d2;color:#121617;box-shadow:0 25px 55px #0009;transform:rotate(-11deg) translateX(-22%);opacity:.55;display:grid;gap:12px;text-align:left;animation:chPaperFloat 10s ease-in-out infinite alternate}
 .ch-paper small{font:700 9px monospace;letter-spacing:.18em;border-bottom:1px solid #222;padding-bottom:10px}.ch-paper b{font:900 clamp(1.5rem,3.1vw,2.9rem)/.9 var(--sans,Arial);letter-spacing:-.08em}.ch-paper span{font:700 9px monospace}

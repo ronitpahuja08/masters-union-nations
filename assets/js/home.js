@@ -11,12 +11,18 @@
   var journeyTop=journey.offsetTop,journeyRange=journey.offsetHeight-innerHeight;
   var range=function(){return journeyRange;};
   function measureJourney(){journeyTop=journey.offsetTop;journeyRange=journey.offsetHeight-innerHeight;}
-  var target=0,p=0,raf=0,globeOn=true,lastFrame=0,strikeAssetsWarmed=false,starsReady=false;
+  var target=0,p=0,raf=0,globeOn=true,lastFrame=0,strikeAssetsWarmed=false,starsReady=false,globeLoading=false;
   var warmedImages=[];
   function warmStrikeAssets(){
     if(strikeAssetsWarmed)return;
     strikeAssetsWarmed=true;
-    ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.png'].forEach(function(src){
+    // The WebGL scene is only needed after the visitor enters the journey.
+    // The theme reveal gives the module and textures time to become ready.
+    if(!globeLoading){
+      globeLoading=true;
+      import('./globe-journey.js?v=perf-3').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
+    }
+    ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.webp'].forEach(function(src){
       var image=new Image();image.decoding='async';image.src=src;warmedImages.push(image);
       if(image.decode)image.decode().catch(function(){});
     });
@@ -25,12 +31,15 @@
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
 
   var LAND=.985,landed=false,struck=false,blackoutEntered=false,lastDispatched=-1;
+  var lastContent=-1,lastDeco=-1,lastDusk=-1,lastFlash=-1,lastVeil=-1,lastGlobe=-1,lastMap=-1;
+  var impactFlash=$('#impactFlash'),impactVeil=$('#impactVeil'),globeCanvas=$('#globeCanvas');
   var phase='browsing',voiceHold=0,handoffStart=0,handoffFrom=0,holdScrollY=0,mapScrollDone=false;
   var reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var revealComplete=false,revealTimer=0,revealCleanupTimer=0,revealAnchor=.19;
   var lastUserScroll=-1e5;
   ['wheel','touchstart','pointerdown','keydown'].forEach(function(type){window.addEventListener(type,function(){lastUserScroll=performance.now();},{passive:true});});
   function beginThemeReveal(){
+    warmStrikeAssets();
     phase='theme';target=p=revealAnchor;
     cancelAnimationFrame(raf);raf=0;
     $('#timeSeconds').textContent='00';
@@ -60,42 +69,46 @@
     window.MUNJourneyAudio?.blast();
   }
   function apply(){
-    stick.style.setProperty('--p',p.toFixed(4));
+    // Progress is read by the scene scripts; it is not a CSS input. Writing it
+    // on the root element invalidated styles across the entire map each frame.
+    window.MUNJourneyProgress=p;
     var c=1-smooth(p,0,.17);
-    content.style.opacity=c;
-    content.style.transform='scale('+(1+.08*(1-c))+')';
-    // Opacity and transform retain the handoff without repainting a full-screen blur.
-    content.style.visibility=c<=0.01?'hidden':'visible';
+    if(Math.abs(c-lastContent)>.001){
+      content.style.opacity=c;
+      content.style.transform='scale('+(1+.08*(1-c))+')';
+      content.style.visibility=c<=0.01?'hidden':'visible';
+      lastContent=c;
+    }
     var gb=smooth(p,.46,.52)*(1-smooth(p,.73,.81));
-    stick.style.setProperty('--gb',gb.toFixed(3));
     body.classList.toggle('gb-on',gb>.04);
     body.classList.toggle('gb-strike',p>.32);
     body.classList.toggle('gb-shatter',p>=.64&&p<.92);
     var flash=smooth(p,.622,.64)*(1-smooth(p,.66,.70));
     // Let the debris fill the viewport first, then pull the red scene down to black.
     var blackout=smooth(p,.78,.92)*(1-smooth(p,.985,1));
-    $('#impactFlash').style.opacity=(flash*.5).toFixed(3);
-    $('#impactVeil').style.opacity=blackout.toFixed(3);
+    if(Math.abs(flash-lastFlash)>.001){impactFlash.style.opacity=(flash*.5).toFixed(3);lastFlash=flash;}
+    if(Math.abs(blackout-lastVeil)>.001){impactVeil.style.opacity=blackout.toFixed(3);lastVeil=blackout;}
     var inBlackout=p>=.92&&p<.99;
     if(inBlackout!==blackoutEntered){
       blackoutEntered=inBlackout;
       body.classList.toggle('in-blackout',inBlackout);
-      $('#impactVeil').setAttribute('aria-hidden',String(!inBlackout));
+      impactVeil.setAttribute('aria-hidden',String(!inBlackout));
       if(inBlackout)window.MUNJourneyAudio?.resetVoice();
     }
-    dusk.style.opacity=smooth(p,.14,.78).toFixed(3);
+    var duskOpacity=smooth(p,.14,.78);
+    if(Math.abs(duskOpacity-lastDusk)>.001){dusk.style.opacity=duskOpacity.toFixed(3);lastDusk=duskOpacity;}
     var dk=1-smooth(p,0,.09);   // bottom ticker, line, corners and scroll marker leave before the words arrive
-    decos.forEach(function(e){e.style.opacity=dk;e.style.visibility=dk<=.01?'hidden':'visible';});
-    var cv=$('#globeCanvas');
+    if(Math.abs(dk-lastDeco)>.001){decos.forEach(function(e){e.style.opacity=dk;e.style.visibility=dk<=.01?'hidden':'visible';});lastDeco=dk;}
     if(!landed&&p>=LAND)landed=true;
     else if(landed&&p<.93)landed=false;
     if(globeOn){
-      cv.style.opacity=String(smooth(p,.27,.34)*(1-smooth(p,.82,.93)));
-      main.style.opacity=smooth(p,.90,.985);
+      var globeOpacity=smooth(p,.27,.34)*(1-smooth(p,.82,.93));
+      if(Math.abs(globeOpacity-lastGlobe)>.001){globeCanvas.style.opacity=String(globeOpacity);lastGlobe=globeOpacity;}
     }else{
-      main.style.opacity=smooth(p,.90,.985);
-      cv.style.opacity=0;
+      if(lastGlobe!==0){globeCanvas.style.opacity=0;lastGlobe=0;}
     }
+    var mapOpacity=smooth(p,.90,.985);
+    if(Math.abs(mapOpacity-lastMap)>.001){main.style.opacity=mapOpacity;lastMap=mapOpacity;}
     // Start the audio on the contact pose and first shock glow, before the
     // globe's fragment animation reaches its full extent.
     var hit=p>=.622;
@@ -160,7 +173,6 @@
   }
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',function(){measureJourney();onScroll();});
-  if('requestIdleCallback' in window)requestIdleCallback(warmStrikeAssets,{timeout:1800});
   onScroll();apply();
 
   function goto(where){

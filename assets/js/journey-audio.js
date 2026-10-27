@@ -5,7 +5,6 @@
   if (!toggle || !topToggle) return;
   const epic = new Audio('assets/audio/theseus-athenian-hero.mp3');
   const explosion = new Audio('assets/audio/bomb-blast.mp3');
-  // Replace this self-contained cue with a mastered voice asset without changing the timeline.
   const resetLine = new Audio('assets/audio/world-resets-voice.mp3');
   epic.loop = true;
   epic.preload = 'metadata';
@@ -18,18 +17,19 @@
   explosion.addEventListener('loadedmetadata', () => {
     if (explosion.duration > explosionCue) explosion.currentTime = explosionCue;
   }, { once: true });
-  let scene = '', progress = 0;
+  let scene = '';
   let enabled = topToggle.getAttribute('aria-pressed') === 'true';
-  let blastTimer = 0, duckTimer = 0, resetLinePlayed = false, voiceActive = false, fadeTimer = 0, voiceTimer = 0;
+  let blastTimer = 0, duckTimer = 0, resetLinePlayed = false, voiceActive = false, voicePending = false, fadeTimer = 0, voiceTimer = 0;
+  let voiceContext = null, voiceGain = null, musicAttempt = null;
   const overlayMuted = () => document.body.classList.contains('overlay');
   const desiredScene = () => 'epic';
 
   function updateButton() {
     const mapSilent = enabled && scene === 'silence';
-    const playing = enabled && scene === 'epic' && !overlayMuted();
+    const playing = enabled && scene === 'epic' && !overlayMuted() && !epic.paused;
     toggle.setAttribute('aria-pressed', String(enabled));
     toggle.setAttribute('aria-label', enabled ? mapSilent ? 'Map soundtrack is silent; turn sound off' : 'Turn off soundtrack' : 'Turn on soundtrack');
-    toggle.querySelector('.journey-music-label').textContent = playing ? 'Music on' : mapSilent ? 'Map silent' : enabled ? 'Play music' : 'Music off';
+    toggle.querySelector('.journey-music-label').textContent = playing ? 'Music on' : mapSilent ? 'Map silent' : enabled ? 'Tap for sound' : 'Music off';
   }
   function mixLevel() {
     const audible = enabled && !overlayMuted();
@@ -44,15 +44,27 @@
       if (k >= 1) { clearInterval(id); el.pause(); el.volume = from; }
     }, 30);
   }
-  let gain = null;
-  function boostVoice() {          // the recorded line is quiet: lift it with a gain stage
-    if (gain || !(window.AudioContext || window.webkitAudioContext)) return;
+  function boostVoice() {
+    // Never route the voice through a suspended AudioContext: that produced a
+    // silently playing element on browsers that blocked autoplay.
+    if (voiceGain || voiceContext?.state !== 'running') return;
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      gain = ctx.createGain(); gain.gain.value = 2.6;
-      ctx.createMediaElementSource(resetLine).connect(gain).connect(ctx.destination);
-      if (ctx.state === 'suspended') ctx.resume();
-    } catch (e) { gain = null; }
+      voiceGain = voiceContext.createGain(); voiceGain.gain.value = 2.6;
+      voiceContext.createMediaElementSource(resetLine).connect(voiceGain).connect(voiceContext.destination);
+    } catch (e) { voiceGain = null; }
+  }
+  function unlockVoice() {
+    if (!enabled || !(window.AudioContext || window.webkitAudioContext)) return;
+    try {
+      voiceContext ||= new (window.AudioContext || window.webkitAudioContext)();
+      if (voiceContext.state === 'suspended') voiceContext.resume().then(boostVoice).catch(() => {});
+      else boostVoice();
+    } catch (e) { /* The media element can still play without the gain stage. */ }
+  }
+  function playEpic() {
+    if (!enabled || overlayMuted() || scene !== 'epic' || !epic.paused || musicAttempt) return;
+    musicAttempt = epic.play();
+    musicAttempt.then(() => { musicAttempt = null; updateButton(); }).catch(() => { musicAttempt = null; updateButton(); });
   }
   function fadeEpic(to, ms) {
     clearInterval(fadeTimer);
@@ -66,24 +78,31 @@
   function changeScene(next) {
     if (scene === next) return;
     scene = next;
-    if (next === 'epic' && enabled && !overlayMuted()) epic.play().catch(() => updateButton());
+    if (next === 'epic') playEpic();
     else epic.pause();
     mixLevel();
   }
   async function start() {
     if (!enabled) return;
     changeScene(desiredScene());
-    if (scene === 'epic' && epic.paused && !overlayMuted()) epic.play().catch(() => updateButton());
+    playEpic();
     mixLevel();
     updateButton();
   }
   function setEnabled(on) {
     enabled = !!on;
-    if (enabled) start().catch(() => updateButton());
+    if (enabled) {
+      unlockVoice(); start().catch(() => updateButton());
+      if (document.body.classList.contains('in-blackout')) {
+        if (voicePending) playVoice();
+        else if (!resetLinePlayed) resetVoice();
+      }
+    }
     else {
       clearTimeout(duckTimer);
       epic.pause();
       voiceActive = false; clearTimeout(voiceTimer);
+      voicePending = false;
       explosion.pause(); explosion.currentTime = 0;
       resetLine.pause(); resetLine.currentTime = 0;
       mixLevel();
@@ -104,24 +123,33 @@
   }
   function resetVoice() {
     if (resetLinePlayed) return;
-    resetLinePlayed = true;
     clearTimeout(duckTimer);
     if (!enabled || overlayMuted()) return;
+    resetLinePlayed = true;
     voiceActive = true;
     clearTimeout(blastTimer);
     if (!explosion.paused) fadeOut(explosion, 300);   // the blast never overlaps the voice
     fadeEpic(0, 280);
     // Start the spoken line as the reset title begins to emerge from the debris.
-    voiceTimer = setTimeout(() => { boostVoice(); resetLine.currentTime = 0; resetLine.play().catch(() => { voiceActive = false; mixLevel(); }); }, 250);
+    voiceTimer = setTimeout(playVoice, 250);
+  }
+  function playVoice() {
+    if (!enabled || !document.body.classList.contains('in-blackout')) return;
+    boostVoice();
+    voicePending = false;
+    resetLine.currentTime = 0;
+    resetLine.play().catch(() => { voiceActive = false; voicePending = true; mixLevel(); });
   }
   resetLine.addEventListener('ended', () => {
     voiceActive = false;
+    voicePending = false;
     if (enabled && !overlayMuted() && scene === 'epic') { if (epic.paused) epic.play().catch(() => {}); fadeEpic(.42, 2200); }
   });
   function resetCycle() {
     resetLinePlayed = false;
     clearTimeout(voiceTimer);
     voiceActive = false;
+    voicePending = false;
     resetLine.pause();
     resetLine.currentTime = 0;
   }
@@ -134,20 +162,29 @@
   });
   window.addEventListener('mun-sound-change', event => setEnabled(event.detail.enabled));
   window.addEventListener('journey', event => {
-    progress = event.detail;
     if (enabled) changeScene(desiredScene());
   });
   new MutationObserver(() => {
     if (overlayMuted()) epic.pause();
-    else if (enabled && scene === 'epic' && epic.paused) epic.play().catch(() => {});
+    else playEpic();
     mixLevel();
   }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  document.addEventListener('pointerdown', event => {
-    if (event.target.closest('#journeyMusicToggle,#soundToggle')) return;
-    if (enabled && scene === 'epic' && epic.paused) epic.play().catch(() => updateButton());
-  }, { once: true });
-  const voicePlaying = () => voiceActive && !resetLine.paused && !resetLine.ended && !resetLine.error;
+  function resumeOnGesture() {
+    if (!enabled) return;
+    unlockVoice();
+    playEpic();
+    if (document.body.classList.contains('in-blackout')) {
+      if (voicePending) { voiceActive = true; playVoice(); }
+      else if (!resetLinePlayed) resetVoice();
+    }
+  }
+  document.addEventListener('pointerdown', resumeOnGesture, { passive: true });
+  document.addEventListener('touchstart', resumeOnGesture, { passive: true });
+  document.addEventListener('keydown', resumeOnGesture);
+  // A queued play() request can remain unresolved under autoplay restrictions.
+  // Only hold the map handoff for voice that is actually advancing.
+  const voicePlaying = () => voiceActive && !resetLine.paused && resetLine.currentTime > 0 && !resetLine.ended && !resetLine.error;
   window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload, voicePlaying };
-  progress = Number(getComputedStyle(document.getElementById('journeyStick')).getPropertyValue('--p')) || 0;
+  start().catch(() => updateButton());
   updateButton();
 })();

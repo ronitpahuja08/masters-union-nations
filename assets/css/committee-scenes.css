@@ -60,7 +60,7 @@
 @keyframes msHeroSix{0%,36%{opacity:0;transform:scale(2) rotate(-6deg)}40%{opacity:.95;transform:scale(1) rotate(-3deg)}58%{opacity:.95}66%,100%{opacity:0;filter:blur(8px)}}
 .committee-page[data-committee="IPL"] .ipl-scene{display:none!important}
 .committee-page[data-committee="IPL"] .cp-hero .cinema-hero-scene{display:block;z-index:0}
-.committee-page[data-committee="IPL"] .cinema-hero-scene{background:#05101d url('../images/ipl-stadium-cinematic.png') center/cover;animation:chPan 26s ease-in-out infinite alternate}
+.committee-page[data-committee="IPL"] .cinema-hero-scene{background:#05101d url('../images/ipl-stadium-cinematic.webp') center/cover;animation:chPan 26s ease-in-out infinite alternate}
 
 /* ================= STARTUP: San Francisco demo day ================= */
 .ms-sun{left:50%;bottom:20%;width:60vmin;height:60vmin;margin-left:-30vmin;border-radius:50%;background:radial-gradient(circle,#ffb27a,#ff6a4d 45%,#ff6a4d00 70%);filter:blur(3px);opacity:.0;mix-blend-mode:screen}

@@ -8,8 +8,13 @@ const smooth = (v, a, b) => { const t = clamp((v - a) / (b - a), 0, 1); return t
 const mix = (a, b, t) => a + (b - a) * t;
 
 try {
+  const narrow = innerWidth < 700;
+  const memory = navigator.deviceMemory || 8;
+  const cores = navigator.hardwareConcurrency || 8;
+  const lowTier = narrow && (memory <= 2 || cores <= 4);
+  const mobileTier = narrow && !lowTier;
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(1);
+  renderer.setPixelRatio(lowTier ? .9 : 1);
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -23,10 +28,11 @@ try {
   const fill = new THREE.DirectionalLight(0x8a283f, .32); fill.position.set(2, -1, -3); scene.add(fill);
 
   const loader = new THREE.TextureLoader();
-  let textureReady = false, poseCount = 0, lastRenderedP = -1;
-  const atlas = loader.load('assets/images/world-atlas-india-focus.png', texture => {
+  let textureReady = false, poseCount = 0, lastRenderedP = -1, warmedScene = false;
+  const atlas = loader.load('assets/images/world-atlas-india-focus.webp', texture => {
     colorizeFragments(texture.image);
     textureReady = true;
+    warmRenderer();
     render(currentP, true);
   }, undefined, () => window.dispatchEvent(new Event('globe-failed')));
   atlas.colorSpace = THREE.SRGBColorSpace;
@@ -74,7 +80,7 @@ try {
   // A bounded point cloud keeps the impact dense without rebuilding nine thousand
   // positions on every frame of the map handoff.
   const random = n => { const x = Math.sin(n * 127.1 + 78.233) * 43758.5453; return x - Math.floor(x); };
-  const fragmentCount = innerWidth < 700 ? 950 : 2400;
+  const fragmentCount = lowTier ? 760 : mobileTier ? 950 : 2400;
   const fragmentBase = new Float32Array(fragmentCount * 3);
   const fragmentData = new Float32Array(fragmentCount * 3);
   const fragmentColors = new Float32Array(fragmentCount * 3);
@@ -114,7 +120,7 @@ try {
   fragments.renderOrder = 4;
   scene.add(fragments);
 
-  const sparkCount = innerWidth < 700 ? 180 : 400;
+  const sparkCount = lowTier ? 145 : narrow ? 180 : 400;
   const sparkData = new Float32Array(sparkCount * 3);
   const sparkColors = new Float32Array(sparkCount * 3);
   for (let i = 0; i < sparkCount; i++) {
@@ -132,7 +138,7 @@ try {
   sparks.renderOrder = 6;
   scene.add(sparks);
 
-  const trailCount = innerWidth < 700 ? 28 : 55;
+  const trailCount = lowTier ? 24 : narrow ? 28 : 55;
   const trailData = new Float32Array(trailCount * 6);
   const trailGeo = new THREE.BufferGeometry();
   trailGeo.setAttribute('position', new THREE.BufferAttribute(trailData, 3));
@@ -142,7 +148,7 @@ try {
   trails.renderOrder = 7;
   scene.add(trails);
 
-  const chipCount = innerWidth < 700 ? 42 : 80;
+  const chipCount = lowTier ? 36 : narrow ? 42 : 80;
   const chipMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, depthTest: false });
   const chips = new THREE.InstancedMesh(new THREE.TetrahedronGeometry(.018, 0), chipMaterial, chipCount);
   chips.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -189,6 +195,7 @@ try {
       material.map = texture;
       material.needsUpdate = true;
       poseCount++;
+      warmRenderer();
       render(currentP, true);
     }, undefined, () => window.dispatchEvent(new Event('globe-failed')));
     return mesh;
@@ -212,6 +219,16 @@ try {
   }
 
   let currentP = 0;
+  function warmRenderer() {
+    if (warmedScene || !textureReady || poseCount < 2 || document.hidden) return;
+    warmedScene = true;
+    // Compile and upload the visible materials behind the theme card, before
+    // the visitor reaches the strike. The canvas is still at zero opacity.
+    const progress = window.MUNJourneyProgress || 0;
+    render(.38, true);
+    currentP = progress;
+    lastRenderedP = -1;
+  }
   function render(p = currentP, force = false) {
     currentP = p;
     // Keep the last progress while offscreen. Draw only after every pose and the atlas are ready.

@@ -39,8 +39,8 @@
   const sceneImages = [
     'assets/images/unhrc-geneva-cinematic.webp',
     'assets/images/ccep-singapore-cinematic.webp',
-    'assets/images/ipl-stadium-cinematic.png',
-    'assets/images/aippm-parliament-live.png'
+    'assets/images/ipl-stadium-cinematic.webp',
+    'assets/images/aippm-parliament-live.webp'
   ];
   const warmedImages = [];
 
