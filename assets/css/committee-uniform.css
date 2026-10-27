@@ -1,0 +1,11 @@
+/* One type scale for all eight committee pages: same hero title, eyebrow, tagline, section headings and body copy */
+:root{--u-h1:clamp(3.6rem,9.6vw,9rem);--u-h2:clamp(2.7rem,6vw,5.7rem);--u-lead:clamp(1.2rem,2vw,1.7rem);--u-tag:clamp(.82rem,1.3vw,1.1rem);--u-eyebrow:clamp(.66rem,.9vw,.8rem)}
+html body .committee-page.open[data-committee] .cp-hero h1,html body .dalal-page.open .dp-hero h1{font-size:var(--u-h1)!important;font-weight:900!important;line-height:.86!important;letter-spacing:-.07em!important;max-width:min(1200px,94vw)!important}
+html body .committee-page.open[data-committee] .cp-hero h1 em,html body .dalal-page.open .dp-hero h1 em{font-size:inherit!important;line-height:inherit!important;letter-spacing:inherit!important}
+.committee-page[data-committee] .cp-eyebrow,.dalal-page .dp-eyebrow{font-size:var(--u-eyebrow)!important;letter-spacing:.24em!important}
+.committee-page[data-committee] .cinema-hero-tag,.committee-page[data-committee] .mu-mcc-tagline,.dalal-page .dp-hero-copy>p:not(.dp-eyebrow){font-size:var(--u-tag)!important;font-weight:600!important;letter-spacing:.2em!important;line-height:1.5!important}
+/* section headings and copy: Dalal Street follows the same sizes as the others */
+.committee-page[data-committee] :is(.cp-section,.cp-do,.cp-awards,.cp-register) h2,.dalal-page.open :is(.dp-section h2,.dp-awards h2,.dp-playbook h2,.dp-register h2){font-size:var(--u-h2)!important;line-height:.92!important;letter-spacing:-.07em!important}
+.committee-page[data-committee] .cp-lead,.dalal-page .dp-lead{font-size:var(--u-lead)!important;line-height:1.3!important}
+.committee-page[data-committee] .cp-brief p:not(.cp-lead),.dalal-page .dp-brief-copy p:not(.dp-lead){font-size:1rem!important;line-height:1.75!important}
+@media(max-width:800px){:root{--u-h1:clamp(2.7rem,11.2vw,5.6rem);--u-h2:clamp(2.2rem,9vw,3.6rem)}}

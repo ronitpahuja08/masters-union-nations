@@ -38,7 +38,7 @@
       root.classList.add('video-fallback');
       video.muted = true; video.playsInline = true; video.playbackRate = 2; video.currentTime = 0;
       video.play().then(()=>{if(active&&video.error)showFallback(video.error);}).catch(showFallback);
-      timer = setTimeout(finish, 5000); raf = requestAnimationFrame(tick);
+      timer = setTimeout(finish, 4150); raf = requestAnimationFrame(tick);
     },
     stop() { clearTimeout(timer); cancelAnimationFrame(raf); video.pause(); active = false; complete = null; root.classList.remove('active', 'nightfall', 'title-reveal', 'reduced-motion', 'video-fallback'); clearGrade(); root.setAttribute('aria-hidden', 'true'); }
   };

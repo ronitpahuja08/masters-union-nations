@@ -6,23 +6,23 @@
   const epic = new Audio('assets/audio/theseus-athenian-hero.mp3');
   const explosion = new Audio('assets/audio/bomb-blast.mp3');
   // Replace this self-contained cue with a mastered voice asset without changing the timeline.
-  const resetLine = new Audio('assets/audio/world-resets-voice.wav');
+  const resetLine = new Audio('assets/audio/world-resets-voice.mp3');
   epic.loop = true;
   epic.preload = 'metadata';
   epic.volume = .42;
   explosion.preload = 'auto';
-  explosion.volume = .76;
+  explosion.volume = .26;
   resetLine.preload = 'auto';
-  resetLine.volume = .95;
+  resetLine.volume = 1;
   const explosionCue = .16;
   explosion.addEventListener('loadedmetadata', () => {
     if (explosion.duration > explosionCue) explosion.currentTime = explosionCue;
   }, { once: true });
   let scene = '', progress = 0;
   let enabled = topToggle.getAttribute('aria-pressed') === 'true';
-  let duckTimer = 0, resetLinePlayed = false;
+  let blastTimer = 0, duckTimer = 0, resetLinePlayed = false, voiceActive = false, fadeTimer = 0, voiceTimer = 0;
   const overlayMuted = () => document.body.classList.contains('overlay');
-  const desiredScene = () => progress >= .83 ? 'silence' : 'epic';
+  const desiredScene = () => 'epic';
 
   function updateButton() {
     const mapSilent = enabled && scene === 'silence';
@@ -33,7 +33,35 @@
   }
   function mixLevel() {
     const audible = enabled && !overlayMuted();
-    epic.volume = audible && scene === 'epic' ? .42 : 0;
+    clearInterval(fadeTimer);
+    epic.volume = audible && scene === 'epic' && !voiceActive ? .42 : 0;
+  }
+  function fadeOut(el, ms) {
+    const from = el.volume, t0 = performance.now();
+    const id = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      el.volume = Math.max(0, from * (1 - k));
+      if (k >= 1) { clearInterval(id); el.pause(); el.volume = from; }
+    }, 30);
+  }
+  let gain = null;
+  function boostVoice() {          // the recorded line is quiet: lift it with a gain stage
+    if (gain || !(window.AudioContext || window.webkitAudioContext)) return;
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      gain = ctx.createGain(); gain.gain.value = 2.6;
+      ctx.createMediaElementSource(resetLine).connect(gain).connect(ctx.destination);
+      if (ctx.state === 'suspended') ctx.resume();
+    } catch (e) { gain = null; }
+  }
+  function fadeEpic(to, ms) {
+    clearInterval(fadeTimer);
+    const from = epic.volume, t0 = performance.now();
+    fadeTimer = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      epic.volume = Math.max(0, Math.min(1, from + (to - from) * (k * k * (3 - 2 * k))));
+      if (k >= 1) clearInterval(fadeTimer);
+    }, 40);
   }
   function changeScene(next) {
     if (scene === next) return;
@@ -55,6 +83,7 @@
     else {
       clearTimeout(duckTimer);
       epic.pause();
+      voiceActive = false; clearTimeout(voiceTimer);
       explosion.pause(); explosion.currentTime = 0;
       resetLine.pause(); resetLine.currentTime = 0;
       mixLevel();
@@ -67,21 +96,31 @@
     epic.volume = .12;
     explosion.pause();
     explosion.currentTime = explosionCue;
+    explosion.volume = .26;
     explosion.play().catch(() => {});
-    duckTimer = setTimeout(mixLevel, 1800);
+    clearTimeout(blastTimer);
+    blastTimer = setTimeout(() => fadeOut(explosion, 350), 650);
+    duckTimer = setTimeout(mixLevel, 1100);
   }
   function resetVoice() {
     if (resetLinePlayed) return;
     resetLinePlayed = true;
     clearTimeout(duckTimer);
-    epic.pause();
-    explosion.pause();
     if (!enabled || overlayMuted()) return;
-    resetLine.currentTime = 0;
-    resetLine.play().catch(() => {});
+    voiceActive = true;
+    clearTimeout(blastTimer);
+    if (!explosion.paused) fadeOut(explosion, 300);   // the blast never overlaps the voice
+    fadeEpic(0, 500);
+    voiceTimer = setTimeout(() => { boostVoice(); resetLine.currentTime = 0; resetLine.play().catch(() => { voiceActive = false; mixLevel(); }); }, 650);
   }
+  resetLine.addEventListener('ended', () => {
+    voiceActive = false;
+    if (enabled && !overlayMuted() && scene === 'epic') { if (epic.paused) epic.play().catch(() => {}); fadeEpic(.42, 2200); }
+  });
   function resetCycle() {
     resetLinePlayed = false;
+    clearTimeout(voiceTimer);
+    voiceActive = false;
     resetLine.pause();
     resetLine.currentTime = 0;
   }
@@ -106,7 +145,8 @@
     if (event.target.closest('#journeyMusicToggle,#soundToggle')) return;
     if (enabled && scene === 'epic' && epic.paused) epic.play().catch(() => updateButton());
   }, { once: true });
-  window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload };
+  const voicePlaying = () => voiceActive && (!resetLine.ended);
+  window.MUNJourneyAudio = { blast, resetVoice, resetCycle, preload, voicePlaying };
   progress = Number(getComputedStyle(document.getElementById('journeyStick')).getPropertyValue('--p')) || 0;
   updateButton();
 })();

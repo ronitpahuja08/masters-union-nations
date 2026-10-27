@@ -25,7 +25,7 @@
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
 
   var LAND=.985,landed=false,struck=false,blackoutEntered=false,lastDispatched=-1;
-  var phase='browsing',handoffStart=0,handoffFrom=0,holdScrollY=0,mapScrollDone=false;
+  var phase='browsing',voiceHold=0,handoffStart=0,handoffFrom=0,holdScrollY=0,mapScrollDone=false;
   var reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var revealComplete=false,revealTimer=0,revealCleanupTimer=0,revealAnchor=.19;
   var lastUserScroll=-1e5;
@@ -107,7 +107,9 @@
     raf=0;
     if(phase==='theme')return;
     if(phase==='handoff'){
-      var elapsed=now-handoffStart;
+      var elapsed=now-handoffStart-voiceHold;
+      // the black 'The World Resets' screen stays until the spoken line has finished
+      if(!reducedMotion&&elapsed>=2200&&now-handoffStart<12000&&window.MUNJourneyAudio&&window.MUNJourneyAudio.voicePlaying()){voiceHold=now-handoffStart-2200;elapsed=2200;}
       if(reducedMotion){p=elapsed<460?.86:1;}
       else if(elapsed<260)p=handoffFrom+(.645-handoffFrom)*smooth(elapsed,0,260);
       else if(elapsed<850)p=.645+(.86-.645)*smooth(elapsed,260,850);
@@ -130,7 +132,7 @@
     var dt=lastFrame?Math.min(50,now-lastFrame):16;lastFrame=now;
     p+=d*(1-Math.exp(-dt/48));apply();
     if(p>=.60&&target>=.61){
-      phase='handoff';handoffStart=performance.now();handoffFrom=p;holdScrollY=scrollY;mapScrollDone=false;
+      phase='handoff';handoffStart=performance.now();voiceHold=0;handoffFrom=p;holdScrollY=scrollY;mapScrollDone=false;
     }
     raf=requestAnimationFrame(step);
   }
