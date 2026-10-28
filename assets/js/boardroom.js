@@ -108,6 +108,7 @@ function resetMapCamera(){
   resetObserver?.disconnect();resetObserver=null;
   mapCamera.style.transition='none';
   mapCamera.style.transform='';
+  mapCamera.style.opacity='';
   mapCamera.style.transformOrigin='';
   mapCamera.style.willChange='';
   departing=false;
@@ -139,31 +140,30 @@ function selectCommittee(c,i,event){
   departing=true;
   mapCable.classList.remove('show');
   const pan=$('.map-pan',mapCamera);
-  let prepan=0;
+  let panShift=0;
   if(pan && pan.scrollWidth>pan.clientWidth+2){
     const pane=pan.getBoundingClientRect(),spot=dot.getBoundingClientRect();
     const dx=spot.left+spot.width/2-(pane.left+pane.width/2);
     const target=Math.max(0,Math.min(pan.scrollWidth-pan.clientWidth,pan.scrollLeft+dx));
     if(Math.abs(target-pan.scrollLeft)>12){
+      panShift=target-pan.scrollLeft;     // where the dot will be once the pan settles
       pan.scrollTo({left:target,behavior:'smooth'});
-      prepan=230;
     }
   }
   const launch=()=>{
     const cam=mapCamera.getBoundingClientRect(),point=dot.getBoundingClientRect();
     if(!cam.width||!cam.height||!point.width){openCommittee(c,i,handoff);armCameraReset();return}
-    const sx=point.left+point.width/2-cam.left;
+    const sx=point.left+point.width/2-cam.left-panShift;
     const sy=point.top+point.height/2-cam.top;
-    const scale=cam.width<=600?2:2.6;
+    const scale=cam.width<=600?2.4:3.4;
     mapCamera.style.willChange='transform';
     mapCamera.style.transformOrigin='0 0';
-    mapCamera.style.transition='transform 720ms cubic-bezier(.22,.7,.18,1)';
-    zoomFrame=requestAnimationFrame(()=>{mapCamera.style.transform=
-      `translate3d(${(cam.width/2-sx*scale).toFixed(1)}px,${(cam.height*.45-sy*scale).toFixed(1)}px,0) scale(${scale})`});
-    zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},740);
+    // one continuous push: gentle start, then it accelerates into the dot while the intro is already fading in over it
+    mapCamera.style.transition='transform 680ms cubic-bezier(.5,0,.85,.5),opacity 680ms cubic-bezier(.5,0,.9,.6)';
+    zoomFrame=requestAnimationFrame(()=>{mapCamera.style.opacity='.25';mapCamera.style.transform=`translate3d(${(cam.width/2-sx*scale).toFixed(1)}px,${(cam.height*.45-sy*scale).toFixed(1)}px,0) scale(${scale})`});
+    zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},500);
   };
-  if(prepan)prepanTimer=setTimeout(launch,prepan);
-  else launch();
+  launch();
 }
 let current=null,currentCommitteeIndex=0,committeeJourneyTimers=[],lastCommitteeControl=null,committeeJourneyActive=false;
 let dalalMascotFrame=0;
