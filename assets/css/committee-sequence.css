@@ -6,6 +6,3 @@
 /* the committees' own title stages are replaced by the shared card */
 .mc-journey .mc-heading,.mcc-flight-title,.dc-title,.ip-title-lockup{display:none!important}
 @media(prefers-reduced-motion:reduce){.seq-tag,.seq-card,.seq-card *{transition-duration:.01s!important}}
-
-/* map click: the committee colour floods out from the dot */
-.map-wash{position:fixed;width:24px;height:24px;border-radius:50%;z-index:175;pointer-events:none;will-change:transform,opacity}
