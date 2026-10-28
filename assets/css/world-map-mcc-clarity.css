@@ -1,0 +1,23 @@
+/* Scoped, low-risk clarity refinements. No committee layout, title or animation timing changes. */
+/* Use the lossless source art instead of the more heavily compressed map WebP.
+   The atlas is the SAME image and its pin coordinates use the same source dimensions. */
+#boardroom .map-stage{
+  background-image:url("../images/world-atlas-india-focus.png");
+  image-rendering:auto;
+}
+/* Ensure every item in the map's existing bottom dock receives pointer input. */
+#boardroom .committee-rail{pointer-events:auto;z-index:20;isolation:isolate}
+#boardroom .committee-rail button{
+  position:relative;
+  z-index:1;
+  pointer-events:auto;
+  cursor:pointer;
+}
+/* Original MCC drone video is already identical to the newly supplied file.
+   Remove the small artificial enlargement and soften heavy dark grading. */
+#mccNightFlight .mcc-drone-video{
+  transform:none;
+  image-rendering:auto;
+  filter:brightness(var(--night-brightness,1.08)) saturate(var(--night-saturation,1.05)) contrast(1.06) hue-rotate(var(--night-hue,0deg));
+}
+#mccNightFlight .mcc-flight-vignette{opacity:.7}
