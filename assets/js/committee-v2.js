@@ -161,9 +161,9 @@
   }
   document.addEventListener('submit',e=>{const form=e.target.closest('.mu-inline-form');if(!form)return;e.preventDefault();postRegistration(form,form.dataset.committee);});
   const cpRegistration=$('#cpRegister');
-  if(cpRegistration){const label=$('small',cpRegistration);if(label)label.textContent='DELEGATE REGISTRATION';const copy=$('p',cpRegistration);if(copy)copy.textContent='Share your details to reserve a place. The organising team will contact you with the next steps; no payment is collected here.';}
+  if(cpRegistration){const label=$('small',cpRegistration);if(label)label.textContent='DELEGATE REGISTRATION';const copy=$('p',cpRegistration);if(copy)copy.innerHTML='Share your details to reserve a place. The organising team will contact you with the next steps. <strong class="mu-no-payment-warning">NO PAYMENT IS COLLECTED HERE.</strong>';}
   const dalalRegistrationCopy=$('.dp-register-copy',dalal);
-  if(dalalRegistrationCopy){const label=$('small',dalalRegistrationCopy);if(label)label.textContent='DELEGATE REGISTRATION';const heading=$('h2',dalalRegistrationCopy);if(heading)heading.hidden=true;const copy=$('p',dalalRegistrationCopy);if(copy)copy.textContent='Share your details to reserve a place. The organising team will contact you with the next steps; no payment is collected here.';}
+  if(dalalRegistrationCopy){const label=$('small',dalalRegistrationCopy);if(label)label.textContent='DELEGATE REGISTRATION';const heading=$('h2',dalalRegistrationCopy);if(heading)heading.hidden=true;const copy=$('p',dalalRegistrationCopy);if(copy)copy.innerHTML='Share your details to reserve a place. The organising team will contact you with the next steps. <strong class="mu-no-payment-warning">NO PAYMENT IS COLLECTED HERE.</strong>';}
 
   const dalalRegister=$('#dalalRegister');
   if(dalalRegister){

@@ -15,7 +15,7 @@
 .mu-university-wordmark{
  display:block;flex:none;width:clamp(116px,12.4vw,172px);height:auto;
  aspect-ratio:418/84;object-fit:contain;box-sizing:border-box;
- background:linear-gradient(100deg,#b54c57,#af3c4a);border-radius:3px;padding:4px 6px;
+ background:transparent;border-radius:0;padding:0;
 }
 .hud .mu-university-link{
  position:absolute;right:calc(clamp(78px,8vw,125px) + 55px);top:9px;z-index:5;
@@ -31,13 +31,88 @@
  #home .lobby-content{width:calc(100% - 36px)!important;margin-inline:18px!important}
  #home .pass{max-width:100%}
  .hud .mu-university-link{right:116px;top:8px;height:40px}
- .hud .mu-university-link .mu-university-wordmark{width:108px;padding:3px 4px}
+ .hud .mu-university-link .mu-university-wordmark{width:108px}
  .nav .mu-university-link .mu-university-wordmark{width:98px}
- .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:108px;padding:3px 4px}
+ .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:108px}
 }
 @media(max-width:420px){
- .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:92px;padding:2px 3px}
+ .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:92px}
 }
 @media(max-width:355px){
  .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:70px}
+}
+
+/* Four screenshot fixes / 29 October 2026. No motion or media changes. */
+html body .mu-university-wordmark{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  padding:0!important;
+  box-shadow:none!important;
+}
+/* Reserve enough width for all four split-flap timer groups. */
+@media(min-width:1101px){
+  html body #home .pass{
+    width:min(1110px,calc(100vw - var(--hero-frame-gutter) - 55px))!important;
+    max-width:1110px!important;
+    grid-template-columns:minmax(0,.98fr) minmax(0,1.18fr) minmax(0,.9fr) minmax(320px,1.45fr)!important;
+  }
+  html body #home .pass-count{min-width:0;padding-inline:clamp(12px,1.25vw,20px)}
+  html body #home .flaps{gap:clamp(4px,.55vw,8px)}
+}
+@media(min-width:761px) and (max-width:1100px){
+  html body #home .pass{width:100%!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html body #home .pass-count{min-width:0}
+}
+@media(max-width:760px){
+  html body #home .pass{width:100%!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html body #home .pass-count{grid-column:1/-1;border-left:0!important;min-width:0}
+  html body #home .flaps{justify-content:flex-start;gap:clamp(4px,1.5vw,8px)}
+}
+@media(max-width:380px){
+  html body #home .flap{--h:1.55rem}
+  html body #home .flaps{gap:3px}
+}
+/* Keep "no payment" obvious on the dark photographic registration panels. */
+html body :is(.committee-page.open .cp-register,.dalal-page.open .dp-register) .mu-no-payment-warning{
+  display:block;
+  width:fit-content;
+  max-width:100%;
+  margin:10px auto 0;
+  font-family:"Manrope",Arial,sans-serif!important;
+  font-weight:900!important;
+  font-size:clamp(.88rem,1.25vw,1.05rem)!important;
+  line-height:1.45!important;
+  letter-spacing:.045em;
+  color:#ffb6a6!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.95);
+}
+html body .dalal-page.open .dp-register .mu-no-payment-warning{margin-left:0}
+/* Devanagari glyphs require extra line spacing; AIPPM dossier only. */
+html body .committee-page.open[data-committee="AIPPM"] .cp-section-label h2{
+  font-family:"Nirmala UI","Noto Sans Devanagari","Mangal",sans-serif!important;
+  font-size:clamp(2.55rem,5.45vw,5.1rem)!important;
+  font-weight:800!important;
+  line-height:1.48!important;
+  letter-spacing:0!important;
+  text-wrap:balance;
+  overflow:visible!important;
+}
+html body .committee-page.open[data-committee="AIPPM"] .cp-section-label h2 br{display:none!important}
+html body .committee-page.open[data-committee="AIPPM"] .cp-section-label h2 em{
+  display:block!important;
+  font-family:"Nirmala UI","Noto Sans Devanagari","Mangal",sans-serif!important;
+  font-size:1em!important;
+  font-style:normal!important;
+  font-weight:800!important;
+  line-height:1.48!important;
+  letter-spacing:0!important;
+  margin-top:.05em;
+  overflow:visible!important;
+}
+@media(max-width:760px){
+  html body .committee-page.open[data-committee="AIPPM"] .cp-section-label h2{
+    font-size:clamp(2.2rem,9vw,3.75rem)!important;
+    line-height:1.5!important;
+  }
 }
