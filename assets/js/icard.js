@@ -17,7 +17,7 @@
   var ACCENT = [['Committee', null], ['Gold', '#e9b949'], ['Crimson', '#e0405a'], ['Ocean', '#3c8cf0'], ['Emerald', '#27b574'], ['Violet', '#9a6bff'], ['Sunset', '#ff7a45'], ['Pink', '#ff6fa8']];
   var INK = [['White', '#ffffff'], ['Ivory', '#f4efe6'], ['Ink', '#14121c'], ['Slate', '#2c3a52']];
   var STYLES = [['classic', 'Classic'], ['geometric', 'Geometric'], ['gradient', 'Gradient'], ['dots', 'Dots']];
-  var FONTS = [['sans', 'Modern', "'Manrope',Arial,sans-serif"], ['serif', 'Elegant', "'Playfair Display','Instrument Serif',Georgia,'Times New Roman',serif"], ['mono', 'Tech', "'DM Mono',ui-monospace,monospace"]];
+  var FONTS = [['sans', 'Modern', "'Archivo',Arial,sans-serif"], ['serif', 'Elegant', "'Instrument Serif','Instrument Serif',Georgia,'Times New Roman',serif"], ['mono', 'Tech', "'DM Mono',ui-monospace,monospace"]];
   var CAM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l-1.5 2H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-3.5L15 4zM12 17a4.2 4.2 0 110-8.4A4.2 4.2 0 0112 17z"/></svg>';
 
   var root, card, ctx = null, state = null, crop = null, prevFocus = null, drag = null;

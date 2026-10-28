@@ -1,0 +1,23 @@
+/* ZERO: The World Reset — shared tokens. See docs/revamp-spec.md. */
+:root{
+  --void:#0B0306;
+  --oxblood:#5E0B1C;
+  --signal:#E0282E;
+  --brass:#D2A95C;
+  --ivory:#F3E9DC;
+  --ash:#9C8A88;
+  --hair:rgba(243,233,220,.14);
+
+  --f-display:'Archivo',system-ui,sans-serif;
+  --f-serif:'Instrument Serif',Georgia,serif;
+  --f-mono:'DM Mono',ui-monospace,monospace;
+
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-io:cubic-bezier(.77,0,.175,1);
+  --ease-drawer:cubic-bezier(.32,.72,0,1);
+
+  /* Instrument Serif ships one weight; never fake-bold it. */
+  font-synthesis-weight:none;
+}
+::selection{background:var(--signal);color:var(--ivory)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
