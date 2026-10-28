@@ -10,10 +10,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="assets/images/mun-nations-hero-art.webp" as="image" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/tokens.css?v=reset-1">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="stylesheet" href="assets/css/boardroom.css?v=reset-1">
-<link rel="stylesheet" href="assets/css/home.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/home.css?v=home-restored-2">
 <link rel="stylesheet" href="assets/css/theme-modals.css?v=reset-1">
 <link rel="stylesheet" href="assets/css/committee-cinematics.css?v=reset-1">
 
@@ -23,10 +25,9 @@
 <link rel="stylesheet" href="assets/css/committee-v2-repair.css?v=reset-1">
 <link rel="stylesheet" href="assets/css/committee-uniform.css?v=reset-1">
 <link rel="stylesheet" href="assets/css/icard.css?v=reset-1">
-<link rel="stylesheet" href="assets/css/revamp-home.css?v=reset-1">
 <link rel="stylesheet" href="assets/css/revamp-reset.css?v=reset-2">
 <link rel="stylesheet" href="assets/css/revamp-credentials.css?v=reset-1">
-<link rel="stylesheet" href="assets/css/map-preserved.css?v=oldmap-cable-zoom-1">
+<link rel="stylesheet" href="assets/css/map-preserved.css?v=map-clean-2">
 <link rel="stylesheet" href="assets/css/revamp-committees.css?v=perf-1">
 <link rel="stylesheet" href="assets/css/perf.css?v=perf-1">
 </head>
@@ -132,7 +133,6 @@
   <div class="time-dial" aria-hidden="true"><i class="time-dial-hand"></i><b>00</b><b>06</b><b>12</b><b>18</b></div>
   <div class="time-readout" aria-hidden="true"><span>WORLD CLOCK / 2026</span><strong>23:59:<em id="timeSeconds">59</em></strong><small>THE FINAL SECOND</small></div>
   <div class="lobby-content">
-    <p class="lobby-kicker">THE 2026 THEME <span>·</span> ZERO, THE WORLD RESET</p>
     <h1 class="lobby-title"><span class="t1">Masters Union</span><span class="t2" data-t="Nations">Nations</span></h1>
     <p class="lobby-sub">The moment the old world stops defining the future. The people willing to question it begin to shape what comes next.</p>
     <div class="pass" role="group" aria-label="Event details">
@@ -185,7 +185,6 @@
 <b>Select a destination</b>
 <small class="map-prize-pool">₹2,20,000 total prize pool</small>
 </div>
-<div class="map-camera" id="mapCamera">
 <div class="map-pan" aria-label="Swipe horizontally to explore the world map">
 <div class="map-stage" id="mapStage">
 <div class="map-aura">
@@ -205,8 +204,8 @@
 </svg>
 <div class="nodes" id="nodes">
 </div>
-<aside class="map-preview" id="mapPreview"><span id="previewNum">01</span><div><small id="previewCity">GENEVA</small><b id="previewCode">UNHRC</b><p id="previewAgenda">Addressing human trafficking across Asia and Africa.</p></div><i>ENTER ↗</i></aside>
 <aside class="map-cable" id="mapCable" aria-hidden="true"><pre id="mapCableText"></pre></aside>
+<aside class="map-preview" id="mapPreview"><span id="previewNum">01</span><div><small id="previewCity">GENEVA</small><b id="previewCode">UNHRC</b><p id="previewAgenda">Addressing human trafficking across Asia and Africa.</p></div><i>ENTER ↗</i></aside>
 <div class="map-readout">
 <span>CURSOR <b id="coords">28.46°N / 77.02°E</b>
 </span>
@@ -215,7 +214,6 @@
 </div>
 </div>
  </div>
-</div>
 <div class="committee-rail" id="committeeRail">
 </div>
 </section>
@@ -467,8 +465,7 @@
 <button class="journey-music-toggle" id="journeyMusicToggle" type="button" aria-pressed="false" aria-label="Turn on soundtrack"><span class="journey-music-icon" aria-hidden="true">♫</span><span class="journey-music-label">Music off</span></button>
 <script src="assets/js/soundscape.js?v=reset-1"></script>
 <script src="assets/js/home.js?v=perf-1"></script>
-<script src="assets/js/hero-strike.js?v=reset-1"></script>
-<script src="assets/js/boardroom.js?v=oldmap-cable-zoom-1">
+<script src="assets/js/boardroom.js?v=map-clean-2">
 </script>
 <script src="assets/js/journey-audio.js?v=reset-1"></script>
 <script type="module" src="assets/js/dalal-crash.js?v=reset-1"></script>

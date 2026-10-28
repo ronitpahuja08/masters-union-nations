@@ -64,8 +64,7 @@ $('#delegateName').addEventListener('input',e=>$('#initials').textContent=initia
 $('#credentialForm').onsubmit=async e=>{e.preventDefault();const card=e.currentTarget,status=$('#scanStatus');state.name=$('#delegateName').value.trim();save();card.classList.add('scanning');$('#verifyButton').disabled=true;status.textContent='ANALYSING IDENTITY · 01/03';tone(180,.14,'sawtooth');await wait(600);status.textContent='CROSS-CHECKING SUMMIT NETWORK · 02/03';tone(260,.14);await wait(650);status.textContent='CLEARANCE CONFIRMED · 03/03';status.classList.add('ok');$('#gateLed').classList.add('ok');tone(392,.12);setTimeout(()=>tone(588,.3),100);await wait(700);document.body.classList.remove('locked');document.body.classList.add('map-mode');$('#access').classList.add('cleared');toast('Choose a destination, '+state.name.split(' ')[0]+'.')};
 if(state.name){$('#delegateName').value=state.name;$('#initials').textContent=initials(state.name)}
 
-// Morning-of-28-Oct map with only information cable and click-zoom retained.
-const nodes=$('#nodes'),rail=$('#committeeRail'),routes=$('#routes'),boardroomEl=$('#boardroom'),mapCamera=$('#mapCamera'),mapCable=$('#mapCable'),mapCableText=$('#mapCableText');
+const nodes=$('#nodes'),rail=$('#committeeRail'),routes=$('#routes'),mapCable=$('#mapCable'),mapCableText=$('#mapCableText');
 const reducedMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ZONES={UNHRC:'Europe/Zurich',MCC:'America/New_York',CCEP:'Asia/Singapore',IPL:'Asia/Kolkata',AIPPM:'Asia/Kolkata',DALAL:'Asia/Kolkata',STARTUP:'America/Los_Angeles',IP:'Europe/London'};
 const clockFormats={};
@@ -77,30 +76,53 @@ const cityOf=c=>c.city.split(' / ')[0];
 function statusOf(c){const h=parseInt(localTime(ZONES[c.code]),10);const on=c.code==='MCC'?(h>=20||h<6):(h>=9&&h<18);return on?'In session':'Boarding'}
 const coordOf=c=>Math.abs(c.lat).toFixed(2).padStart(5,'0')+'°'+(c.lat>=0?'N':'S')+' '+Math.abs(c.lon).toFixed(2).padStart(6,'0')+'°'+(c.lon>=0?'E':'W');
 
-let departing=false,typeFrame=0;
 function previewCommittee(c,i,on=true){const p=$('#mapPreview');p.style.setProperty('--pc',c.color);$('#previewNum').textContent=String(i+1).padStart(2,'0');$('#previewCity').textContent=c.city;$('#previewCode').textContent=c.code;$('#previewAgenda').textContent=c.agenda;p.classList.toggle('show',on);$('.node').forEach((n,k)=>n.classList.toggle('active',on&&k===i));showCable(c,on)}
-committees.forEach((c,i)=>{const n=document.createElement('button');n.className='node node-'+c.code.toLowerCase();n.style.setProperty('--c',c.color);n.setAttribute('aria-label',`${c.full} — ${c.city.replace(' / ',' ')}`);n.innerHTML=`<span class="node-dot"></span><span class="node-label">${c.code}<small>${c.city.split(' / ')[0]}</small></span>`;n.onclick=e=>selectCommittee(c,i,n);n.onmouseenter=()=>{sonic(c);previewCommittee(c,i)};n.onmouseleave=()=>previewCommittee(c,i,false);n.onfocus=()=>previewCommittee(c,i);n.onblur=()=>previewCommittee(c,i,false);nodes.append(n);const b=document.createElement('button');b.style.setProperty('--c',c.color);b.textContent=String(i+1).padStart(2,'0')+' / '+c.code;b.onclick=e=>selectCommittee(c,i,b);b.onmouseenter=()=>previewCommittee(c,i);b.onmouseleave=()=>previewCommittee(c,i,false);rail.append(b)});
-
+committees.forEach((c,i)=>{const n=document.createElement('button');n.className='node node-'+c.code.toLowerCase();n.style.setProperty('--c',c.color);n.setAttribute('aria-label',`${c.full} — ${c.city.replace(' / ',' ')}`);n.innerHTML=`<span class="node-dot"></span><span class="node-label">${c.code}<small>${c.city.split(' / ')[0]}</small></span>`;n.onclick=e=>zoomCommittee(c,i,e);n.onmouseenter=()=>{sonic(c);previewCommittee(c,i)};n.onmouseleave=()=>previewCommittee(c,i,false);n.onfocus=()=>previewCommittee(c,i);n.onblur=()=>previewCommittee(c,i,false);nodes.append(n);const b=document.createElement('button');b.style.setProperty('--c',c.color);b.textContent=String(i+1).padStart(2,'0')+' / '+c.code;b.onclick=e=>zoomCommittee(c,i,e);b.onmouseenter=()=>previewCommittee(c,i);b.onmouseleave=()=>previewCommittee(c,i,false);rail.append(b)});
 function cableLines(c){const awards=c.awards||[],top=awards[0];return[`CABLE MUN/GGN ▸ ${cityOf(c).toUpperCase()}`,`${coordOf(c)}  LOCAL `,`${c.code} · ${c.full.toUpperCase()}`,`AGENDA  ${String(c.agenda||'').toUpperCase()}`,`PURSE   ${inr(purseOf(c))}${top?' · '+String(top[0]).toUpperCase()+' '+top[1]:''}`,`STATUS  ${statusOf(c).toUpperCase()} · ENTER ↵`]}
 function typeCable(c){cancelAnimationFrame(typeFrame);const lines=cableLines(c),full=lines.join('\n'),zone=ZONES[c.code];const finish=()=>{mapCableText.textContent='';lines.forEach((line,k)=>{const row=document.createElement('span');row.className='cable-line'+(k===0?' cable-head':'');row.textContent=line;if(k===1){const t=document.createElement('b');t.className='cable-time';t.dataset.zone=zone;t.textContent=localTime(zone,true);row.append(t)}mapCableText.append(row)})};if(reducedMotion()){finish();return}const start=performance.now(),rate=.42;const step=now=>{const n=Math.floor((now-start)*rate);if(n>=full.length){finish();return}mapCableText.textContent=full.slice(0,n)+'▌';typeFrame=requestAnimationFrame(step)};typeFrame=requestAnimationFrame(step)}
 function placeCable(c){const stage=$('#mapStage'),w=stage.clientWidth,h=stage.clientHeight;mapCable.style.setProperty('--cx',c.x+'%');mapCable.style.setProperty('--cy',c.y+'%');mapCable.dataset.side=(c.x/100*w>w*.56)?'left':'right';mapCable.dataset.vert=(c.y/100*h<h*.4)?'below':'above'}
 
-// Retain Shreshth's information cable; the original preview and committee rail remain.
-function showCable(c,on){
+/* Keep only Shreshth's information cable. Original map layout and node rendering are untouched. */
+let typeFrame=0,zooming=false,zoomAnimation=null;
+function showCable(c,visible){
   cancelAnimationFrame(typeFrame);
-  mapCable.classList.toggle('show',on);
-  if(!on)return;
+  mapCable.classList.toggle('show',visible);
+  if(!visible)return;
   mapCable.style.setProperty('--pc',c.color);
-  placeCable(c);
-  typeCable(c);
+  placeCable(c);typeCable(c);
 }
-
-function resetMapCamera(){departing=false;mapCamera.style.transition='none';mapCamera.style.transform='';mapCamera.style.willChange='';boardroomEl.classList.remove('is-departing');mapCable.classList.remove('show');$('#mapPreview').classList.remove('show');$('.node').forEach(n=>n.classList.remove('active'))}
-function armCameraReset(){let seen=false,timer=0;const done=()=>{mo.disconnect();clearTimeout(timer);resetMapCamera()};const check=()=>{if(document.body.classList.contains('overlay')){if(!seen){seen=true;clearTimeout(timer);timer=setTimeout(done,1200)}}else if(seen)done()};const mo=new MutationObserver(check);mo.observe(document.body,{attributes:true,attributeFilter:['class']});check();if(!seen)timer=setTimeout(done,2600)}
-function selectCommittee(c,i,el){if(departing)return;const handoff={currentTarget:el};previewCommittee(c,i,true);if(reducedMotion()||!mapCamera){openCommittee(c,i,handoff);return}departing=true;boardroomEl.classList.add('is-departing');const cam=mapCamera.getBoundingClientRect(),dot=$('.node-dot',nodeEls[i]).getBoundingClientRect(),pan=$('.map-pan');let shift=0;
- // Phone: the map pans inside a scroller, so bring an off-screen city to centre while the camera pushes in.
- if(pan&&pan.scrollWidth>pan.clientWidth+1){const want=Math.max(0,Math.min(pan.scrollWidth-pan.clientWidth,pan.scrollLeft+(dot.left+dot.width/2-cam.left)-pan.clientWidth/2));shift=want-pan.scrollLeft;pan.scrollTo({left:want,behavior:'smooth'})}
- const cx=dot.left+dot.width/2-cam.left-shift,cy=dot.top+dot.height/2-cam.top,S=cam.width<=560?2:2.6;mapCamera.style.willChange='transform';mapCamera.style.transformOrigin='0 0';mapCamera.style.transition='transform 720ms var(--ease-io)';void mapCamera.offsetWidth;mapCamera.style.transform=`translate(${(cam.width/2-cx*S).toFixed(1)}px,${(cam.height*.45-cy*S).toFixed(1)}px) scale(${S})`;setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},680)}
+function zoomCommittee(c,i,event){
+  if(zooming)return;
+  const source=event?.currentTarget||$('.node',nodes)[i];
+  const handoff={currentTarget:source};
+  const stage=$('#mapStage'),node=$('.node',nodes)[i];
+  previewCommittee(c,i,true);
+  if(reducedMotion()||!stage||!node||!stage.animate){openCommittee(c,i,handoff);return}
+  const rect=stage.getBoundingClientRect(),dot=$('.node-dot',node).getBoundingClientRect();
+  if(rect.width<80||rect.height<80){openCommittee(c,i,handoff);return}
+  const fx=dot.left+dot.width/2-rect.left,fy=dot.top+dot.height/2-rect.top;
+  if(!Number.isFinite(fx)||!Number.isFinite(fy)){openCommittee(c,i,handoff);return}
+  zooming=true;
+  const scale=innerWidth<=600?1.85:2.4;
+  const dx=rect.width*.5-fx,dy=rect.height*.46-fy;
+  stage.style.transformOrigin=fx.toFixed(1)+'px '+fy.toFixed(1)+'px';
+  zoomAnimation=stage.animate(
+    [{transform:'none'},{transform:'translate3d('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px,0) scale('+scale+')'}],
+    {duration:690,easing:'cubic-bezier(.3,.7,.2,1)',fill:'forwards'}
+  );
+  let entered=false;
+  const enter=()=>{
+    if(entered)return;entered=true;
+    openCommittee(c,i,handoff);
+    setTimeout(()=>{
+      zoomAnimation?.cancel();zoomAnimation=null;
+      stage.style.transformOrigin='';
+      zooming=false;
+    },100);
+  };
+  zoomAnimation.finished.then(enter,enter);
+  setTimeout(enter,770);
+}
 
 const mapArt=new Image();mapArt.src='assets/images/world-atlas-india-focus.webp';
 // Pixel coordinates calibrated to the visible cities on this illustrated atlas.
