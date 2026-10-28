@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="assets/css/revamp-home.css?v=reset-1">
 <link rel="stylesheet" href="assets/css/revamp-reset.css?v=reset-2">
 <link rel="stylesheet" href="assets/css/revamp-credentials.css?v=reset-1">
-<link rel="stylesheet" href="assets/css/revamp-map.css?v=reset-2">
+<link rel="stylesheet" href="assets/css/map-morning-two-features.css?v=morning-1">
 <link rel="stylesheet" href="assets/css/revamp-committees.css?v=perf-1">
 <link rel="stylesheet" href="assets/css/perf.css?v=perf-1">
 <link rel="stylesheet" href="assets/css/developer-credit.css?v=credits-1">
@@ -181,34 +181,44 @@
 <div class="thud-ring" aria-hidden="true"></div>
 <main>
 <section class="boardroom" id="boardroom">
+<div class="map-heading" aria-hidden="true">
+<span class="live-dot"></span>
+<p>Global committee network</p>
+<b>Select a destination</b>
+<small class="map-prize-pool">₹2,20,000 total prize pool</small>
+</div>
 <div class="map-camera" id="mapCamera">
-<div class="map-drift" id="mapDrift">
 <div class="map-pan" aria-label="Swipe horizontally to explore the world map">
 <div class="map-stage" id="mapStage">
 <div class="map-aura">
 </div>
-<canvas class="map-lights" id="mapLights" aria-hidden="true"></canvas>
-<div class="map-dim" id="mapDim" aria-hidden="true"></div>
-<div class="map-glow" id="mapGlow" aria-hidden="true"></div>
-<svg class="world" viewBox="0 0 1000 520" preserveAspectRatio="none" role="img" aria-label="World map: routes from Gurugram to eight committee cities">
+<svg class="world" viewBox="0 0 1000 520" preserveAspectRatio="none" role="img" aria-label="Interactive world map showing eight committee destinations">
+<defs>
+<filter id="glow">
+<feGaussianBlur stdDeviation="5" result="b"/>
+<feMerge>
+<feMergeNode in="b"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+</defs>
 <g class="routes" id="routes">
 </g>
 </svg>
 <div class="nodes" id="nodes">
 </div>
 <aside class="map-cable" id="mapCable" aria-hidden="true"><pre id="mapCableText"></pre></aside>
+<aside class="map-preview" id="mapPreview"><span id="previewNum">01</span><div><small id="previewCity">GENEVA</small><b id="previewCode">UNHRC</b><p id="previewAgenda">Addressing human trafficking across Asia and Africa.</p></div><i>ENTER ↗</i></aside>
+<div class="map-readout">
+<span>CURSOR <b id="coords">28.46°N / 77.02°E</b>
+</span>
+<span>ACTIVE ROOMS <b>08</b>
+</span>
 </div>
 </div>
+ </div>
 </div>
-</div>
-<div class="departures" id="departures">
-<div class="dep-head">
-<div class="dep-title"><p class="dep-kicker"><span class="dep-live" aria-hidden="true"></span>Departures<span class="dep-from"> · origin Gurugram</span> · <span id="depOriginTime">--:--</span> IST</p><h2>Eight rooms relight the world. <em>Pick yours.</em></h2></div>
-<div class="dep-purse"><b id="depPurse">₹2,20,000</b><small>Prize purse across eight rooms</small></div>
-</div>
-<div class="dep-cols" aria-hidden="true"><div><span>Room</span><span>Destination</span><span>Local</span><span>Purse</span><span>Status</span></div><div><span>Room</span><span>Destination</span><span>Local</span><span>Purse</span><span>Status</span></div></div>
-<div class="dep-board" id="committeeRail" role="group" aria-label="Committee departures">
-</div>
+<div class="committee-rail" id="committeeRail">
 </div>
 </section>
 </main>
@@ -460,8 +470,7 @@
 <script src="assets/js/soundscape.js?v=reset-1"></script>
 <script src="assets/js/home.js?v=perf-1"></script>
 <script src="assets/js/hero-strike.js?v=reset-1"></script>
-<script src="assets/js/map-life.js?v=perf-3"></script>
-<script src="assets/js/boardroom.js?v=pooltype-1">
+<script src="assets/js/boardroom.js?v=morning-1">
 </script>
 <script src="assets/js/journey-audio.js?v=reset-1"></script>
 <script type="module" src="assets/js/dalal-crash.js?v=reset-1"></script>
