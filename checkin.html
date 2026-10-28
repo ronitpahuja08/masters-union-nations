@@ -36,6 +36,21 @@
   li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#ffffff0a;border:1px solid #ffffff1a}
   li span{display:block;font:600 .8rem var(--sans);color:#b9aab6}li b{font:800 .95rem var(--sans)}li button{padding:9px 14px;font-size:.85rem;flex:none}
   .tip{margin:0;font:600 .8rem/1.5 var(--sans);color:#a99aa6}
+
+  /* full-screen result popup */
+  #pop{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:22px;background:#05030899;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s}
+  #pop.on{opacity:1;visibility:visible}
+  .pop-card{width:min(420px,100%);padding:34px 24px 26px;border-radius:26px;text-align:center;display:grid;gap:8px;justify-items:center;border:1.5px solid var(--pc);background:linear-gradient(180deg,var(--pb1),var(--pb2));box-shadow:0 30px 80px #000a,0 0 70px -10px var(--pc);transform:translateY(18px) scale(.94);transition:transform .35s cubic-bezier(.2,1.2,.3,1)}
+  #pop.on .pop-card{transform:none}
+  #pop.ok{--pc:#4be39a;--pb1:#10452c;--pb2:#082a1b}#pop.already{--pc:#ffc94d;--pb1:#4b390c;--pb2:#2b2006}#pop.bad{--pc:#ff6b7d;--pb1:#4a1119;--pb2:#2a080d}
+  .pop-ic{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:var(--pc);color:#06140d;margin-bottom:6px;box-shadow:0 0 0 10px #ffffff12}
+  .pop-ic svg{width:50px;height:50px;stroke:currentColor;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  #pop.on .pop-ic svg path{stroke-dasharray:60;stroke-dashoffset:60;animation:popDraw .45s .15s ease forwards}
+  @keyframes popDraw{to{stroke-dashoffset:0}}
+  .pop-title{font:900 clamp(1.5rem,7vw,2rem)/1.05 var(--sans);letter-spacing:-.02em;color:#fff}
+  .pop-name{font:800 clamp(1.35rem,6.5vw,1.9rem)/1.1 var(--sans);overflow-wrap:anywhere;color:var(--pc)}
+  .pop-meta{font:600 1rem/1.4 var(--sans);color:#ffffffcc}.pop-id{font:600 .85rem var(--mono);letter-spacing:.08em;color:#ffffff99}
+  .pop-hint{margin-top:10px;font:600 .8rem var(--sans);color:#ffffff88}
   [hidden]{display:none!important}
 </style>
 </head>
@@ -70,6 +85,7 @@
   </section>
 </div>
 
+<div id="pop" role="alertdialog" aria-live="assertive" aria-hidden="true"><div class="pop-card" id="popCard"></div></div>
 <script src="assets/vendor/jsQR-1.4.0.js"></script>
 <script>
 (function () {
@@ -92,6 +108,15 @@
     try { var c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = ok ? 880 : 220; g.gain.value = 0.08; o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + (ok ? 0.12 : 0.35)); } catch (e) {}
     if (navigator.vibrate) navigator.vibrate(ok ? 60 : [120, 60, 120]);
   }
+  var popTimer = 0, popOpen = false;
+  var ICON = { ok: '<svg viewBox="0 0 52 52"><path d="M12 27l9 9 19-21"/></svg>', already: '<svg viewBox="0 0 52 52"><path d="M26 13v16M26 38v1"/></svg>', bad: '<svg viewBox="0 0 52 52"><path d="M14 14l24 24M38 14L14 38"/></svg>' };
+  function popup(kind, title, name, meta, id) {
+    var el = $('pop'); clearTimeout(popTimer); popOpen = true;
+    $('popCard').innerHTML = '<div class="pop-ic">' + ICON[kind] + '</div><div class="pop-title">' + title + '</div>' + (name ? '<div class="pop-name">' + esc(name) + '</div>' : '') + (meta ? '<div class="pop-meta">' + meta + '</div>' : '') + (id ? '<div class="pop-id">' + id + '</div>' : '') + '<div class="pop-hint">Tap anywhere to scan the next one</div>';
+    el.className = kind; void el.offsetWidth; el.className = kind + ' on'; el.setAttribute('aria-hidden', 'false');
+    popTimer = setTimeout(closePop, kind === 'ok' ? 2600 : 4200);
+  }
+  function closePop() { clearTimeout(popTimer); var el = $('pop'); el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); setTimeout(function () { popOpen = false; lastAt = 0; }, 250); }
   function show(cls, html) { var r = $('result'); r.className = cls; r.innerHTML = html; }
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   function setStat(j) { if (j && typeof j.total === 'number') { $('stat').hidden = false; $('statN').textContent = j.checkedIn + ' / ' + j.total; } }
@@ -99,18 +124,18 @@
 
   function handle(res) {
     if (res.status === 401 || res.status === 429) { signOut(res.j.error || 'Please sign in again.'); return; }
-    var j = res.j; if (res.status >= 400 || j.error) { show('bad', '<div class="big">Could not check in</div><div class="meta">' + esc(j.error || 'Please scan again.') + '</div>'); beep(false); return; }
+    var j = res.j; if (res.status >= 400 || j.error) { popup('bad', 'COULD NOT CHECK IN', '', esc(j.error || 'Please scan again.'), ''); show('bad', '<div class="big">Could not check in</div><div class="meta">' + esc(j.error || 'Please scan again.') + '</div>'); beep(false); return; }
     setStat(j); var d = j.delegate;
-    if (j.status === 'ok') { show('ok', '<div class="big">&#10003; CHECKED IN</div><div class="name">' + esc(d.name) + '</div><div class="meta">' + esc(d.committee) + ' &middot; ' + esc(d.institution) + '</div><div class="small">' + esc(d.id) + '</div>'); beep(true); }
-    else if (j.status === 'already') { show('already', '<div class="big">ALREADY CHECKED IN</div><div class="name">' + esc(d.name) + '</div><div class="meta">' + esc(d.committee) + '</div><div class="small">' + esc(d.id) + ' &middot; at ' + esc(time(d.checkedInAt)) + (d.checkedInBy ? ' by ' + esc(d.checkedInBy) : '') + '</div>'); beep(false); }
-    else { show('bad', '<div class="big">NOT RECOGNISED</div><div class="meta">This QR is not on the list. Try searching by name below.</div>'); beep(false); }
+    if (j.status === 'ok') { popup('ok', 'ATTENDANCE MARKED', d.name, esc(d.committee) + (d.institution ? ' &middot; ' + esc(d.institution) : ''), esc(d.id)); show('ok', '<div class="big">&#10003; CHECKED IN</div><div class="name">' + esc(d.name) + '</div><div class="meta">' + esc(d.committee) + ' &middot; ' + esc(d.institution) + '</div><div class="small">' + esc(d.id) + '</div>'); beep(true); }
+    else if (j.status === 'already') { popup('already', 'ALREADY MARKED', d.name, esc(d.committee), esc(d.id) + (d.checkedInAt ? ' &middot; at ' + esc(time(d.checkedInAt)) : '')); show('already', '<div class="big">ALREADY CHECKED IN</div><div class="name">' + esc(d.name) + '</div><div class="meta">' + esc(d.committee) + '</div><div class="small">' + esc(d.id) + ' &middot; at ' + esc(time(d.checkedInAt)) + (d.checkedInBy ? ' by ' + esc(d.checkedInBy) : '') + '</div>'); beep(false); }
+    else { popup('bad', 'NOT RECOGNISED', '', 'This QR is not on the list.<br>Search by name below.', ''); show('bad', '<div class="big">NOT RECOGNISED</div><div class="meta">This QR is not on the list. Try searching by name below.</div>'); beep(false); }
   }
   function scan(body) {
-    if (busy) return; busy = true; show('idle', 'Checking&hellip;');
-    post(Object.assign({ action: 'scan', by: by }, body)).then(handle).catch(function () { show('bad', '<div class="big">No connection</div><div class="meta">Check the wifi and scan again.</div>'); beep(false); }).then(function () { busy = false; });
+    if (busy || popOpen) return; busy = true; show('idle', 'Checking&hellip;');
+    post(Object.assign({ action: 'scan', by: by }, body)).then(handle).catch(function () { popup('bad', 'NO CONNECTION', '', 'Check the wifi and scan again.', ''); show('bad', '<div class="big">No connection</div><div class="meta">Check the wifi and scan again.</div>'); beep(false); }).then(function () { busy = false; });
   }
   function tokenFrom(text) { var m = String(text || '').match(/[a-f0-9]{32}/i); return m ? m[0].toLowerCase() : ''; }
-  function onCode(text) { var t = tokenFrom(text), now = Date.now(); if (!t) { if (/^MUN26-\d{4}$/i.test(String(text).trim())) return scan({ id: String(text).trim().toUpperCase() }); return; } if (t === lastTok && now - lastAt < 4000) return; lastTok = t; lastAt = now; scan({ token: t }); }
+  function onCode(text) { if (popOpen) return; var t = tokenFrom(text), now = Date.now(); if (!t) { if (/^MUN26-\d{4}$/i.test(String(text).trim())) return scan({ id: String(text).trim().toUpperCase() }); return; } if (t === lastTok && now - lastAt < 4000) return; lastTok = t; lastAt = now; scan({ token: t }); }
 
   function remember() { try { localStorage.setItem('mun-desk', JSON.stringify({ pin: pin, by: by, exp: Date.now() + KEEP })); } catch (e) {} }
   function signOut(msg) { stopCam(); pin = ''; try { localStorage.removeItem('mun-desk'); } catch (e) {} $('desk').hidden = true; $('login').hidden = false; $('stat').hidden = true; $('loginMsg').textContent = msg || ''; }
@@ -130,6 +155,7 @@
     }).catch(function () { pin = ''; $('loginMsg').textContent = 'No connection. Check the wifi and try again.'; });
   });
   $('by').value = by;
+  $('pop').addEventListener('click', closePop);
   $('logout').addEventListener('click', function () { signOut(''); });
 
   $('wedge').addEventListener('keydown', function (e) { if (e.key === 'Enter') { var v = this.value; this.value = ''; onCode(v); e.preventDefault(); } });

@@ -26,8 +26,6 @@
   function idle(fn, ms) { if ('requestIdleCallback' in window) requestIdleCallback(fn, { timeout: ms }); else setTimeout(fn, ms); }
   window.addEventListener('load', function () {
     idle(warmImages, 4000);
-    var fast = !conn.effectiveType || conn.effectiveType === '4g';
-    if (fast) setTimeout(function () { ['MCC', 'DALAL', 'STARTUP'].forEach(warmCode); }, 7000);
   });
   /* the moment a committee is hovered, touched or focused, its videos start downloading */
   function codeOf(el) {
