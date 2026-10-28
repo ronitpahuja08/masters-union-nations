@@ -103,6 +103,18 @@ let mapSynced=false;function syncCommitteeMap(){const stage=$('#mapStage');if(!s
 mapArt.addEventListener('load',syncCommitteeMap,{once:true});if(mapArt.complete)syncCommitteeMap();window.addEventListener('resize',syncCommitteeMap,{passive:true});window.addEventListener('journey',e=>{if(e.detail>=.9&&!mapSynced){mapSynced=true;syncCommitteeMap()}else if(e.detail<.5)mapSynced=false},{passive:true});
 
 /* Camera movement applies only to map artwork; map heading and committee rail stay fixed. */
+/* The colour screen opens like an iris from the centre (where the dot was) to reveal the intro. Falls back to a fade. */
+let irisReady=null;
+function irisOpen(w){
+  if(!w)return;
+  const done=()=>{w.remove();if(washEl===w)washEl=null};
+  if(irisReady===null){try{CSS.registerProperty({name:'--r',syntax:'<length>',inherits:false,initialValue:'0px'});irisReady=true}catch(e){irisReady=/already|InvalidModification/i.test(String(e))}}
+  if(!irisReady||!window.CSS||!CSS.supports('mask-image','radial-gradient(circle,transparent,#000)')){w.animate([{opacity:1},{opacity:0}],{duration:650,easing:'ease-out',fill:'forwards'}).onfinish=done;return}
+  const far=Math.hypot(innerWidth/2,innerHeight/2)+90;
+  const mask='radial-gradient(circle at 50% 50%,transparent var(--r),#000 calc(var(--r) + 70px))';
+  w.style.webkitMaskImage=mask;w.style.maskImage=mask;
+  w.animate([{'--r':'-70px'},{'--r':far+'px'}],{duration:900,easing:'cubic-bezier(.45,0,.2,1)',fill:'forwards'}).onfinish=done;
+}
 function resetMapCamera(){
   clearTimeout(zoomTimer);clearTimeout(resetTimer);clearTimeout(prepanTimer);cancelAnimationFrame(zoomFrame);
   resetObserver?.disconnect();resetObserver=null;
@@ -170,7 +182,7 @@ function selectCommittee(c,i,event){
     washEl?.remove();washEl=document.createElement('div');washEl.className='map-wash';washEl.style.background=c.color;document.body.append(washEl);
     washEl.animate([{opacity:0,offset:0},{opacity:0,offset:.45},{opacity:1,offset:.72},{opacity:1,offset:1}],{duration:DUR,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'});
     zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset();
-      setTimeout(()=>{const w=washEl;if(!w)return;w.animate([{opacity:1},{opacity:0}],{duration:650,easing:'ease-out',fill:'forwards'}).onfinish=()=>{w.remove();if(washEl===w)washEl=null}},40)},Math.round(DUR*.74));
+      setTimeout(()=>irisOpen(washEl),40)},Math.round(DUR*.74));
   };
   launch();
 }
