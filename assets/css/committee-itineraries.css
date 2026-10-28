@@ -263,3 +263,11 @@
   .mun-itinerary-card:hover .mun-itinerary-paper,
   .mun-itinerary-card:focus-visible .mun-itinerary-paper{transform:none}
 }
+
+/* Remove decorative skill/topic tags from the committee mandate.
+   All eight committees (including Dalal Street) share these selectors.
+   Retain underlying data/JS and leave headings, copy, forms untouched. */
+#committeePage .cp-brief .cp-tags,
+#dalalCommitteePage .dp-brief .dp-tags{
+  display:none!important;
+}
