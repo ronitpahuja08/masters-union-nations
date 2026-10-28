@@ -20,7 +20,7 @@
     // The theme reveal gives the module and textures time to become ready.
     if(!globeLoading){
       globeLoading=true;
-      import('./globe-journey.js?v=reset-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
+      import('./globe-journey.js?v=perf-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
     }
     ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.webp'].forEach(function(src){
       var image=new Image();image.decoding='async';image.src=src;warmedImages.push(image);
@@ -29,6 +29,9 @@
     window.MUNJourneyAudio?.preload();
   }
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
+  // Prepare the strike while the visitor reads the hero (after its opening has played),
+  // so texture uploads and shader compiles never land on their first scroll.
+  setTimeout(function(){(window.requestIdleCallback||function(f){return setTimeout(f,1);})(warmStrikeAssets,{timeout:3000});},2200);
 
   var LAND=.985,landed=false,struck=false,blackoutEntered=false,lastDispatched=-1;
   var lastContent=-1,lastDeco=-1,lastDusk=-1,lastFlash=-1,lastVeil=-1,lastGlobe=-1,lastMap=-1;

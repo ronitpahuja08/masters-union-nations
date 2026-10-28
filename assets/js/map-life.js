@@ -44,20 +44,32 @@
   const atlas = new Image();
   atlas.decoding = 'async';
   atlas.src = 'assets/images/world-atlas-india-focus.webp';
-  function sampleLights() {
+  async function sampleLights() {
     if (!atlas.naturalWidth) return;
     const w = 420, h = Math.round(w * atlas.naturalHeight / atlas.naturalWidth);
+    // Decode and shrink off the main thread; drawing the full atlas here cost ~180 ms on slower CPUs.
+    let src = atlas;
+    // From the file's bytes, not the <img>: only a Blob source decodes and resizes off-thread.
+    try { src = await createImageBitmap(await (await fetch(atlas.src)).blob(), { resizeWidth: w, resizeHeight: h, resizeQuality: 'low' }); } catch (e) {}
     const c = document.createElement('canvas');
     c.width = w; c.height = h;
     const x = c.getContext('2d', { willReadFrequently: true });
-    x.drawImage(atlas, 0, 0, w, h);
+    x.drawImage(src, 0, 0, w, h);
+    if (src.close) src.close();
     let data;
     try { data = x.getImageData(0, 0, w, h).data; } catch (e) { return; }
     const found = [];
-    for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) {
-      const k = (y * w + i) * 4, r = data[k], g = data[k + 1], b = data[k + 2];
-      const lum = r * .55 + g * .35 + b * .1;
-      if (lum > 125 && r - b > 70 && r >= g) found.push([(i + .5) / w, (y + .5) / h, lum]);
+    // Scan a few rows at a time inside idle slices so the scan never holds a frame.
+    for (let y = 0; y < h;) {
+      const deadline = await new Promise(r => idle(r));
+      do {
+        for (let i = 0; i < w; i++) {
+          const k = (y * w + i) * 4, r = data[k], g = data[k + 1], b = data[k + 2];
+          const lum = r * .55 + g * .35 + b * .1;
+          if (lum > 125 && r - b > 70 && r >= g) found.push([(i + .5) / w, (y + .5) / h, lum]);
+        }
+        y++;
+      } while (y < h && (!deadline || !deadline.timeRemaining || deadline.timeRemaining() > 2));
     }
     // Shuffle, keep the brightest-ish subset.
     for (let i = found.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [found[i], found[j]] = [found[j], found[i]]; }
@@ -71,7 +83,16 @@
     drawFrame(performance.now());
   }
   const idle = fn => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 400));
-  if (atlas.complete) idle(sampleLights); else atlas.addEventListener('load', () => idle(sampleLights), { once: true });
+  // Not at load (that lands on the hero's gavel strike): wait until the visitor reaches the
+  // timed theme card or jumps to the map, both moments where a short task can't be seen.
+  let sampleQueued = false;
+  function queueSample() {
+    if (sampleQueued) return;
+    sampleQueued = true;
+    if (atlas.complete) idle(sampleLights); else atlas.addEventListener('load', () => idle(sampleLights), { once: true });
+  }
+  window.addEventListener('journey', e => { if (e.detail > .15) queueSample(); });
+  if (document.body.classList.contains('at-map')) queueSample();
 
   function resize() {
     if (!geom) return;

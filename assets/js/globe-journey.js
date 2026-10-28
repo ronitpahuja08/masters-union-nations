@@ -28,13 +28,25 @@ try {
   const fill = new THREE.DirectionalLight(0x8a283f, .32); fill.position.set(2, -1, -3); scene.add(fill);
 
   const loader = new THREE.TextureLoader();
+  // Decode images off the main thread (createImageBitmap). With an <img>, the decode
+  // happened inside the GPU upload and froze the scroll for ~0.7 s on slower machines.
+  const bitmapDecode = 'createImageBitmap' in window;
+  function loadTexture(path, onLoad, onError) {
+    if (!bitmapDecode) return loader.load(path, onLoad, undefined, onError);
+    const texture = new THREE.Texture();
+    fetch(path).then(r => { if (!r.ok) throw new Error(r.status); return r.blob(); })
+      .then(blob => createImageBitmap(blob, { imageOrientation: 'flipY', premultiplyAlpha: 'none' }))
+      .then(bitmap => { texture.image = bitmap; texture.flipY = false; texture.needsUpdate = true; onLoad(texture); })
+      .catch(onError);
+    return texture;
+  }
   let textureReady = false, poseCount = 0, lastRenderedP = -1, warmedScene = false;
-  const atlas = loader.load('assets/images/world-atlas-india-focus.webp', texture => {
-    colorizeFragments(texture.image);
+  const atlas = loadTexture('assets/images/world-atlas-india-focus.webp', texture => {
+    colorizeFragments(texture.image, !texture.flipY);
     textureReady = true;
     warmRenderer();
     render(currentP, true);
-  }, undefined, () => window.dispatchEvent(new Event('globe-failed')));
+  }, () => window.dispatchEvent(new Event('globe-failed')));
   atlas.colorSpace = THREE.SRGBColorSpace;
   atlas.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
 
@@ -162,7 +174,7 @@ try {
   scene.add(chips);
   const chipTransform = new THREE.Object3D();
 
-  function colorizeFragments(image) {
+  function colorizeFragments(image, flipped) {
     const sample = document.createElement('canvas');
     sample.width = 512; sample.height = 256;
     const context = sample.getContext('2d', { willReadFrequently: true });
@@ -172,7 +184,7 @@ try {
       const x = fragmentBase[i * 3], y = fragmentBase[i * 3 + 1], z = fragmentBase[i * 3 + 2];
       const u = ((Math.atan2(z, -x) / (Math.PI * 2)) + 1) % 1;
       const v = Math.acos(clamp(y, -1, 1)) / Math.PI;
-      const pixel = (Math.floor(v * 255) * 512 + Math.floor(u * 511)) * 4;
+      const row = Math.floor(v * 255), pixel = ((flipped ? 255 - row : row) * 512 + Math.floor(u * 511)) * 4;
       const light = i % 11 === 0 ? 1.8 : 1.18;
       fragmentColors[i * 3] = Math.min(1, pixels[pixel] / 255 * light + .055);
       fragmentColors[i * 3 + 1] = Math.min(1, pixels[pixel + 1] / 255 * light + .025);
@@ -189,7 +201,7 @@ try {
     const mesh = new THREE.Mesh(figureGeometry, material);
     mesh.position.set(0, 2.8, depth);
     figure.add(mesh);
-    loader.load(path, texture => {
+    loadTexture(path, texture => {
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
       material.map = texture;
@@ -197,7 +209,7 @@ try {
       poseCount++;
       warmRenderer();
       render(currentP, true);
-    }, undefined, () => window.dispatchEvent(new Event('globe-failed')));
+    }, () => window.dispatchEvent(new Event('globe-failed')));
     return mesh;
   }
   const windupPose = pose('assets/images/mun-statue-two-hand-windup.webp', 1.4);
@@ -219,11 +231,17 @@ try {
   }
 
   let currentP = 0;
-  function warmRenderer() {
+  const nextFrame = () => new Promise(r => requestAnimationFrame(() => r()));
+  async function warmRenderer() {
     if (warmedScene || !textureReady || poseCount < 2 || document.hidden) return;
     warmedScene = true;
-    // Compile and upload the visible materials behind the theme card, before
-    // the visitor reaches the strike. The canvas is still at zero opacity.
+    // Upload one texture per frame and compile shaders without blocking, then draw
+    // the strike pose once behind the theme card. The canvas is still at zero opacity.
+    for (const texture of [atlas, windupPose.material.map, contactPose.material.map]) {
+      if (texture && renderer.initTexture) { renderer.initTexture(texture); await nextFrame(); }
+    }
+    try { if (renderer.compileAsync) await renderer.compileAsync(scene, camera); } catch (e) {}
+    await nextFrame();
     const progress = window.MUNJourneyProgress || 0;
     render(.38, true);
     currentP = progress;

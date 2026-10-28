@@ -221,11 +221,6 @@ html body .committee-page.open #cpRegister .cp-event-meta b{display:block;font:5
 @media (hover:hover) and (pointer:fine){.rv-placard:not(.holding):not(.raised):hover{transform:translateY(-4px)}}
 
 /* ---------- intro hand-over card + skips ---------- */
-.seq-card{background:radial-gradient(55% 45% at 50% 58%,color-mix(in srgb,var(--seq-c,#D2A95C) 16%,transparent),transparent 72%),var(--void)!important}
-.seq-card-kicker{font:600 11px/1 var(--f-display)!important;font-stretch:75%!important;letter-spacing:.3em!important;color:var(--brass)!important}
-.seq-card-name{font:900 clamp(2.8rem,11vw,10rem)/.88 var(--f-display)!important;font-stretch:125%!important;letter-spacing:-.04em!important;color:var(--ivory)!important;max-width:100%;overflow-wrap:anywhere}
-.seq-card-line{background:var(--seq-c,#D2A95C)!important;box-shadow:none!important;height:1px!important}
-.seq-card-full{font:400 clamp(1.1rem,2.2vw,1.7rem)/1.2 var(--f-serif)!important;font-style:italic!important;letter-spacing:0!important;text-transform:none!important;color:rgba(243,233,220,.78)!important}
 .seq-tag p{font:600 clamp(.9rem,1.9vw,1.5rem)/1.2 var(--f-display)!important;font-stretch:80%!important;letter-spacing:.24em!important}
 .seq-tag-line{box-shadow:none!important;height:1px!important}
 :is(.cf-skip,.dc-skip,.sl-skip,.mcc-flight-skip,.ip-cinema-skip,.mc-skip){
@@ -281,3 +276,7 @@ html body #dalalCommitteePage .dp-eyebrow .rv-eb-loc::before{content:"\00b7";mar
   html body #dalalCommitteePage .dp-eyebrow>i{display:none!important}
   html body #dalalCommitteePage .dp-eyebrow .rv-eb-loc::before{content:none}
 }
+
+/* The committee name is shown once, on the page hero. Intros keep their scene and line;
+   names stay in the accessibility tree because they label the intro dialogs. */
+#cfCommittee,.mcc-flight-title h1,.sl-title h1,.dc-title p{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
