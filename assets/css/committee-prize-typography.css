@@ -178,3 +178,17 @@ html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-foot{
   transition:none!important;transform:none!important
  }
 }
+
+/* Fail-safe for nested scrolling committee pages:
+   cheque content stays visible even when the reveal observer misses it. */
+html body :is(.committee-page,.dalal-page).open .rv-prize-total,
+html body :is(.committee-page,.dalal-page).open .rv-prize-total.rv-in{
+  visibility:visible!important;
+  opacity:1!important;
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total>.rv-cheque-total,
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total.rv-in>.rv-cheque-total{
+  visibility:visible!important;
+  opacity:1!important;
+  clip-path:none!important;
+}

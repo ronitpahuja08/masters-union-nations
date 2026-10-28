@@ -456,7 +456,8 @@
   /* ---- shared page ---- */
   function decorateShared() {
     const code = page.dataset.committee || '';
-    if (!COPY[code]) return;
+    const c = COPY[code];
+    if (!c) return;
     const awards = $$('#cpAwardsList article', page);
     page.dataset.awards = '1';
     awards.forEach((art, i) => cheque(art, i, code));
