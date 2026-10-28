@@ -36,7 +36,7 @@
 .ur-placard-photo{
   background-image:
     linear-gradient(110deg,#09090aaa 0%,transparent 38%,#04070f75 100%),
-    url("https://images.pexels.com/photos/13804831/pexels-photo-13804831.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop");
+    url("https://images.pexels.com/photos/4570677/pexels-photo-4570677.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop");
   animation:urPosterCamera 7.4s cubic-bezier(.2,.7,.25,1) both;
 }
 .ur-shot-placards:after{
@@ -97,7 +97,7 @@
   background-position:center 45%;
 }
 .ur-stand-police:before{
-  background-image:linear-gradient(270deg,#071a28a2,#06131a48),url("https://images.pexels.com/photos/14885783/pexels-photo-14885783.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1000&fit=crop");
+  background-image:linear-gradient(270deg,#071a28a2,#06131a48),url("https://images.pexels.com/photos/14357126/pexels-photo-14357126.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1000&fit=crop");
   background-position:center 45%;
   animation-direction:reverse;
 }
@@ -162,7 +162,7 @@
 .cinema-hero-scene[data-code="UNHRC"] .ur-hero-security .ur-hero-image{
   background-image:
     linear-gradient(270deg,#061a30bd,#06182465),
-    url("https://images.pexels.com/photos/14885783/pexels-photo-14885783.jpeg?auto=compress&cs=tinysrgb&w=1300&h=1000&fit=crop");
+    url("https://images.pexels.com/photos/14357126/pexels-photo-14357126.jpeg?auto=compress&cs=tinysrgb&w=1300&h=1000&fit=crop");
   background-position:58% 40%;
   animation-direction:alternate-reverse;
 }

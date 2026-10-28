@@ -8,12 +8,12 @@
     CCEP:  { duration: 4700, city: 'SINGAPORE / REPUBLIC OF SINGAPORE', eyebrow: 'A NEW WORLD ECONOMY', name: 'CCEP', phrase: 'THE FUTURE IS NEGOTIABLE', hero: ['THE FUTURE', 'IS NEGOTIABLE.'] },
     IPL:   { duration: 6300, city: 'BENGALURU / INDIA', eyebrow: 'THE AUCTION ROOM', name: 'IPL', phrase: 'GOING ONCE. GOING TWICE. SOLD.', hero: null },
     STARTUP: { duration: 4600, city: 'SAN FRANCISCO / USA', eyebrow: 'DEMO DAY', name: 'STARTUP', phrase: 'BUILD THE NEXT BIG THING', hero: ['STARTUP', 'BOARDROOM.'] },
-    AIPPM: { duration: 3000, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION' },
+    AIPPM: { duration: 3000, city: 'NEW DELHI / INDIA', eyebrow: 'THE HOUSE ASSEMBLES · संसद', name: 'AIPPM', phrase: 'THE HOUSE IS IN SESSION · सदन की कार्यवाही शुरू' },
   };
   const HEROES = {
     UNHRC: { hero: ['UNHRC', ''], tag: 'HUMAN RIGHTS CANNOT WAIT.' },
     CCEP: { hero: ['CCEP', ''], tag: 'THE FUTURE IS NEGOTIABLE.' },
-    AIPPM: { hero: ['AIPPM', ''], tag: 'POLITICS. POWER. POLICY.' },
+    AIPPM: { hero: ['AIPPM', ''], tag: 'राजनीति · POWER · नीति' },
     STARTUP: { hero: ['STARTUP', 'BOARDROOM.'], tag: 'BUILD THE NEXT BIG THING' },
     IPL: { hero: null, tag: 'EVERY BID BUILDS A CHAMPION.', sceneOnly: true },
     IP: { hero: ['INTERNATIONAL', 'PRESS'], tag: 'EVERY STORY CHANGES THE NARRATIVE.' }
@@ -26,12 +26,12 @@
     UNHRC: `<div class="mc-dossier"><small>UN HUMAN RIGHTS COUNCIL</small><b>CASE FILE / 001</b><i></i><span>ACCOUNTABILITY</span><span>PROTECTION</span><span>COOPERATION</span><strong>FOR HUMAN DIGNITY</strong></div><div class="mc-network" aria-hidden="true">${routeSVG}</div>`,
     CCEP: `<div class="mc-network" aria-hidden="true">${routeSVG}</div><div class="mc-trade"><span>GLOBAL TRADE NETWORK</span><b>MARKETS CONNECTED</b><small>POLICY · ENTERPRISE · COMMERCE</small></div>`,
     IPL: `<div class="mc-stadium-beam beam-one"></div><div class="mc-stadium-beam beam-two"></div><div class="mc-auction"><span>LIVE · FRANCHISE AUCTION</span><b>FINAL BID</b><strong>SOLD!</strong><small>THE SEASON STARTS HERE</small></div>`,
-    AIPPM: `<div class="mc-door mc-left"></div><div class="mc-door mc-right"></div><div class="mc-session"><span>THE PARLIAMENT OF INDIA</span><b>HOUSE IN SESSION</b><i></i><small>LET THE DEBATE BEGIN</small></div>`
+    AIPPM: `<div class="mc-door mc-left"></div><div class="mc-door mc-right"></div><div class="mc-session"><span>भारतीय संसद · PARLIAMENT OF INDIA</span><b>सदन की कार्यवाही</b><i></i><small>LET THE DEBATE BEGIN · बहस शुरू हो</small></div>`
   };
   const sceneBuild = {
     UNHRC: `<div class="ch-photo"></div><div class="ch-grid"></div><div class="ch-document"><small>UNITED NATIONS · GENEVA</small><b>HUMAN RIGHTS</b><span>THE MANDATE IS CLEAR</span><i></i><em>ACCOUNTABILITY / ACTION</em></div><div class="ch-light"></div>`,
     CCEP: `<div class="ch-photo"></div><div class="ch-grid"></div><div class="ch-route">${routeSVG}</div><div class="ch-market"><small>GLOBAL ECONOMY / LIVE</small><b>POLICY SHAPES PROGRESS</b></div><div class="ch-light"></div>`,
-    AIPPM: `<div class="ch-photo"></div><div class="ch-grain"></div><div class="ch-parliament-bar"><b>HOUSE IN SESSION</b><span>NEW DELHI · INDIA</span></div><div class="ch-light"></div>`,
+    AIPPM: `<div class="ch-photo"></div><div class="ch-grain"></div><div class="ch-parliament-bar"><b>सदन की कार्यवाही</b><span>NEW DELHI · भारत</span></div><div class="ch-light"></div>`,
     STARTUP: `<div class="ch-photo"></div><video class="ch-video" src="${videoSrc}" poster="assets/images/startup-san-francisco-cinematic.webp" muted loop playsinline preload="metadata" aria-hidden="true"></video><div class="ch-grid"></div><div class="ch-funding"><small>STARTUP / THE PITCH</small><span>SEED</span><i></i><span>SERIES A</span><i></i><b>WHAT'S NEXT?</b></div><div class="ch-light"></div>`,
     IP: `<div class="ch-photo"></div><div class="ch-grain"></div><div class="ch-paper p-one"><small>THE DAILY DISPATCH</small><b>THE WORLD<br>IS WATCHING.</b><span>EXCLUSIVE COVERAGE</span></div><div class="ch-paper p-two"><small>GLOBAL DESK / 001</small><b>ON THE<br>RECORD</b></div><div class="ch-flash"></div>`
   };
