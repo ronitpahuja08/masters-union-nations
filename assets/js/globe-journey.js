@@ -11,11 +11,8 @@ try {
   const narrow = innerWidth < 700;
   const memory = navigator.deviceMemory || 8;
   const cores = navigator.hardwareConcurrency || 8;
-  // An 8 GB laptop can still be GPU-constrained. Reserve the densest shatter
-  // for stronger devices; keep the same animation timing and particle paths.
-  const lowTier = memory <= 4 || cores <= 4;
+  const lowTier = narrow && (memory <= 2 || cores <= 4);
   const mobileTier = narrow && !lowTier;
-  const midTier = !narrow && !lowTier && (memory <= 8 || cores <= 8);
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' });
   renderer.setPixelRatio(lowTier ? .9 : 1);
   renderer.setClearColor(0x000000, 0);
@@ -95,7 +92,7 @@ try {
   // A bounded point cloud keeps the impact dense without rebuilding nine thousand
   // positions on every frame of the map handoff.
   const random = n => { const x = Math.sin(n * 127.1 + 78.233) * 43758.5453; return x - Math.floor(x); };
-  const fragmentCount = lowTier ? 620 : mobileTier ? 820 : midTier ? 1400 : 1900;
+  const fragmentCount = lowTier ? 760 : mobileTier ? 950 : 2400;
   const fragmentBase = new Float32Array(fragmentCount * 3);
   const fragmentData = new Float32Array(fragmentCount * 3);
   const fragmentColors = new Float32Array(fragmentCount * 3);
@@ -135,7 +132,7 @@ try {
   fragments.renderOrder = 4;
   scene.add(fragments);
 
-  const sparkCount = lowTier ? 105 : mobileTier ? 150 : midTier ? 220 : 300;
+  const sparkCount = lowTier ? 145 : narrow ? 180 : 400;
   const sparkData = new Float32Array(sparkCount * 3);
   const sparkColors = new Float32Array(sparkCount * 3);
   for (let i = 0; i < sparkCount; i++) {
@@ -153,7 +150,7 @@ try {
   sparks.renderOrder = 6;
   scene.add(sparks);
 
-  const trailCount = lowTier ? 18 : mobileTier ? 24 : midTier ? 32 : 44;
+  const trailCount = lowTier ? 24 : narrow ? 28 : 55;
   const trailData = new Float32Array(trailCount * 6);
   const trailGeo = new THREE.BufferGeometry();
   trailGeo.setAttribute('position', new THREE.BufferAttribute(trailData, 3));
@@ -163,7 +160,7 @@ try {
   trails.renderOrder = 7;
   scene.add(trails);
 
-  const chipCount = lowTier ? 24 : mobileTier ? 32 : midTier ? 44 : 58;
+  const chipCount = lowTier ? 36 : narrow ? 42 : 80;
   const chipMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, depthTest: false });
   const chips = new THREE.InstancedMesh(new THREE.TetrahedronGeometry(.018, 0), chipMaterial, chipCount);
   chips.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
