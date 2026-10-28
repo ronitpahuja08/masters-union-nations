@@ -76,7 +76,7 @@ const cityOf=c=>c.city.split(' / ')[0];
 function statusOf(c){const h=parseInt(localTime(ZONES[c.code]),10);const on=c.code==='MCC'?(h>=20||h<6):(h>=9&&h<18);return on?'In session':'Boarding'}
 const coordOf=c=>Math.abs(c.lat).toFixed(2).padStart(5,'0')+'°'+(c.lat>=0?'N':'S')+' '+Math.abs(c.lon).toFixed(2).padStart(6,'0')+'°'+(c.lon>=0?'E':'W');
 
-let typeFrame=0,departing=false,zoomTimer=0,resetTimer=0,prepanTimer=0,zoomFrame=0,resetObserver=null;
+let washEl=null,typeFrame=0,departing=false,zoomTimer=0,resetTimer=0,prepanTimer=0,zoomFrame=0,resetObserver=null;
 function previewCommittee(c,i,on=true){
   if(departing)return;
   $$('.node',nodes).forEach((n,k)=>n.classList.toggle('active',on&&k===i));
@@ -109,6 +109,7 @@ function resetMapCamera(){
   mapCamera.style.transition='none';
   mapCamera.style.transform='';
   mapCamera.style.opacity='';
+  if(washEl){const w=washEl;washEl=null;w.animate([{opacity:getComputedStyle(w).opacity},{opacity:0}],{duration:250,fill:'forwards'}).onfinish=()=>w.remove()}
   mapCamera.style.transformOrigin='';
   mapCamera.style.willChange='';
   departing=false;
@@ -155,13 +156,17 @@ function selectCommittee(c,i,event){
     if(!cam.width||!cam.height||!point.width){openCommittee(c,i,handoff);armCameraReset();return}
     const sx=point.left+point.width/2-cam.left-panShift;
     const sy=point.top+point.height/2-cam.top;
-    const scale=cam.width<=600?14:22;   // far enough that the dot itself fills the screen
+    const scale=cam.width<=600?2.2:2.8;
     mapCamera.style.willChange='transform';
     mapCamera.style.transformOrigin='0 0';
     // one continuous push: gentle start, then it accelerates into the dot while the intro is already fading in over it
-    mapCamera.style.transition='transform 1250ms cubic-bezier(.6,0,.4,1),opacity 380ms ease-in 850ms';
-    void mapCamera.offsetWidth;{mapCamera.style.opacity='0';mapCamera.style.transform=`translate3d(${(cam.width/2-sx*scale).toFixed(1)}px,${(cam.height*.5-sy*scale).toFixed(1)}px,0) scale(${scale})`}
-    zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},1200);
+    mapCamera.style.transition='transform 980ms cubic-bezier(.55,0,.25,1)';
+    // the dot's colour floods outward from the dot until the whole screen is that colour, then the intro appears under it
+    const px=point.left+point.width/2,py=point.top+point.height/2,far=Math.hypot(Math.max(px,innerWidth-px),Math.max(py,innerHeight-py));
+    washEl?.remove();washEl=document.createElement('div');washEl.className='map-wash';washEl.style.cssText=`left:${px}px;top:${py}px;background:${c.color}`;document.body.append(washEl);
+    washEl.animate([{transform:'translate(-50%,-50%) scale(.5)'},{transform:`translate(-50%,-50%) scale(${Math.ceil(far/12)+6})`}],{duration:900,easing:'cubic-bezier(.55,0,.3,1)',fill:'forwards'});
+    void mapCamera.offsetWidth;{mapCamera.style.transform=`translate3d(${(cam.width/2-sx*scale).toFixed(1)}px,${(cam.height*.5-sy*scale).toFixed(1)}px,0) scale(${scale})`}
+    zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset();setTimeout(()=>{const w=washEl;if(!w)return;w.animate([{opacity:1},{opacity:0}],{duration:750,easing:'ease-out',fill:'forwards'}).onfinish=()=>{w.remove();if(washEl===w)washEl=null}},120)},930);
   };
   launch();
 }
