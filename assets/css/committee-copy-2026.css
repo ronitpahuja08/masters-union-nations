@@ -1,0 +1,166 @@
+/* Committee content and typography restoration — October 2026.
+   Only headline styling, static IPL explainer and named award captions.
+   Does not modify forms, transitions, background media, cheques or map. */
+
+/* Restore pre-revamp Manrope/Playfair title voice across all eight pages.
+   Keep the existing layout and each committee's colour accent. */
+html body .committee-page.open[data-committee] #cpTitle,
+html body .dalal-page.open #dpTitle{
+  font-family:"Manrope",Arial,sans-serif!important;
+  font-weight:800!important;
+  font-size:clamp(3.25rem,8.4vw,8.6rem)!important;
+  line-height:.9!important;
+  letter-spacing:-.075em!important;
+  text-transform:none!important;
+  font-stretch:normal!important;
+  max-width:min(1100px,94vw)!important;
+  text-wrap:balance;
+}
+html body .committee-page.open[data-committee] #cpHeroA,
+html body .dalal-page.open #dpTitle>span{
+  display:inline!important;
+  font:inherit!important;
+  font-weight:800!important;
+  text-transform:none!important;
+  letter-spacing:inherit!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+html body .committee-page.open[data-committee] #cpHeroB,
+html body .dalal-page.open #dpTitle>em{
+  display:inline!important;
+  margin:0!important;
+  font-family:"Playfair Display",Georgia,serif!important;
+  font-style:italic!important;
+  font-weight:600!important;
+  font-size:.84em!important;
+  line-height:1!important;
+  letter-spacing:-.055em!important;
+  text-transform:none!important;
+  font-stretch:normal!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+html body .committee-page.open[data-committee] #cpHeroB{
+  color:var(--committee-accent,#e6c582)!important;
+}
+html body .dalal-page.open #dpTitle>em{color:#e8c58d!important}
+/* The cinematic engine intentionally hides the break for single-word titles.
+   Restore it only where both lines exist, avoiding an empty ghost line. */
+html body .committee-page.open:is([data-committee="MCC"],[data-committee="STARTUP"],[data-committee="IP"]) #cpTitle br,
+html body .dalal-page.open #dpTitle br{display:initial!important}
+
+/* A quieter italic line for long committee names; prevent mobile clipping. */
+html body .committee-page.open[data-committee="STARTUP"] #cpTitle,
+html body .committee-page.open[data-committee="IP"] #cpTitle{
+  font-size:clamp(3rem,7.4vw,7.8rem)!important;
+}
+html body .committee-page.open[data-committee="MCC"] #cpTitle{
+  font-size:clamp(3rem,7.5vw,8.1rem)!important;
+}
+
+/* Recognition names: no individual amounts; cumulative ceremonial cheques stay. */
+html body :is(.committee-page.open,.dalal-page.open) .mun-award-names:not([hidden]){
+  display:flex!important;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-start;
+  gap:8px 18px;
+  margin:13px 0 0!important;
+  padding:0!important;
+  color:#e8d5b5!important;
+  font:600 clamp(.68rem,.86vw,.83rem)/1.55 "Manrope",Arial,sans-serif!important;
+  letter-spacing:.005em!important;
+}
+.mun-award-names span{
+  display:inline-block;
+  white-space:normal;
+}
+.mun-award-names span b{
+  color:#e9bc78;
+  font-family:"DM Mono",monospace;
+  font-size:.82em;
+  font-weight:600;
+}
+.mun-award-names[hidden]{display:none!important}
+
+/* IPL only: a simple seven-row explainer, no heavy motion or new cards. */
+.ipl-auction-guide{display:none!important}
+html body .committee-page.open[data-committee="IPL"] .ipl-auction-guide{
+  display:grid!important;
+  grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);
+  gap:clamp(24px,4vw,70px);
+  align-items:start;
+  padding:clamp(60px,7vw,106px) clamp(22px,7vw,112px);
+  background:linear-gradient(150deg,#08101ad9,#091520f2 65%,#060d16eb);
+  border-block:1px solid rgba(224,192,133,.28);
+  color:#f6efe4;
+}
+.ipl-auction-intro{max-width:440px}
+.ipl-auction-intro>small{
+  display:block;
+  color:#e9c489;
+  font:600 .65rem/1.4 "DM Mono",monospace;
+  letter-spacing:.16em;
+}
+.ipl-auction-intro h2{
+  margin:22px 0 16px!important;
+  font:800 clamp(2.4rem,4.4vw,4.7rem)/.95 "Manrope",Arial,sans-serif!important;
+  letter-spacing:-.07em!important;
+  color:#fff4e5!important;
+  text-transform:none!important;
+}
+.ipl-auction-intro h2 em{
+  color:#e8c285!important;
+  font:italic 600 1em/1.05 "Playfair Display",Georgia,serif!important;
+  letter-spacing:-.04em!important;
+}
+.ipl-auction-intro>p{
+  max-width:340px;
+  margin:0;
+  font:500 clamp(.85rem,1.05vw,1rem)/1.65 "Manrope",Arial,sans-serif;
+  color:#cfc6bb;
+}
+.ipl-auction-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  border-top:1px solid #dec38c72;
+}
+.ipl-auction-list li{
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr);
+  gap:15px;
+  align-items:start;
+  padding:13px 0 15px;
+  border-bottom:1px solid #dcc3943c;
+}
+.ipl-auction-list li>span{
+  color:#e6c38a;
+  font:600 .68rem/1.8 "DM Mono",monospace;
+}
+.ipl-auction-list b{
+  display:block;
+  font:750 clamp(.96rem,1.22vw,1.14rem)/1.4 "Manrope",Arial,sans-serif;
+  color:#f9eee0;
+}
+.ipl-auction-list p{
+  margin:3px 0 0;
+  font:500 clamp(.78rem,.98vw,.91rem)/1.55 "Manrope",Arial,sans-serif;
+  color:#d1c7b9;
+}
+@media(max-width:760px){
+  html body .committee-page.open[data-committee] #cpTitle,
+  html body .dalal-page.open #dpTitle{font-size:clamp(2.65rem,10.2vw,5.8rem)!important;max-width:96vw!important}
+  html body .committee-page.open:is([data-committee="STARTUP"],[data-committee="IP"],[data-committee="MCC"]) #cpTitle{
+    font-size:clamp(2.5rem,9.2vw,5.2rem)!important;
+  }
+  html body .committee-page.open[data-committee="AIPPM"] #cpTitle{
+    font-size:clamp(2.7rem,12vw,6rem)!important;
+  }
+  html body .committee-page.open[data-committee="IPL"] .ipl-auction-guide{
+    grid-template-columns:1fr;
+    gap:24px;
+    padding:60px 22px;
+  }
+  .ipl-auction-intro h2{font-size:clamp(2.7rem,9vw,4.2rem)!important}
+  .mun-award-names span{display:block}
+}
