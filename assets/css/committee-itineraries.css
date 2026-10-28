@@ -1,0 +1,273 @@
+/* The Programme — editorial A4 documents and one GPU-only 3D reveal.
+ * Scoped to the inserted itinerary sections and their accessible overlay. */
+#cpItinerary,#dpItinerary{
+  --itinerary-accent:var(--committee-accent,#d7b77b);
+  position:relative;isolation:isolate;
+  padding:clamp(70px,8.4vw,116px) clamp(20px,7vw,108px) clamp(70px,8vw,112px);
+  color:#f4ecdf;
+  background:
+    radial-gradient(ellipse 60% 38% at 50% 50%,rgba(219,177,106,.075),transparent 74%),
+    linear-gradient(180deg,rgba(14,12,17,.92),rgba(18,14,20,.97));
+  border-block:1px solid rgba(213,176,118,.18);
+  overflow:hidden;
+}
+#dpItinerary{--itinerary-accent:#e8bc7a;background:linear-gradient(165deg,#0e0d0b,#1b1512 58%,#0b0c0f)}
+.mun-itinerary-inner{position:relative;z-index:1;max-width:1140px;margin:0 auto}
+.mun-itinerary-heading{text-align:center;margin:0 auto clamp(34px,4vw,58px);max-width:820px}
+.mun-itinerary-kicker{
+  display:inline-flex;align-items:center;gap:13px;
+  font:600 clamp(.55rem,.73vw,.68rem)/1.3 "DM Mono",monospace;
+  letter-spacing:.19em;color:var(--itinerary-accent);text-transform:uppercase;
+}
+.mun-itinerary-kicker:before,.mun-itinerary-kicker:after{content:"";width:26px;height:1px;background:currentColor;opacity:.7}
+.mun-itinerary-heading h2{
+  margin:16px 0 15px!important;
+  font:800 clamp(2.8rem,6.6vw,6.3rem)/.99 "Manrope",Arial,sans-serif!important;
+  letter-spacing:-.065em!important;text-transform:none!important;color:#fbf3e8!important;text-wrap:balance
+}
+.mun-itinerary-heading h2 em{
+  font:italic 600 1em/1 "Playfair Display",Georgia,serif!important;
+  letter-spacing:-.05em!important;color:var(--itinerary-accent)!important;
+}
+.mun-itinerary-heading p{
+  max-width:620px;margin:0 auto;
+  color:#d6c9bd;font:500 clamp(.84rem,1.14vw,1rem)/1.7 "Manrope",Arial,sans-serif;
+}
+.mun-itinerary-deck{
+  display:grid;grid-template-columns:repeat(2,minmax(0,330px));
+  justify-content:center;align-items:start;gap:clamp(22px,4vw,62px);
+  perspective:1600px;
+}
+.mun-itinerary-card{
+  position:relative;display:block;min-width:0;margin:0;padding:0;
+  appearance:none;border:0;border-radius:3px;background:transparent;
+  color:inherit;text-align:left;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;outline-offset:8px;
+}
+.mun-itinerary-card:before{
+  content:"";position:absolute;left:4%;top:2%;right:0;bottom:42px;
+  border:1px solid rgba(222,175,110,.6);background:#382b24;
+  box-shadow:4px 8px 0 #1b1415;
+  transform:translate3d(8px,7px,0) rotate(2.2deg);
+  z-index:0;pointer-events:none;
+}
+.mun-itinerary-card:hover .mun-itinerary-paper,
+.mun-itinerary-card:focus-visible .mun-itinerary-paper{
+  transform:translate3d(0,-8px,0) rotateY(-4deg) rotateZ(-.8deg);
+  box-shadow:0 38px 80px rgba(0,0,0,.5),0 0 0 1px var(--itinerary-accent);
+}
+.mun-itinerary-card:focus-visible{outline:2px solid #f6cc83}
+.mun-itinerary-paper{
+  width:100%;position:relative;aspect-ratio:210 / 297;
+  color:#34281f!important;
+  background:
+    repeating-linear-gradient(115deg,transparent 0 13px,rgba(100,68,33,.018) 13px 14px),
+    radial-gradient(ellipse at 68% 15%,rgba(226,185,119,.25),transparent 55%),
+    linear-gradient(150deg,#fff9ea,#f3e9d6 50%,#e7d7ba);
+  border:1px solid #dac39b;border-radius:2px;
+  box-shadow:0 26px 64px rgba(0,0,0,.42),inset 0 0 0 6px rgba(255,255,255,.28);
+  transform:translate3d(0,0,0);
+  transform-origin:center center;
+  transition:transform .38s cubic-bezier(.18,.78,.2,1),box-shadow .38s;
+  overflow:hidden;
+}
+.mun-itinerary-paper:after{
+  content:"";position:absolute;inset:9px;border:1px solid rgba(125,91,58,.22);pointer-events:none;
+}
+.mun-itinerary-paper-inner{
+  position:relative;height:100%;display:flex;flex-direction:column;
+  padding:clamp(17px,2.5vw,26px) clamp(15px,2.3vw,23px) clamp(13px,1.6vw,18px);
+}
+.mun-itinerary-paper-top,.mun-itinerary-paper-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  font:700 clamp(.42rem,.55vw,.54rem)/1.4 "DM Mono",monospace;
+  letter-spacing:.105em;color:#836c51;
+}
+.mun-itinerary-paper-top{border-bottom:1px solid rgba(93,65,37,.4);padding-bottom:10px}
+.mun-itinerary-paper-foot{border-top:1px solid rgba(93,65,37,.33);padding-top:10px;margin-top:auto}
+.mun-itinerary-paper-heading{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin:19px 0 10px}
+.mun-itinerary-numeral{
+  color:#bda37c;font:italic 500 clamp(3rem,4.3vw,4.4rem)/.8 "Playfair Display",Georgia,serif;
+  letter-spacing:-.1em;
+}
+.mun-itinerary-super{
+  display:block;margin-bottom:5px;
+  font:700 clamp(.43rem,.56vw,.55rem)/1.4 "DM Mono",monospace;
+  color:#886b44;letter-spacing:.14em;
+}
+.mun-itinerary-paper-heading h3{
+  margin:0;color:#27211e!important;
+  font:800 clamp(1.3rem,2.1vw,2rem)/1.02 "Manrope",Arial,sans-serif!important;
+  letter-spacing:-.045em!important;text-transform:uppercase!important;
+}
+.mun-itinerary-paper-heading p{
+  margin:5px 0 0;color:#856f51;
+  font:700 clamp(.48rem,.65vw,.6rem)/1.3 "DM Mono",monospace;
+  letter-spacing:.09em;
+}
+.mun-itinerary-seal{
+  display:grid;place-items:center;flex:none;width:34px;height:34px;
+  border:2px double #b79159;border-radius:50%;
+  font:800 .59rem "Manrope",sans-serif;color:#a47c48;
+  background:repeating-conic-gradient(from 0deg,rgba(174,132,73,.12) 0 9deg,transparent 9deg 18deg);
+}
+.mun-itinerary-committee-name{
+  min-height:1.3em;margin:2px 0 7px!important;
+  font:italic 600 clamp(.66rem,.95vw,.92rem)/1.3 "Playfair Display",Georgia,serif!important;
+  color:#59422e!important;
+}
+.mun-itinerary-day-range{
+  margin:0 0 13px!important;
+  font:700 clamp(.48rem,.64vw,.65rem)/1.35 "DM Mono",monospace!important;
+  letter-spacing:.035em;color:#745941!important;
+}
+.mun-itinerary-timetable{min-height:0;margin-bottom:12px;border-top:1px solid rgba(97,69,39,.55)}
+.mun-itinerary-timetable-head,.mun-itinerary-event{
+  display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:clamp(7px,.9vw,13px);align-items:center;
+}
+.mun-itinerary-timetable-head{
+  padding:9px 6px;color:#6c5134;border-bottom:1px solid rgba(97,69,39,.46);
+  font:800 clamp(.41rem,.56vw,.53rem)/1.2 "DM Mono",monospace;
+  letter-spacing:.12em;
+}
+.mun-itinerary-event{
+  padding:clamp(7px,.8vw,9px) 6px;
+  border-bottom:1px solid rgba(89,69,47,.15);
+  font:600 clamp(.48rem,.67vw,.65rem)/1.25 "Manrope",Arial,sans-serif;
+  color:#4b3c2e;
+}
+.mun-itinerary-event span{min-width:0;overflow-wrap:break-word}
+.mun-itinerary-event.is-session{
+  background:rgba(183,155,103,.12);color:#312b23;
+  box-shadow:inset 2px 0 #9d7851;
+}
+.mun-itinerary-event.is-special .mun-itinerary-event-name{font-weight:800}
+.mun-itinerary-unknown{
+  display:grid;align-content:center;gap:12px;text-align:center;flex:1;
+  padding:20px 16px;border:1px dashed #b49b73;background:rgba(192,160,107,.1);
+}
+.mun-itinerary-unknown strong{font:italic 600 clamp(1.05rem,1.5vw,1.4rem) Georgia,serif;color:#6b4b32}
+.mun-itinerary-unknown p{margin:0;color:#79644c;font:500 clamp(.7rem,.9vw,.85rem)/1.5 "Manrope",sans-serif}
+.mun-itinerary-action{
+  position:relative;display:flex;align-items:center;justify-content:space-between;
+  margin-top:17px;padding:13px 7px 9px;
+  color:#e6c992;border-top:1px solid rgba(212,176,126,.3);
+  font:700 clamp(.6rem,.8vw,.74rem)/1.2 "DM Mono",monospace;letter-spacing:.1em;
+}
+.mun-itinerary-action span:last-child{font-size:1.25rem}
+.mun-itinerary-hint{
+  margin:36px 0 0;text-align:center;color:#bca98e;
+  font:600 clamp(.55rem,.73vw,.68rem)/1.5 "DM Mono",monospace;letter-spacing:.14em;
+}
+.mun-itinerary-hint span{padding-left:10px;color:#e9c488}
+
+/* Expanded, accessible reading room. Only one GPU transform animation at a time. */
+.mun-itinerary-overlay{
+  position:fixed;inset:0;z-index:9000;
+  display:grid;place-items:center;padding:clamp(12px,2vw,28px);
+  perspective:1600px;isolation:isolate;
+}
+.mun-itinerary-shade{
+  position:absolute;inset:0;background:rgba(5,5,10,.9);
+  animation:munItineraryShade .26s both;
+}
+@keyframes munItineraryShade{from{opacity:0}to{opacity:1}}
+.mun-itinerary-modal{
+  position:relative;z-index:1;width:min(680px,96vw);max-height:94dvh;
+  display:flex;flex-direction:column;
+  border:1px solid #b89b6e;background:#181313;
+  box-shadow:0 38px 110px rgba(0,0,0,.7);
+  transform-style:preserve-3d;outline:none;
+}
+.mun-itinerary-modal-bar{
+  flex:none;display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:13px clamp(14px,3vw,23px);
+  background:linear-gradient(100deg,#241b17,#111016);
+  border-bottom:1px solid #8d7452;color:#f2e8d8;
+}
+.mun-itinerary-modal-bar>div{min-width:0;display:grid;gap:5px}
+.mun-itinerary-modal-bar small{
+  font:600 .51rem "DM Mono",monospace;letter-spacing:.17em;color:#bd9f73;
+}
+.mun-itinerary-modal-bar strong{
+  font:700 clamp(.7rem,1.1vw,.94rem) "Manrope",sans-serif;letter-spacing:.012em;
+}
+.mun-itinerary-close{
+  flex:none;display:flex;gap:10px;align-items:center;
+  min-height:42px;padding:8px 12px;
+  border:1px solid #9d8162;color:#f4e7d2;background:#281d1b;
+  font:700 .59rem "DM Mono",monospace;letter-spacing:.1em;cursor:pointer;
+}
+.mun-itinerary-close:hover,.mun-itinerary-close:focus-visible{
+  background:#51372a;border-color:#e9c88f;outline-offset:3px;
+}
+.mun-itinerary-modal-scroll{
+  min-height:0;overflow:auto;overscroll-behavior:contain;
+  padding:clamp(8px,2vw,20px);scrollbar-color:#9b7950 #27211e;
+}
+.mun-itinerary-paper.is-expanded{
+  aspect-ratio:unset;min-height:660px;width:100%;max-width:640px;margin:0 auto;
+  transition:none;transform:none;box-shadow:0 6px 26px #0004;
+}
+.mun-itinerary-paper.is-expanded .mun-itinerary-paper-inner{
+  min-height:660px;height:auto;
+  padding:clamp(26px,4vw,43px) clamp(24px,5vw,54px);
+}
+.mun-itinerary-paper.is-expanded .mun-itinerary-paper-heading h3{font-size:clamp(2rem,4vw,3.4rem)!important}
+.mun-itinerary-paper.is-expanded .mun-itinerary-numeral{font-size:clamp(4.3rem,7vw,6.5rem)}
+.mun-itinerary-paper.is-expanded .mun-itinerary-timetable-head{font-size:.68rem;padding:14px 11px}
+.mun-itinerary-paper.is-expanded .mun-itinerary-event{
+  font-size:clamp(.78rem,1.7vw,.99rem);line-height:1.44;padding:13px 11px;
+}
+.mun-itinerary-paper.is-expanded .mun-itinerary-super,
+.mun-itinerary-paper.is-expanded .mun-itinerary-day-range,
+.mun-itinerary-paper.is-expanded .mun-itinerary-paper-heading p{font-size:.7rem}
+.mun-itinerary-paper.is-expanded .mun-itinerary-committee-name{font-size:1.13rem!important}
+.mun-itinerary-paper.is-expanded .mun-itinerary-paper-top,
+.mun-itinerary-paper.is-expanded .mun-itinerary-paper-foot{font-size:.61rem}
+.mun-itinerary-paper.is-expanded .mun-itinerary-paper-foot{margin-top:34px}
+@media(max-width:760px){
+  #cpItinerary,#dpItinerary{padding:70px 18px 74px}
+  .mun-itinerary-deck{
+    display:grid;grid-auto-flow:column;
+    grid-auto-columns:minmax(265px,min(74vw,330px));
+    grid-template-columns:none;justify-content:start;
+    gap:23px;overflow-x:auto;overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory;padding:12px 18px 22px;
+    margin-inline:-18px;scrollbar-color:#a28a6b transparent;
+  }
+  .mun-itinerary-card{scroll-snap-align:center}
+  .mun-itinerary-paper-inner{padding:19px 18px 14px}
+  .mun-itinerary-event{font-size:.57rem;padding:9px 6px}
+  .mun-itinerary-paper-heading h3{font-size:1.4rem!important}
+  .mun-itinerary-action{font-size:.65rem}
+  .mun-itinerary-paper.is-expanded .mun-itinerary-paper-inner{padding:27px 24px}
+}
+@media(max-width:500px){
+  .mun-itinerary-deck{grid-auto-columns:minmax(250px,82vw)}
+  .mun-itinerary-heading h2{font-size:clamp(2.5rem,10vw,4rem)!important}
+  .mun-itinerary-modal-scroll{padding:8px}
+  .mun-itinerary-modal-bar{padding:10px 12px}
+  .mun-itinerary-close{padding:7px 9px}
+  .mun-itinerary-close span{font-size:1rem}
+  .mun-itinerary-paper.is-expanded .mun-itinerary-paper-inner{padding:25px 18px}
+  .mun-itinerary-paper.is-expanded .mun-itinerary-timetable-head{font-size:.6rem}
+  .mun-itinerary-paper.is-expanded .mun-itinerary-event{font-size:.75rem;padding:12px 7px}
+  .mun-itinerary-paper.is-expanded .mun-itinerary-paper-top,
+  .mun-itinerary-paper.is-expanded .mun-itinerary-paper-foot{font-size:.5rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .mun-itinerary-paper{transition:none}
+  .mun-itinerary-shade{animation:none}
+  .mun-itinerary-card:hover .mun-itinerary-paper,
+  .mun-itinerary-card:focus-visible .mun-itinerary-paper{transform:none}
+}
+
+/* Remove decorative skill/topic tags from the committee mandate.
+   All eight committees (including Dalal Street) share these selectors.
+   Retain underlying data/JS and leave headings, copy, forms untouched. */
+#committeePage .cp-brief .cp-tags,
+#dalalCommitteePage .dp-brief .dp-tags{
+  display:none!important;
+}

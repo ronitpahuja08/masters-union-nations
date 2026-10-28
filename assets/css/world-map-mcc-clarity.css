@@ -13,11 +13,3 @@
   pointer-events:auto;
   cursor:pointer;
 }
-/* Original MCC drone video is already identical to the newly supplied file.
-   Remove the small artificial enlargement and soften heavy dark grading. */
-#mccNightFlight .mcc-drone-video{
-  transform:none;
-  image-rendering:auto;
-  filter:brightness(var(--night-brightness,1.08)) saturate(var(--night-saturation,1.05)) contrast(1.06) hue-rotate(var(--night-hue,0deg));
-}
-#mccNightFlight .mcc-flight-vignette{opacity:.7}

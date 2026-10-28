@@ -1,0 +1,586 @@
+{
+  "source": "Itinerary.docx — Committee Itinerary, 13 pages; transcribed verbatim",
+  "common": [
+    {
+      "title": "Day 1",
+      "range": "8:00 AM to 6:30 PM",
+      "events": [
+        [
+          "8:00 AM to 9:15 AM",
+          "Registration and breakfast"
+        ],
+        [
+          "9:15 AM to 10:00 AM",
+          "Opening ceremony"
+        ],
+        [
+          "10:00 AM to 10:15 AM",
+          "Move to committee rooms"
+        ],
+        [
+          "10:15 AM to 12:30 PM",
+          "Committee Session 1"
+        ],
+        [
+          "12:30 PM to 1:30 PM",
+          "Lunch"
+        ],
+        [
+          "1:30 PM to 4:30 PM",
+          "Committee Session 2"
+        ],
+        [
+          "4:30 PM to 5:00 PM",
+          "High tea break"
+        ],
+        [
+          "5:00 PM to 6:30 PM",
+          "Committee Session 3"
+        ]
+      ]
+    },
+    {
+      "title": "Day 2",
+      "range": "10:00 AM to 12:00 AM",
+      "events": [
+        [
+          "10:00 AM to 12:30 PM",
+          "Committee Session 4"
+        ],
+        [
+          "12:30 PM to 1:30 PM",
+          "Lunch"
+        ],
+        [
+          "1:30 PM to 4:30 PM",
+          "Committee Session 5"
+        ],
+        [
+          "4:30 PM to 5:00 PM",
+          "High tea break"
+        ],
+        [
+          "5:00 PM to 7:00 PM",
+          "Closing ceremony"
+        ],
+        [
+          "8:30 PM to 12:00 AM",
+          "Masquerade (entry closes at 10:00 PM)"
+        ]
+      ]
+    }
+  ],
+  "committees": {
+    "UNHRC": {
+      "name": "UNHRC",
+      "days": [
+        {
+          "title": "Day 1",
+          "range": "8:00 AM to 6:30 PM",
+          "events": [
+            [
+              "8:00 AM to 9:15 AM",
+              "Registration and breakfast"
+            ],
+            [
+              "9:15 AM to 10:00 AM",
+              "Opening ceremony"
+            ],
+            [
+              "10:00 AM to 10:15 AM",
+              "Move to committee rooms"
+            ],
+            [
+              "10:15 AM to 12:30 PM",
+              "Committee Session 1"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 2"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 6:30 PM",
+              "Committee Session 3"
+            ]
+          ]
+        },
+        {
+          "title": "Day 2",
+          "range": "10:00 AM to 12:00 AM",
+          "events": [
+            [
+              "10:00 AM to 12:30 PM",
+              "Committee Session 4"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 5"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 7:00 PM",
+              "Closing ceremony"
+            ],
+            [
+              "8:30 PM to 12:00 AM",
+              "Masquerade (entry closes at 10:00 PM)"
+            ]
+          ]
+        }
+      ]
+    },
+    "AIPPM": {
+      "name": "AIPPM",
+      "days": [
+        {
+          "title": "Day 1",
+          "range": "8:00 AM to 6:30 PM",
+          "events": [
+            [
+              "8:00 AM to 9:15 AM",
+              "Registration and breakfast"
+            ],
+            [
+              "9:15 AM to 10:00 AM",
+              "Opening ceremony"
+            ],
+            [
+              "10:00 AM to 10:15 AM",
+              "Move to committee rooms"
+            ],
+            [
+              "10:15 AM to 12:30 PM",
+              "Committee Session 1"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 2"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 6:30 PM",
+              "Committee Session 3"
+            ]
+          ]
+        },
+        {
+          "title": "Day 2",
+          "range": "10:00 AM to 12:00 AM",
+          "events": [
+            [
+              "10:00 AM to 12:30 PM",
+              "Committee Session 4"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 5"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 7:00 PM",
+              "Closing ceremony"
+            ],
+            [
+              "8:30 PM to 12:00 AM",
+              "Masquerade (entry closes at 10:00 PM)"
+            ]
+          ]
+        }
+      ]
+    },
+    "IP": {
+      "name": "International Press",
+      "days": [
+        {
+          "title": "Day 1",
+          "range": "8:00 AM to 6:30 PM",
+          "events": [
+            [
+              "8:00 AM to 9:15 AM",
+              "Registration and breakfast"
+            ],
+            [
+              "9:15 AM to 10:00 AM",
+              "Opening ceremony"
+            ],
+            [
+              "10:00 AM to 10:15 AM",
+              "Move to committee rooms"
+            ],
+            [
+              "10:15 AM to 12:30 PM",
+              "Committee Session 1"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 2"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 6:30 PM",
+              "Committee Session 3"
+            ]
+          ]
+        },
+        {
+          "title": "Day 2",
+          "range": "10:00 AM to 12:00 AM",
+          "events": [
+            [
+              "10:00 AM to 12:30 PM",
+              "Committee Session 4"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 5"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 7:00 PM",
+              "Closing ceremony"
+            ],
+            [
+              "8:30 PM to 12:00 AM",
+              "Masquerade (entry closes at 10:00 PM)"
+            ]
+          ]
+        }
+      ]
+    },
+    "CCEP": {
+      "name": "CCEP",
+      "days": [
+        {
+          "title": "Day 1",
+          "range": "8:00 AM to 6:30 PM",
+          "events": [
+            [
+              "8:00 AM to 9:15 AM",
+              "Registration and breakfast"
+            ],
+            [
+              "9:15 AM to 10:00 AM",
+              "Opening ceremony"
+            ],
+            [
+              "10:00 AM to 10:15 AM",
+              "Move to committee rooms"
+            ],
+            [
+              "10:15 AM to 12:30 PM",
+              "Committee Session 1"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 2"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 6:30 PM",
+              "Committee Session 3"
+            ]
+          ]
+        },
+        {
+          "title": "Day 2",
+          "range": "10:00 AM to 12:00 AM",
+          "events": [
+            [
+              "10:00 AM to 12:30 PM",
+              "Committee Session 4"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 5"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 7:00 PM",
+              "Closing ceremony"
+            ],
+            [
+              "8:30 PM to 12:00 AM",
+              "Masquerade (entry closes at 10:00 PM)"
+            ]
+          ]
+        }
+      ]
+    },
+    "STARTUP": {
+      "name": "Startup Boardroom",
+      "sourceName": "Boardroom",
+      "days": [
+        {
+          "title": "Day 1",
+          "range": "8:00 AM to 6:30 PM",
+          "events": [
+            [
+              "8:00 AM to 9:15 AM",
+              "Registration and breakfast"
+            ],
+            [
+              "9:15 AM to 10:00 AM",
+              "Opening ceremony"
+            ],
+            [
+              "10:00 AM to 10:15 AM",
+              "Move to committee rooms"
+            ],
+            [
+              "10:15 AM to 12:30 PM",
+              "Committee Session 1"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 2"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 6:30 PM",
+              "Committee Session 3"
+            ]
+          ]
+        },
+        {
+          "title": "Day 2",
+          "range": "10:00 AM to 12:00 AM",
+          "events": [
+            [
+              "10:00 AM to 12:30 PM",
+              "Committee Session 4"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 5"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 7:00 PM",
+              "Closing ceremony"
+            ],
+            [
+              "8:30 PM to 12:00 AM",
+              "Masquerade (entry closes at 10:00 PM)"
+            ]
+          ]
+        }
+      ]
+    },
+    "MCC": {
+      "name": "Midnight Crisis Committee (MCC)",
+      "days": [
+        {
+          "title": "Day 1 night",
+          "range": "10:00 PM to 7:00 AM",
+          "events": [
+            [
+              "10:00 PM to 11:00 PM",
+              "Registration"
+            ],
+            [
+              "11:00 PM to 12:00 AM",
+              "Opening ceremony (briefing)"
+            ],
+            [
+              "12:00 AM to 3:00 AM",
+              "Committee Session 1"
+            ],
+            [
+              "3:00 AM to 3:30 AM",
+              "Food break"
+            ],
+            [
+              "3:30 AM to 5:30 AM",
+              "Committee Session 2"
+            ],
+            [
+              "5:30 AM to 6:00 AM",
+              "Break"
+            ],
+            [
+              "6:00 AM to 7:00 AM",
+              "Paperwork"
+            ]
+          ]
+        },
+        {
+          "title": "Day 2",
+          "range": "5:00 PM to 12:00 AM",
+          "events": [
+            [
+              "5:00 PM to 7:00 PM",
+              "Closing ceremony"
+            ],
+            [
+              "8:30 PM to 12:00 AM",
+              "Masquerade (entry closes at 10:00 PM)"
+            ]
+          ]
+        }
+      ]
+    },
+    "DALAL": {
+      "name": "Dalal Street",
+      "days": [
+        {
+          "title": "Day 1",
+          "range": "8:00 AM to 6:30 PM",
+          "events": [
+            [
+              "8:00 AM to 9:15 AM",
+              "Registration and breakfast"
+            ],
+            [
+              "9:15 AM to 10:00 AM",
+              "Opening ceremony"
+            ],
+            [
+              "10:00 AM to 10:15 AM",
+              "Move to committee rooms"
+            ],
+            [
+              "10:15 AM to 12:30 PM",
+              "Committee Session 1"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 2"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 6:30 PM",
+              "Committee Session 3"
+            ]
+          ]
+        },
+        {
+          "title": "Day 2",
+          "range": null,
+          "events": null
+        }
+      ]
+    },
+    "IPL": {
+      "name": "IPL",
+      "days": [
+        {
+          "title": "Day 1",
+          "range": null,
+          "events": null
+        },
+        {
+          "title": "Day 2",
+          "range": "9:00 AM to 12:00 AM",
+          "events": [
+            [
+              "9:00 AM to 10:00 AM",
+              "Registration"
+            ],
+            [
+              "10:00 AM to 12:30 PM",
+              "Committee Session 1"
+            ],
+            [
+              "12:30 PM to 1:30 PM",
+              "Lunch"
+            ],
+            [
+              "1:30 PM to 4:30 PM",
+              "Committee Session 2"
+            ],
+            [
+              "4:30 PM to 5:00 PM",
+              "High tea break"
+            ],
+            [
+              "5:00 PM to 7:00 PM",
+              "Closing ceremony"
+            ],
+            [
+              "8:30 PM to 12:00 AM",
+              "Masquerade (entry closes at 10:00 PM)"
+            ]
+          ]
+        }
+      ]
+    }
+  }
+}
