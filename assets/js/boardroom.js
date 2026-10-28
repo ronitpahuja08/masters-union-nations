@@ -76,7 +76,7 @@ const cityOf=c=>c.city.split(' / ')[0];
 function statusOf(c){const h=parseInt(localTime(ZONES[c.code]),10);const on=c.code==='MCC'?(h>=20||h<6):(h>=9&&h<18);return on?'In session':'Boarding'}
 const coordOf=c=>Math.abs(c.lat).toFixed(2).padStart(5,'0')+'°'+(c.lat>=0?'N':'S')+' '+Math.abs(c.lon).toFixed(2).padStart(6,'0')+'°'+(c.lon>=0?'E':'W');
 
-let typeFrame=0,departing=false,zoomTimer=0,resetTimer=0,resetObserver=null;
+let typeFrame=0,departing=false,zoomTimer=0,resetTimer=0,prepanTimer=0,zoomFrame=0,resetObserver=null;
 function previewCommittee(c,i,on=true){
   if(departing)return;
   $$('.node',nodes).forEach((n,k)=>n.classList.toggle('active',on&&k===i));
@@ -104,7 +104,7 @@ mapArt.addEventListener('load',syncCommitteeMap,{once:true});if(mapArt.complete)
 
 /* Camera movement applies only to map artwork; map heading and committee rail stay fixed. */
 function resetMapCamera(){
-  clearTimeout(zoomTimer);clearTimeout(resetTimer);
+  clearTimeout(zoomTimer);clearTimeout(resetTimer);clearTimeout(prepanTimer);cancelAnimationFrame(zoomFrame);
   resetObserver?.disconnect();resetObserver=null;
   mapCamera.style.transition='none';
   mapCamera.style.transform='';
@@ -158,11 +158,11 @@ function selectCommittee(c,i,event){
     mapCamera.style.willChange='transform';
     mapCamera.style.transformOrigin='0 0';
     mapCamera.style.transition='transform 720ms cubic-bezier(.22,.7,.18,1)';
-    requestAnimationFrame(()=>{mapCamera.style.transform=
+    zoomFrame=requestAnimationFrame(()=>{mapCamera.style.transform=
       `translate3d(${(cam.width/2-sx*scale).toFixed(1)}px,${(cam.height*.45-sy*scale).toFixed(1)}px,0) scale(${scale})`});
     zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},740);
   };
-  if(prepan)setTimeout(launch,prepan);
+  if(prepan)prepanTimer=setTimeout(launch,prepan);
   else launch();
 }
 let current=null,currentCommitteeIndex=0,committeeJourneyTimers=[],lastCommitteeControl=null,committeeJourneyActive=false;
@@ -252,6 +252,12 @@ function abortCommitteeJourneyForRoute(){
 }
 function closeActiveForRoute(){
   abortCommitteeJourneyForRoute();
+  // Navigation away from a committee must not leave a registration overlay
+  // floating above the map. No changes are made to the form or its handlers.
+  for(const id of ['applyModal','studioModal']){
+    const dialog=$('#'+id);
+    if(dialog&&(dialog.open||dialog.hasAttribute('open')))closeModal(dialog);
+  }
   if($('#committeePage').classList.contains('open'))closeCommitteePage(true);
   if($('#dalalCommitteePage').classList.contains('open'))closeDalalCommitteePage(true);
   if($('#dossier').classList.contains('open'))closeDossier();
