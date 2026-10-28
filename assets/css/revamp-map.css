@@ -16,17 +16,7 @@
 .boardroom.is-focusing .map-dim,.boardroom.is-focusing .map-glow{opacity:1}
 #boardroom .world{z-index:5}
 
-/* ---------- routes: every line leads to Gurugram ---------- */
-#boardroom .routes path{filter:none;animation:none;opacity:1;stroke-dasharray:none;vector-effect:non-scaling-stroke;fill:none}
-#boardroom .route-base{stroke:rgba(210,169,92,.26);stroke-width:1;stroke-dasharray:2 5}
-#boardroom .route-pulse{stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:7 93;stroke-dashoffset:107;opacity:.85;
-  animation:routeTravel 6.2s linear infinite;animation-delay:var(--d,0s);animation-play-state:paused}
-.boardroom.map-live .route-pulse{animation-play-state:running}
-@keyframes routeTravel{to{stroke-dashoffset:0}}
-#boardroom .route{transition:opacity 280ms var(--ease-out)}
-.boardroom.is-focusing .route:not(.active){opacity:.18}
-#boardroom .route.active .route-base{stroke:var(--c);stroke-opacity:.6;stroke-dasharray:none}
-#boardroom .route.active .route-pulse{stroke-width:2.4;opacity:1;stroke-dasharray:16 84}
+/* ---------- routes: original dotted lines (boardroom.css) ---------- */
 
 /* ---------- committee cities ---------- */
 #boardroom .node{transition:opacity 260ms var(--ease-out);-webkit-tap-highlight-color:transparent}
@@ -46,10 +36,6 @@
 #boardroom .node.active .node-label small{color:var(--ivory)}
 @media (hover:hover) and (pointer:fine){#boardroom .node:hover .node-dot{transform:scale(1.45)}}
 
-.map-hub{position:absolute;left:var(--x);top:var(--y);z-index:5;width:0;height:0;pointer-events:none}
-.map-hub i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border:1px solid var(--brass);transform:rotate(45deg)}
-.map-hub small{position:absolute;right:12px;top:8px;white-space:nowrap;color:var(--brass);font:500 .5rem/1 var(--f-mono);letter-spacing:.14em}
-.boardroom.is-focusing .map-hub{opacity:.45}
 
 /* ---------- cable readout ---------- */
 .map-cable{--pc:var(--brass);position:absolute;left:var(--cx,50%);top:var(--cy,50%);z-index:8;width:min(340px,70vw);pointer-events:none;
@@ -139,13 +125,11 @@
   .dep-row{width:132px}
   .map-cable{width:min(280px,78vw)}
   .map-cable pre{font-size:.58rem}
-  .map-hub small{display:none}
 }
 @media (max-height:620px) and (min-width:561px){.dep-title h2{display:none}.dep-head{align-items:center}}
 
 /* ---------- reduced motion: keep fades, drop movement ---------- */
 @media (prefers-reduced-motion:reduce){
-  #boardroom .route-pulse{display:none}
   #boardroom .node-dot:after,.boardroom.map-live .dep-row.in-session .dep-status i{animation:none}
   .map-cable,.map-cable.show{transform:var(--cable-pos);transition:opacity 180ms linear}
   .departures,.boardroom.is-departing .departures{transform:none}

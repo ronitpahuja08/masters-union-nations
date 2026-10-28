@@ -131,18 +131,18 @@
       // Give the globe debris nearly three seconds to surge toward and across the screen.
       else if(elapsed<2850)p=.645+(.91-.645)*smooth(elapsed,260,2850);
       else if(elapsed<3100)p=.91+(.925-.91)*smooth(elapsed,2850,3100);
-      // Hold the reset card long enough for the cities to relight (revamp-reset.css) and the voice line; a media failure never traps the visitor.
-      else if(elapsed<4900)p=.925;
-      else p=.925+.075*smooth(elapsed,4900,5700);
+      // Hold the reset title for the voice line; a media failure never traps the visitor.
+      else if(elapsed<3950)p=.925;
+      else p=.925+.075*smooth(elapsed,3950,4800);
       target=p;
       apply();
-      if(!mapScrollDone&&elapsed>=(reducedMotion?0:4900)){
+      if(!mapScrollDone&&elapsed>=(reducedMotion?0:3950)){
         mapScrollDone=true;
         holdScrollY=journeyTop+range();
         // Move the document once while the reset card fully covers the stage.
         window.scrollTo({top:holdScrollY,behavior:'instant'});
       }
-      if(elapsed<(reducedMotion?1150:5700)){raf=requestAnimationFrame(step);return;}
+      if(elapsed<(reducedMotion?1150:4800)){raf=requestAnimationFrame(step);return;}
       phase='map';p=target=1;apply();return;
     }
     var d=target-p;
