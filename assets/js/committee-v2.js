@@ -345,13 +345,13 @@
   const COORD = { UNHRC:'46.20°N  6.14°E', MCC:'40.71°N  74.01°W', CCEP:'1.35°N  103.82°E', IPL:'12.97°N  77.59°E', AIPPM:'28.61°N  77.21°E', STARTUP:'37.77°N  122.42°W', IP:'51.51°N  0.13°W', DALAL:'19.08°N  72.88°E' };
   /* hero: [wide word, serif half]; then per-section [line, serif line] */
   const COPY = {
-    UNHRC: { hero:['UNHRC','Human rights cannot wait.'], dossier:['The case file','on trafficking.'], mandate:['Protect first.','Then prosecute.'], mandateP:'Delegates map the routes, name the gaps in cross-border protection and draft safeguards a council could actually adopt.', citation:'for the strongest case.', seat:['Geneva is','holding your seat.'] },
-    MCC:   { hero:['MIDNIGHT CRISIS','When the clock stops, judgment begins.'], dossier:['Intelligence','arrives after dark.'], mandate:['Decide before','the clock does.'], mandateP:'Updates land without warning. Read them, issue directives and live with the consequences until morning.', citation:'for the steadiest hand.', seat:['Take the chair','before midnight.'] },
-    CCEP:  { hero:['CCEP','The future is negotiable.'], dossier:['Markets meet','the rulebook.'], mandate:['Price every','trade-off.'], mandateP:'Founders, regulators and economies argue over who pays and who grows. Bring numbers, not slogans.', citation:'on the ledger.', seat:['Singapore is','at the table.'] },
-    IPL:   { hero:['IPL','Every bid builds a champion.'], dossier:['The purse','is open.'], mandate:['Bid, build,','win the season.'], mandateP:'Set a strategy, guard the purse and turn single signings into an eleven that can win together.', citation:'for the auction room.', seat:['Paddle up.','It is your bid.'] },
-    AIPPM: { hero:['AIPPM','The House is in session.'], dossier:['One table,','हर विचार की आवाज़.'], mandate:['Hold your line.','बहुमत बनाइए.'], mandateP:'Argue your party’s position on One Nation, One Election and secularism, then build the votes to carry it.', citation:'for the House.', seat:['The Speaker','calls your name.'] },
-    STARTUP:{ hero:['STARTUP','Build the next big thing.'], dossier:['An idea','worth defending.'], mandate:['Pitch it.','Then prove it.'], mandateP:'Define the customer, defend the model when the numbers are questioned and decide what to do next.', citation:'for the boldest venture.', seat:['Pull up a chair','in the boardroom.'] },
-    IP:    { hero:['THE PRESS','Every story changes the narrative.'], dossier:['The summit,','on the record.'], mandate:['Observe. Verify.','Publish.'], mandateP:'Cover every committee as it happens, check every claim and file reporting, photography or caricature on deadline.', citation:'for the byline.', seat:['Your press pass','is waiting.'] }
+    UNHRC: { hero:['UNHRC','Human rights cannot wait.'], dossier:["The case file","on trafficking."], mandate:["Know the difference.","Protect the vulnerable."], mandateP:"Separate the offences, examine Sudan’s risks, and propose measures the Human Rights Council can actually take.", citation:'for the strongest case.', seat:['Geneva is','holding your seat.'] },
+    MCC:   { hero:['MIDNIGHT CRISIS','When the clock stops, judgment begins.'], dossier:["DEATH","is dead."], mandate:["ANSWER BEFORE","the dawn does."], mandateP:"The realms are collapsing. Before dawn, the court must uncover who killed Death and decide who rules in Death’s place.", citation:'for the steadiest hand.', seat:['Take the chair','before midnight.'] },
+    CCEP:  { hero:['CCEP','The future is negotiable.'], dossier:["Markets meet","the rulebook."], mandate:["Price every","trade-off."], mandateP:"Founders, regulators and economies argue over who pays and who grows. Bring numbers, not slogans.", citation:'on the ledger.', seat:['Singapore is','at the table.'] },
+    IPL:   { hero:['IPL','Every bid builds a champion.'], dossier:["THE PURSE","is open."], mandate:["BID, BUILD,","win the season."], mandateP:"", citation:'for the auction room.', seat:['Paddle up.','It is your bid.'] },
+    AIPPM: { hero:['AIPPM','The House is in session.'], dossier:["एक मेज़,","एक राष्ट्र, एक संहिता."], mandate:["Hold your line.","बहुमत बनाइए."], mandateP:"Equality, faith and federalism meet at one table. Build consensus without losing conviction.", citation:'for the House.', seat:['The Speaker','calls your name.'] },
+    STARTUP:{ hero:['STARTUP','Build the next big thing.'], dossier:["LET’S MAKE","India better."], mandate:["HOW THE ROOM","moves forward."], mandateP:"Every team gets a mentor, every idea faces scrutiny, and the best pitches go in front of real investors.", citation:'for the boldest venture.', seat:['Pull up a chair','in the boardroom.'] },
+    IP:    { hero:['THE PRESS','Every story changes the narrative.'], dossier:["THE SUMMIT,","on the record."], mandate:["OBSERVE. VERIFY.","Publish."], mandateP:"", citation:'for the byline.', seat:['Your press pass','is waiting.'] }
   };
   const NUM = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
   const TENS = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
@@ -458,7 +458,13 @@
     const code = page.dataset.committee || '';
     const c = COPY[code];
     if (!c) return;
-    const awards = $$('#cpAwardsList article', page);
+    // Reapply committee-specific editorial headings to the one shared page template.
+    const briefHeading=$('.cp-section-label h2',page),mandateHeading=$('.cp-do-head h2',page);
+    if(briefHeading)lines(briefHeading,...c.dossier);
+    if(mandateHeading)lines(mandateHeading,...c.mandate);
+    const mandateIntro=$('.cp-do-head>p',page);
+    if(mandateIntro){mandateIntro.textContent=c.mandateP||'';mandateIntro.hidden=!c.mandateP;}
+    const awards = $('#cpAwardsList article', page);
     page.dataset.awards = '1';
     awards.forEach((art, i) => cheque(art, i, code));
     const reg = $('#cpRegister>div:first-child', page);

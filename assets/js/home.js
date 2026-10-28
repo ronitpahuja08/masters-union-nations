@@ -20,7 +20,7 @@
     // The theme reveal gives the module and textures time to become ready.
     if(!globeLoading){
       globeLoading=true;
-      import('./globe-journey.js?v=perf-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
+      import('./globe-journey.js?v=perf-2').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
     }
     ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.webp'].forEach(function(src){
       var image=new Image();image.decoding='async';image.src=src;warmedImages.push(image);
@@ -234,7 +234,7 @@
   })();
 
   var cv=$('#stars'),ctx=cv.getContext('2d'),stars=[],W,H,mx=0,my=0;
-  function resize(){W=cv.width=home.clientWidth;H=cv.height=home.clientHeight;stars=[];var n=Math.floor(W*H/12000);for(var i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,tw:Math.random()*6.28,d:Math.random()<.5?'0':'1'});}
+  function resize(){W=cv.width=home.clientWidth;H=cv.height=home.clientHeight;stars=[];var n=Math.floor(W*H/(matchMedia('(max-width:760px)').matches?22000:16000));for(var i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,tw:Math.random()*6.28,d:Math.random()<.5?'0':'1'});}
   resize();addEventListener('resize',resize);
   /* star field no longer tracks cursor */
   var visibleHome=true,starTimer=0,starRaf=0,starsCleared=false;
@@ -246,7 +246,7 @@
       for(var i=0;i<stars.length;i++){var s=stars[i];s.tw+=.015;
         var x=(s.x-mx*24*s.z+W)%W,y=((s.y-my*16*s.z)%H+H)%H,a=(.06+.34*Math.abs(Math.sin(s.tw)))*s.z;
         ctx.fillStyle='rgba(255,'+(i%3?140:200)+','+(i%3?125:190)+','+a+')';ctx.fillText(s.d,x,y);}
-      starTimer=setTimeout(function(){starTimer=0;starRaf=requestAnimationFrame(draw);},65);
+      starTimer=setTimeout(function(){starTimer=0;starRaf=requestAnimationFrame(draw);},matchMedia('(max-width:760px)').matches?100:85);
     }else if(!starsCleared){ctx.clearRect(0,0,W,H);starsCleared=true;}
     starRaf=0;
   }

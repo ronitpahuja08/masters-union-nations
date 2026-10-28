@@ -1,0 +1,27 @@
+/* Targeted runtime optimisation for modest laptops and phones.
+   No changes to navigation, the map artwork, timing, or committee structures. */
+
+/* Dalal floating broker: top is constant, scroll movement is composited;
+   old version animated 'top' and forced layout on scroll. */
+.dalal-page.open .dp-mascot{
+  top:15vh!important;
+  transform:translate3d(0,var(--mascot-shift,0px),0)!important;
+  transition:transform .16s linear,opacity .35s,visibility .35s!important;
+  will-change:transform!important;
+}
+.dalal-page:not(.open) .dp-mascot{will-change:auto!important}
+/* Eliminate persistent GPU promotion of hidden UNHRC photo layers. */
+.mc-journey:not(.playing)[data-code="UNHRC"] .ur-image,
+.mc-journey:not(.playing)[data-code="UNHRC"] .ur-photo-half::before{
+  will-change:auto!important;
+}
+/* Limit expensive backdrop filters on narrow / mobile renderers. Retain
+   opaque backgrounds and borders for contrast and visual hierarchy. */
+@media(max-width:760px){
+  .hud.scrolled{backdrop-filter:none!important;background:rgba(9,8,13,.96)!important}
+  .mu-market-board{backdrop-filter:none!important;background:#0b1019f5!important}
+  .mc-journey .mc-skip{backdrop-filter:none!important;background:#080a13ee!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .dalal-page.open .dp-mascot{transition:none!important;transform:none!important}
+}
