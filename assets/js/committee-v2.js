@@ -384,19 +384,21 @@
   /* ---- prizes as engraved cheques ---- */
   function cheque(article, i, code) {
     if (article.dataset.rvPrize) return;
-    const what = ($('small', article)?.textContent || '').trim(), amount = ($('b', article)?.textContent || '').trim();
-    const note = ($('span', article)?.textContent || '').trim();
-    const rank = ROMAN[i] || String(i + 1);
-    article.dataset.rvPrize = '1'; article.dataset.rv = ''; article.classList.add('rv-prize'); article.style.setProperty('--i', i);
-    article.setAttribute('aria-label', `${what}: ${amount}`);
-    const pretty = what.toLowerCase().replace(/(^|[\s·(])([a-z])/g, (m, p, c) => p + c.toUpperCase());
-    article.innerHTML = `<div class="rv-medal" aria-hidden="true"><span>${rank}</span><small>MUN · 26</small></div>
-      <div class="rv-cheque" aria-hidden="true">
-        <p class="rv-cq-top"><span>MASTERS’ UNION NATIONS</span><span>28—29 NOV 2026</span></p>
-        <p class="rv-cq-pay"><small>PAY</small><em>${pretty}</em></p>
-        <p class="rv-cq-sum"><span class="rv-cq-words">${rupeesInWords(amount)}</span><b>${amount}</b></p>
-        <p class="rv-cq-foot"><span>No. ${code}·${String(i + 1).padStart(3, '0')}</span>${note ? `<span>${note}</span>` : '<span>GURUGRAM</span>'}</p>
-      </div>`;
+    const amount = ($('b', article)?.textContent || '').trim();
+    const words = rupeesInWords(amount);
+    if (!amount || !words) return;
+    article.dataset.rvPrize = '1'; article.dataset.rv = '';
+    article.classList.add('rv-prize', 'rv-prize-total');
+    article.style.setProperty('--i', '0');
+    article.setAttribute('aria-label', 'Total prize pool for ' + code + ': ' + amount);
+    article.innerHTML = `<div class="rv-cheque rv-cheque-total" aria-hidden="true">
+      <span class="rv-cq-watermark">ZERO</span>
+      <p class="rv-cq-top"><span>MASTERS' UNION NATIONS</span><span>28—29 NOV 2026</span></p>
+      <div class="rv-cq-security"><span>CEREMONIAL · NOT NEGOTIABLE</span><span class="cq-seal">MU</span></div>
+      <p class="rv-cq-pay"><small>PAY TO THE ORDER OF</small><em>${code} — Total Committee Prize Pool</em></p>
+      <p class="rv-cq-sum"><span class="rv-cq-words">Rupees ${words} only</span><b>${amount}</b></p>
+      <p class="rv-cq-foot"><span>REF: MUN/ZERO/${code}/2026</span><span>ZERO · THE WORLD RESET</span></p>
+    </div>`;
   }
 
   /* ---- take your seat: delegate placard, press-and-hold or click ---- */
@@ -453,27 +455,10 @@
 
   /* ---- shared page ---- */
   function decorateShared() {
-    const code = page.dataset.committee || '', c = COPY[code];
-    if (!c) return;
-    const num = $('#cpNumber'); if (num) num.textContent = 'CABLE · ' + COORD[code];
-    const a = $('#cpHeroA'), b = $('#cpHeroB'), title = $('#cpTitle');
-    if (a && b && title) {
-      a.textContent = c.hero[0]; b.textContent = c.hero[1];
-      const br = $('br', title); if (br) br.style.display = '';
-      title.dataset.len = c.hero[0].length > 9 ? 'long' : c.hero[0].length > 5 ? 'mid' : 'short';
-      title.setAttribute('aria-label', c.hero[0] + ', ' + c.hero[1]);
-    }
-    page.querySelector('.cp-agenda')?.classList.add('rv-cable');
-    label($('.cp-section-label small', page), 'DOSSIER');
-    lines($('.cp-section-label h2', page), ...c.dossier);
-    label($('.cp-do-head small', page), 'MANDATE');
-    lines($('.cp-do-head h2', page), ...c.mandate);
-    const mp = $('.cp-do-head p', page); if (mp) mp.textContent = c.mandateP;
-    const awards = $$('#cpAwardsList article');
-    label($('.cp-awards-head small', page), 'CITATION');
-    const n = awards.length;
-    lines($('.cp-awards-head h2', page), `${NUM[n][0].toUpperCase() + NUM[n].slice(1)} ${n === 1 ? 'prize' : 'prizes'}`, c.citation);
-    page.dataset.awards = String(n);
+    const code = page.dataset.committee || '';
+    if (!COPY[code]) return;
+    const awards = $$('#cpAwardsList article', page);
+    page.dataset.awards = '1';
     awards.forEach((art, i) => cheque(art, i, code));
     const reg = $('#cpRegister>div:first-child', page);
     if (reg) { label($('small', reg), 'CREDENTIALS'); const h = $('h2', reg); lines(h, ...c.seat); h.classList.add('rv-seat-h'); }
@@ -489,12 +474,7 @@
 
   /* ---- Dalal Street ---- */
   (function decorateDalal() {
-    const eb = $('.dp-eyebrow', dalal); if (eb) eb.innerHTML = '<i></i> <span>CABLE · ' + COORD.DALAL + '</span> <span class="rv-eb-loc">MUMBAI, INDIA</span>';
-    label($('.dp-brief .dp-section-title small', dalal), 'DOSSIER');
-    label($('.dp-awards-head small', dalal), 'CITATION');
-    label($('.dp-playbook small', dalal), 'MANDATE');
-    $$('.dp-section-title h2,.dp-awards-head h2,.dp-playbook h2', dalal).forEach(splitStatic);
-    $$('.dp-awards>article', dalal).forEach((a, i) => cheque(a, i, 'DALAL'));
+    $$('.dp-awards>article', dalal).forEach((article, i) => cheque(article, i, 'DALAL'));
     const copy = $('.dp-register-copy', dalal);
     if (copy) {
       label($('small', copy), 'CREDENTIALS');

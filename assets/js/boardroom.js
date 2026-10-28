@@ -22,14 +22,14 @@ const committeePageCopy={
 };
 committees.forEach(c=>Object.assign(c,committeePageCopy[c.code]||{}));
 const committeeAwards={
- UNHRC:[['Best Delegate','₹15,000'],['High Commendation · College','₹10,000'],['High Commendation · School','₹5,000']],
- MCC:[['Best Delegate','₹30,000']],
- CCEP:[['Best Delegate','₹15,000'],['High Commendation · College','₹10,000'],['High Commendation · School','₹5,000']],
- IPL:[['Best Raiser','₹10,000'],['Best Player','₹10,000']],
- AIPPM:[['Best Delegate','₹15,000'],['High Commendation · College','₹10,000'],['High Commendation · School','₹5,000']],
- DALAL:[['Best Delegate','₹20,000']],
- STARTUP:[['Best Delegate','₹20,000'],['High Commendation · College','₹15,000'],['High Commendation · School','₹10,000']],
- IP:[['Best Photographer','₹5,000'],['Best Journalist','₹5,000'],['Best Caricaturist','₹5,000']]
+ UNHRC:[['Total Prize Pool','₹30,000']],
+ MCC:[['Total Prize Pool','₹30,000']],
+ CCEP:[['Total Prize Pool','₹30,000']],
+ IPL:[['Total Prize Pool','₹20,000']],
+ AIPPM:[['Total Prize Pool','₹30,000']],
+ DALAL:[['Total Prize Pool','₹20,000']],
+ STARTUP:[['Total Prize Pool','₹45,000']],
+ IP:[['Total Prize Pool','₹15,000']]
 };
 committees.forEach(c=>c.awards=committeeAwards[c.code]);
 function slugOf(code){return code==='DALAL'?'dalal-street':String(code).toLowerCase()}
@@ -85,7 +85,7 @@ function bindCommitteeControl(el,c,i,isNode){el.addEventListener('click',()=>sel
 function tickClocks(){$('#depOriginTime').textContent=localTime('Asia/Kolkata');$$('[data-zone]',boardroomEl).forEach(el=>{el.textContent=localTime(el.dataset.zone,el.classList.contains('cable-time'))});rowEls.forEach((row,i)=>{const s=statusOf(committees[i]);row.classList.toggle('in-session',s==='In session');const em=$('.dep-status em',row);if(!row.classList.contains('is-departing')&&em.textContent!==s)em.textContent=s})}
 let clockTimer=0;function setClocks(on){clearInterval(clockTimer);clockTimer=0;if(on){tickClocks();clockTimer=setInterval(tickClocks,1000)}}
 tickClocks();window.addEventListener('mun-map-live',e=>setClocks(!!e.detail?.live));
-function cableLines(c){const awards=c.awards||[],top=awards[0];return[`CABLE MUN/GGN ▸ ${cityOf(c).toUpperCase()}`,`${coordOf(c)}  LOCAL `,`${c.code} · ${c.full.toUpperCase()}`,`AGENDA  ${String(c.agenda||'').toUpperCase()}`,`PURSE   ${inr(purseOf(c))}${top?' · '+String(top[0]).toUpperCase()+' '+top[1]:''}`,`STATUS  ${statusOf(c).toUpperCase()} · ENTER ↵`]}
+function cableLines(c){return[`CABLE MUN/GGN ▸ ${cityOf(c).toUpperCase()}`,`${coordOf(c)}  LOCAL `,`${c.code} · ${c.full.toUpperCase()}`,`AGENDA  ${String(c.agenda||'').toUpperCase()}`,`PURSE   ${inr(purseOf(c))}`,`STATUS  ${statusOf(c).toUpperCase()} · ENTER ↵`]}
 function typeCable(c){cancelAnimationFrame(typeFrame);const lines=cableLines(c),full=lines.join('\n'),zone=ZONES[c.code];const finish=()=>{mapCableText.textContent='';lines.forEach((line,k)=>{const row=document.createElement('span');row.className='cable-line'+(k===0?' cable-head':'');row.textContent=line;if(k===1){const t=document.createElement('b');t.className='cable-time';t.dataset.zone=zone;t.textContent=localTime(zone,true);row.append(t)}mapCableText.append(row)})};if(reducedMotion()){finish();return}const start=performance.now(),rate=.42;const step=now=>{const n=Math.floor((now-start)*rate);if(n>=full.length){finish();return}mapCableText.textContent=full.slice(0,n)+'▌';typeFrame=requestAnimationFrame(step)};typeFrame=requestAnimationFrame(step)}
 function placeCable(c){const stage=$('#mapStage'),w=stage.clientWidth,h=stage.clientHeight;mapCable.style.setProperty('--cx',c.x+'%');mapCable.style.setProperty('--cy',c.y+'%');mapCable.dataset.side=(c.x/100*w>w*.56)?'left':'right';mapCable.dataset.vert=(c.y/100*h<h*.4)?'below':'above'}
 function renderFocus(){if(departing)return;const i=hoverIdx>=0?hoverIdx:focusIdx;if(i===activeIdx)return;activeIdx=i;const on=i>=0,c=committees[i];boardroomEl.classList.toggle('is-focusing',on);nodeEls.forEach((n,k)=>n.classList.toggle('active',k===i));rowEls.forEach((r,k)=>r.classList.toggle('active',k===i));$$('.route',routes).forEach(p=>p.classList.toggle('active',on&&p.dataset.code===c.code));mapCable.classList.toggle('show',on);if(!on){cancelAnimationFrame(typeFrame);window.dispatchEvent(new CustomEvent('mun-map-focus',{detail:null}));return}boardroomEl.style.setProperty('--fc',c.color);[mapDim,mapGlow].forEach(el=>{el.style.setProperty('--fx',c.x+'%');el.style.setProperty('--fy',c.y+'%')});mapCable.style.setProperty('--pc',c.color);placeCable(c);typeCable(c);window.dispatchEvent(new CustomEvent('mun-map-focus',{detail:{code:c.code,x:c.x,y:c.y,color:c.color}}))}
@@ -127,9 +127,14 @@ async function openCommittee(c,i,event){startCommitteeJourney(c,i,event)}
 $('#committeeJourneySkip').onclick=finishCommitteeJourney;$('#dalalCrashSkip').onclick=finishCommitteeJourney;$('#ipCinemaSkip').onclick=finishCommitteeJourney;$('#startupLaunchSkip').onclick=finishCommitteeJourney;$('#mccFlightSkip').onclick=finishCommitteeJourney;$('#dalalPageClose').onclick=closeDalalCommitteePage;$('#dalalPageScroll').addEventListener('scroll',scheduleDalalMascot,{passive:true});window.addEventListener('resize',scheduleDalalMascot,{passive:true});
 function renderAwards(c){
  const panel=$('#cpAwards'),list=$('#cpAwardsList');
- panel.style.setProperty('--award-count',c.awards.length);
- list.replaceChildren(...c.awards.map(([label,amount])=>{const article=document.createElement('article'),small=document.createElement('small'),value=document.createElement('b');small.textContent=label.toUpperCase();value.textContent=amount;article.append(small,value);return article}));
- $('#cpAwardsNote').textContent='Award amounts for '+c.full+'.';
+ const article=document.createElement('article'),label=document.createElement('small');
+ const amount=document.createElement('b'),note=document.createElement('span');
+ panel.style.setProperty('--award-count','1');
+ label.textContent='TOTAL PRIZE POOL';
+ amount.textContent=inr(purseOf(c));
+ note.textContent='Combined prize pool for this committee.';
+ article.append(label,amount,note);list.replaceChildren(article);
+ $('#cpAwardsNote').textContent='Total prize pool for '+c.full+'.';
 }
 function openCommitteePage(c,i){const page=$('#committeePage'),scroller=$('#committeePageScroll'),title=$('#cpTitle');page.dataset.committee=c.code;page.style.setProperty('--committee-accent',c.color);$('#cpNumber').textContent='COMMITTEE '+String(i+1).padStart(2,'0');$('#cpLocation').textContent=c.city;$('#cpFullName').textContent=c.full;$('#cpHeroA').textContent=c.heroA;$('#cpHeroB').textContent=c.heroB;$('#cpAgenda').textContent=c.agenda;$('#cpArtCode').textContent=c.code;$('#cpArtCity').textContent=c.city.split(' / ')[0];$('#cpLead').textContent=c.lead;$('#cpIntro').textContent=c.intro;const tags=$('#cpSkills');tags.replaceChildren(...c.skills.map(s=>{const el=document.createElement('span');el.textContent=s;return el}));const steps=$('#cpSteps');steps.replaceChildren(...c.steps.map(([name,description],index)=>{const li=document.createElement('li'),number=document.createElement('i'),copy=document.createElement('span'),strong=document.createElement('b'),small=document.createElement('small');number.textContent=String(index+1).padStart(2,'0');copy.append(strong,small);strong.textContent=name;small.textContent=description;li.append(number,copy);return li}));renderAwards(c);page.classList.add('open');scroller.scrollTo({top:0,behavior:'instant'});page.style.setProperty('--mcc-scroll','0px');page.setAttribute('aria-hidden','false');document.body.classList.add('overlay');title.tabIndex=-1;title.focus({preventScroll:true});window.MUNCommitteeCinematics?.decoratePage(c.code)}
 function closeCommitteePage(){window.MUNCommitteeCinematics?.closePage();const page=$('#committeePage');page.classList.remove('open');page.setAttribute('aria-hidden','true');document.body.classList.remove('overlay');stopTheme();if(lastCommitteeControl?.isConnected)lastCommitteeControl.focus({preventScroll:true})}
@@ -137,7 +142,7 @@ const mccScroller=$('#committeePageScroll'),mccSections=$$('.cp-brief,.cp-do,.cp
 function updateMccMotion(){const page=$('#committeePage');if(page.dataset.committee!=='MCC'||!page.classList.contains('open'))return;page.style.setProperty('--mcc-scroll',Math.min(mccScroller.scrollTop,mccScroller.clientHeight)+'px');const bottom=mccScroller.getBoundingClientRect().bottom;mccSections.forEach(section=>{if(section.getBoundingClientRect().top<bottom*.88)section.classList.add('mcc-visible')})}
 mccScroller.addEventListener('scroll',updateMccMotion,{passive:true});
 $('#committeePageClose').onclick=closeCommitteePage;$('#committeePageApply').onclick=()=>openApplication(current.code);
-function renderDossier(c,i){const d=$('#dossier');d.style.setProperty('--c',c.color);$('#dossierCrest').textContent=c.code;$('#dossierCity').textContent=c.city;$('#dossierIndex').textContent='Committee '+String(i+1).padStart(2,'0')+' / secure dossier';$('#dossierCode').textContent=c.code;$('#dossierFull').textContent=c.full;$('#dossierAgenda').textContent=c.agenda;$('#dossierIntro').textContent=c.intro;$('#dossierExpect').textContent=c.expect;$('#skills').innerHTML=c.skills.map(s=>'<span>'+s+'</span>').join('');$('#dossierAwards').textContent=c.awards.map(([label,amount])=>amount+' '+label).join(' · ');const mx=$('#dossierMatrix');mx.hidden=!c.matrix;if(c.matrix)mx.href=c.matrix;updateCommitteeSound()}
+function renderDossier(c,i){const d=$('#dossier');d.style.setProperty('--c',c.color);$('#dossierCrest').textContent=c.code;$('#dossierCity').textContent=c.city;$('#dossierIndex').textContent='Committee '+String(i+1).padStart(2,'0')+' / secure dossier';$('#dossierCode').textContent=c.code;$('#dossierFull').textContent=c.full;$('#dossierAgenda').textContent=c.agenda;$('#dossierIntro').textContent=c.intro;$('#dossierExpect').textContent=c.expect;$('#skills').innerHTML=c.skills.map(s=>'<span>'+s+'</span>').join('');$('#dossierAwards').textContent='Total Prize Pool: '+inr(purseOf(c));const mx=$('#dossierMatrix');mx.hidden=!c.matrix;if(c.matrix)mx.href=c.matrix;updateCommitteeSound()}
 function closeDossier(){stopTheme();$('#dossier').classList.remove('open');$('#dossier').setAttribute('aria-hidden','true');document.body.classList.remove('overlay')}
 $('#dossierClose').onclick=closeDossier;$('#dossierApply').onclick=()=>{closeDossier();openApplication(current.code)};$('#dossierSound').onclick=async()=>{if(licensedTrack&&!licensedTrack.paused){stopTheme();return}if(!state.sound){state.sound=true;save();$('#soundToggle').setAttribute('aria-pressed','true');$('#soundToggle span').textContent='Sound on';audio ||= new (window.AudioContext||window.webkitAudioContext)();await audio.resume()}playCommitteeTheme(current)};
 

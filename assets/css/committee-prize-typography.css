@@ -1,0 +1,180 @@
+/* Restore pre-revamp committee type, without touching forms or layout. */
+html body .committee-page.open :is(.cp-hero,.cp-brief,.cp-do,.cp-awards),
+html body .dalal-page.open :is(.dp-hero,.dp-brief,.dp-playbook,.dp-awards){font-family:"Manrope",Arial,sans-serif}
+html body .committee-page.open #cpTitle,
+html body .dalal-page.open #dpTitle{
+ font-family:"Manrope",Arial,sans-serif!important;font-weight:800!important;
+ font-size:var(--u-h1,clamp(3.6rem,9.6vw,9rem))!important;
+ line-height:.86!important;letter-spacing:-.07em!important;text-transform:none!important;
+ max-width:min(1200px,94vw)!important;margin:24px 0 20px!important
+}
+html body .committee-page.open #cpTitle>br,
+html body .dalal-page.open #dpTitle>br{display:initial!important}
+html body .committee-page.open #cpHeroA,
+html body .dalal-page.open #dpTitle>span{
+ display:inline!important;font-family:"Manrope",Arial,sans-serif!important;
+ font-size:inherit!important;font-weight:800!important;line-height:inherit!important;
+ letter-spacing:inherit!important;text-transform:none!important
+}
+html body .committee-page.open #cpHeroB,
+html body .dalal-page.open #dpTitle>em{
+ display:inline!important;margin:0!important;font-family:"Playfair Display",Georgia,serif!important;
+ font-size:inherit!important;line-height:inherit!important;font-style:italic!important;
+ font-weight:600!important;letter-spacing:-.055em!important;text-transform:none!important;
+ -webkit-text-fill-color:currentColor!important
+}
+html body .committee-page.open #cpHeroB{color:var(--committee-accent,#e9c873)!important}
+html body .dalal-page.open #dpTitle>em{color:#efc880!important}
+html body .committee-page.open #cpAgenda,
+html body .dalal-page.open .dp-hero-tagline{
+ font-family:"Manrope",Arial,sans-serif!important;font-weight:500!important;
+ font-size:clamp(.82rem,1.3vw,1rem)!important;line-height:1.7!important;
+ letter-spacing:normal!important;text-transform:none!important
+}
+html body .committee-page.open :is(.cp-brief,.cp-do,.cp-awards) h2,
+html body .dalal-page.open :is(.dp-brief,.dp-playbook,.dp-awards) h2{
+ font-family:"Manrope",Arial,sans-serif!important;font-size:var(--u-h2,clamp(2.7rem,6vw,5.7rem))!important;
+ font-weight:800!important;line-height:.92!important;letter-spacing:-.07em!important;
+ text-transform:none!important;max-width:none!important;text-wrap:balance
+}
+html body .committee-page.open :is(.cp-brief,.cp-do,.cp-awards) h2 em,
+html body .dalal-page.open :is(.dp-brief,.dp-playbook,.dp-awards) h2 em{
+ font-family:"Playfair Display",Georgia,serif!important;font-style:italic!important;
+ font-size:inherit!important;font-weight:600!important;line-height:inherit!important;
+ letter-spacing:-.055em!important;text-transform:none!important;
+ -webkit-text-fill-color:currentColor!important
+}
+html body .committee-page.open :is(.cp-lead,.cp-brief-copy p,.cp-do-head>p,.cp-awards-head>p,.cp-steps li b,.cp-steps li small),
+html body .dalal-page.open :is(.dp-lead,.dp-brief-copy p,.dp-playbook>div>p,.dp-awards-head>p,.dp-playbook li b,.dp-playbook li small){
+ font-family:"Manrope",Arial,sans-serif!important;letter-spacing:normal!important;text-transform:none!important
+}
+html body .committee-page.open .cp-lead,html body .dalal-page.open .dp-lead{
+ font-weight:700!important;font-size:var(--u-lead,clamp(1.2rem,2vw,1.7rem))!important;line-height:1.3!important
+}
+html body .committee-page.open .cp-steps li b,
+html body .dalal-page.open .dp-playbook li b{
+ font-size:clamp(.92rem,1.2vw,1.1rem)!important;font-weight:700!important
+}
+html body .committee-page.open :is(.cp-brief-copy p:not(.cp-lead),.cp-do-head>p,.cp-awards-head>p,.cp-steps li small),
+html body .dalal-page.open :is(.dp-brief-copy p:not(.dp-lead),.dp-playbook>div>p,.dp-awards-head>p,.dp-playbook li small){
+ font-size:clamp(.83rem,1.1vw,1rem)!important;line-height:1.75!important
+}
+html body .committee-page.open :is(.cp-section-label small,.cp-do-head>small,.cp-awards-head>small),
+html body .dalal-page.open :is(.dp-section-title small,.dp-playbook>div>small,.dp-awards-head small){
+ font-family:"DM Mono",monospace!important;font-weight:500!important;
+ font-size:clamp(.52rem,.72vw,.67rem)!important;letter-spacing:.14em!important
+}
+html body .committee-page.open .cp-tags span,
+html body .dalal-page.open .dp-tags span{
+ font-family:"DM Mono",monospace!important;font-weight:500!important;font-size:clamp(.52rem,.72vw,.65rem)!important
+}
+html body .committee-page.open .cp-hero .mu-hero-actions a,
+html body .dalal-page.open .dp-hero-actions :is(a,button){
+ font-family:"Manrope",Arial,sans-serif!important;font-size:clamp(.75rem,1vw,.85rem)!important;
+ font-weight:800!important;letter-spacing:normal!important;text-transform:none!important
+}
+
+/* Total-pool-only ceremonial cheque; no medal or individual award breakdown. */
+html body .committee-page.open #cpAwardsList{
+ grid-column:1/-1!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ width:100%!important;max-width:940px!important;gap:0!important
+}
+html body .dalal-page.open .dp-awards>article{max-width:940px!important}
+html body :is(.committee-page,.dalal-page).open .rv-prize-total{
+ position:relative!important;display:block!important;width:100%!important;max-width:940px!important;
+ border:0!important;background:none!important;box-shadow:none!important;padding:0!important;margin:0!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total .rv-medal{display:none!important}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total .rv-cheque-total{
+ position:relative!important;isolation:isolate;overflow:hidden;
+ display:flex!important;flex-direction:column;justify-content:space-between;
+ gap:clamp(12px,2vw,20px)!important;width:100%!important;
+ min-height:clamp(270px,30vw,360px)!important;
+ padding:clamp(22px,3.5vw,38px) clamp(25px,4vw,48px)!important;
+ border:1px solid #e0c9a6!important;border-radius:5px!important;color:#332821!important;
+ background:repeating-linear-gradient(115deg,transparent 0 9px,rgba(82,61,44,.025) 9px 10px),
+ radial-gradient(ellipse 65% 45% at 75% 26%,rgba(216,173,92,.2),transparent),
+ linear-gradient(130deg,#fff8eb 0%,#f4e8d3 42%,#e7d5b8 100%)!important;
+ box-shadow:0 4px 0 rgba(64,40,18,.4),0 22px 56px rgba(0,0,0,.34),inset 0 0 0 5px rgba(255,255,255,.36)!important;
+ transform:translate3d(0,0,0) rotate(0)!important;
+ transition:transform 420ms cubic-bezier(.2,.7,.2,1),box-shadow 420ms ease!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total::before{
+ content:"";position:absolute!important;left:14px!important;top:14px!important;bottom:14px!important;
+ width:0!important;border-left:2px dotted rgba(86,54,31,.35)!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total::after{
+ content:"";position:absolute;z-index:4;inset:0;pointer-events:none;
+ background:linear-gradient(112deg,transparent 24%,rgba(255,255,255,.12) 35%,rgba(255,255,255,.57) 47%,rgba(255,255,255,.1) 59%,transparent 74%);
+ transform:translate3d(-125%,0,0);transition:transform 850ms cubic-bezier(.2,.75,.18,1)
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-watermark{
+ position:absolute;z-index:-1;right:5%;top:12%;
+ font:900 clamp(5rem,13vw,12rem)/1 "Manrope",Arial,sans-serif;
+ letter-spacing:-.09em;color:rgba(125,96,68,.065)!important;
+ transform:rotate(-12deg);user-select:none;pointer-events:none
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-top{
+ align-items:flex-start;padding-bottom:15px;border-bottom:1px solid rgba(70,51,37,.35);
+ font-size:clamp(.55rem,.78vw,.72rem)!important;color:#493323!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-security{
+ display:flex;align-items:center;justify-content:space-between;gap:14px;
+ font:600 clamp(.53rem,.7vw,.65rem)/1.3 "DM Mono",monospace!important;
+ letter-spacing:.12em;color:#806646;text-transform:uppercase
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .cq-seal{
+ display:grid;place-items:center;flex:none;width:34px;height:34px;
+ border:1px solid #ac895d;border-radius:50%;color:#8b593a;font-weight:700;
+ background:repeating-conic-gradient(from 0deg,rgba(173,133,70,.22) 0 9deg,transparent 9deg 17deg)
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-pay{
+ display:grid!important;gap:5px!important;align-items:start!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-pay small{
+ color:#7a5b44!important;font:600 clamp(.58rem,.72vw,.68rem)/1.4 "DM Mono",monospace!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-pay em{
+ display:block!important;padding:0 0 11px!important;
+ font:italic 600 clamp(1.25rem,2.5vw,2.2rem)/1.2 "Playfair Display",Georgia,serif!important;color:#372821!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-sum{
+ display:flex!important;align-items:center!important;gap:18px!important;justify-content:space-between!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-words{
+ font:italic 600 clamp(1rem,1.6vw,1.4rem)/1.3 "Playfair Display",Georgia,serif!important;color:#48352a!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-sum b{
+ flex:none;min-width:max-content;border:1px solid #7a5b3f!important;border-radius:2px!important;
+ background:rgba(255,255,255,.36)!important;padding:9px 14px!important;
+ font:800 clamp(1.65rem,3vw,2.7rem)/1 "Manrope",Arial,sans-serif!important;
+ letter-spacing:-.06em!important;color:#24190e!important
+}
+html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-foot{
+ border-top:1px solid rgba(70,51,37,.32);padding-top:12px;
+ color:#695343!important;font-size:clamp(.52rem,.72vw,.65rem)!important
+}
+@media(hover:hover) and (pointer:fine){
+ html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total:hover .rv-cheque-total{
+  transform:translate3d(0,-6px,0) rotate(-.55deg)!important;
+  box-shadow:0 6px 0 rgba(64,40,18,.33),0 33px 78px rgba(0,0,0,.47),0 0 0 2px rgba(231,188,104,.58),inset 0 0 0 5px rgba(255,255,255,.5)!important
+ }
+ html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total:hover .rv-cheque-total::after{
+  transform:translate3d(125%,0,0)
+ }
+}
+@media(max-width:560px){
+ html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total .rv-cheque-total{
+   min-height:285px!important;padding:19px 21px 21px 25px!important;gap:12px!important
+ }
+ html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total .rv-cq-sum{align-items:flex-start!important;flex-wrap:wrap!important}
+ html body .committee-page.open #cpTitle,html body .dalal-page.open #dpTitle{
+   font-size:var(--u-h1,clamp(2.7rem,11.2vw,5.6rem))!important
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ html body :is(#cpAwardsList,#dalalCommitteePage) .rv-prize-total .rv-cheque-total,
+ html body :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque-total::after{
+  transition:none!important;transform:none!important
+ }
+}
