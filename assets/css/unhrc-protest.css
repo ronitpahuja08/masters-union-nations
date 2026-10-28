@@ -1,0 +1,261 @@
+/* UNHRC / VOICES AGAINST THE CORDON
+   Documentary-inspired, photo-led story treatment. Other seven committees untouched.
+   Visual-only CSS; 7.4-second existing cinematic duration preserved.
+   Representative protests, not footage from the UN Human Rights Council. */
+
+/* ------------------------- CINEMATIC INTRO ------------------------- */
+.mc-journey[data-code="UNHRC"]{--mc-accent:#f3d3b4;background:#080b10}
+.mc-journey[data-code="UNHRC"] .mc-world{background:#080b10}
+.mc-journey[data-code="UNHRC"] .mc-photo{opacity:0!important;animation:none!important}
+.mc-journey[data-code="UNHRC"] .mc-haze{
+  z-index:4;pointer-events:none;
+  background:linear-gradient(180deg,#02050c6b 0%,transparent 21%,transparent 65%,#04070de6 100%);
+}
+.mc-journey[data-code="UNHRC"] .mc-grain{z-index:5;opacity:.045}
+.mc-journey[data-code="UNHRC"] .mc-top,
+.mc-journey[data-code="UNHRC"] .mc-bottom{z-index:9}
+.mc-journey[data-code="UNHRC"] .mc-heading{z-index:10}
+.mc-journey.playing[data-code="UNHRC"] .mc-heading{
+  animation:urNameArrival 7.4s cubic-bezier(.16,.76,.22,1) both!important;
+  filter:none!important;
+}
+.mc-journey[data-code="UNHRC"] .mc-heading h2{
+  font-size:clamp(5rem,17vw,15rem);
+  letter-spacing:-.115em;
+  text-shadow:0 6px 0 #191317,0 14px 70px #000c,0 0 55px #e1694330;
+}
+.mc-journey[data-code="UNHRC"] .mc-heading p{color:#ffc9a4}
+.mc-journey[data-code="UNHRC"] .mc-heading small{color:#e8d4be}
+.mc-journey.playing[data-code="UNHRC"] .mc-photo{animation:none!important}
+
+.ur-intro,.ur-intro *{box-sizing:border-box}
+.ur-intro{position:absolute;z-index:1;inset:0;overflow:hidden;background:#090e13;isolation:isolate}
+.ur-shot{position:absolute;inset:0;overflow:hidden;opacity:0}
+.ur-image{position:absolute;inset:-6%;background-size:cover;background-position:center;will-change:transform}
+.ur-shot-placards{animation:urFirstBeat 7.4s linear both;background:#1e2529}
+.ur-placard-photo{
+  background-image:
+    linear-gradient(110deg,#09090aaa 0%,transparent 38%,#04070f75 100%),
+    url("https://images.pexels.com/photos/13804831/pexels-photo-13804831.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop");
+  animation:urPosterCamera 7.4s cubic-bezier(.2,.7,.25,1) both;
+}
+.ur-shot-placards:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#0b0d12a9 0%,transparent 48%,#0b0f1aad);
+}
+.ur-depth{position:absolute;z-index:2;inset:0;perspective:1100px;pointer-events:none}
+.ur-depth-one{animation:urPosterLeft 7.4s cubic-bezier(.17,.7,.24,1) both}
+.ur-depth-two{animation:urPosterRight 7.4s cubic-bezier(.17,.7,.24,1) both}
+.ur-poster{
+  position:absolute;display:grid;align-content:space-between;gap:12px;
+  width:min(32vw,455px);min-height:clamp(230px,37vh,380px);
+  padding:clamp(18px,3vw,36px);
+  border:2px solid #cab89c;
+  color:#161416;
+  background:linear-gradient(145deg,#e6ded0,#bdb5a5 100%);
+  box-shadow:0 24px 55px #000b,inset 0 0 0 8px #fff8;
+  text-align:left;
+}
+.ur-poster-a{top:17%;left:11%;transform:rotate(-9deg)}
+.ur-poster-b{top:13%;right:8%;transform:rotate(8deg)}
+.ur-poster small,.ur-poster span{
+  font:800 clamp(9px,.9vw,14px)/1.4 "DM Mono",monospace;letter-spacing:.06em;
+}
+.ur-poster span{border-top:2px solid #2f2621;padding-top:12px}
+.ur-poster b{
+  font:950 clamp(1.4rem,3.7vw,4.6rem)/.9 "Archivo","Arial Black",sans-serif;
+  letter-spacing:-.055em;text-transform:uppercase;
+}
+.ur-poster-b b{color:#982e23}
+.ur-placards-label,.ur-drone-label{
+  position:absolute;z-index:4;left:5vw;bottom:20vh;
+  font:700 11px/1.4 "DM Mono",monospace;letter-spacing:.2em;color:#ffe0c1;
+  text-shadow:0 3px 15px #000;
+}
+.ur-shot-march{animation:urSecondBeat 7.4s linear both;background:#1d1d22}
+.ur-march-photo{
+  background-image:linear-gradient(180deg,#03060c4b,#0b0715b6),url("https://images.pexels.com/photos/4636148/pexels-photo-4636148.jpeg?auto=compress&cs=tinysrgb&w=1500&h=980&fit=crop");
+  background-position:center 45%;
+  animation:urDronePass 7.4s cubic-bezier(.14,.68,.18,1) both;
+}
+.ur-drone-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 75% 63% at 53% 40%,transparent 12%,#02040c91 100%)}
+.ur-drone-crosshair{position:absolute;width:19vmin;height:19vmin;top:34%;left:45%;border:1px solid #eee9df70;opacity:0;animation:urTarget 7.4s linear both}
+.ur-drone-crosshair:before,.ur-drone-crosshair:after{
+  content:"";position:absolute;background:#eee9df70;
+}
+.ur-drone-crosshair:before{height:1px;left:-12%;right:-12%;top:50%}
+.ur-drone-crosshair:after{width:1px;top:-12%;bottom:-12%;left:50%}
+
+.ur-shot-cordon{display:flex;animation:urThirdBeat 7.4s linear both;background:#070b11}
+.ur-photo-half{position:relative;width:50%;height:100%;overflow:hidden;background:#171a1c}
+.ur-photo-half:before{
+  content:"";position:absolute;inset:-5%;background-size:cover;
+  will-change:transform;animation:urStandoffPush 7.4s ease-in-out both;
+}
+.ur-stand-protest:before{
+  background-image:linear-gradient(90deg,#1f0808a0,#13070843),url("https://images.pexels.com/photos/14357097/pexels-photo-14357097.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1000&fit=crop");
+  background-position:center 45%;
+}
+.ur-stand-police:before{
+  background-image:linear-gradient(270deg,#071a28a2,#06131a48),url("https://images.pexels.com/photos/14885783/pexels-photo-14885783.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1000&fit=crop");
+  background-position:center 45%;
+  animation-direction:reverse;
+}
+.ur-cordon-haze{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,#801c1927,transparent 35%,#02070e9a 50%,transparent 65%,#12476830),
+             linear-gradient(180deg,#02040bb4 0%,transparent 32%,#02040ccb 88%);
+}
+.ur-cordon-label{
+  position:absolute;z-index:2;left:9%;right:9%;bottom:20%;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font:800 clamp(.72rem,1.4vw,1.3rem)/1.4 "DM Mono",monospace;letter-spacing:.18em;
+  color:#f6ece0;text-shadow:0 5px 20px #000;
+}
+.ur-cordon-label i{height:1px;flex:1;background:linear-gradient(90deg,#e16943,#9dcfe4)}
+.ur-filmburn{position:absolute;z-index:3;inset:0;pointer-events:none;opacity:0;animation:urBurn 7.4s linear both;background:linear-gradient(90deg,#e8621e44,transparent 30%,#ffffff88 58%,transparent 75%)}
+.ur-editorial-noise{position:absolute;z-index:3;inset:0;pointer-events:none;opacity:.12;background:repeating-linear-gradient(0deg,#fff1 0 1px,transparent 1px 4px)}
+.ur-intro-caption{
+  position:absolute;z-index:6;left:5%;right:5%;bottom:12%;
+  display:flex;justify-content:space-between;gap:12px;
+  color:#e6d1bbad;font:700 9px/1.4 "DM Mono",monospace;letter-spacing:.18em;
+}
+@keyframes urFirstBeat{0%,3%{opacity:1}24%{opacity:1}34%,100%{opacity:0}}
+@keyframes urSecondBeat{0%,20%{opacity:0}30%,50%{opacity:1}63%,100%{opacity:0}}
+@keyframes urThirdBeat{0%,52%{opacity:0}65%,79%{opacity:1}88%,100%{opacity:0}}
+@keyframes urPosterCamera{0%{transform:translate3d(0,0,0) scale(1.1)}33%,100%{transform:translate3d(-7%,4%,0) scale(1.55)}}
+@keyframes urPosterLeft{0%,6%{opacity:0;transform:translate3d(-20%,12%,0) scale(.65) rotate(-8deg)}14%{opacity:1}28%{opacity:1;transform:translate3d(-45%,0,0) scale(1.45) rotate(-13deg)}38%,100%{opacity:0;transform:translate3d(-95%,-7%,0) scale(2.5) rotate(-18deg)}}
+@keyframes urPosterRight{0%,5%{opacity:0;transform:translate3d(28%,18%,0) scale(.65) rotate(9deg)}12%{opacity:1}28%{opacity:1;transform:translate3d(50%,-5%,0) scale(1.25) rotate(13deg)}39%,100%{opacity:0;transform:translate3d(125%,-30%,0) scale(2.4) rotate(20deg)}}
+@keyframes urDronePass{0%,20%{transform:translate3d(-8%,9%,0) scale(1.48)}53%{transform:translate3d(3%,-4%,0) scale(1.12)}100%{transform:translate3d(9%,-7%,0) scale(1.04)}}
+@keyframes urStandoffPush{0%,52%{transform:scale(1.27)}86%,100%{transform:scale(1.04)}}
+@keyframes urTarget{0%,27%{opacity:0}32%,55%{opacity:.35}62%,100%{opacity:0}}
+@keyframes urBurn{0%,25%,27%,56%,58%,77%,79%,100%{opacity:0}26%,57%,78%{opacity:.7}}
+@keyframes urNameArrival{
+  0%,76%{opacity:0;transform:translate3d(0,-39%,0) scale(.94)}
+  85%,95%{opacity:1;transform:translate3d(0,-50%,0) scale(1)}
+  100%{opacity:1;transform:translate3d(0,-50%,0) scale(1.025)}
+}
+
+/* ---------------------------- HERO ---------------------------- */
+.cinema-hero-scene[data-code="UNHRC"]{
+  background:#06090d!important;animation:none!important;
+}
+.cinema-hero-scene[data-code="UNHRC"] .ur-hero{
+  position:absolute;inset:0;overflow:hidden;isolation:isolate;
+}
+.cinema-hero-scene[data-code="UNHRC"] .ur-hero-half{
+  position:absolute;top:0;bottom:0;width:50%;overflow:hidden;
+  background:linear-gradient(#23202a,#0d1422),url('../images/unhrc-geneva-cinematic.webp') center/cover;
+}
+.cinema-hero-scene[data-code="UNHRC"] .ur-hero-protest{left:0}
+.cinema-hero-scene[data-code="UNHRC"] .ur-hero-security{right:0}
+.cinema-hero-scene[data-code="UNHRC"] .ur-hero-image{
+  position:absolute;inset:-4%;background-size:cover;
+  transform:scale(1.05);animation:urHeroDrift 25s ease-in-out infinite alternate;
+}
+.cinema-hero-scene[data-code="UNHRC"] .ur-hero-protest .ur-hero-image{
+  background-image:
+    linear-gradient(90deg,#421b19ad,#17090870),
+    url("https://images.pexels.com/photos/4636148/pexels-photo-4636148.jpeg?auto=compress&cs=tinysrgb&w=1300&h=1000&fit=crop");
+  background-position:50% 45%;
+}
+.cinema-hero-scene[data-code="UNHRC"] .ur-hero-security .ur-hero-image{
+  background-image:
+    linear-gradient(270deg,#061a30bd,#06182465),
+    url("https://images.pexels.com/photos/14885783/pexels-photo-14885783.jpeg?auto=compress&cs=tinysrgb&w=1300&h=1000&fit=crop");
+  background-position:58% 40%;
+  animation-direction:alternate-reverse;
+}
+.ur-hero-mood{
+  position:absolute;z-index:2;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,#13060649 0%,transparent 17%,#04070eea 44%,#04070ef2 56%,transparent 82%,#07152560),
+    linear-gradient(180deg,#04070dbd 0%,transparent 22%,transparent 54%,#03070beb 100%);
+}
+.ur-hero-division{
+  position:absolute;z-index:2;left:50%;top:17%;height:62%;
+  width:1px;background:linear-gradient(transparent,#d2d5d399,transparent);
+  box-shadow:0 0 35px #edd3bb4d;opacity:.33;
+}
+.ur-hero-grid{
+  position:absolute;z-index:2;inset:0;opacity:.06;
+  background-image:linear-gradient(90deg,#fff 1px,transparent 1px),linear-gradient(#fff 1px,transparent 1px);
+  background-size:140px 140px;mask-image:linear-gradient(90deg,transparent,#000 50%,transparent);
+}
+.ur-hero-fog{
+  position:absolute;z-index:2;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 20% 70% at 35% 78%,#dd563a1c,transparent),
+             radial-gradient(ellipse 25% 70% at 65% 77%,#7eb8e31d,transparent);
+}
+.ur-hero-edge{
+  position:absolute;z-index:3;top:24%;
+  display:grid;gap:7px;color:#f5e8dc;letter-spacing:.1em;text-shadow:0 4px 20px #000;
+}
+.ur-hero-edge-left{left:clamp(15px,3.5vw,75px);text-align:left}
+.ur-hero-edge-right{right:clamp(15px,3.5vw,75px);text-align:right}
+.ur-hero-edge small{
+  font:700 clamp(9px,.8vw,12px)/1.4 "DM Mono",monospace;letter-spacing:.16em;
+  color:#f2ae8e;
+}
+.ur-hero-edge-right small{color:#a6cae4}
+.ur-hero-edge b{
+  font:900 clamp(14px,1.6vw,25px)/.98 "Archivo",Arial,sans-serif;
+  letter-spacing:-.03em;
+}
+.ur-hero-edge span{
+  font:600 clamp(7px,.65vw,10px)/1.5 "DM Mono",monospace;letter-spacing:.14em;
+  opacity:.85;
+}
+.ur-hero-disclaimer{
+  position:absolute;z-index:3;bottom:5%;left:50%;transform:translateX(-50%);
+  color:#e2d5caa3;white-space:nowrap;
+  font:700 clamp(7px,.55vw,10px)/1.5 "DM Mono",monospace;letter-spacing:.14em;
+}
+.committee-page[data-committee="UNHRC"] .cp-hero{background:#06090d!important}
+.committee-page[data-committee="UNHRC"] .cp-hero-copy{position:relative;z-index:4}
+.committee-page[data-committee="UNHRC"] #cpTitle{
+  text-shadow:0 5px 0 #1a0e12,0 18px 55px #000d,0 0 80px #b243302a;
+}
+.committee-page[data-committee="UNHRC"] .cinema-hero-tag{
+  color:#f7ceb2;letter-spacing:.19em;text-shadow:0 3px 20px #000;
+}
+@keyframes urHeroDrift{from{transform:translate3d(-1.2%,0,0) scale(1.07)}to{transform:translate3d(1.1%,-.6%,0) scale(1.12)}}
+
+@media(max-width:900px){
+  .ur-poster{width:38vw;min-height:27vh}
+  .ur-hero-edge{top:18%}
+  .ur-hero-edge span{display:none}
+  .ur-hero-division{opacity:.22}
+  .ur-hero-mood{background:
+    linear-gradient(90deg,#0b090a46 0%,#04070dcf 35%,#04070de6 65%,#0a122253 100%),
+    linear-gradient(180deg,#04060da3,transparent 30%,#04070de8 100%)}
+}
+@media(max-width:600px){
+  .ur-poster{width:52vw;min-height:23vh;padding:16px}
+  .ur-poster b{font-size:clamp(1.2rem,6vw,2.3rem)}
+  .ur-poster-a{left:-2%;top:23%}
+  .ur-poster-b{right:-7%;top:15%}
+  .ur-placard-photo{background-position:44%}
+  .ur-intro-caption span:last-child{display:none}
+  .ur-cordon-label{font-size:.58rem;letter-spacing:.07em}
+  .ur-hero-edge{top:17%}
+  .ur-hero-edge b{font-size:clamp(.8rem,3.3vw,1rem)}
+  .ur-hero-edge small{font-size:.52rem}
+  .ur-hero-edge-left{left:13px}.ur-hero-edge-right{right:13px}
+  .ur-hero-disclaimer{font-size:7px;letter-spacing:.05em;max-width:95%;text-align:center}
+  .committee-page[data-committee="UNHRC"] #cpTitle{font-size:clamp(3.8rem,16vw,5.6rem)!important}
+  .mc-journey[data-code="UNHRC"] .mc-heading h2{font-size:clamp(4.6rem,23vw,7rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  .mc-journey[data-code="UNHRC"] .ur-shot{animation:none!important}
+  .mc-journey[data-code="UNHRC"] .ur-shot-cordon{opacity:1!important}
+  .mc-journey[data-code="UNHRC"] .ur-shot-placards,
+  .mc-journey[data-code="UNHRC"] .ur-shot-march{opacity:0!important}
+  .mc-journey[data-code="UNHRC"] .ur-image,
+  .mc-journey[data-code="UNHRC"] .ur-photo-half:before,
+  .mc-journey[data-code="UNHRC"] .ur-filmburn,
+  .cinema-hero-scene[data-code="UNHRC"] .ur-hero-image{animation:none!important;transform:none!important}
+  .mc-journey.playing[data-code="UNHRC"] .mc-heading{
+    animation:none!important;opacity:1!important;transform:translateY(-50%)!important;
+  }
+}
