@@ -3,13 +3,6 @@
   var home=document.getElementById('home');if(!home)return;
   var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- lede: first sentence of the sub becomes the serif line ---- */
-  var sub=home.querySelector('.lobby-sub');
-  if(sub&&!sub.querySelector('.lede')){
-    var text=sub.textContent.trim(),cut=text.indexOf('. ')+1;
-    if(cut>0){sub.innerHTML='';var lede=document.createElement('span');lede.className='lede';lede.textContent=text.slice(0,cut);sub.appendChild(lede);sub.appendChild(document.createTextNode(text.slice(cut+1)));}
-  }
-
   /* ---- departures board: values roll through characters, then settle ---- */
   var GLYPHS='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   function roll(el,delay){
