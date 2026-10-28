@@ -1,0 +1,43 @@
+/* Targeted 29 Oct adjustments: preserve hero image, transitions, and original titles. */
+#home{--hero-frame-gutter:clamp(75px,7vw,112px)}
+#home .lobby-content{
+ width:min(calc(100% - var(--hero-frame-gutter) - 26px),1130px)!important;
+ max-width:1130px!important;
+ margin-left:var(--hero-frame-gutter)!important;
+ margin-right:auto!important;
+ justify-self:start;
+ text-align:left;
+}
+#home .lobby-title,#home .lobby-sub{text-align:left;max-width:100%}
+#home .lobby-title{align-items:flex-start}
+#home .pass{max-width:min(100%,1030px);margin-left:0;margin-right:0}
+/* Black transparent supplied logo, visually integrated into a red badge. */
+.mu-university-wordmark{
+ display:block;flex:none;width:clamp(116px,12.4vw,172px);height:auto;
+ aspect-ratio:418/84;object-fit:contain;box-sizing:border-box;
+ background:linear-gradient(100deg,#b54c57,#af3c4a);border-radius:3px;padding:4px 6px;
+}
+.hud .mu-university-link{
+ position:absolute;right:calc(clamp(78px,8vw,125px) + 55px);top:9px;z-index:5;
+ display:flex;align-items:center;justify-content:center;height:44px;text-decoration:none;
+}
+.hud .mu-university-link .mu-university-wordmark{width:clamp(128px,13vw,178px)}
+.nav .mu-university-link{margin-left:auto;display:flex;align-items:center}
+.nav .mu-university-link .mu-university-wordmark{width:156px}
+.nav .mu-university-link + .campaign-mark-link{margin-left:10px}
+.cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:clamp(116px,12vw,165px)}
+@media(max-width:760px){
+ #home{--hero-frame-gutter:18px}
+ #home .lobby-content{width:calc(100% - 36px)!important;margin-inline:18px!important}
+ #home .pass{max-width:100%}
+ .hud .mu-university-link{right:116px;top:8px;height:40px}
+ .hud .mu-university-link .mu-university-wordmark{width:108px;padding:3px 4px}
+ .nav .mu-university-link .mu-university-wordmark{width:98px}
+ .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:108px;padding:3px 4px}
+}
+@media(max-width:420px){
+ .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:92px;padding:2px 3px}
+}
+@media(max-width:355px){
+ .cp-nav-right>.mu-university-wordmark,.dp-nav-right>.mu-university-wordmark{width:70px}
+}

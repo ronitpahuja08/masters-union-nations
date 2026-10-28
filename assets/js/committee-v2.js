@@ -496,7 +496,7 @@
       }));
       names.hidden=arr.length===0;names.style.display=arr.length?'':'none';
     }
-    const awards = $('#cpAwardsList article', page);
+    const awards = $$('#cpAwardsList article', page);
     page.dataset.awards = '1';
     awards.forEach((art, i) => cheque(art, i, code));
     const reg = $('#cpRegister>div:first-child', page);
@@ -513,11 +513,11 @@
 
   /* ---- Dalal Street ---- */
   (function decorateDalal() {
-    $('.dp-awards>article', dalal).forEach((article, i) => cheque(article, i, 'DALAL'));
+    $$('.dp-awards>article', dalal).forEach((article, i) => cheque(article, i, 'DALAL'));
     const dalalAwardsHead=$('.dp-awards-head',dalal);
     if(dalalAwardsHead&&!$('.mun-award-names',dalalAwardsHead)){
       const caption=document.createElement('p');caption.className='mun-award-names';
-      const label=document.createElement('span');label.textContent='I — Bull of the Floor';
+      const label=document.createElement('span');label.textContent='I — BULL OF THE FLOOR';
       caption.appendChild(label);dalalAwardsHead.appendChild(caption);
     }
 
