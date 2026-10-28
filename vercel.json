@@ -3,18 +3,126 @@
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "same-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "same-origin"
+        }
       ]
     },
     {
       "source": "/(card|checkin).html",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
-        { "key": "Referrer-Policy", "value": "no-referrer" },
-        { "key": "Cache-Control", "value": "no-store" },
-        { "key": "Permissions-Policy", "value": "camera=(self)" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(self)"
+        }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/world-map/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/world-map",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/unhrc/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/unhrc",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/mcc/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/mcc",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ccep/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ccep",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ipl/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ipl",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/aippm/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/aippm",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dalal-street/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dalal-street",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/startup-boardroom/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/startup-boardroom",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/international-press/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/international-press",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/startup/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/startup",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ip/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ip",
+      "destination": "/index.html"
     }
   ]
 }

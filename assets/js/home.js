@@ -31,7 +31,9 @@
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
   // Prepare the strike while the visitor reads the hero (after its opening has played),
   // so texture uploads and shader compiles never land on their first scroll.
-  setTimeout(function(){(window.requestIdleCallback||function(f){return setTimeout(f,1);})(warmStrikeAssets,{timeout:3000});},2200);
+  if(!/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-press)\/?$/i.test(location.pathname)){
+    setTimeout(function(){(window.requestIdleCallback||function(f){return setTimeout(f,1);})(warmStrikeAssets,{timeout:3000});},2200);
+  }
 
   var LAND=.985,landed=false,struck=false,blackoutEntered=false,lastDispatched=-1;
   var lastContent=-1,lastDeco=-1,lastDusk=-1,lastFlash=-1,lastVeil=-1,lastGlobe=-1,lastMap=-1;
@@ -193,8 +195,9 @@
     }
     apply();
   }
+  window.MUNHomeNavigation={goto:goto};
   Array.prototype.forEach.call(document.querySelectorAll('[data-goto]'),function(el){
-    el.addEventListener('click',function(e){e.preventDefault();hud.classList.remove('open');goto(el.dataset.goto);});
+    el.addEventListener('click',function(e){e.preventDefault();hud.classList.remove('open');if(window.MUNRouter?.navigateSection)window.MUNRouter.navigateSection(el.dataset.goto);else goto(el.dataset.goto);});
   });
 
   $('#menuBtn').onclick=function(){hud.classList.toggle('open');};
