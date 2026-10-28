@@ -10,19 +10,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="assets/images/mun-nations-hero-art.webp" as="image" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/tokens.css?v=reset-1">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-<link rel="stylesheet" href="assets/css/boardroom.css?v=perf-2">
-<link rel="stylesheet" href="assets/css/home.css?v=perf-2">
-<link rel="stylesheet" href="assets/css/theme-modals.css">
-<link rel="stylesheet" href="assets/css/committee-cinematics.css?v=perf-2">
+<link rel="stylesheet" href="assets/css/boardroom.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/home.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/theme-modals.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/committee-cinematics.css?v=reset-1">
 
-<link rel="stylesheet" href="assets/css/committee-scenes.css?v=perf-2">
-<link rel="stylesheet" href="assets/css/committee-sequence.css?v=2">
-<link rel="stylesheet" href="assets/css/committee-v2.css?v=perf-2">
-<link rel="stylesheet" href="assets/css/committee-v2-repair.css?v=perf-2">
-<link rel="stylesheet" href="assets/css/committee-uniform.css?v=2">
-<link rel="stylesheet" href="assets/css/icard.css?v=8">
+<link rel="stylesheet" href="assets/css/committee-scenes.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/committee-sequence.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/committee-v2.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/committee-v2-repair.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/committee-uniform.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/icard.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/revamp-home.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/revamp-reset.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/revamp-credentials.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/revamp-map.css?v=reset-1">
+<link rel="stylesheet" href="assets/css/revamp-committees.css?v=reset-1">
 </head>
 <body class="on-home">
 <div class="grain"></div>
@@ -173,41 +178,34 @@
 <div class="thud-ring" aria-hidden="true"></div>
 <main>
 <section class="boardroom" id="boardroom">
-<div class="map-heading" aria-hidden="true">
-<span class="live-dot"></span>
-<p>Global committee network</p>
-<b>Select a destination</b>
-<small class="map-prize-pool">₹2,20,000 total prize pool</small>
-</div>
+<div class="map-camera" id="mapCamera">
+<div class="map-drift" id="mapDrift">
 <div class="map-pan" aria-label="Swipe horizontally to explore the world map">
 <div class="map-stage" id="mapStage">
 <div class="map-aura">
 </div>
-<svg class="world" viewBox="0 0 1000 520" preserveAspectRatio="none" role="img" aria-label="Interactive world map showing eight committee destinations">
-<defs>
-<filter id="glow">
-<feGaussianBlur stdDeviation="5" result="b"/>
-<feMerge>
-<feMergeNode in="b"/>
-<feMergeNode in="SourceGraphic"/>
-</feMerge>
-</filter>
-</defs>
+<canvas class="map-lights" id="mapLights" aria-hidden="true"></canvas>
+<div class="map-dim" id="mapDim" aria-hidden="true"></div>
+<div class="map-glow" id="mapGlow" aria-hidden="true"></div>
+<svg class="world" viewBox="0 0 1000 520" preserveAspectRatio="none" role="img" aria-label="World map: routes from Gurugram to eight committee cities">
 <g class="routes" id="routes">
 </g>
 </svg>
 <div class="nodes" id="nodes">
 </div>
-<aside class="map-preview" id="mapPreview"><span id="previewNum">01</span><div><small id="previewCity">GENEVA</small><b id="previewCode">UNHRC</b><p id="previewAgenda">Addressing human trafficking across Asia and Africa.</p></div><i>ENTER ↗</i></aside>
-<div class="map-readout">
-<span>CURSOR <b id="coords">28.46°N / 77.02°E</b>
-</span>
-<span>ACTIVE ROOMS <b>08</b>
-</span>
+<aside class="map-cable" id="mapCable" aria-hidden="true"><pre id="mapCableText"></pre></aside>
 </div>
 </div>
- </div>
-<div class="committee-rail" id="committeeRail">
+</div>
+</div>
+<div class="departures" id="departures">
+<div class="dep-head">
+<div class="dep-title"><p class="dep-kicker"><span class="dep-live" aria-hidden="true"></span>Departures<span class="dep-from"> · origin Gurugram</span> · <span id="depOriginTime">--:--</span> IST</p><h2>Eight rooms relight the world. <em>Pick yours.</em></h2></div>
+<div class="dep-purse"><b id="depPurse">₹2,20,000</b><small>Prize purse across eight rooms</small></div>
+</div>
+<div class="dep-cols" aria-hidden="true"><div><span>Room</span><span>Destination</span><span>Local</span><span>Purse</span><span>Status</span></div><div><span>Room</span><span>Destination</span><span>Local</span><span>Purse</span><span>Status</span></div></div>
+<div class="dep-board" id="committeeRail" role="group" aria-label="Committee departures">
+</div>
 </div>
 </section>
 </main>
@@ -273,13 +271,13 @@
 <header class="dp-nav"><button id="dalalPageClose" type="button" aria-label="Return to committee map">← <span>World map</span></button><a class="dp-brand" href="#dalalTop">MU <i>/</i> MUN</a><div class="dp-nav-right"><a class="dp-nav-cta" href="#dalalRegister">Register <span>↗</span></a><img class="committee-brand-mark" src="assets/img/zero-world-reset-circle.png" alt="ZERO — The World Reset"></div></header>
 <main class="dp-scroll" id="dalalPageScroll">
 
-<section class="dp-hero" id="dalalTop"><div class="dp-scene" aria-hidden="true"><div class="dp-bse-panorama"></div><div class="dp-market-display"><div class="dp-market-tape"><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span></div></div><svg class="dp-chart" viewBox="0 0 480 160" preserveAspectRatio="none"><path d="M0 132 L35 117 L61 122 L94 86 L128 94 L156 78 L190 93 L228 56 L264 66 L300 45 L325 68 L355 28 L388 43 L420 19 L480 5"/></svg></div><div class="dp-hero-glow"></div><div class="dp-hero-copy"><p class="dp-eyebrow"><i></i> COMMITTEE 06 &nbsp;·&nbsp; MUMBAI, INDIA</p><h1 id="dpTitle" aria-label="DALAL STREET"><span>DALAL</span><br><em>STREET</em></h1><p class="dp-hero-tagline">WHERE EVERY DECISION MOVES THE MARKET.</p><div class="dp-meta"><span>28—29 NOV 2026</span><span>MASTERS' UNION · GURUGRAM</span></div><div class="dp-hero-actions"><a class="dp-primary" href="#dalalBrief">Explore the committee <b>↓</b></a><button class="mu-dalal-register" type="button">Start registration <b>↓</b></button></div></div><div class="dp-hero-caption"><span>THE BOMBAY STOCK EXCHANGE</span><i>19°04′34″N &nbsp; 72°52′40″E</i></div></section>
+<section class="dp-hero" id="dalalTop"><div class="dp-scene" aria-hidden="true"><div class="dp-bse-panorama"></div><div class="dp-market-display"><div class="dp-market-tape"><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span></div></div><svg class="dp-chart" viewBox="0 0 480 160" preserveAspectRatio="none"><path d="M0 132 L35 117 L61 122 L94 86 L128 94 L156 78 L190 93 L228 56 L264 66 L300 45 L325 68 L355 28 L388 43 L420 19 L480 5"/></svg></div><div class="dp-hero-glow"></div><div class="dp-hero-copy"><p class="dp-eyebrow"><i></i> COMMITTEE 06 &nbsp;·&nbsp; MUMBAI, INDIA</p><h1 id="dpTitle" aria-label="DALAL STREET"><span>DALAL</span><br><em>Street.</em></h1><p class="dp-hero-tagline">WHERE EVERY DECISION MOVES THE MARKET.</p><div class="dp-meta"><span>28—29 NOV 2026</span><span>MASTERS' UNION · GURUGRAM</span></div><div class="dp-hero-actions"><a class="dp-primary" href="#dalalBrief">Explore the committee <b>↓</b></a><button class="mu-dalal-register" type="button">Start registration <b>↓</b></button></div></div><div class="dp-hero-caption"><span>THE BOMBAY STOCK EXCHANGE</span><i>19°04′34″N &nbsp; 72°52′40″E</i></div></section>
 
-<section class="dp-section dp-brief" id="dalalBrief"><div class="dp-section-title"><small>01 / THE BRIEF</small><h2>Read the room.<br><em>Move the market.</em></h2></div><div class="dp-brief-copy"><p class="dp-lead">Take a company public. Survive the IPO.</p><p>Step onto a fast-moving trading floor where every briefing can change a valuation. Build a case, read the signals, negotiate your way through the market and decide what the next move is worth.</p><div class="dp-tags"><span>MARKETS</span><span>FINANCE</span><span>RISK</span><span>NEGOTIATION</span></div></div></section>
-<section class="dp-awards"><div class="dp-awards-head"><small>02 / RECOGNITION</small><h2>Make your call.<br><em>Make it count.</em></h2><p>One award for the strongest performance on the trading floor.</p></div><article><small>BEST DELEGATE</small><b>₹20,000</b><span>For the sharpest strategy on the floor.</span></article></section>
-<section class="dp-playbook"><div><small>03 / YOUR PLAYBOOK</small><h2>Think like an<br><em>underwriter.</em></h2><p>Research the company. Build your valuation. Pitch the issue, test the numbers and negotiate when the market turns.</p></div><ol><li><i>01</i><span><b>Read the signals</b><small>Find the opportunity in the brief.</small></span></li><li><i>02</i><span><b>Build your case</b><small>Set a value others can believe.</small></span></li><li><i>03</i><span><b>Make the move</b><small>Negotiate, adapt and close.</small></span></li></ol></section>
+<section class="dp-section dp-brief" id="dalalBrief"><div class="dp-section-title"><small>DOSSIER</small><h2>Read the room.<br><em>Move the market.</em></h2></div><div class="dp-brief-copy"><p class="dp-lead">Take a company public. Survive the IPO.</p><p>Step onto a fast-moving trading floor where every briefing can change a valuation. Build a case, read the signals, negotiate your way through the market and decide what the next move is worth.</p><div class="dp-tags"><span>MARKETS</span><span>FINANCE</span><span>RISK</span><span>NEGOTIATION</span></div></div></section>
+<section class="dp-awards"><div class="dp-awards-head"><small>CITATION</small><h2>Make your call.<br><em>Make it count.</em></h2><p>One award for the strongest performance on the trading floor.</p></div><article><small>BEST DELEGATE</small><b>₹20,000</b><span>For the sharpest strategy on the floor.</span></article></section>
+<section class="dp-playbook"><div><small>MANDATE</small><h2>Think like an<br><em>underwriter.</em></h2><p>Research the company. Build your valuation. Pitch the issue, test the numbers and negotiate when the market turns.</p></div><ol><li><i>01</i><span><b>Read the signals</b><small>Find the opportunity in the brief.</small></span></li><li><i>02</i><span><b>Build your case</b><small>Set a value others can believe.</small></span></li><li><i>03</i><span><b>Make the move</b><small>Negotiate, adapt and close.</small></span></li></ol></section>
 
-<section class="dp-register" id="dalalRegister"><div class="dp-register-copy"><small>04 / TAKE YOUR SEAT</small><h2>Step onto<br><em>Dalal Street.</em></h2><p>Enter your details to begin. Next, create your delegate ID and continue to payment.</p><div class="dp-register-details"><span>IN PERSON <b>Mumbai-inspired market simulation</b></span><span>AT MASTERS' UNION <b>DLF Cyber Park, Gurugram</b></span><span>CONFERENCE DATES <b>28—29 November 2026</b></span></div></div><form class="dp-form" id="dalalInlineForm"><label>FULL NAME<input name="name" required autocomplete="name" placeholder="Your full name"></label><label>EMAIL<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label><label>INSTITUTION<input name="institution" required autocomplete="organization" placeholder="School or university"></label><label>Phone number<input name="phone" type="tel" required autocomplete="tel" inputmode="tel" maxlength="16" pattern="[+]?[0-9]{7,15}" title="Enter 7–15 digits, optionally starting with +; omit spaces." placeholder="+919876543210"></label><input type="hidden" name="applyingFor" value="DALAL"><p class="dp-form-note" id="dalalFormNote" aria-live="polite"></p><button type="submit">Start registration <b>↗</b></button><small>Next, continue to delegate ID and payment.</small></form></section>
+<section class="dp-register" id="dalalRegister"><div class="dp-register-copy"><small>CREDENTIALS</small><h2>Step onto<br><em>Dalal Street.</em></h2><p>Enter your details to begin. Next, create your delegate ID and continue to payment.</p><div class="dp-register-details"><span>IN PERSON <b>Mumbai-inspired market simulation</b></span><span>AT MASTERS' UNION <b>DLF Cyber Park, Gurugram</b></span><span>CONFERENCE DATES <b>28—29 November 2026</b></span></div></div><form class="dp-form" id="dalalInlineForm"><label>FULL NAME<input name="name" required autocomplete="name" placeholder="Your full name"></label><label>EMAIL<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label><label>INSTITUTION<input name="institution" required autocomplete="organization" placeholder="School or university"></label><label>Phone number<input name="phone" type="tel" required autocomplete="tel" inputmode="tel" maxlength="16" pattern="[+]?[0-9]{7,15}" title="Enter 7–15 digits, optionally starting with +; omit spaces." placeholder="+919876543210"></label><input type="hidden" name="applyingFor" value="DALAL"><p class="dp-form-note" id="dalalFormNote" aria-live="polite"></p><button type="submit">Start registration <b>↗</b></button><small>Next, continue to delegate ID and payment.</small></form></section>
 <footer class="dp-footer"><span>DALAL STREET · MASTERS' UNION NATIONS</span><a href="#dalalTop">Back to top ↑</a></footer>
 
 </main>
@@ -315,19 +313,19 @@
 </aside>
 </section>
 <section class="cp-section cp-brief" id="cpBrief">
-<div class="cp-section-label"><small>01 / THE MANDATE</small><h2>Understand<br><em>what is at stake.</em></h2></div>
+<div class="cp-section-label"><small>DOSSIER</small><h2>Understand<br><em>what is at stake.</em></h2></div>
 <div class="cp-brief-copy"><p class="cp-lead" id="cpLead"></p><p id="cpIntro"></p><div class="cp-tags" id="cpSkills"></div></div>
 </section>
 <section class="cp-do">
-<div class="cp-do-head"><small>02 / YOUR ROLE</small><h2>How the room<br><em>moves forward.</em></h2><p>Every committee rewards preparation, clear thinking and the ability to work with the room.</p></div>
+<div class="cp-do-head"><small>MANDATE</small><h2>How the room<br><em>moves forward.</em></h2><p>Every committee rewards preparation, clear thinking and the ability to work with the room.</p></div>
 <ol class="cp-steps" id="cpSteps"></ol>
 </section>
 <section class="cp-awards" id="cpAwards">
-<div class="cp-awards-head"><small>03 / RECOGNITION</small><h2>Good work<br><em>gets noticed.</em></h2><p id="cpAwardsNote"></p></div>
+<div class="cp-awards-head"><small>CITATION</small><h2>Good work<br><em>gets noticed.</em></h2><p id="cpAwardsNote"></p></div>
 <div class="cp-awards-list" id="cpAwardsList"></div>
 </section>
 <section class="cp-register" id="cpRegister">
-<div><small>04 / TAKE YOUR SEAT</small><h2>Bring your point<br><em>of view.</em></h2><p>Register for this committee and prepare to take part in two days of debate, decision-making and collaboration.</p><div class="cp-event-meta"><span>DATES <b>28—29 November 2026</b></span><span>VENUE <b>Masters' Union · DLF Cyber Park, Gurugram</b></span></div></div>
+<div><small>CREDENTIALS</small><h2>Bring your point<br><em>of view.</em></h2><p>Register for this committee and prepare to take part in two days of debate, decision-making and collaboration.</p><div class="cp-event-meta"><span>DATES <b>28—29 November 2026</b></span><span>VENUE <b>Masters' Union · DLF Cyber Park, Gurugram</b></span></div></div>
 <div class="cp-register-actions"><button class="cp-apply" id="committeePageApply" type="button">Start registration <b aria-hidden="true">↗</b></button><small>Registration continues in the existing delegate form.</small></div>
 </section>
 <footer class="cp-footer"><span>MASTERS' UNION NATIONS · THE WORLD RESET</span><a href="#committeePageTop">Back to top ↑</a></footer>
@@ -456,21 +454,24 @@
 <div class="toast" id="toast">
 </div>
 <button class="journey-music-toggle" id="journeyMusicToggle" type="button" aria-pressed="false" aria-label="Turn on soundtrack"><span class="journey-music-icon" aria-hidden="true">♫</span><span class="journey-music-label">Music off</span></button>
-<script src="assets/js/soundscape.js?v=on-1"></script>
-<script src="assets/js/home.js?v=smooth-1"></script>
-<script src="assets/js/boardroom.js?v=map-sync">
+<script src="assets/js/soundscape.js?v=reset-1"></script>
+<script src="assets/js/home.js?v=reset-1"></script>
+<script src="assets/js/hero-strike.js?v=reset-1"></script>
+<script src="assets/js/world-reset.js?v=reset-1"></script>
+<script src="assets/js/map-life.js?v=reset-1"></script>
+<script src="assets/js/boardroom.js?v=reset-1">
 </script>
-<script src="assets/js/journey-audio.js?v=on-1"></script>
-<script type="module" src="assets/js/dalal-crash.js?v=perf-1"></script>
-<script type="module" src="assets/js/startup-launch.js?v=perf-1"></script>
-<script src="assets/js/mcc-night-flight.js?v=seq-1"></script>
+<script src="assets/js/journey-audio.js?v=reset-1"></script>
+<script type="module" src="assets/js/dalal-crash.js?v=reset-1"></script>
+<script type="module" src="assets/js/startup-launch.js?v=reset-1"></script>
+<script src="assets/js/mcc-night-flight.js?v=reset-1"></script>
 
-<script src="assets/js/committee-scenes.js?v=14"></script>
-<script src="assets/js/committee-sequence.js?v=1"></script>
-<script src="assets/js/warmup.js?v=2"></script>
-<script src="assets/js/committee-cinematics.js?v=perf-2"></script>
-<script src="assets/js/committee-v2.js?v=merged-cinematic-1"></script>
+<script src="assets/js/committee-scenes.js?v=reset-1"></script>
+<script src="assets/js/committee-sequence.js?v=reset-1"></script>
+<script src="assets/js/warmup.js?v=reset-1"></script>
+<script src="assets/js/committee-cinematics.js?v=reset-1"></script>
+<script src="assets/js/committee-v2.js?v=reset-1"></script>
 <script src="assets/vendor/qrcode-generator-1.4.4.min.js"></script>
-<script src="assets/js/icard.js?v=8"></script>
+<script src="assets/js/icard.js?v=reset-1"></script>
 </body>
 </html>

@@ -330,3 +330,179 @@
   const observer=new MutationObserver(refresh);observer.observe(page,{attributes:true,attributeFilter:['class','data-committee']});
   refresh();
 })();
+
+/* ZERO revamp — committee pages (see docs/revamp-spec.md).
+   Diplomatic labels, committee-specific headlines, prize cheques, the
+   "take your seat" placard and scroll reveals. Purely additive: every
+   existing id, form and handler is reused, never replaced. */
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const page = $('#committeePage'), dalal = $('#dalalCommitteePage');
+  if (!page || !dalal) return;
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const COORD = { UNHRC:'46.20°N  6.14°E', MCC:'40.71°N  74.01°W', CCEP:'1.35°N  103.82°E', IPL:'12.97°N  77.59°E', AIPPM:'28.61°N  77.21°E', STARTUP:'37.77°N  122.42°W', IP:'51.51°N  0.13°W', DALAL:'19.08°N  72.88°E' };
+  /* hero: [wide word, serif half]; then per-section [line, serif line] */
+  const COPY = {
+    UNHRC: { hero:['UNHRC','Human rights cannot wait.'], dossier:['The case file','on trafficking.'], mandate:['Protect first.','Then prosecute.'], mandateP:'Delegates map the routes, name the gaps in cross-border protection and draft safeguards a council could actually adopt.', citation:'for the strongest case.', seat:['Geneva is','holding your seat.'] },
+    MCC:   { hero:['MIDNIGHT CRISIS','When the clock stops, judgment begins.'], dossier:['Intelligence','arrives after dark.'], mandate:['Decide before','the clock does.'], mandateP:'Updates land without warning. Read them, issue directives and live with the consequences until morning.', citation:'for the steadiest hand.', seat:['Take the chair','before midnight.'] },
+    CCEP:  { hero:['CCEP','The future is negotiable.'], dossier:['Markets meet','the rulebook.'], mandate:['Price every','trade-off.'], mandateP:'Founders, regulators and economies argue over who pays and who grows. Bring numbers, not slogans.', citation:'on the ledger.', seat:['Singapore is','at the table.'] },
+    IPL:   { hero:['IPL','Every bid builds a champion.'], dossier:['The purse','is open.'], mandate:['Bid, build,','win the season.'], mandateP:'Set a strategy, guard the purse and turn single signings into an eleven that can win together.', citation:'for the auction room.', seat:['Paddle up.','It is your bid.'] },
+    AIPPM: { hero:['AIPPM','The House is in session.'], dossier:['One table,','every fault line.'], mandate:['Hold your line.','Find a majority.'], mandateP:'Argue your party’s position on One Nation, One Election and secularism, then build the votes to carry it.', citation:'for the House.', seat:['The Speaker','calls your name.'] },
+    STARTUP:{ hero:['STARTUP','Build the next big thing.'], dossier:['An idea','worth defending.'], mandate:['Pitch it.','Then prove it.'], mandateP:'Define the customer, defend the model when the numbers are questioned and decide what to do next.', citation:'for the boldest venture.', seat:['Pull up a chair','in the boardroom.'] },
+    IP:    { hero:['THE PRESS','Every story changes the narrative.'], dossier:['The summit,','on the record.'], mandate:['Observe. Verify.','Publish.'], mandateP:'Cover every committee as it happens, check every claim and file reporting, photography or caricature on deadline.', citation:'for the byline.', seat:['Your press pass','is waiting.'] }
+  };
+  const NUM = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const TENS = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  const under100 = n => n < 20 ? NUM[n] : TENS[Math.floor(n / 10)] + (n % 10 ? '-' + NUM[n % 10] : '');
+  function rupeesInWords(text) {
+    const n = Number(String(text).replace(/[^\d]/g, ''));
+    if (!n || n >= 1e7) return '';
+    const parts = [], lakh = Math.floor(n / 1e5), th = Math.floor(n % 1e5 / 1e3), hu = Math.floor(n % 1e3 / 100), rest = n % 100;
+    if (lakh) parts.push(under100(lakh) + ' lakh'); if (th) parts.push(under100(th) + ' thousand'); if (hu) parts.push(NUM[hu] + ' hundred'); if (rest) parts.push(under100(rest));
+    return 'Rupees ' + parts.join(' ') + ' only';
+  }
+  const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+
+  function lines(h2, a, b) {
+    if (!h2) return;
+    const l1 = document.createElement('span'), i1 = document.createElement('span'), l2 = document.createElement('span'), i2 = document.createElement('em');
+    l1.className = l2.className = 'rv-line'; i1.className = i2.className = 'rv-li';
+    i1.textContent = a; i2.textContent = b; l1.append(i1); l2.append(i2);
+    h2.replaceChildren(l1, l2); h2.dataset.rv = '';
+  }
+  /* static h2s: "Line<br><em>line</em>" -> reveal lines, keeps the words */
+  function splitStatic(h2) {
+    if (!h2 || h2.dataset.rvSplit) return;
+    const em = $('em', h2), first = [...h2.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
+    if (!em || !first) return;
+    lines(h2, first, em.textContent.trim()); h2.dataset.rvSplit = '1';
+  }
+  function label(el, text) { if (el) { el.textContent = text; el.classList.add('rv-label'); el.dataset.rv = ''; } }
+
+  /* ---- prizes as engraved cheques ---- */
+  function cheque(article, i, code) {
+    if (article.dataset.rvPrize) return;
+    const what = ($('small', article)?.textContent || '').trim(), amount = ($('b', article)?.textContent || '').trim();
+    const note = ($('span', article)?.textContent || '').trim();
+    const rank = ROMAN[i] || String(i + 1);
+    article.dataset.rvPrize = '1'; article.dataset.rv = ''; article.classList.add('rv-prize'); article.style.setProperty('--i', i);
+    article.setAttribute('aria-label', `${what}: ${amount}`);
+    const pretty = what.toLowerCase().replace(/(^|[\s·(])([a-z])/g, (m, p, c) => p + c.toUpperCase());
+    article.innerHTML = `<div class="rv-medal" aria-hidden="true"><span>${rank}</span><small>MUN · 26</small></div>
+      <div class="rv-cheque" aria-hidden="true">
+        <p class="rv-cq-top"><span>MASTERS’ UNION NATIONS</span><span>28—29 NOV 2026</span></p>
+        <p class="rv-cq-pay"><small>PAY</small><em>${pretty}</em></p>
+        <p class="rv-cq-sum"><span class="rv-cq-words">${rupeesInWords(amount)}</span><b>${amount}</b></p>
+        <p class="rv-cq-foot"><span>No. ${code}·${String(i + 1).padStart(3, '0')}</span>${note ? `<span>${note}</span>` : '<span>GURUGRAM</span>'}</p>
+      </div>`;
+  }
+
+  /* ---- take your seat: delegate placard, press-and-hold or click ---- */
+  const HOLD = 900;
+  function placard(host, code, action, nameInput) {
+    let seat = $('.rv-seat', host);
+    if (!seat) {
+      seat = document.createElement('div'); seat.className = 'rv-seat'; seat.dataset.rv = '';
+      seat.innerHTML = `<button class="rv-placard" type="button"><span class="rv-placard-face"><small>DELEGATE · <span class="rv-pc-code"></span></small><b class="rv-pc-name">Your name</b><i class="rv-pc-rule"></i><span class="rv-pc-cta">Take your seat</span></span><span class="rv-placard-fill" aria-hidden="true"><b>Seated</b></span></button><p class="rv-seat-hint" aria-hidden="true">Hold to raise your placard</p>`;
+      host.prepend(seat);
+      const btn = $('.rv-placard', seat); let t = 0, raisedAt = 0;
+      const raise = () => {
+        clearTimeout(t); btn.classList.remove('holding'); btn.classList.add('raised'); raisedAt = Date.now();
+        navigator.vibrate?.(12);
+        setTimeout(() => btn.classList.remove('raised'), 2200);
+        seat._action?.();
+      };
+      btn.addEventListener('pointerdown', e => {
+        if (e.button !== 0) return;
+        btn.classList.remove('raised'); btn.classList.add('holding');
+        t = setTimeout(raise, reduced() ? 0 : HOLD);
+      });
+      const cancel = () => { clearTimeout(t); btn.classList.remove('holding'); };
+      btn.addEventListener('pointerup', cancel); btn.addEventListener('pointerleave', cancel); btn.addEventListener('pointercancel', cancel);
+      /* a normal click / Enter / Space still registers */
+      btn.addEventListener('click', () => { if (Date.now() - raisedAt < 600) return; raise(); });
+      btn.addEventListener('contextmenu', e => { if (btn.classList.contains('holding')) e.preventDefault(); });
+    }
+    seat._action = action;
+    $('.rv-pc-code', seat).textContent = code;
+    const btn = $('.rv-placard', seat);
+    btn.setAttribute('aria-label', `Take your seat in ${code}: start registration`);
+    const sync = () => { const v = (nameInput()?.value || '').trim(); $('.rv-pc-name', seat).textContent = v ? v.slice(0, 32) : 'Your name'; };
+    sync(); seat._sync = sync;
+    return seat;
+  }
+  document.addEventListener('input', e => { if (e.target.name !== 'name') return; const host = e.target.closest('#cpRegister,#dalalRegister'); $('.rv-seat', host || document.body)?._sync?.(); });
+
+  /* ---- reveals + parallax, per scroller ---- */
+  function revealer(scroller, root) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('rv-in'); io.unobserve(e.target); } }), { root: scroller, rootMargin: '0px 0px -12% 0px', threshold: .12 });
+    let raf = 0;
+    const paint = () => { raf = 0; const p = Math.min(1.4, scroller.scrollTop / Math.max(1, scroller.clientHeight)); root.style.setProperty('--rv-p', p.toFixed(3)); };
+    scroller.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(paint); }, { passive: true });
+    return () => {
+      $$('[data-rv]', root).forEach(el => { el.classList.remove('rv-in'); io.observe(el); });
+      $$('.cp-steps>li,.dp-playbook li,.cp-brief-copy>*,.dp-brief-copy>*', root).forEach((el, i) => { el.dataset.rv = ''; el.style.setProperty('--i', i % 4); el.classList.remove('rv-in'); io.observe(el); });
+      root.style.setProperty('--rv-p', 0); root.classList.remove('rv-open'); void root.offsetWidth;
+      root.classList.add('rv-open');
+    };
+  }
+  const replayShared = revealer($('#committeePageScroll'), page);
+  const replayDalal = revealer($('#dalalPageScroll'), dalal);
+
+  /* ---- shared page ---- */
+  function decorateShared() {
+    const code = page.dataset.committee || '', c = COPY[code];
+    if (!c) return;
+    const num = $('#cpNumber'); if (num) num.textContent = 'CABLE · ' + COORD[code];
+    const a = $('#cpHeroA'), b = $('#cpHeroB'), title = $('#cpTitle');
+    if (a && b && title) {
+      a.textContent = c.hero[0]; b.textContent = c.hero[1];
+      const br = $('br', title); if (br) br.style.display = '';
+      title.dataset.len = c.hero[0].length > 9 ? 'long' : c.hero[0].length > 5 ? 'mid' : 'short';
+      title.setAttribute('aria-label', c.hero[0] + ', ' + c.hero[1]);
+    }
+    page.querySelector('.cp-agenda')?.classList.add('rv-cable');
+    label($('.cp-section-label small', page), 'DOSSIER');
+    lines($('.cp-section-label h2', page), ...c.dossier);
+    label($('.cp-do-head small', page), 'MANDATE');
+    lines($('.cp-do-head h2', page), ...c.mandate);
+    const mp = $('.cp-do-head p', page); if (mp) mp.textContent = c.mandateP;
+    const awards = $$('#cpAwardsList article');
+    label($('.cp-awards-head small', page), 'CITATION');
+    const n = awards.length;
+    lines($('.cp-awards-head h2', page), `${NUM[n][0].toUpperCase() + NUM[n].slice(1)} ${n === 1 ? 'prize' : 'prizes'}`, c.citation);
+    page.dataset.awards = String(n);
+    awards.forEach((art, i) => cheque(art, i, code));
+    const reg = $('#cpRegister>div:first-child', page);
+    if (reg) { label($('small', reg), 'CREDENTIALS'); const h = $('h2', reg); lines(h, ...c.seat); h.classList.add('rv-seat-h'); }
+    placard($('.cp-register-actions', page), code, () => $('#committeePageApply')?.click(), () => $('.mu-inline-form input[name="name"]', page));
+    replayShared();
+  }
+  let sharedKey = '';
+  new MutationObserver(() => {
+    const key = page.classList.contains('open') ? page.dataset.committee || '' : '';
+    if (key && key !== sharedKey) decorateShared();
+    sharedKey = key;
+  }).observe(page, { attributes: true, attributeFilter: ['class', 'data-committee'] });
+
+  /* ---- Dalal Street ---- */
+  (function decorateDalal() {
+    const eb = $('.dp-eyebrow', dalal); if (eb) eb.innerHTML = '<i></i> <span>CABLE · ' + COORD.DALAL + '</span> <span class="rv-eb-loc">MUMBAI, INDIA</span>';
+    label($('.dp-brief .dp-section-title small', dalal), 'DOSSIER');
+    label($('.dp-awards-head small', dalal), 'CITATION');
+    label($('.dp-playbook small', dalal), 'MANDATE');
+    $$('.dp-section-title h2,.dp-awards-head h2,.dp-playbook h2', dalal).forEach(splitStatic);
+    $$('.dp-awards>article', dalal).forEach((a, i) => cheque(a, i, 'DALAL'));
+    const copy = $('.dp-register-copy', dalal);
+    if (copy) {
+      label($('small', copy), 'CREDENTIALS');
+      const h = $('h2', copy); if (h) { h.hidden = false; splitStatic(h); h.classList.add('rv-seat-h'); }
+      const seat = placard(copy, 'DALAL', () => $('.mu-dalal-register', dalal)?.click(), () => $('#dalalInlineForm input[name="name"]'));
+      copy.append(seat);
+    }
+  })();
+  let dalalOpen = false;
+  new MutationObserver(() => { const open = dalal.classList.contains('open'); if (open && !dalalOpen) replayDalal(); dalalOpen = open; }).observe(dalal, { attributes: true, attributeFilter: ['class'] });
+})();

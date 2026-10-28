@@ -1,0 +1,78 @@
+/* Home hero: gavel strike opening + departures board. See docs/revamp-spec.md. */
+
+/* ---------- type ---------- */
+#home .lobby-kicker{display:flex;align-items:center;gap:.9em;font:500 clamp(.6rem,.72vw,.72rem)/1.4 var(--f-mono);letter-spacing:.24em;color:var(--brass)}
+#home .lobby-kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 0 rgba(224,40,46,.6);animation:liveDot 2.4s var(--ease-out) infinite}
+@keyframes liveDot{0%{box-shadow:0 0 0 0 rgba(224,40,46,.55)}70%,100%{box-shadow:0 0 0 9px rgba(224,40,46,0)}}
+#home .lobby-kicker span{color:var(--signal)}
+#home .lobby-title .t1{font-family:var(--f-display);font-stretch:75%;font-weight:600;letter-spacing:.42em}
+#home .lobby-title .t2{font-family:var(--f-display);font-stretch:118%;font-weight:900;letter-spacing:-.045em;font-size:min(15.2vw,24vh,15rem)}
+#home .lobby-sub{font:400 clamp(.92rem,1.15vw,1.06rem)/1.6 var(--f-display);color:#e9d9d3}
+#home .lobby-sub .lede{display:block;margin-bottom:.25em;font:400 italic clamp(1.35rem,2.1vw,2rem)/1.15 var(--f-serif);color:var(--ivory);letter-spacing:-.005em}
+.ronit{--font-p:var(--f-mono)}
+
+/* ---------- departures board ---------- */
+#home .pass{border:1px solid rgba(210,169,92,.38);border-radius:14px;background:
+  linear-gradient(180deg,rgba(18,6,10,.82),rgba(10,3,6,.9));box-shadow:inset 0 1px 0 rgba(243,233,220,.06),0 30px 80px -40px #000}
+#home .pass-seg+.pass-seg{border-left:1px solid var(--hair)}
+#home .pass-seg small{font:500 .6rem var(--f-mono);letter-spacing:.26em;color:var(--brass)}
+#home .pass-seg b{font-family:var(--f-display);font-stretch:88%;font-weight:700;letter-spacing:-.01em}
+#home .pass-seg>span{font:400 .84rem var(--f-display);color:#d8c2bd}
+#home .pass-seg b .board-text,#home .pass-seg b .board-char{font:inherit;color:inherit;letter-spacing:inherit}
+#home .pass-seg b .board-char{display:inline-block;white-space:pre}
+#home .pass-seg b .board-char.is-rolling{color:var(--brass)}
+
+/* split-flap countdown */
+#home .flaps{display:flex;align-items:flex-start;gap:clamp(6px,.8vw,10px)}
+#home .flap-group{display:flex;flex-direction:column;gap:6px}
+#home .flap-group i{font:500 .54rem var(--f-mono);font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+#home .flap-pair{display:flex;gap:3px}
+#home .flap{--h:clamp(1.9rem,2.6vw,2.5rem);position:relative;width:calc(var(--h)*.68);height:var(--h);perspective:240px;font:500 calc(var(--h)*.72)/var(--h) var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ivory);text-align:center}
+#home .flap>span{position:absolute;left:0;right:0;height:50%;overflow:hidden;font:inherit;color:inherit;background:#2a0f17;box-shadow:inset 0 0 0 1px rgba(243,233,220,.06);backface-visibility:hidden}
+#home .flap>span>em{display:block;height:var(--h);font-style:normal}
+#home .flap .t,#home .flap .ft{top:0;border-radius:4px 4px 0 0;border-bottom:1px solid #000}
+#home .flap .b,#home .flap .fb{bottom:0;border-radius:0 0 4px 4px;background:#220b12}
+#home .flap .b>em,#home .flap .fb>em{transform:translateY(-50%)}
+#home .flap .ft{transform-origin:50% 100%;z-index:2}
+#home .flap .fb{transform-origin:50% 0;z-index:2;transform:rotateX(90deg)}
+#home .flap.is-flipping .ft{animation:flapTop 150ms ease-in forwards}
+#home .flap.is-flipping .fb{animation:flapBottom 150ms 150ms ease-out forwards}
+@keyframes flapTop{to{transform:rotateX(-90deg)}}
+@keyframes flapBottom{to{transform:rotateX(0)}}
+#home .flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.7);z-index:3}
+#home .flaps>u{text-decoration:none;font:500 1.4rem/var(--h,2.4rem) var(--f-mono);color:var(--brass);opacity:.7;padding-top:.2rem}
+#countdown.has-flaps .pc-digits{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+/* ---------- gavel strike opening ---------- */
+/* The strike replaces the old staggered heroIn entrance. */
+#home .lobby-title .t1,#home .lobby-title .t2,#home .lobby-sub,#home .pass{animation:none}
+.strike-wave,.strike-flash{position:fixed;pointer-events:none;z-index:60}
+.strike-flash{inset:0;background:radial-gradient(circle at var(--sx,74%) var(--sy,9%),rgba(255,236,220,.9),rgba(224,40,46,.25) 30%,transparent 60%);opacity:0}
+.strike-wave{left:var(--sx,74%);top:var(--sy,9%);width:120vmax;height:120vmax;margin:-60vmax 0 0 -60vmax;border-radius:50%;
+  border:2px solid rgba(243,233,220,.55);box-shadow:0 0 40px rgba(224,40,46,.5),inset 0 0 40px rgba(224,40,46,.35);opacity:0;transform:scale(.02)}
+
+#home.is-striking::before{animation:statueWake 900ms var(--ease-out) both}
+@keyframes statueWake{from{filter:brightness(.08) saturate(.4)}to{filter:none}}
+#home.is-striking .lobby-title .t1,
+#home.is-striking .lobby-title .t2,
+#home.is-striking .lobby-sub,
+#home.is-striking .lobby-kicker,
+#home.is-striking .pass{animation:none;opacity:0}
+#home.is-struck .lobby-title .t2{animation:slam 520ms var(--ease-out) both}
+#home.is-struck .lobby-title .t1{animation:riseIn 600ms 120ms var(--ease-out) both}
+#home.is-struck .lobby-kicker{animation:riseIn 500ms 220ms var(--ease-out) both}
+#home.is-struck .lobby-sub{animation:riseIn 600ms 300ms var(--ease-out) both}
+#home.is-struck .pass{animation:riseIn 600ms 420ms var(--ease-out) both}
+#home.is-struck .lobby-content{animation:shake 380ms linear}
+@keyframes slam{0%{opacity:0;transform:translateY(-14%) scale(1.22);filter:blur(10px)}55%{opacity:1;transform:translateY(1.5%) scale(.985);filter:blur(0)}100%{opacity:1;transform:none;filter:none}}
+@keyframes riseIn{from{opacity:0;transform:translateY(18px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes shake{0%,100%{translate:0 0}15%{translate:-6px 3px}30%{translate:5px -2px}45%{translate:-3px 2px}60%{translate:2px -1px}80%{translate:-1px 0}}
+
+@media(max-width:760px){.strike-flash,.strike-wave{--sx:70%;--sy:8%}#home .flap{--h:1.7rem}}
+@media(prefers-reduced-motion:reduce){
+  #home.is-striking::before,#home.is-struck .lobby-content{animation:none}
+  #home.is-struck .lobby-title .t2,#home.is-struck .lobby-title .t1,#home.is-struck .lobby-kicker,#home.is-struck .lobby-sub,#home.is-struck .pass{animation:fadeOnly 400ms ease both}
+  #home .flap.is-flipping .ft,#home .flap.is-flipping .fb{animation-duration:1ms}
+  #home .lobby-kicker::before{animation:none}
+}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}

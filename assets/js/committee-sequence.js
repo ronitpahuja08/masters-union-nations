@@ -16,8 +16,8 @@
   };
   const NAMES = { STARTUP: 'STARTUP BOARDROOM', DALAL: 'DALAL STREET', IP: 'INTERNATIONAL PRESS' };
   /* how long each scene runs before its tagline has had its moment; the tagline pops in at this share */
-  const SCENE = { UNHRC: 6200, CCEP: 5100, IPL: 7000, STARTUP: 4600, AIPPM: 3000, MCC: 4150, DALAL: 3500, IP: 3900 };
-  const TAG_AT = 0.36, HOLD = 1350;
+  const SCENE = { UNHRC: 5600, CCEP: 4700, IPL: 6300, STARTUP: 4600, AIPPM: 3000, MCC: 4150, DALAL: 3500, IP: 3900 };
+  const TAG_AT = 0.36, HOLD = 1000;
   const timers = [];
   let tagEl, cardEl, pendingFinish = null;
 

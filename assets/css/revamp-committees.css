@@ -1,0 +1,283 @@
+/* ZERO revamp — committee intros and committee pages.
+   Loaded last; wins over the older committee-* layers on purpose.
+   Owner: committees agent (see docs/revamp-spec.md). Form fields are styled elsewhere. */
+
+html body .committee-page{--rv-c:var(--committee-accent,var(--brass))}
+html body .dalal-page{--rv-c:#65e778}
+
+/* ---------- shared type voice ---------- */
+html body :is(.committee-page,.dalal-page) .rv-label{
+  display:inline-flex!important;align-items:center;gap:12px;
+  font:600 12px/1 var(--f-display)!important;font-stretch:75%!important;letter-spacing:.2em!important;text-transform:uppercase;
+  color:var(--brass)!important;text-shadow:none!important;background:none!important;padding:0!important;border:0!important
+}
+html body :is(.committee-page,.dalal-page) .rv-label::before{content:"";width:28px;height:1px;background:currentColor;flex:none}
+html body :is(.committee-page,.dalal-page) .rv-label::after{content:none!important}
+
+html body :is(#committeePage,#dalalCommitteePage) h2[data-rv]{
+  font:800 clamp(2rem,4.3vw,4.2rem)/.9 var(--f-display)!important;font-stretch:112%!important;
+  letter-spacing:-.03em!important;word-spacing:.12em!important;text-transform:uppercase;color:var(--ivory)!important;
+  text-shadow:none!important;margin:18px 0 0!important;max-width:16ch;text-wrap:balance
+}
+html body :is(#committeePage,#dalalCommitteePage) h2[data-rv] em{
+  font:400 1.06em/1 var(--f-serif)!important;font-style:italic!important;font-stretch:100%!important;
+  letter-spacing:-.01em!important;text-transform:none!important;color:var(--rv-c)!important;
+  background:none!important;-webkit-text-fill-color:currentColor!important
+}
+.rv-line{display:block;overflow:hidden;padding:0 .08em .14em 0;margin-bottom:-.1em}
+.rv-li{display:inline-block;transform:translateY(112%);transition:transform 1s var(--ease-out)}
+.rv-line+.rv-line .rv-li{transition-delay:110ms}
+.rv-in .rv-li{transform:none}
+
+/* ---------- hero ---------- */
+html body .committee-page.open .cinema-hero-tag,
+html body .committee-page.open .mu-mcc-tagline{display:none!important}
+html body .committee-page.open #cpTitle{
+  font:900 clamp(4.2rem,15vw,13rem)/.84 var(--f-display)!important;font-stretch:125%!important;
+  letter-spacing:-.04em!important;text-transform:uppercase;color:var(--ivory)!important;
+  margin:14px auto 0!important;max-width:none!important;text-wrap:balance;
+  text-shadow:0 2px 40px rgba(11,3,6,.55)!important
+}
+html body .committee-page.open #cpTitle[data-len="mid"]{font-size:clamp(3.3rem,11.5vw,10.5rem)!important}
+html body .committee-page.open #cpTitle[data-len="long"]{font-size:clamp(2.7rem,8.4vw,7.8rem)!important;line-height:.88!important}
+html body .committee-page.open #cpTitle br{display:none!important}
+html body .committee-page.open #cpHeroA{display:block;background:none!important;-webkit-text-fill-color:currentColor!important}
+html body .committee-page.open #cpHeroB{
+  display:block!important;margin-top:.22em;
+  font:400 clamp(1.5rem,3.6vw,3.1rem)/1.05 var(--f-serif)!important;font-style:italic!important;font-stretch:100%!important;
+  letter-spacing:-.005em!important;text-transform:none!important;color:var(--rv-c)!important;
+  background:none!important;-webkit-text-fill-color:currentColor!important;text-shadow:0 2px 24px rgba(11,3,6,.8)!important
+}
+html body .committee-page.open .cp-eyebrow{font:500 11px/1.4 var(--f-mono)!important;letter-spacing:.14em!important;color:var(--ivory)!important;opacity:.82}
+html body .committee-page.open .cp-eyebrow i{background:var(--rv-c)!important;box-shadow:none!important}
+html body .committee-page.open #cpAgenda.rv-cable{
+  display:block!important;max-width:46ch;margin:22px auto 0!important;padding:0!important;
+  font:400 12px/1.6 var(--f-mono)!important;letter-spacing:.06em!important;text-transform:uppercase;
+  color:var(--ivory)!important;opacity:.78;text-shadow:0 1px 14px rgba(11,3,6,.9)!important;background:none!important;border:0!important
+}
+html body .committee-page.open #cpAgenda.rv-cable::before{content:"AGENDA \2014\00a0";color:var(--brass)}
+
+/* hero CTAs */
+html body :is(.committee-page,.dalal-page).open :is(.cp-primary,.mu-start-registration,.dp-primary,.mu-dalal-register){
+  min-height:48px;border-radius:2px!important;padding:0 22px!important;
+  font:600 13px/1 var(--f-display)!important;font-stretch:80%!important;letter-spacing:.14em!important;text-transform:uppercase;
+  box-shadow:none!important;backdrop-filter:none!important;transition:transform 160ms var(--ease-out),background-color 200ms var(--ease-out),color 200ms var(--ease-out)!important
+}
+html body :is(.committee-page,.dalal-page).open :is(.cp-primary,.dp-primary){background:transparent!important;color:var(--ivory)!important;border:1px solid rgba(243,233,220,.42)!important}
+html body :is(.committee-page,.dalal-page).open :is(.mu-start-registration,.mu-dalal-register){background:var(--ivory)!important;color:var(--void)!important;border:1px solid var(--ivory)!important}
+html body :is(.committee-page,.dalal-page).open :is(.cp-primary,.mu-start-registration,.dp-primary,.mu-dalal-register):active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){
+  html body :is(.committee-page,.dalal-page).open :is(.cp-primary,.dp-primary):hover{background:rgba(243,233,220,.08)!important}
+  html body :is(.committee-page,.dalal-page).open :is(.mu-start-registration,.mu-dalal-register):hover{background:var(--rv-c)!important;border-color:var(--rv-c)!important}
+}
+
+/* hero entrance: the intro hands over into a letterbox that opens, then the title rises */
+@keyframes rvIris{from{clip-path:inset(38% 0 38% 0);filter:brightness(.35)}to{clip-path:inset(0);filter:none}}
+@keyframes rvRise{from{opacity:0;transform:translateY(.35em)}to{opacity:1;transform:none}}
+@keyframes rvFade{from{opacity:0}to{opacity:1}}
+.committee-page.rv-open .cp-hero>:is(.mcc-scene,.ipl-scene,.cinema-hero-scene),
+.dalal-page.rv-open .dp-hero>.dp-scene{animation:rvIris 1.25s var(--ease-io) both}
+.committee-page.rv-open #cpHeroA,.dalal-page.rv-open #dpTitle>span{animation:rvRise .95s var(--ease-out) .32s both}
+.committee-page.rv-open #cpHeroB,.dalal-page.rv-open #dpTitle>em{animation:rvRise .95s var(--ease-out) .48s both}
+.committee-page.rv-open :is(.cp-eyebrow,#cpAgenda,.cp-cta-row,.cp-meta),
+.dalal-page.rv-open :is(.dp-eyebrow,.dp-hero-tagline,.dp-meta,.dp-hero-actions){animation:rvFade .8s var(--ease-out) .7s both}
+
+/* parallax depth on scene layers (individual `translate` composes with existing transforms) */
+.committee-page :is(.mcc-panorama,.ipl-panorama,.cinema-hero-scene .ch-photo,.cinema-hero-scene .ms-sky,.cinema-hero-scene .ms-rings,.cinema-hero-scene .ms-arcs),
+.dalal-page .dp-bse-panorama{translate:0 calc(var(--rv-p,0) * 140px)}
+.committee-page :is(.mcc-rail,.ipl-stands,.cinema-hero-scene .ms-squad,.cinema-hero-scene .ms-flags,.cinema-hero-scene .ms-ship,.mu-character-stage),
+.dalal-page .dp-market-display{translate:0 calc(var(--rv-p,0) * -70px)}
+.committee-page .cp-hero-copy,.dalal-page .dp-hero-copy{translate:0 calc(var(--rv-p,0) * -60px)}
+
+/* ---------- sections: void rooms lit by the committee colour ---------- */
+html body .committee-page.open :is(.cp-brief,.cp-do,.cp-awards,.cp-register){
+  background:
+    radial-gradient(70% 60% at 100% 0%,color-mix(in srgb,var(--rv-c) 10%,transparent),transparent 70%),
+    linear-gradient(180deg,rgba(11,3,6,.78),rgba(11,3,6,.9))!important;
+  border:0!important;border-top:1px solid var(--hair)!important;box-shadow:none!important;backdrop-filter:none!important
+}
+html body .committee-page.open :is(.cp-section-label,.cp-brief-copy,.cp-do-head,.cp-steps,.cp-awards-head,.cp-awards article,.cp-register>div),
+html body .dalal-page.open :is(.dp-section-title,.dp-brief-copy,.dp-awards-head,.dp-awards>article,.dp-playbook>div,.dp-playbook ol,.dp-register-copy){
+  background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;border-radius:0!important
+}
+html body .dalal-page.open :is(.dp-brief,.dp-awards,.dp-playbook,.dp-register){
+  background:
+    radial-gradient(70% 60% at 0% 0%,color-mix(in srgb,var(--rv-c) 8%,transparent),transparent 70%),
+    linear-gradient(180deg,rgba(11,3,6,.8),rgba(11,3,6,.92))!important;
+  border:0!important;border-top:1px solid var(--hair)!important
+}
+html body :is(.committee-page,.dalal-page).open :is(.cp-lead,.dp-lead){
+  font:500 clamp(1.25rem,2.1vw,1.75rem)/1.3 var(--f-display)!important;font-stretch:100%!important;letter-spacing:-.01em!important;color:var(--ivory)!important;text-shadow:none!important
+}
+html body :is(.committee-page,.dalal-page).open :is(.cp-brief-copy>p:not(.cp-lead),.cp-do-head>p,.dp-brief-copy>p:not(.dp-lead),.dp-playbook>div>p,.cp-register>div:first-child>p,.dp-register-copy>p){
+  font:400 clamp(.98rem,1.1vw,1.08rem)/1.65 var(--f-display)!important;color:var(--ash)!important;text-shadow:none!important;max-width:52ch
+}
+html body :is(.committee-page,.dalal-page).open :is(.cp-tags,.dp-tags) span{
+  border:1px solid color-mix(in srgb,var(--brass) 55%,transparent)!important;border-radius:0!important;background:none!important;
+  font:600 11px/1 var(--f-display)!important;font-stretch:75%!important;letter-spacing:.16em!important;text-transform:uppercase;color:var(--brass)!important;padding:8px 10px!important;box-shadow:none!important
+}
+
+/* mandate steps: a real sequence, so numerals stay — set like cable lines */
+html body :is(.committee-page,.dalal-page).open :is(.cp-steps,.dp-playbook ol){counter-reset:none;padding:0!important;margin:0!important;list-style:none}
+html body :is(.committee-page,.dalal-page).open :is(.cp-steps>li,.dp-playbook li){
+  display:grid!important;grid-template-columns:56px 1fr;gap:16px;align-items:baseline;
+  padding:22px 0!important;margin:0!important;background:none!important;border:0!important;border-top:1px solid var(--hair)!important;box-shadow:none!important;border-radius:0!important
+}
+html body :is(.committee-page,.dalal-page).open :is(.cp-steps>li,.dp-playbook li)>i{
+  font:500 12px/1 var(--f-mono)!important;font-style:normal!important;letter-spacing:.1em;color:var(--rv-c)!important;background:none!important;border:0!important;width:auto!important;height:auto!important;box-shadow:none!important
+}
+html body :is(.committee-page,.dalal-page).open :is(.cp-steps>li,.dp-playbook li) b{
+  display:block;font:700 clamp(1.15rem,1.6vw,1.4rem)/1.15 var(--f-display)!important;font-stretch:112%!important;letter-spacing:-.01em!important;color:var(--ivory)!important;text-transform:none
+}
+html body :is(.committee-page,.dalal-page).open :is(.cp-steps>li,.dp-playbook li) small{display:block;margin-top:6px;font:400 .98rem/1.55 var(--f-display)!important;color:var(--ash)!important;letter-spacing:0!important;text-transform:none!important}
+
+/* generic scroll reveal */
+:is(.committee-page,.dalal-page).open [data-rv]:not(h2):not(.rv-prize){opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease-out) calc(var(--i,0) * 80ms),transform .9s var(--ease-out) calc(var(--i,0) * 80ms)}
+:is(.committee-page,.dalal-page).open [data-rv].rv-in:not(h2):not(.rv-prize){opacity:1;transform:none}
+
+/* ---------- citation: prizes as medal + engraved cheque ---------- */
+html body .committee-page.open .cp-awards,html body .dalal-page.open .dp-awards{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:44px!important}
+html body .dalal-page.open .dp-awards>article{max-width:640px}
+html body .committee-page.open .cp-awards-list{grid-column:1/-1!important;width:100%!important;max-width:none!important;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))!important;gap:34px 28px!important}
+html body .committee-page.open[data-awards="1"] .cp-awards-list{grid-template-columns:minmax(0,640px)!important}
+html body :is(.committee-page,.dalal-page).open .rv-prize{
+  display:grid!important;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;
+  padding:0!important;min-height:0!important;width:auto!important
+}
+/* clip the children, not the article: IntersectionObserver honours the target's own clip-path */
+html body :is(.committee-page,.dalal-page).open .rv-prize>*{clip-path:inset(0 100% 0 0);transition:clip-path 1.15s var(--ease-io) calc(var(--i,0) * 140ms)}
+html body :is(.committee-page,.dalal-page).open .rv-prize>.rv-cheque{transition-delay:calc(var(--i,0) * 140ms + 160ms)}
+html body :is(.committee-page,.dalal-page).open .rv-prize.rv-in>*{clip-path:inset(-40px -20px -30px -20px)}
+html body .committee-page.open #cpAwardsNote{display:none!important}
+:is(#cpAwardsList,#dalalCommitteePage) .rv-medal{
+  position:relative!important;isolation:isolate!important;flex:none!important;display:grid!important;place-items:center!important;align-content:center!important;gap:2px!important;
+  width:92px!important;height:92px!important;border-radius:50%!important;color:#2b1a06!important;
+  background:radial-gradient(circle at 34% 28%,#fbe7b4 0,#e2bd72 32%,var(--brass) 55%,#8a6526 100%)!important;
+  box-shadow:inset 0 0 0 3px rgba(43,26,6,.28),inset 0 0 0 7px rgba(255,244,214,.38),inset 0 -8px 14px rgba(43,26,6,.3),0 18px 30px -16px #000!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-medal::before{
+  content:"";position:absolute!important;z-index:-1!important;left:50%!important;top:-30px!important;width:44px!important;height:46px!important;transform:translateX(-50%)!important;
+  background:linear-gradient(90deg,var(--rv-c) 0 38%,var(--oxblood) 38% 62%,var(--rv-c) 62%)!important;
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-medal span{font:400 2.1rem/1 var(--f-serif)!important;font-style:italic!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-medal small{font:500 7.5px/1 var(--f-mono)!important;letter-spacing:.18em!important;color:#2b1a06!important;opacity:.75!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cheque{
+  position:relative!important;display:grid!important;gap:12px!important;min-width:0!important;padding:18px 22px 16px 34px!important;border-radius:3px!important;color:var(--void)!important;
+  background:
+    repeating-linear-gradient(135deg,rgba(94,11,28,.045) 0 1px,transparent 1px 7px),
+    linear-gradient(180deg,#f7efe3,#ecdfcd)!important;
+  box-shadow:0 24px 44px -26px #000!important;transition:transform 220ms var(--ease-out)!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cheque::before{content:"";position:absolute!important;left:14px!important;top:10px!important;bottom:10px!important;border-left:2px dotted rgba(11,3,6,.32)!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cheque p{margin:0!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cheque span{font:inherit!important;color:inherit!important;letter-spacing:inherit!important;line-height:inherit!important;text-shadow:none!important}:is(#cpAwardsList,#dalalCommitteePage) :is(.rv-medal,.rv-cheque) small{margin:0!important;align-self:auto!important}
+:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-top,:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-foot{display:flex!important;justify-content:space-between!important;gap:12px!important;flex-wrap:wrap!important;font:500 10px/1.3 var(--f-mono)!important;letter-spacing:.12em!important;text-transform:uppercase!important;color:var(--oxblood)!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-foot{color:#6b5653!important;letter-spacing:.08em!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-pay{display:flex!important;align-items:baseline!important;gap:12px!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-pay small{font:600 11px/1 var(--f-display)!important;font-stretch:75%!important;letter-spacing:.2em!important;color:var(--oxblood)!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-pay em{flex:1!important;min-width:0!important;padding-bottom:4px!important;border-bottom:1px solid rgba(11,3,6,.35)!important;font:400 clamp(1.3rem,2.2vw,1.75rem)/1.1 var(--f-serif)!important;font-style:italic!important;color:var(--void)!important;-webkit-text-fill-color:currentColor!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-sum{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;flex-wrap:wrap!important}:is(#cpAwardsList,#dalalCommitteePage) .rv-cheque span.rv-cq-words{font:400 1rem/1.25 var(--f-serif)!important;font-style:italic!important;color:#3b2a28!important}
+:is(#cpAwardsList,#dalalCommitteePage) .rv-cq-sum b{margin:0!important;
+  font:900 clamp(1.5rem,2.6vw,2.1rem)/1 var(--f-display)!important;font-stretch:125%!important;letter-spacing:-.02em!important;
+  color:var(--void)!important;-webkit-text-fill-color:currentColor!important;background:none!important;text-shadow:none!important;
+  border:1.5px solid var(--void)!important;padding:6px 10px 5px!important;border-radius:2px!important}
+@media (hover:hover) and (pointer:fine){:is(#cpAwardsList,#dalalCommitteePage) .rv-prize:hover .rv-cheque{transform:translateY(-3px) rotate(-.5deg)}}
+@media (max-width:560px){
+  html body :is(.committee-page,.dalal-page).open .rv-prize{grid-template-columns:1fr;gap:16px;justify-items:start}
+  :is(#cpAwardsList,#dalalCommitteePage) .rv-medal{width:72px!important;height:72px!important;margin-top:28px!important}
+  :is(#cpAwardsList,#dalalCommitteePage) .rv-medal span{font-size:1.7rem!important}
+  :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque{width:100%!important;padding:16px 16px 14px 28px!important}
+  :is(#cpAwardsList,#dalalCommitteePage) .rv-cheque::before{left:11px!important}
+}
+
+/* ---------- credentials: take your seat ---------- */
+html body .committee-page.open .cp-register>div:first-child h2.rv-seat-h,
+html body .dalal-page.open .dp-register-copy h2.rv-seat-h{display:block!important;margin-inline:auto!important}
+html body .dalal-page.open .dp-register-copy h2.rv-seat-h{margin-inline:0!important}
+html body .committee-page.open #cpRegister .cp-event-meta{display:flex!important;flex-wrap:wrap;justify-content:center;gap:10px 28px;margin-top:18px!important}
+html body .committee-page.open #cpRegister .cp-event-meta span{font:500 10.5px/1.5 var(--f-mono)!important;letter-spacing:.12em!important;color:var(--ash)!important;text-transform:uppercase;background:none!important;border:0!important;padding:0!important}
+html body .committee-page.open #cpRegister .cp-event-meta b{display:block;font:500 13px/1.4 var(--f-display)!important;letter-spacing:0!important;text-transform:none;color:var(--ivory)!important}
+
+.rv-seat{display:grid;justify-items:center;gap:14px;margin:6px auto 40px;width:100%}
+.dalal-page .rv-seat{margin:30px auto 0}
+.rv-placard{
+  position:relative;isolation:isolate;display:block;width:min(440px,100%);padding:0;margin:0;border:0;cursor:pointer;
+  background:none;color:var(--void);text-align:left;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  transform-origin:50% 100%;transition:transform 160ms var(--ease-out)
+}
+.rv-placard::after{ /* the fold of the tent card */
+  content:"";position:absolute;left:4%;right:4%;bottom:-12px;height:12px;z-index:-1;
+  background:linear-gradient(180deg,#b9ab97,#7f7262);clip-path:polygon(0 0,100% 0,96% 100%,4% 100%)
+}
+.rv-placard-face{
+  position:relative;display:grid;gap:10px;padding:22px 24px 20px;border-radius:3px;overflow:hidden;
+  background:linear-gradient(180deg,#f7efe3,#eadcc8);box-shadow:0 30px 50px -28px #000
+}
+.rv-placard-face small{font:600 11px/1 var(--f-display);font-stretch:75%;letter-spacing:.22em;text-transform:uppercase;color:var(--oxblood)}
+.rv-pc-name{font:900 clamp(1.6rem,4.2vw,2.5rem)/.95 var(--f-display);font-stretch:125%;letter-spacing:-.03em;text-transform:uppercase;overflow-wrap:anywhere;color:var(--void)}
+.rv-pc-rule{display:block;height:1px;background:rgba(11,3,6,.28)}
+.rv-pc-cta{display:flex;justify-content:space-between;align-items:baseline;font:400 1.25rem/1 var(--f-serif);font-style:italic;color:var(--void)}
+.rv-pc-cta::after{content:"\2191";font:500 14px/1 var(--f-mono);font-style:normal}
+.rv-placard-fill{
+  position:absolute;inset:0 0 0 0;border-radius:3px;pointer-events:none;
+  background:var(--rv-c);mix-blend-mode:multiply;
+  clip-path:inset(100% 0 0 0);transition:clip-path 220ms var(--ease-out)
+}
+.rv-placard-fill b{display:none}
+.rv-placard.holding{transform:scale(.97)}
+.rv-placard.holding .rv-placard-fill{clip-path:inset(0);transition:clip-path 900ms linear}
+.rv-placard.raised{transform:translateY(-18px) rotate(-2.5deg);transition:transform 480ms cubic-bezier(.34,1.56,.64,1)}
+.rv-placard.raised .rv-placard-fill{clip-path:inset(0);transition:none}
+.rv-placard:active{transform:scale(.97)}
+.rv-placard.raised:active{transform:translateY(-18px) rotate(-2.5deg)}
+.rv-seat-hint{margin:6px 0 0!important;font:400 10.5px/1.4 var(--f-mono)!important;letter-spacing:.12em!important;text-transform:uppercase;color:var(--ash)!important}
+@media (hover:hover) and (pointer:fine){.rv-placard:not(.holding):not(.raised):hover{transform:translateY(-4px)}}
+
+/* ---------- intro hand-over card + skips ---------- */
+.seq-card{background:radial-gradient(55% 45% at 50% 58%,color-mix(in srgb,var(--seq-c,#D2A95C) 16%,transparent),transparent 72%),var(--void)!important}
+.seq-card-kicker{font:600 11px/1 var(--f-display)!important;font-stretch:75%!important;letter-spacing:.3em!important;color:var(--brass)!important}
+.seq-card-name{font:900 clamp(2.8rem,11vw,10rem)/.88 var(--f-display)!important;font-stretch:125%!important;letter-spacing:-.04em!important;color:var(--ivory)!important;max-width:100%;overflow-wrap:anywhere}
+.seq-card-line{background:var(--seq-c,#D2A95C)!important;box-shadow:none!important;height:1px!important}
+.seq-card-full{font:400 clamp(1.1rem,2.2vw,1.7rem)/1.2 var(--f-serif)!important;font-style:italic!important;letter-spacing:0!important;text-transform:none!important;color:rgba(243,233,220,.78)!important}
+.seq-tag p{font:600 clamp(.9rem,1.9vw,1.5rem)/1.2 var(--f-display)!important;font-stretch:80%!important;letter-spacing:.24em!important}
+.seq-tag-line{box-shadow:none!important;height:1px!important}
+:is(.cf-skip,.dc-skip,.sl-skip,.mcc-flight-skip,.ip-cinema-skip,.mc-skip){
+  min-height:44px!important;padding:0 18px!important;border-radius:2px!important;
+  background:rgba(11,3,6,.62)!important;border:1px solid rgba(210,169,92,.55)!important;color:var(--ivory)!important;
+  font:600 12px/1 var(--f-display)!important;font-stretch:80%!important;letter-spacing:.16em!important;text-transform:uppercase;
+  box-shadow:none!important;backdrop-filter:none!important;transition:transform 160ms var(--ease-out),background-color 200ms var(--ease-out)!important
+}
+:is(.cf-skip,.dc-skip,.sl-skip,.mcc-flight-skip,.ip-cinema-skip,.mc-skip):active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){:is(.cf-skip,.dc-skip,.sl-skip,.mcc-flight-skip,.ip-cinema-skip,.mc-skip):hover{background:rgba(94,11,28,.7)!important}}
+
+/* ---------- small screens ---------- */
+@media (max-width:560px){
+  html body :is(#committeePage,#dalalCommitteePage) h2[data-rv]{font-size:clamp(1.7rem,8vw,2.4rem)!important;max-width:none}
+  html body .committee-page.open #cpTitle{font-size:clamp(3.4rem,17vw,5rem)!important}
+  html body .committee-page.open #cpTitle[data-len="mid"]{font-size:clamp(2.6rem,12.5vw,4rem)!important}
+  html body .committee-page.open #cpTitle[data-len="long"]{font-size:clamp(2.3rem,11vw,3.4rem)!important}
+  html body :is(.committee-page,.dalal-page).open :is(.cp-steps>li,.dp-playbook li){grid-template-columns:40px 1fr}
+  .rv-seat-hint{text-align:center}
+  html body .committee-page.open .cp-eyebrow{flex-direction:column!important;gap:4px!important;align-items:center!important}
+  html body .committee-page.open .cp-eyebrow i{display:none!important}
+  html body .committee-page.open .cp-eyebrow span{white-space:nowrap}
+}
+
+/* ---------- reduced motion: keep fades, drop movement ---------- */
+@media (prefers-reduced-motion:reduce){
+  .rv-li{transform:none!important;transition:none!important}
+  :is(.committee-page,.dalal-page).open [data-rv]:not(h2):not(.rv-prize){transform:none!important;transition:opacity .4s linear!important}
+  html body :is(.committee-page,.dalal-page).open .rv-prize>*{clip-path:none!important}
+  html body :is(.committee-page,.dalal-page).open .rv-prize{opacity:0;transition:opacity .4s linear!important}
+  html body :is(.committee-page,.dalal-page).open .rv-prize.rv-in{opacity:1}
+  .committee-page.rv-open .cp-hero>*,.dalal-page.rv-open .dp-hero>*,
+  .committee-page.rv-open :is(#cpHeroA,#cpHeroB),.dalal-page.rv-open #dpTitle>*{animation:rvFade .5s linear both!important}
+  .committee-page *,.dalal-page *{translate:none!important}
+  .rv-placard,.rv-placard.raised,.rv-placard.holding{transform:none!important}
+  .rv-placard.holding .rv-placard-fill{transition:clip-path 1ms!important}
+}
+
+/* prize fixes: beat older per-committee article rules */
+:is(#cpAwardsList,#dalalCommitteePage) .rv-prize{border:0!important;background:none!important;box-shadow:none!important;min-height:0!important}
+:is(#cpAwardsList,#dalalCommitteePage) .rv-medal span{color:#3a2408!important;text-shadow:0 1px 0 rgba(255,244,214,.55)!important}
+
+/* Dalal hero: same wide + serif pairing */
+html body #dalalCommitteePage #dpTitle{font:900 clamp(4rem,13vw,11.5rem)/.84 var(--f-display)!important;font-stretch:125%!important;letter-spacing:-.04em!important;text-shadow:0 2px 40px rgba(11,3,6,.55)!important}
+html body #dalalCommitteePage #dpTitle>span{display:block;color:var(--ivory)!important;background:none!important;-webkit-text-fill-color:currentColor!important}
+html body #dalalCommitteePage #dpTitle>br{display:none}
+html body #dalalCommitteePage #dpTitle>em{display:block;margin-top:.04em;font:400 .8em/.95 var(--f-serif)!important;font-style:italic!important;font-stretch:100%!important;letter-spacing:-.02em!important;text-transform:none!important;color:var(--rv-c)!important;background:none!important;-webkit-text-fill-color:currentColor!important}
+html body #dalalCommitteePage .dp-eyebrow{font:500 11px/1.4 var(--f-mono)!important;letter-spacing:.14em!important;color:var(--ivory)!important}
+html body #dalalCommitteePage .dp-hero-tagline{font:600 13px/1.4 var(--f-display)!important;font-stretch:75%!important;letter-spacing:.24em!important}
+html body #dalalCommitteePage .dp-eyebrow .rv-eb-loc::before{content:"\00b7";margin:0 .7em}
+@media (max-width:560px){
+  html body #dalalCommitteePage .dp-eyebrow{display:flex!important;flex-direction:column;align-items:center;gap:4px}
+  html body #dalalCommitteePage .dp-eyebrow>i{display:none!important}
+  html body #dalalCommitteePage .dp-eyebrow .rv-eb-loc::before{content:none}
+}
