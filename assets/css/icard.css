@@ -1,6 +1,6 @@
 /* Delegate iCard designer (see assets/js/icard.js) - dressed in the site's own wine, ink and gold */
 body.mic-open{overflow:hidden}
-.mic-overlay{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:clamp(8px,2vw,26px);background:radial-gradient(ellipse at 50% 0,#4a102655,transparent 60%),#07040bec;backdrop-filter:blur(10px);opacity:0;transition:opacity .25s;font-family:var(--sans,'Archivo',Arial,sans-serif);color:#f6efe4}
+.mic-overlay{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:clamp(8px,2vw,26px);background:radial-gradient(ellipse at 50% 0,#4a102655,transparent 60%),#07040bec;backdrop-filter:blur(10px);opacity:0;transition:opacity .25s;font-family:var(--sans,'Manrope',Arial,sans-serif);color:#f6efe4}
 .mic-overlay[hidden]{display:none}.mic-overlay.in{opacity:1}
 .mic-shell{position:relative;display:flex;flex-direction:column;width:min(1060px,100%);max-height:100%;overflow:hidden;border-radius:20px;background:linear-gradient(160deg,#1a0d17,#0d0810);border:1px solid #d2a95c40;box-shadow:0 40px 120px #000d,0 0 0 1px #ffffff0a inset}
 .mic-top{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px clamp(16px,2.2vw,26px);border-bottom:1px solid #d2a95c2e;background:linear-gradient(90deg,#3a0f2655,transparent 70%)}
@@ -45,7 +45,7 @@ body.mic-open{overflow:hidden}
 .mic-row{display:flex;gap:10px;justify-content:flex-end}
 
 /* the card */
-.mic-card{--rx:0deg;--ry:0deg;--bg:#10121f;--bg2:#06070d;--acc:#3fd6bb;--ink:#fff;--soft:#d5d7e0;--accink:#14121c;--font:'Archivo',Arial,sans-serif;position:relative;width:min(320px,74vw);aspect-ratio:320/480;padding:20px 22px 18px;display:flex;flex-direction:column;border-radius:22px;overflow:hidden;color:var(--ink);font-family:var(--font);transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .18s ease-out,background .25s,color .25s;box-shadow:0 30px 60px #0009,0 0 0 1px #ffffff26 inset;background:linear-gradient(180deg,var(--bg),var(--bg2));will-change:transform;user-select:none}
+.mic-card{--rx:0deg;--ry:0deg;--bg:#10121f;--bg2:#06070d;--acc:#3fd6bb;--ink:#fff;--soft:#d5d7e0;--accink:#14121c;--font:'Manrope',Arial,sans-serif;position:relative;width:min(320px,74vw);aspect-ratio:320/480;padding:20px 22px 18px;display:flex;flex-direction:column;border-radius:22px;overflow:hidden;color:var(--ink);font-family:var(--font);transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .18s ease-out,background .25s,color .25s;box-shadow:0 30px 60px #0009,0 0 0 1px #ffffff26 inset;background:linear-gradient(180deg,var(--bg),var(--bg2));will-change:transform;user-select:none}
 .mic-card>*{position:relative;z-index:2}
 .mic-slot{position:absolute!important;top:10px;left:50%;width:54px;height:9px;margin-left:-27px;border-radius:6px;background:#05060d99;box-shadow:inset 0 1px 3px #000c,0 1px 0 #ffffff33;z-index:3}
 .mic-pattern{position:absolute!important;inset:0;pointer-events:none;z-index:1}

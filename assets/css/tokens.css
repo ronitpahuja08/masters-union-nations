@@ -8,8 +8,8 @@
   --ash:#9C8A88;
   --hair:rgba(243,233,220,.14);
 
-  --f-display:'Archivo',system-ui,sans-serif;
-  --f-serif:'Instrument Serif',Georgia,serif;
+  --f-display:'Manrope','Space Grotesk',system-ui,sans-serif;
+  --f-serif:'Playfair Display',Georgia,serif;
   --f-mono:'DM Mono',ui-monospace,monospace;
 
   --ease-out:cubic-bezier(.23,1,.32,1);
