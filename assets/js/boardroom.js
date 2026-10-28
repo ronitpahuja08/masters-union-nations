@@ -155,13 +155,13 @@ function selectCommittee(c,i,event){
     if(!cam.width||!cam.height||!point.width){openCommittee(c,i,handoff);armCameraReset();return}
     const sx=point.left+point.width/2-cam.left-panShift;
     const sy=point.top+point.height/2-cam.top;
-    const scale=cam.width<=600?2.4:3.4;
+    const scale=cam.width<=600?14:22;   // far enough that the dot itself fills the screen
     mapCamera.style.willChange='transform';
     mapCamera.style.transformOrigin='0 0';
     // one continuous push: gentle start, then it accelerates into the dot while the intro is already fading in over it
-    mapCamera.style.transition='transform 680ms cubic-bezier(.5,0,.85,.5),opacity 680ms cubic-bezier(.5,0,.9,.6)';
-    zoomFrame=requestAnimationFrame(()=>{mapCamera.style.opacity='.25';mapCamera.style.transform=`translate3d(${(cam.width/2-sx*scale).toFixed(1)}px,${(cam.height*.45-sy*scale).toFixed(1)}px,0) scale(${scale})`});
-    zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},500);
+    mapCamera.style.transition='transform 1250ms cubic-bezier(.6,0,.4,1),opacity 380ms ease-in 850ms';
+    void mapCamera.offsetWidth;{mapCamera.style.opacity='0';mapCamera.style.transform=`translate3d(${(cam.width/2-sx*scale).toFixed(1)}px,${(cam.height*.5-sy*scale).toFixed(1)}px,0) scale(${scale})`}
+    zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},1200);
   };
   launch();
 }
