@@ -168,9 +168,9 @@ function selectCommittee(c,i,event){
     mapCamera.style.transformOrigin=`${sx}px ${sy}px`;
     camAnim?.cancel();camAnim=mapCamera.animate(frames,{duration:DUR,easing:'linear',fill:'forwards'});
     washEl?.remove();washEl=document.createElement('div');washEl.className='map-wash';washEl.style.background=c.color;document.body.append(washEl);
-    washEl.animate([{opacity:0,offset:0},{opacity:0,offset:.5},{opacity:1,offset:.86},{opacity:1,offset:1}],{duration:DUR,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'});
+    washEl.animate([{opacity:0,offset:0},{opacity:0,offset:.45},{opacity:1,offset:.72},{opacity:1,offset:1}],{duration:DUR,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'});
     zoomTimer=setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset();
-      setTimeout(()=>{const w=washEl;if(!w)return;w.animate([{opacity:1},{opacity:0}],{duration:900,easing:'ease-out',fill:'forwards'}).onfinish=()=>{w.remove();if(washEl===w)washEl=null}},140)},DUR-80);
+      setTimeout(()=>{const w=washEl;if(!w)return;w.animate([{opacity:1},{opacity:0}],{duration:650,easing:'ease-out',fill:'forwards'}).onfinish=()=>{w.remove();if(washEl===w)washEl=null}},40)},Math.round(DUR*.74));
   };
   launch();
 }
