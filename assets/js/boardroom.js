@@ -64,7 +64,8 @@ $('#delegateName').addEventListener('input',e=>$('#initials').textContent=initia
 $('#credentialForm').onsubmit=async e=>{e.preventDefault();const card=e.currentTarget,status=$('#scanStatus');state.name=$('#delegateName').value.trim();save();card.classList.add('scanning');$('#verifyButton').disabled=true;status.textContent='ANALYSING IDENTITY · 01/03';tone(180,.14,'sawtooth');await wait(600);status.textContent='CROSS-CHECKING SUMMIT NETWORK · 02/03';tone(260,.14);await wait(650);status.textContent='CLEARANCE CONFIRMED · 03/03';status.classList.add('ok');$('#gateLed').classList.add('ok');tone(392,.12);setTimeout(()=>tone(588,.3),100);await wait(700);document.body.classList.remove('locked');document.body.classList.add('map-mode');$('#access').classList.add('cleared');toast('Choose a destination, '+state.name.split(' ')[0]+'.')};
 if(state.name){$('#delegateName').value=state.name;$('#initials').textContent=initials(state.name)}
 
-const nodes=$('#nodes'),rail=$('#committeeRail'),routes=$('#routes'),mapCable=$('#mapCable'),mapCableText=$('#mapCableText');
+// ---- World map: departures board, focus cable, select-zoom (ambient life lives in map-life.js) ----
+const nodes=$('#nodes'),rail=$('#committeeRail'),routes=$('#routes'),boardroomEl=$('#boardroom'),mapCamera=$('#mapCamera'),mapCable=$('#mapCable'),mapCableText=$('#mapCableText'),mapDim=$('#mapDim'),mapGlow=$('#mapGlow');
 const reducedMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ZONES={UNHRC:'Europe/Zurich',MCC:'America/New_York',CCEP:'Asia/Singapore',IPL:'Asia/Kolkata',AIPPM:'Asia/Kolkata',DALAL:'Asia/Kolkata',STARTUP:'America/Los_Angeles',IP:'Europe/London'};
 const clockFormats={};
@@ -75,65 +76,41 @@ const cityOf=c=>c.city.split(' / ')[0];
 // A room is "in session" during its own city's working day; the Midnight Crisis Committee keeps night hours.
 function statusOf(c){const h=parseInt(localTime(ZONES[c.code]),10);const on=c.code==='MCC'?(h>=20||h<6):(h>=9&&h<18);return on?'In session':'Boarding'}
 const coordOf=c=>Math.abs(c.lat).toFixed(2).padStart(5,'0')+'°'+(c.lat>=0?'N':'S')+' '+Math.abs(c.lon).toFixed(2).padStart(6,'0')+'°'+(c.lon>=0?'E':'W');
+const nodeEls=[],rowEls=[];let hoverIdx=-1,focusIdx=-1,activeIdx=-1,departing=false,typeFrame=0;
+committees.forEach((c,i)=>{const n=document.createElement('button');n.type='button';n.className='node node-'+c.code.toLowerCase();n.style.setProperty('--c',c.color);n.setAttribute('aria-label',`${c.full} — ${c.city.replace(' / ',' ')}`);n.innerHTML=`<span class="node-dot"></span><span class="node-label">${c.code}<small>${cityOf(c)}</small></span>`;bindCommitteeControl(n,c,i,true);nodes.append(n);nodeEls.push(n);
+ const b=document.createElement('button');b.type='button';b.className='dep-row';b.style.setProperty('--c',c.color);b.setAttribute('aria-label',`${c.full}, ${cityOf(c)}. Prize purse ${inr(purseOf(c))}.`);b.innerHTML=`<span class="dep-code">${c.code}</span><span class="dep-city">${cityOf(c)}</span><span class="dep-time" data-zone="${ZONES[c.code]}">--:--</span><span class="dep-amt">${inr(purseOf(c))}</span><span class="dep-status"><i></i><em>Boarding</em></span>`;bindCommitteeControl(b,c,i,false);rail.append(b);rowEls.push(b)});
+$('#depPurse').textContent=inr(committees.reduce((s,c)=>s+purseOf(c),0));
 
-function previewCommittee(c,i,on=true){const p=$('#mapPreview');p.style.setProperty('--pc',c.color);$('#previewNum').textContent=String(i+1).padStart(2,'0');$('#previewCity').textContent=c.city;$('#previewCode').textContent=c.code;$('#previewAgenda').textContent=c.agenda;p.classList.toggle('show',on);$('.node').forEach((n,k)=>n.classList.toggle('active',on&&k===i));showCable(c,on)}
-committees.forEach((c,i)=>{const n=document.createElement('button');n.className='node node-'+c.code.toLowerCase();n.style.setProperty('--c',c.color);n.setAttribute('aria-label',`${c.full} — ${c.city.replace(' / ',' ')}`);n.innerHTML=`<span class="node-dot"></span><span class="node-label">${c.code}<small>${c.city.split(' / ')[0]}</small></span>`;n.onclick=e=>zoomCommittee(c,i,e);n.onmouseenter=()=>{sonic(c);previewCommittee(c,i)};n.onmouseleave=()=>previewCommittee(c,i,false);n.onfocus=()=>previewCommittee(c,i);n.onblur=()=>previewCommittee(c,i,false);nodes.append(n);const b=document.createElement('button');b.style.setProperty('--c',c.color);b.textContent=String(i+1).padStart(2,'0')+' / '+c.code;b.onclick=e=>zoomCommittee(c,i,e);b.onmouseenter=()=>previewCommittee(c,i);b.onmouseleave=()=>previewCommittee(c,i,false);rail.append(b)});
+function bindCommitteeControl(el,c,i,isNode){el.addEventListener('click',()=>selectCommittee(c,i,el));el.addEventListener('mouseenter',()=>{if(isNode)sonic(c);hoverIdx=i;renderFocus()});el.addEventListener('mouseleave',()=>{if(hoverIdx===i){hoverIdx=-1;renderFocus()}});el.addEventListener('focus',()=>{let visible=true;try{visible=el.matches(':focus-visible')}catch(e){}if(!visible)return;focusIdx=i;renderFocus()});el.addEventListener('blur',()=>{if(focusIdx===i){focusIdx=-1;renderFocus()}})}
+function tickClocks(){$('#depOriginTime').textContent=localTime('Asia/Kolkata');$$('[data-zone]',boardroomEl).forEach(el=>{el.textContent=localTime(el.dataset.zone,el.classList.contains('cable-time'))});rowEls.forEach((row,i)=>{const s=statusOf(committees[i]);row.classList.toggle('in-session',s==='In session');const em=$('.dep-status em',row);if(!row.classList.contains('is-departing')&&em.textContent!==s)em.textContent=s})}
+let clockTimer=0;function setClocks(on){clearInterval(clockTimer);clockTimer=0;if(on){tickClocks();clockTimer=setInterval(tickClocks,1000)}}
+tickClocks();window.addEventListener('mun-map-live',e=>setClocks(!!e.detail?.live));
 function cableLines(c){const awards=c.awards||[],top=awards[0];return[`CABLE MUN/GGN ▸ ${cityOf(c).toUpperCase()}`,`${coordOf(c)}  LOCAL `,`${c.code} · ${c.full.toUpperCase()}`,`AGENDA  ${String(c.agenda||'').toUpperCase()}`,`PURSE   ${inr(purseOf(c))}${top?' · '+String(top[0]).toUpperCase()+' '+top[1]:''}`,`STATUS  ${statusOf(c).toUpperCase()} · ENTER ↵`]}
 function typeCable(c){cancelAnimationFrame(typeFrame);const lines=cableLines(c),full=lines.join('\n'),zone=ZONES[c.code];const finish=()=>{mapCableText.textContent='';lines.forEach((line,k)=>{const row=document.createElement('span');row.className='cable-line'+(k===0?' cable-head':'');row.textContent=line;if(k===1){const t=document.createElement('b');t.className='cable-time';t.dataset.zone=zone;t.textContent=localTime(zone,true);row.append(t)}mapCableText.append(row)})};if(reducedMotion()){finish();return}const start=performance.now(),rate=.42;const step=now=>{const n=Math.floor((now-start)*rate);if(n>=full.length){finish();return}mapCableText.textContent=full.slice(0,n)+'▌';typeFrame=requestAnimationFrame(step)};typeFrame=requestAnimationFrame(step)}
 function placeCable(c){const stage=$('#mapStage'),w=stage.clientWidth,h=stage.clientHeight;mapCable.style.setProperty('--cx',c.x+'%');mapCable.style.setProperty('--cy',c.y+'%');mapCable.dataset.side=(c.x/100*w>w*.56)?'left':'right';mapCable.dataset.vert=(c.y/100*h<h*.4)?'below':'above'}
-
-/* Keep only Shreshth's information cable. Original map layout and node rendering are untouched. */
-let typeFrame=0,zooming=false,zoomAnimation=null;
-function showCable(c,visible){
-  cancelAnimationFrame(typeFrame);
-  mapCable.classList.toggle('show',visible);
-  if(!visible)return;
-  mapCable.style.setProperty('--pc',c.color);
-  placeCable(c);typeCable(c);
-}
-function zoomCommittee(c,i,event){
-  if(zooming)return;
-  const source=event?.currentTarget||$('.node',nodes)[i];
-  const handoff={currentTarget:source};
-  const stage=$('#mapStage'),node=$('.node',nodes)[i];
-  previewCommittee(c,i,true);
-  if(reducedMotion()||!stage||!node||!stage.animate){openCommittee(c,i,handoff);return}
-  const rect=stage.getBoundingClientRect(),dot=$('.node-dot',node).getBoundingClientRect();
-  if(rect.width<80||rect.height<80){openCommittee(c,i,handoff);return}
-  const fx=dot.left+dot.width/2-rect.left,fy=dot.top+dot.height/2-rect.top;
-  if(!Number.isFinite(fx)||!Number.isFinite(fy)){openCommittee(c,i,handoff);return}
-  zooming=true;
-  const scale=innerWidth<=600?1.85:2.4;
-  const dx=rect.width*.5-fx,dy=rect.height*.46-fy;
-  stage.style.transformOrigin=fx.toFixed(1)+'px '+fy.toFixed(1)+'px';
-  zoomAnimation=stage.animate(
-    [{transform:'none'},{transform:'translate3d('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px,0) scale('+scale+')'}],
-    {duration:690,easing:'cubic-bezier(.3,.7,.2,1)',fill:'forwards'}
-  );
-  let entered=false;
-  const enter=()=>{
-    if(entered)return;entered=true;
-    openCommittee(c,i,handoff);
-    setTimeout(()=>{
-      zoomAnimation?.cancel();zoomAnimation=null;
-      stage.style.transformOrigin='';
-      zooming=false;
-    },100);
-  };
-  zoomAnimation.finished.then(enter,enter);
-  setTimeout(enter,770);
-}
-
+function renderFocus(){if(departing)return;const i=hoverIdx>=0?hoverIdx:focusIdx;if(i===activeIdx)return;activeIdx=i;const on=i>=0,c=committees[i];boardroomEl.classList.toggle('is-focusing',on);nodeEls.forEach((n,k)=>n.classList.toggle('active',k===i));rowEls.forEach((r,k)=>r.classList.toggle('active',k===i));$$('.route',routes).forEach(p=>p.classList.toggle('active',on&&p.dataset.code===c.code));mapCable.classList.toggle('show',on);if(!on){cancelAnimationFrame(typeFrame);window.dispatchEvent(new CustomEvent('mun-map-focus',{detail:null}));return}boardroomEl.style.setProperty('--fc',c.color);[mapDim,mapGlow].forEach(el=>{el.style.setProperty('--fx',c.x+'%');el.style.setProperty('--fy',c.y+'%')});mapCable.style.setProperty('--pc',c.color);placeCable(c);typeCable(c);window.dispatchEvent(new CustomEvent('mun-map-focus',{detail:{code:c.code,x:c.x,y:c.y,color:c.color}}))}
+// Selecting pushes the camera into the city, then hands off to the unchanged committee opener.
+function resetMapCamera(){departing=false;mapCamera.style.transition='none';mapCamera.style.transform='';mapCamera.style.willChange='';boardroomEl.classList.remove('is-departing');rowEls.forEach(r=>r.classList.remove('is-departing'));hoverIdx=-1;focusIdx=-1;activeIdx=-2;renderFocus();tickClocks()}
+function armCameraReset(){let seen=false,timer=0;const done=()=>{mo.disconnect();clearTimeout(timer);resetMapCamera()};const check=()=>{if(document.body.classList.contains('overlay')){if(!seen){seen=true;clearTimeout(timer);timer=setTimeout(done,1200)}}else if(seen)done()};const mo=new MutationObserver(check);mo.observe(document.body,{attributes:true,attributeFilter:['class']});check();if(!seen)timer=setTimeout(done,2600)}
+function selectCommittee(c,i,el){if(departing)return;const handoff={currentTarget:el};hoverIdx=i;renderFocus();if(reducedMotion()||!mapCamera){openCommittee(c,i,handoff);return}departing=true;boardroomEl.classList.add('is-departing');rowEls[i].classList.add('is-departing');$('.dep-status em',rowEls[i]).textContent='Departing';const cam=mapCamera.getBoundingClientRect(),dot=$('.node-dot',nodeEls[i]).getBoundingClientRect(),pan=$('.map-pan');let shift=0;
+ // Phone: the map pans inside a scroller, so bring an off-screen city to centre while the camera pushes in.
+ if(pan&&pan.scrollWidth>pan.clientWidth+1){const want=Math.max(0,Math.min(pan.scrollWidth-pan.clientWidth,pan.scrollLeft+(dot.left+dot.width/2-cam.left)-pan.clientWidth/2));shift=want-pan.scrollLeft;pan.scrollTo({left:want,behavior:'smooth'})}
+ const cx=dot.left+dot.width/2-cam.left-shift,cy=dot.top+dot.height/2-cam.top,S=cam.width<=560?2:2.6;mapCamera.style.willChange='transform';mapCamera.style.transformOrigin='0 0';mapCamera.style.transition='transform 720ms var(--ease-io)';void mapCamera.offsetWidth;mapCamera.style.transform=`translate(${(cam.width/2-cx*S).toFixed(1)}px,${(cam.height*.45-cy*S).toFixed(1)}px) scale(${S})`;setTimeout(()=>{openCommittee(c,i,handoff);armCameraReset()},680)}
 const mapArt=new Image();mapArt.src='assets/images/world-atlas-india-focus.webp';
 // Pixel coordinates calibrated to the visible cities on this illustrated atlas.
 // Geographic equirectangular maths lands east of the actual painted coastlines.
 const atlasCities={MCC:[490,285],IP:[751,240],UNHRC:[802,270],AIPPM:[1132,355],STARTUP:[321,305],DALAL:[1095,397],IPL:[1111,443],CCEP:[1244,479]};
 function backgroundOffset(container,image,position){if(position?.endsWith('%'))return(container-image)*parseFloat(position)/100;if(position==='right'||position==='bottom')return container-image;if(position==='center')return(container-image)/2;if(position==='left'||position==='top')return 0;return parseFloat(position)||0}
+function drawRoutes(){routes.innerHTML='';committees.forEach((c,i)=>{if(i)routes.insertAdjacentHTML('beforeend',`<path d="M${committees[0].x*10} ${committees[0].y*5.2} Q500 210 ${c.x*10} ${c.y*5.2}"/>`)})}
+// Guard: a zero-size stage (map not laid out yet) must never position committees.
 let mapSynced=false;function syncCommitteeMap(){const stage=$('#mapStage');if(!stage||!mapArt.naturalWidth||!mapArt.naturalHeight)return;const width=stage.clientWidth,height=stage.clientHeight;if(!width||!height)return;const style=getComputedStyle(stage),size=style.backgroundSize.trim().split(/\s+/),position=style.backgroundPosition.trim().split(/\s+/);let imageWidth,imageHeight;const ratio=mapArt.naturalWidth/mapArt.naturalHeight;
  if(size[0]==='cover'||size[0]==='contain'){const scale=size[0]==='cover'?Math.max(width/mapArt.naturalWidth,height/mapArt.naturalHeight):Math.min(width/mapArt.naturalWidth,height/mapArt.naturalHeight);imageWidth=mapArt.naturalWidth*scale;imageHeight=mapArt.naturalHeight*scale}
  else{const dimension=(value,container,natural)=>value==='auto'?null:value?.endsWith('%')?container*parseFloat(value)/100:value?.endsWith('px')?parseFloat(value):null;imageWidth=dimension(size[0],width,mapArt.naturalWidth);imageHeight=dimension(size[1],height,mapArt.naturalHeight);if(imageWidth===null&&imageHeight===null){imageWidth=width;imageHeight=height}else if(imageWidth===null)imageWidth=imageHeight*ratio;else if(imageHeight===null)imageHeight=imageWidth/ratio}
  const offsetX=backgroundOffset(width,imageWidth,position[0]||'50%'),offsetY=backgroundOffset(height,imageHeight,position[1]||'50%');
- committees.forEach((c,i)=>{const point=atlasCities[c.code],u=point[0]/mapArt.naturalWidth,v=point[1]/mapArt.naturalHeight;c.x=((u*imageWidth+offsetX)/width)*100;c.y=((v*imageHeight+offsetY)/height)*100;const node=$('.node')[i];node?.style.setProperty('--x',c.x+'%');node?.style.setProperty('--y',c.y+'%')});routes.innerHTML='';committees.forEach((c,i)=>{if(i)routes.insertAdjacentHTML('beforeend',`<path d="M${committees[0].x*10} ${committees[0].y*5.2} Q500 210 ${c.x*10} ${c.y*5.2}"/>`)})}
+ const toStage=([px,py])=>({x:((px/mapArt.naturalWidth*imageWidth+offsetX)/width)*100,y:((py/mapArt.naturalHeight*imageHeight+offsetY)/height)*100});
+ committees.forEach((c,i)=>{Object.assign(c,toStage(atlasCities[c.code]));const node=nodeEls[i];node?.style.setProperty('--x',c.x+'%');node?.style.setProperty('--y',c.y+'%')});drawRoutes();
+ if(activeIdx>=0)placeCable(committees[activeIdx]);
+ window.dispatchEvent(new CustomEvent('mun-map-geom',{detail:{width,height,imageWidth,imageHeight,offsetX,offsetY}}))}
 mapArt.addEventListener('load',syncCommitteeMap,{once:true});if(mapArt.complete)syncCommitteeMap();window.addEventListener('resize',syncCommitteeMap,{passive:true});window.addEventListener('journey',e=>{if(e.detail>=.9&&!mapSynced){mapSynced=true;syncCommitteeMap()}else if(e.detail<.5)mapSynced=false},{passive:true});
 let current=null,currentCommitteeIndex=0,committeeJourneyTimers=[],lastCommitteeControl=null,committeeJourneyActive=false;
 let dalalMascotFrame=0;
