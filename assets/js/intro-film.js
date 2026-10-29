@@ -5,7 +5,8 @@ const home = document.getElementById('home');
 const content = home && home.querySelector('.lobby-content');
 
 if (home && content) {
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lite = !!window.MUNPerformance?.lite;
+  const reduced = lite || matchMedia('(prefers-reduced-motion: reduce)').matches;
   const phone = () => innerWidth < 700;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, t) => a + (b - a) * t;
@@ -127,6 +128,7 @@ if (home && content) {
   /* ---------- the stage: one renderer, two sets ---------- */
   let stage = null, stageLoading = null;
   function loadStage() {
+    if (lite) return Promise.resolve(null); // No Three.js, shaders or canvas textures on low-spec devices.
     if (stage || stageLoading) return stageLoading;
     stageLoading = import(THREE_URL).then(THREE => { stage = buildStage(THREE); return stage; }).catch(() => null);
     return stageLoading;
@@ -389,7 +391,7 @@ if (home && content) {
   }
   function playStill() { // reduced motion: each act as a still card, then the reset
     cls('is-on'); setBeat('beat-purse'); cls('purse-in'); cls('purse-landed'); odometer(true);
-    loadStage().then(() => stage?.frame(2.7, 0));
+    if (!lite) loadStage().then(() => stage?.frame(2.7, 0));
     setTimeout(() => {
       cls('purse-out'); setBeat('beat-sunset'); cls('venue-in');
       stage?.frame(8.3, 0);
@@ -404,7 +406,7 @@ if (home && content) {
     film.setAttribute('aria-hidden', 'false');
     document.body.classList.add('film-playing');
     $('.film-skip').focus({ preventScroll: true });
-    loadStage().then(s => s?.resize());
+    if (!lite) loadStage().then(s => s?.resize());
     if (reduced) { playStill(); return; }
     cls('is-on');
     t0 = last = performance.now();
@@ -433,6 +435,6 @@ if (home && content) {
   addEventListener('resize', () => { if (playing) stage?.resize(); });
 
   // Build the stage in idle time after the hero's own opening, like the globe.
-  setTimeout(() => (window.requestIdleCallback || (f => setTimeout(f, 1)))(() => loadStage(), { timeout: 4000 }), 3200);
+  if (!lite) setTimeout(() => (window.requestIdleCallback || (f => setTimeout(f, 1)))(() => loadStage(), { timeout: 4000 }), 3200);
   window.MUNFilm = { play, skip };
 }
