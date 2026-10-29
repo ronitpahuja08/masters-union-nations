@@ -203,7 +203,8 @@
   const spritePositions=['0%','33.3333%','66.6667%','100%'];
   function paintAippmSprites(){
     $$('.mu-sprite-frame',page).forEach((sprite,index)=>{
-      sprite.style.backgroundPositionX=spritePositions[(aippmFrame+index)%4];
+      const frameOffset=sprite.closest('.mu-sprite-loader')?0:index;
+      sprite.style.backgroundPositionX=spritePositions[(aippmFrame+frameOffset)%4];
     });
   }
   function syncAippmMotion(){
@@ -228,7 +229,7 @@
     const placements=[
       ['shah','amit_shah_dozing_bench_sprite_sheet.webp','11%'],
       ['modi','modi_teacup_sprite_sheet.webp','29%'],
-      ['meloni','giorgia_meloni_teacup_sprite_sheet.webp','40%'],
+      ['loader','yogi_bulldozer_photo_sprite.webp','43%'],
       ['ravi','ravi_kishan_dance_sprite_sheet.webp','66%'],
       ['rahul','rahul_gandhi_walk_cycle.webp','81%'],
       ['sonia','sonia_gandhi_walk_cycle.webp','93%']
@@ -239,6 +240,7 @@
     stage.replaceChildren();
     placements.forEach(([key,file,x])=>{
       const figure=document.createElement('figure');figure.className=`mu-sprite-character mu-sprite-${key}`;
+      if(key==='loader')figure.setAttribute('aria-label','Stylized photographic illustration of Yogi Adityanath on an animated bulldozer bucket');
       figure.style.setProperty('--stage-x',x);
       const shadow=document.createElement('span');shadow.className='mu-sprite-shadow';
       const artwork=document.createElement('span');artwork.className='mu-sprite-frame';

@@ -31,3 +31,31 @@ html body #home .pass-seg:not(.pass-count) b .board-char {
   html body #home .pass-seg:not(.pass-count) b{font-size:clamp(.65rem,3vw,.83rem)!important}
 }
 /* Removed the temporary illustrated-loader experiment; original photographic character composition restored. */
+
+/* Photographic Yogi-on-bulldozer character, same 4-frame sprite animation as cast.
+   Lightweight WebP image replaces the mismatched cartoon SVG. */
+.committee-page[data-committee="AIPPM"] .mu-sprite-loader {
+  width:clamp(152px,14.2vw,210px)!important;
+  aspect-ratio:3/4!important;
+  height:auto!important;
+  bottom:clamp(18px,4vh,42px)!important;
+  z-index:3!important;
+  filter:drop-shadow(0 13px 17px rgba(0,0,0,.55));
+}
+.committee-page[data-committee="AIPPM"] .mu-sprite-loader .mu-sprite-frame {
+  background-size:400% 100%;
+  background-repeat:no-repeat;
+  image-rendering:auto;
+}
+@media(max-width:800px){
+  .committee-page[data-committee="AIPPM"] .mu-sprite-loader {
+    width:clamp(104px,18vw,150px)!important;
+    bottom:clamp(12px,3vh,28px)!important;
+  }
+}
+@media(max-width:560px){
+  .committee-page[data-committee="AIPPM"] .mu-sprite-loader {
+    left:44%!important;
+    width:clamp(88px,27vw,135px)!important;
+  }
+}
