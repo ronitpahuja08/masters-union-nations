@@ -2,7 +2,7 @@
 /* Use the lossless source art instead of the more heavily compressed map WebP.
    The atlas is the SAME image and its pin coordinates use the same source dimensions. */
 #boardroom .map-stage{
-  background-image:url("../images/world-atlas-india-focus.png");
+  background-image:url("../images/world-atlas-india-focus-hq.webp");
   image-rendering:auto;
 }
 /* Ensure every item in the map's existing bottom dock receives pointer input. */

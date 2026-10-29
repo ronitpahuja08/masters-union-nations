@@ -23,3 +23,9 @@ body:not(.on-home) #home .lobby-glow,body:not(.on-home) #home .hero-ring,body:no
 body:not(.on-home) #home .time-dial-hand,body:not(.on-home) #home .lobby-kicker::after{animation-play-state:paused}
 
 @media(prefers-reduced-motion:reduce){#home .lobby-kicker::after{animation:none}}
+
+/* Landing stays lean: closed committee intros and pages are hidden, not removed, so the browser would still
+   fetch their artwork. html.landing-lean (set in the head on "/" only) holds it back until the map appears. */
+html.landing-lean section[role="dialog"],html.landing-lean section[role="dialog"] *,
+html.landing-lean .committee-flight,html.landing-lean .committee-flight *{background-image:none!important}
+html.landing-lean section[role="dialog"] img,html.landing-lean .committee-flight img{display:none!important}

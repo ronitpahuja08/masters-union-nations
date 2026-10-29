@@ -31,11 +31,11 @@
 <link rel="stylesheet" href="assets/css/revamp-credentials.css?v=reset-1" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/map-morning-two-features.css?v=morning-2">
 <link rel="stylesheet" href="assets/css/revamp-committees.css?v=perf-1" media="print" data-defer onload="this.media='all'">
-<link rel="stylesheet" href="assets/css/perf.css?v=perf-1">
+<link rel="stylesheet" href="assets/css/perf.css?v=lean-1">
 <link rel="stylesheet" href="assets/css/developer-credit.css?v=credits-1" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/committee-prize-typography.css?v=pooltype-2" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/committee-itineraries.css?v=order-of-business-1" media="print" data-defer onload="this.media='all'">
-<link rel="stylesheet" href="assets/css/world-map-mcc-clarity.css?v=clarity-1">
+<link rel="stylesheet" href="assets/css/world-map-mcc-clarity.css?v=lean-1">
 <link rel="stylesheet" href="assets/css/map-mobile.css?v=phone-map-2">
 <link rel="stylesheet" href="assets/css/unhrc-protest.css?v=unhrc-1" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/unhrc-aippm-editorial.css?v=editorial-1" media="print" data-defer onload="this.media='all'">
@@ -44,6 +44,10 @@
 <link rel="stylesheet" href="assets/css/aippm-loader-box-fit.css?v=photo-loader-hd-2" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/committee-mobile.css?v=phone-1" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/intro-film.css?v=film-5">
+<script>
+/* Landing stays lean until the map shows (see perf.css). Committee links opened directly never set it. */
+if(location.pathname==='/'||location.pathname==='/index.html'){document.documentElement.classList.add('landing-lean');document.addEventListener('DOMContentLoaded',function(){new MutationObserver(function(_,o){if(document.body.classList.contains('at-map')){document.documentElement.classList.remove('landing-lean');o.disconnect();}}).observe(document.body,{attributes:true,attributeFilter:['class']});});}
+</script>
 <script>
 /* Committee, modal and itinerary styles load after first paint; a committee URL opened directly needs them at once. */
 if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-press|startup|ip)\/?$/i.test(location.pathname))document.querySelectorAll('link[data-defer]').forEach(function(l){l.media='all';});
@@ -58,7 +62,7 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
     <a href="#boardroom" data-goto="map">World map</a>
   </nav>
   <a class="mu-university-link" href="#home" data-goto="top" aria-label="Masters’ Union University"><img class="mu-university-wordmark" src="assets/img/masters-union-university-transparent.png" alt="Masters’ Union University" width="418" height="84" decoding="async"></a>
-  <a class="landing-campaign-mark" href="#home" data-goto="top" aria-label="Masters' Union Nations — The World Reset"><img src="assets/img/zero-world-reset-circle.png" alt="ZERO — The World Reset"></a>
+  <a class="landing-campaign-mark" href="#home" data-goto="top" aria-label="Masters' Union Nations — The World Reset"><img src="assets/img/zero-world-reset-circle.webp" alt="ZERO — The World Reset"></a>
   <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
 <div class="noise">
@@ -129,7 +133,7 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 </button>
 <a class="mu-university-link" href="#home" data-goto="top" aria-label="Masters’ Union University"><img class="mu-university-wordmark" src="assets/img/masters-union-university-transparent.png" alt="Masters’ Union University" width="418" height="84" decoding="async"></a>
 <a class="campaign-mark-link" href="#home" data-goto="top" aria-label="Masters' Union Nations — The World Reset">
-<img src="assets/img/zero-world-reset-circle.png" alt="ZERO — The World Reset">
+<img src="assets/img/zero-world-reset-circle.webp" alt="ZERO — The World Reset">
 </a>
 <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">Menu</button>
 </header>
@@ -299,7 +303,7 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 </section>
 
 <section class="dalal-page" id="dalalCommitteePage" role="dialog" aria-modal="true" aria-labelledby="dpTitle" aria-hidden="true">
-<header class="dp-nav"><button id="dalalPageClose" type="button" aria-label="Return to committee map">← <span>World map</span></button><a class="dp-brand" href="#dalalTop">MU <i>/</i> MUN</a><div class="dp-nav-right"><a class="dp-nav-cta" href="#dalalRegister">Register <span>↗</span></a><img class="mu-university-wordmark" src="assets/img/masters-union-university-transparent.png" alt="Masters’ Union University" width="418" height="84" decoding="async"><img class="committee-brand-mark" src="assets/img/zero-world-reset-circle.png" alt="ZERO — The World Reset"></div></header>
+<header class="dp-nav"><button id="dalalPageClose" type="button" aria-label="Return to committee map">← <span>World map</span></button><a class="dp-brand" href="#dalalTop">MU <i>/</i> MUN</a><div class="dp-nav-right"><a class="dp-nav-cta" href="#dalalRegister">Register <span>↗</span></a><img class="mu-university-wordmark" src="assets/img/masters-union-university-transparent.png" alt="Masters’ Union University" width="418" height="84" decoding="async"><img class="committee-brand-mark" src="assets/img/zero-world-reset-circle.webp" alt="ZERO — The World Reset"></div></header>
 <main class="dp-scroll" id="dalalPageScroll">
 
 <section class="dp-hero" id="dalalTop"><div class="dp-scene" aria-hidden="true"><div class="dp-bse-panorama"></div><div class="dp-market-display"><div class="dp-market-tape"><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span><span>MU MARKET SIMULATION · EQUITY DESK <b>+1.42%</b> · IPO INDEX <b>+0.86%</b> · DALAL STREET <b>OPEN</b> · </span></div></div><svg class="dp-chart" viewBox="0 0 480 160" preserveAspectRatio="none"><path d="M0 132 L35 117 L61 122 L94 86 L128 94 L156 78 L190 93 L228 56 L264 66 L300 45 L325 68 L355 28 L388 43 L420 19 L480 5"/></svg></div><div class="dp-hero-glow"></div><div class="dp-hero-copy"><p class="dp-eyebrow"><i></i> COMMITTEE 06 &nbsp;·&nbsp; MUMBAI, INDIA</p><h1 id="dpTitle" aria-label="DALAL STREET"><span>DALAL</span><br><em>STREET</em></h1><p class="dp-hero-tagline">WHERE EVERY DECISION MOVES THE MARKET.</p><div class="dp-meta"><span>28—29 NOV 2026</span><span>MASTERS' UNION · GURUGRAM</span></div><div class="dp-hero-actions"><a class="dp-primary" href="#dalalBrief">Explore the committee <b>↓</b></a><button class="mu-dalal-register" type="button">Start registration <b>↓</b></button></div></div><div class="dp-hero-caption"><span>THE BOMBAY STOCK EXCHANGE</span><i>19°04′34″N &nbsp; 72°52′40″E</i></div></section>
@@ -322,7 +326,7 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 <div class="cp-nav-right">
 <a class="cp-nav-register" href="#cpRegister">Register <span aria-hidden="true">↗</span></a>
 <img class="mu-university-wordmark" src="assets/img/masters-union-university-transparent.png" alt="Masters’ Union University" width="418" height="84" decoding="async">
-<img class="committee-brand-mark" src="assets/img/zero-world-reset-circle.png" alt="ZERO — The World Reset">
+<img class="committee-brand-mark" src="assets/img/zero-world-reset-circle.webp" alt="ZERO — The World Reset">
 </div>
 </header>
 <main class="cp-scroll" id="committeePageScroll" tabindex="-1">
@@ -501,9 +505,9 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 </div>
 <button class="journey-music-toggle" id="journeyMusicToggle" type="button" aria-pressed="false" aria-label="Turn on soundtrack"><span class="journey-music-icon" aria-hidden="true">♫</span><span class="journey-music-label">Music off</span></button>
 <script src="assets/js/soundscape.js?v=reset-1"></script>
-<script src="assets/js/home.js?v=film-1-routes-1"></script>
+<script src="assets/js/home.js?v=lean-1"></script>
 <script src="assets/js/hero-strike.js?v=morning-motion-1"></script>
-<script src="assets/js/boardroom.js?v=phone-map-2">
+<script src="assets/js/boardroom.js?v=lean-1">
 </script>
 <script src="assets/js/journey-audio.js?v=reset-1"></script>
 <script type="module" src="assets/js/dalal-crash.js?v=reset-1"></script>
@@ -514,7 +518,7 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 <script src="assets/js/unhrc-protest.js?v=unhrc-1"></script>
 <script src="assets/js/unhrc-editorial.js?v=editorial-1"></script>
 <script src="assets/js/committee-sequence.js?v=perf-1"></script>
-<script src="assets/js/warmup.js?v=reset-1"></script>
+<script src="assets/js/warmup.js?v=lean-1"></script>
 <script src="assets/js/committee-cinematics.js?v=aippm-hindi-1"></script>
 <script src="assets/js/committee-v2.js?v=cheque-words-1"></script>
 <script src="assets/js/committee-mobile.js?v=phone-1"></script>

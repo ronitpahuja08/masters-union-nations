@@ -12,7 +12,6 @@
   var range=function(){return journeyRange;};
   function measureJourney(){journeyTop=journey.offsetTop;journeyRange=journey.offsetHeight-innerHeight;}
   var target=0,p=0,raf=0,globeOn=true,lastFrame=0,strikeAssetsWarmed=false,starsReady=false,globeLoading=false;
-  var warmedImages=[];
   function warmStrikeAssets(){
     if(strikeAssetsWarmed)return;
     strikeAssetsWarmed=true;
@@ -22,10 +21,7 @@
       globeLoading=true;
       import('./globe-journey.js?v=film-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
     }
-    ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.webp'].forEach(function(src){
-      var image=new Image();image.decoding='async';image.src=src;warmedImages.push(image);
-      if(image.decode)image.decode().catch(function(){});
-    });
+    // globe-journey.js fetches and decodes its own textures off the main thread; preloading them here downloaded them twice.
     window.MUNJourneyAudio?.preload();
   }
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
