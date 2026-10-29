@@ -1,0 +1,5 @@
+/* The countdown column is never narrower than its four flip clocks, so the seconds digit can't be clipped by the card edge. Loaded last. */
+@media(min-width:1101px){
+  html body #home .pass{grid-template-columns:minmax(0,1.05fr) minmax(0,1.45fr) minmax(0,.95fr) minmax(max-content,1.5fr)!important}
+  html body #home .pass-count{min-width:max-content;padding-right:clamp(18px,1.6vw,26px)}
+}
