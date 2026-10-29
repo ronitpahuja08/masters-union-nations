@@ -87,7 +87,7 @@
     void root.offsetWidth;
     root.classList.add('playing');
     $('.mc-skip',root).focus({preventScroll:true});
-    const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||!!window.MUNPerformance?.lite;
     timer = setTimeout(complete,reduce?180:cfg.duration);
   }
   function decoratePage(code){
@@ -118,7 +118,7 @@
     }
     tag.textContent=config.tag;
     const vid=$('.ch-video',scene);
-    if(vid && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) vid.play().catch(()=>{});
+    if(vid && !window.MUNPerformance?.lite && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) vid.play().catch(()=>{});
   }
   function closePage(){ const vid=$('.cinema-hero-scene .ch-video'); if(vid) vid.pause(); }
   // Prevent the background media from playing after leaving the committee detail page.
