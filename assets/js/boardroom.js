@@ -40,7 +40,7 @@ let state={name:'',committee:null,sound:true,finish:'glass',photo:null,paymentVe
 try{state={...state,...JSON.parse(localStorage.getItem('mun26-global')||'{}')}}catch(e){}
 // New visitors start with sound requested. A deliberate choice on this version
 // remains authoritative across visits, including when an older saved state exists.
-try{state.sound=localStorage.getItem('mun26-sound-choice')!=='off'}catch(e){state.sound=true}
+try{const choice=localStorage.getItem('mun26-sound-choice');state.sound=choice==='on'||(!window.MUNPerformance?.lite&&choice!=='off')}catch(e){state.sound=!window.MUNPerformance?.lite}
 let lastSoundState=state.sound;
 const save=()=>{localStorage.setItem('mun26-global',JSON.stringify({...state,photo:null}));if(lastSoundState!==state.sound){lastSoundState=state.sound;window.dispatchEvent(new CustomEvent('mun-sound-change',{detail:{enabled:state.sound}}))}};
 
