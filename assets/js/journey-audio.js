@@ -7,11 +7,11 @@
   const explosion = new Audio('assets/audio/bomb-blast.mp3');
   const resetLine = new Audio('assets/audio/world-resets-voice.mp3');
   epic.loop = true;
-  epic.preload = 'metadata';
+  epic.preload = 'none';
   epic.volume = .42;
-  explosion.preload = 'auto';
+  explosion.preload = 'none';
   explosion.volume = .26;
-  resetLine.preload = 'auto';
+  resetLine.preload = 'none';
   resetLine.volume = 1;
   const explosionCue = .16;
   explosion.addEventListener('loadedmetadata', () => {
