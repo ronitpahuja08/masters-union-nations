@@ -3,7 +3,7 @@
  * Retains departures-board roll, split-flap countdown and gavel strike.
  */
 #home .pass-seg b .board-text,#home .pass-seg b .board-char{font:inherit;color:inherit;letter-spacing:inherit}
-#home .pass-seg b .board-char{display:inline-block;white-space:pre}
+#home .pass-seg b .board-char{display:inline;white-space:pre}
 #home .pass-seg b .board-char.is-rolling{color:#d2a95c}
 
 /* split-flap countdown */

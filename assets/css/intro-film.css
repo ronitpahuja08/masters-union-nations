@@ -1,0 +1,118 @@
+/* Landing film: the purse → the venue → the reset. See docs/landing-film-spec.md. */
+
+/* The landing no longer scrolls; the film and the map drive it. */
+/* Lock the viewport only: overflow on <body> would make it a scroll box and break the journey's sticky stage. */
+html.film-mode{overflow:hidden;overscroll-behavior:none}
+/* Once <html> sets its own overflow, the site's body{overflow-x:hidden} stops passing to the viewport and makes
+   <body> a scroll box, which pins the sticky stage to a box that never scrolls. The locked root already clips. */
+html.film-mode body{overflow:visible}
+html.film-mode #home .scroll-hint{display:none}
+
+/* ---------- hero call to action ---------- */
+.film-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:clamp(18px,3.4vh,30px)}
+.film-play{position:relative;display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 26px 0 20px;border:0;border-radius:999px;
+  background:var(--ivory);color:#16060a;font:800 .9rem/1 var(--f-display);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.8);transition:transform 160ms var(--ease-out),background-color 160ms ease}
+.film-play i{position:relative;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--signal)}
+.film-play i::after{content:"";margin-left:2px;border-left:7px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.film-play::before{content:"";position:absolute;inset:-6px;border-radius:inherit;border:1px solid rgba(243,233,220,.45);opacity:0;animation:filmPing 2.8s var(--ease-out) 1.8s infinite;pointer-events:none}
+@keyframes filmPing{0%{transform:scale(.97);opacity:.7}70%,100%{transform:scale(1.14);opacity:0}}
+.film-play:active{transform:scale(.97)}
+@media(hover:hover) and (pointer:fine){.film-play:hover{background:#fff}}
+.film-skip-link{min-height:44px;display:inline-flex;align-items:center;padding:0 4px;border:0;background:none;color:var(--ivory);opacity:.75;
+  font:500 .7rem/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:5px;text-decoration-color:rgba(243,233,220,.35)}
+@media(hover:hover) and (pointer:fine){.film-skip-link:hover{opacity:1}}
+body:not(.on-home) .film-play::before{animation-play-state:paused}
+
+/* ---------- the film layer ---------- */
+.film{position:fixed;inset:0;z-index:210;overflow:hidden;background:#050103;color:var(--ivory);visibility:hidden;opacity:0;pointer-events:none;contain:strict}
+.film.is-on{visibility:visible;opacity:1;pointer-events:auto}
+.film.is-leaving{opacity:0;transition:opacity 900ms var(--ease-io)}
+.film-gl{position:absolute;inset:0;z-index:2;width:100%;height:100%}
+
+/* Skies: one per beat, crossfaded under the transparent WebGL canvas. */
+.film-sky{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity 1100ms var(--ease-io)}
+.sky-purse{background:radial-gradient(42% 52% at 50% 46%,#2a0a10 0%,#12040a 55%,#050103 100%)}
+.sky-print{background:
+  linear-gradient(rgba(243,233,220,.06) 1px,transparent 1px) 0 0/48px 48px,
+  linear-gradient(90deg,rgba(243,233,220,.06) 1px,transparent 1px) 0 0/48px 48px,
+  linear-gradient(rgba(243,233,220,.025) 1px,transparent 1px) 0 0/12px 12px,
+  linear-gradient(90deg,rgba(243,233,220,.025) 1px,transparent 1px) 0 0/12px 12px,
+  radial-gradient(90% 80% at 50% 40%,#3b0912 0%,#1c040a 70%,#0d0205 100%)}
+.sky-sunset{background:radial-gradient(38% 30% at 30% 72%,rgba(255,190,120,.85),rgba(255,120,60,.25) 50%,transparent 75%),
+  linear-gradient(180deg,#1d0306 0%,#5a0a10 30%,#b52a16 62%,#ec7a3c 80%,#2a0606 100%)}
+.sky-night{background:linear-gradient(180deg,#040108 0%,#0c0410 60%,#1c0609 100%)}
+.film.beat-purse .sky-purse,.film.beat-print .sky-print,.film.beat-sunset .sky-sunset,.film.beat-night .sky-night{opacity:1}
+.film-vignette{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(120% 100% at 50% 45%,transparent 55%,rgba(0,0,0,.6) 100%)}
+
+/* Opening hairline */
+.film-line{position:absolute;left:8%;right:8%;top:50%;z-index:6;height:1px;background:linear-gradient(90deg,transparent,var(--brass),transparent);transform:scaleX(0);opacity:0}
+.film.is-on .film-line{animation:filmLine 1100ms var(--ease-out) forwards}
+@keyframes filmLine{0%{transform:scaleX(0);opacity:1}55%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+
+/* Corner slate: the chapter we're in, like a film's title card */
+.film-slate{position:absolute;z-index:7;left:max(22px,4vw);top:max(22px,4vh);display:grid;gap:6px;font:500 .64rem/1.3 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:rgba(243,233,220,.7)}
+.film-slate b{font-weight:500;color:var(--brass)}
+.film-slate .chapter{grid-area:2/1;opacity:0;transform:translateY(6px);transition:opacity 400ms ease,transform 500ms var(--ease-out)}
+.film.beat-purse .film-slate .c1,.film.beat-print .film-slate .c2,.film.beat-sunset .film-slate .c2{opacity:1;transform:none}
+
+/* ---------- Act I copy: the odometer ---------- */
+.film-purse{position:absolute;z-index:8;left:50%;top:max(84px,13vh);translate:-50% 0;display:grid;justify-items:center;gap:14px;text-align:center;pointer-events:none}
+.film-purse small{font:500 .7rem/1 var(--f-mono);letter-spacing:.3em;text-transform:uppercase;color:var(--brass);opacity:0;transition:opacity 500ms ease}
+.film-odo{display:flex;align-items:flex-start;font:800 clamp(3.2rem,11vw,9.5rem)/1 var(--f-display);letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:var(--ivory);
+  text-shadow:0 2px 0 rgba(0,0,0,.35),0 8px 28px rgba(0,0,0,.85),0 0 90px rgba(0,0,0,.6);opacity:0;transition:opacity 400ms ease}
+.film-odo .cur{margin-right:.06em;font-weight:500;color:var(--brass)}
+.film-odo .sep{width:.28em;text-align:center}
+.film-odo .odo-col{display:block;flex:none;height:1.1em;margin-top:-.05em;overflow:hidden;width:.62em;contain:paint;
+  -webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.film-odo .odo-strip{display:flex;flex-direction:column;transform:translateY(0);will-change:transform}
+.film-odo .odo-strip{padding-top:.05em}
+.film-odo .odo-strip span{display:block;height:1em;line-height:1em;text-align:center}
+.film-purse p{margin:0;font:italic 400 clamp(1rem,2vw,1.5rem)/1.2 var(--f-serif);color:rgba(243,233,220,.85);opacity:0;transform:translateY(10px);transition:opacity 500ms ease,transform 600ms var(--ease-out)}
+.film.purse-in .film-purse small,.film.purse-in .film-odo{opacity:1}
+.film.purse-landed .film-purse p{opacity:1;transform:none}
+.film.purse-landed .film-odo{animation:odoLand 420ms var(--ease-out)}
+@keyframes odoLand{0%{transform:scale(1)}30%{transform:scale(1.035)}100%{transform:scale(1)}}
+.film.purse-out .film-purse{opacity:0;transform:translateY(-14px);transition:opacity 500ms ease,transform 700ms var(--ease-io)}
+
+/* ---------- Act II copy: editorial lockup ---------- */
+.film-venue{position:absolute;z-index:8;left:max(22px,5vw);bottom:max(84px,11vh);max-width:min(560px,86vw);pointer-events:none}
+.film-venue .k{display:block;margin-bottom:14px;font:500 .68rem/1 var(--f-mono);letter-spacing:.3em;text-transform:uppercase;color:var(--brass)}
+.film-venue h2{margin:0;font:800 clamp(2.6rem,6.6vw,5.6rem)/.92 var(--f-display);letter-spacing:-.035em;color:#fff}
+.film-venue em{display:block;margin-top:.35em;font:italic 400 clamp(1.25rem,2.6vw,2.1rem)/1.1 var(--f-serif);color:rgba(255,236,220,.92)}
+.film-venue .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;padding-top:16px;border-top:1px solid rgba(243,233,220,.3);
+  font:500 .66rem/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:rgba(243,233,220,.8)}
+.film-venue .ln{display:block;clip-path:inset(0 0 100% 0);transform:translateY(22px)}
+.film.venue-in .film-venue .ln{clip-path:inset(-10% -5% -20% -5%);transform:none;transition:clip-path 800ms var(--ease-out),transform 800ms var(--ease-out)}
+.film.venue-in .film-venue .ln:nth-child(2){transition-delay:110ms}
+.film.venue-in .film-venue .ln:nth-child(3){transition-delay:220ms}
+.film.venue-in .film-venue .ln:nth-child(4){transition-delay:330ms}
+.film.beat-night .film-venue{opacity:0;transition:opacity 600ms ease}
+
+/* .meta is both a line and a row */
+.film-venue .ln.meta{display:flex}
+
+/* Blueprint callouts, pinned in screen space by the script */
+.film-tag{position:absolute;z-index:7;left:0;top:0;display:flex;align-items:center;gap:10px;font:500 .62rem/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:rgba(243,233,220,.85);
+  opacity:0;transition:opacity 400ms ease;white-space:nowrap;pointer-events:none}
+.film-tag::before{content:"";width:34px;height:1px;background:rgba(243,233,220,.7)}
+.film.beat-print .film-tag.on{opacity:1}
+
+/* Skip */
+.film-skip{position:absolute;z-index:20;right:max(18px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom));min-height:44px;padding:0 18px;
+  border:1px solid rgba(243,233,220,.35);border-radius:999px;background:rgba(5,1,3,.5);color:var(--ivory);font:500 .64rem/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;
+  transition:transform 160ms var(--ease-out),border-color 160ms ease}
+.film-skip:active{transform:scale(.97)}
+@media(hover:hover) and (pointer:fine){.film-skip:hover{border-color:var(--ivory)}}
+.film-skip:focus-visible,.film-play:focus-visible,.film-skip-link:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+
+@media(max-width:700px){
+  .film-purse{top:max(96px,15vh);width:92vw}
+  .film-venue{left:22px;right:22px;bottom:96px}
+  .film-tag{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .film-play::before{animation:none}
+  .film.is-on .film-line{animation:none}
+  .film-venue .ln{clip-path:none;transform:none}
+}

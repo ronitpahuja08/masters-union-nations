@@ -1,0 +1,110 @@
+/* World map hub on phones, landscape phones and tablets (≤ 1024px). Desktop (> 1024px) is untouched.
+   --map-band tells boardroom.js to fit the San Francisco → Singapore band of the atlas into the stage and to
+   lay the city labels out in rows with leader lines. Owns only the .boardroom region. */
+
+/* The rail carries the city for small screens; desktop keeps its "01 / UNHRC" labels. */
+#boardroom .committee-rail .rail-city{display:none}
+
+@media (max-width:1024px){
+  #boardroom .map-stage{--map-band:1;--band-pad-x:22px;--band-pad-top:64px;--band-pad-bottom:64px;--band-label-lift:44px}
+
+  /* No panning: the whole band is on screen. */
+  #boardroom .map-pan{display:block;position:relative;inset:auto;width:100%;overflow:hidden;overscroll-behavior:auto;touch-action:manipulation}
+  #boardroom .map-stage{position:absolute;inset:0;width:100%;height:100%;margin:0;cursor:default;background-color:#020814}
+  #boardroom .map-stage:before{background:linear-gradient(180deg,#020814 0,#02081400 14%,#02081400 84%,#020814 100%)}
+  #boardroom .map-heading:before{content:none}
+  #boardroom .map-heading:after{display:none}
+
+  /* Routes: the original pink dashes, kept at their screen weight at any stage size. */
+  #boardroom .routes path{vector-effect:non-scaling-stroke;stroke-width:1.8;stroke-dasharray:5 7}
+
+  /* Cities: a small dot, an invisible hit area sized to its neighbours, a leader line and a label chip. */
+  #boardroom .node{display:grid;place-items:center;padding:0;width:16px;height:16px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  #boardroom .node:before{content:"";position:absolute;left:50%;top:50%;width:var(--hit,44px);height:var(--hit,44px);border-radius:50%;transform:translate(-50%,-50%)}
+  #boardroom .node:after{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:var(--ll,0px);height:1px;transform-origin:0 50%;transform:rotate(var(--la,0rad));pointer-events:none;
+    background:linear-gradient(90deg,transparent 0 9px,color-mix(in srgb,var(--c) 75%,transparent) 9px)}
+  #boardroom .node-dot{width:12px;height:12px;border-width:2px;box-shadow:0 0 6px #fff8,0 0 16px var(--c)}
+  /* The pulse ring is decoration only: it must never catch a tap meant for a neighbouring city. */
+  #boardroom .node-dot:after{width:26px;height:26px;left:-9px;top:-9px;border-width:1px;pointer-events:none}
+  #boardroom .node .node-label{left:50%;top:50%;min-width:44px;min-height:32px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;
+    padding:5px 8px;border:1px solid color-mix(in srgb,var(--c) 55%,transparent);border-radius:4px;background:#030915e6;box-shadow:0 6px 16px #0009;
+    transform:translate(calc(-50% + var(--lx,0px)),calc(-50% + var(--ly,0px)));
+    color:#fff7e9;font:700 .64rem/1 var(--mono);letter-spacing:.08em;text-align:center;text-shadow:none}
+  /* Tap target ≥ 44px around the chip without making it look bigger. */
+  #boardroom .node .node-label:before{content:"";position:absolute;inset:-6px -4px}
+  #boardroom .node .node-label small{display:block;margin:0;color:var(--c);font:500 .5rem/1 var(--mono);letter-spacing:.06em}
+  #boardroom .node.active .node-label,#boardroom .node:focus-visible .node-label{border-color:var(--c)}
+  #boardroom .node:focus-visible{outline:0}
+  #boardroom .node:focus-visible .node-dot{outline:2px solid var(--brass);outline-offset:4px}
+
+  #boardroom .map-cable{width:min(260px,72vw)}
+  #boardroom .map-cable pre{font-size:.58rem}
+
+  /* Committee list: plain buttons, code over city, a dot in the committee colour. */
+  #boardroom .committee-rail{position:relative;left:auto;right:auto;bottom:auto;transform:none;width:auto;display:grid;gap:8px;
+    border:0;border-radius:0;overflow:visible;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  #boardroom .committee-rail button{display:grid;grid-template-columns:8px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;row-gap:4px;align-content:center;
+    min-height:52px;padding:8px 12px;border:1px solid #f5e7cf2e;border-radius:8px;background:#06101bd9;color:#fff5e6;text-align:left;white-space:nowrap;
+    font:700 .74rem/1 var(--mono);letter-spacing:.06em;transition:transform 160ms var(--ease-out),background-color 160ms var(--ease-out)}
+  #boardroom .committee-rail button:before{content:"";grid-row:1/3;align-self:center;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+  #boardroom .committee-rail .rail-num{display:none}
+  #boardroom .committee-rail .rail-code{grid-column:2}
+  #boardroom .committee-rail .rail-city{display:block;grid-column:2;overflow:hidden;text-overflow:ellipsis;color:#d9c3c9;font:500 .62rem/1 var(--mono);letter-spacing:.04em}
+  #boardroom .committee-rail button:active{transform:scale(.97)}
+  #boardroom .committee-rail button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+  #boardroom .committee-rail button:hover .rail-city,#boardroom .committee-rail button:focus-visible .rail-city{color:#07101a}
+  #boardroom .committee-rail button:hover:before,#boardroom .committee-rail button:focus-visible:before{background:#07101a;box-shadow:none}
+
+  /* Column layout: heading, map, list. The camera (zoom target) is only the map band. */
+  #boardroom.boardroom{display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 66px) 0 calc(env(safe-area-inset-bottom,0px) + 14px)}
+  #boardroom .map-heading{position:relative;inset:auto;flex:none;width:auto;margin:auto 16px 0;transform:none;z-index:8}
+  /* Heading and map travel together, centred in the space above the list. */
+  #boardroom .map-camera{position:relative;inset:auto;flex:0 1 auto;min-height:0;margin-bottom:auto;display:flex;align-items:center}
+  #boardroom .map-pan{height:auto;aspect-ratio:1.1;max-height:100%}
+  #boardroom .committee-rail{flex:none;margin:6px 16px 0}
+}
+
+/* The soundtrack button sat above the old pill rail (bottom:76px), which now lands on the list or the map's
+   bottom label row. On the map only (not over committee pages), use the compact top-right placement that
+   phones under 560px already get. */
+@media (max-width:1024px){
+  body.at-map:not(.overlay) .journey-music-toggle{top:74px;right:12px;bottom:auto;min-width:42px;justify-content:center;padding:6px}
+  body.at-map:not(.overlay) .journey-music-toggle .journey-music-label{display:none}
+}
+
+/* Phones, portrait: two columns of four. */
+@media (max-width:767px){
+  #boardroom .committee-rail{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:767px) and (max-height:700px){
+  #boardroom .map-heading p{display:none}
+  #boardroom .committee-rail button{min-height:48px}
+}
+
+/* Tablets: two rows of four under a wider band. */
+@media (min-width:768px) and (max-width:1024px){
+  #boardroom .map-stage{--band-pad-x:40px;--band-pad-top:80px;--band-pad-bottom:80px;--band-label-lift:52px}
+  #boardroom.boardroom{padding-top:calc(env(safe-area-inset-top,0px) + 76px)}
+  #boardroom .map-pan{aspect-ratio:1.45}
+  #boardroom .committee-rail{grid-template-columns:repeat(4,minmax(0,1fr));margin:8px 24px 0}
+  #boardroom .node .node-label{font-size:.72rem;padding:6px 10px}
+  #boardroom .node .node-label small{font-size:.56rem}
+}
+
+/* Landscape phones: the band fills the width, one row of eight below it. */
+@media (max-width:1024px) and (orientation:landscape) and (max-height:540px){
+  #boardroom .map-stage{--band-pad-x:56px;--band-pad-top:46px;--band-pad-bottom:46px;--band-label-lift:36px}
+  #boardroom.boardroom{padding:calc(env(safe-area-inset-top,0px) + 64px) max(env(safe-area-inset-right,0px),12px) calc(env(safe-area-inset-bottom,0px) + 10px) max(env(safe-area-inset-left,0px),12px)}
+  #boardroom .map-heading{display:none}
+  #boardroom .map-camera{flex:1 1 auto;margin-bottom:0;align-items:stretch}
+  #boardroom .map-pan{aspect-ratio:auto;height:100%;max-height:none}
+  #boardroom .committee-rail{grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin:6px 0 0}
+  #boardroom .committee-rail button{grid-template-columns:6px minmax(0,1fr);min-height:48px;padding:6px 7px;column-gap:6px;font-size:.66rem;letter-spacing:.04em}
+  #boardroom .committee-rail button:before{width:6px;height:6px}
+  /* Narrow landscape cells: the city may wrap to a second line rather than be cut. */
+  #boardroom .committee-rail .rail-city{font-size:.54rem;line-height:1.15;letter-spacing:0;white-space:normal;overflow-wrap:anywhere}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #boardroom .committee-rail button,#boardroom .committee-rail button:active{transition:none;transform:none}
+}

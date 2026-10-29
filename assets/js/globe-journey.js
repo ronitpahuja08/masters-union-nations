@@ -246,6 +246,7 @@ try {
     render(.38, true);
     currentP = progress;
     lastRenderedP = -1;
+    window.MUNGlobeReady = true; // the landing film waits on this before handing over
   }
   function render(p = currentP, force = false) {
     currentP = p;

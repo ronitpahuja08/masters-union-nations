@@ -20,7 +20,7 @@
     // The theme reveal gives the module and textures time to become ready.
     if(!globeLoading){
       globeLoading=true;
-      import('./globe-journey.js?v=perf-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
+      import('./globe-journey.js?v=film-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
     }
     ['assets/images/mun-statue-two-hand-windup.webp','assets/images/mun-statue-two-hand-contact.webp','assets/images/world-atlas-india-focus.webp'].forEach(function(src){
       var image=new Image();image.decoding='async';image.src=src;warmedImages.push(image);
@@ -42,6 +42,7 @@
   var reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var revealComplete=false,revealTimer=0,revealCleanupTimer=0,revealAnchor=.19;
   var lastUserScroll=-1e5,MAX_SPEED=.34;
+  var AUTO_MS=reducedMotion?400:2800,autoStart=0,autoFrom=0;
   ['wheel','touchstart','pointerdown','keydown'].forEach(function(type){window.addEventListener(type,function(){lastUserScroll=performance.now();},{passive:true});});
   function beginThemeReveal(){
     warmStrikeAssets();
@@ -126,6 +127,14 @@
   function step(now){
     raf=0;
     if(phase==='theme')return;
+    if(phase==='auto'){
+      // The landing film hands over here: wind-up and strike on a fixed curve, no scroll involved.
+      var a=Math.min(1,(now-autoStart)/AUTO_MS);
+      p=autoFrom+(.61-autoFrom)*(a<.5?2*a*a:1-Math.pow(-2*a+2,2)/2);target=p;apply();
+      if(a<1){raf=requestAnimationFrame(step);return;}
+      phase='handoff';handoffStart=performance.now();voiceHold=0;handoffFrom=p;holdScrollY=scrollY;mapScrollDone=false;
+      raf=requestAnimationFrame(step);return;
+    }
     if(phase==='handoff'){
       var elapsed=now-handoffStart-voiceHold;
       // the black 'The World Resets' screen stays until the spoken line has finished
@@ -164,6 +173,7 @@
     raf=requestAnimationFrame(step);
   }
   function onScroll(){
+    if(phase==='auto')return;
     if(phase==='handoff'||phase==='theme'){
       var anchor=phase==='handoff'?holdScrollY:journeyTop+range()*revealAnchor;
       if(Math.abs(scrollY-anchor)>2)window.scrollTo({top:anchor,behavior:'instant'});
@@ -196,6 +206,19 @@
     apply();
   }
   window.MUNHomeNavigation={goto:goto};
+  window.MUNJourney={
+    // Start where the globe is already rising (the film covers the jump), skipping the theme card.
+    play:function(){
+      warmStrikeAssets();
+      clearTimeout(revealTimer);clearTimeout(revealCleanupTimer);cancelAnimationFrame(raf);raf=0;
+      themeReveal.classList.remove('is-playing','is-exiting');themeReveal.setAttribute('aria-hidden','true');
+      revealComplete=true;struck=false;autoFrom=p=target=.29;apply();
+      phase='auto';autoStart=performance.now();raf=requestAnimationFrame(step);
+    },
+    warm:warmStrikeAssets,
+    globeReady:function(){return !globeOn||!!window.MUNGlobeReady;},
+    phase:function(){return phase;}
+  };
   Array.prototype.forEach.call(document.querySelectorAll('[data-goto]'),function(el){
     el.addEventListener('click',function(e){e.preventDefault();hud.classList.remove('open');if(window.MUNRouter?.navigateSection)window.MUNRouter.navigateSection(el.dataset.goto);else goto(el.dataset.goto);});
   });

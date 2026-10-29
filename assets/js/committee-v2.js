@@ -402,7 +402,7 @@
       <p class="rv-cq-top"><span>MASTERS' UNION NATIONS</span><span>28—29 NOV 2026</span></p>
       <div class="rv-cq-security"><span>CEREMONIAL · NOT NEGOTIABLE</span><span class="cq-seal">MU</span></div>
       <p class="rv-cq-pay"><small>PAY TO THE ORDER OF</small><em>${code} — Total Committee Prize Pool</em></p>
-      <p class="rv-cq-sum"><span class="rv-cq-words">Rupees ${words} only</span><b>${amount}</b></p>
+      <p class="rv-cq-sum"><span class="rv-cq-words">${words}</span><b>${amount}</b></p>
       <p class="rv-cq-foot"><span>REF: MUN/ZERO/${code}/2026</span><span>ZERO · THE WORLD RESET</span></p>
     </div>`;
   }

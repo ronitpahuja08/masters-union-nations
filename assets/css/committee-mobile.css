@@ -1,0 +1,187 @@
+/* Committee pages on phones (portrait <=560px, and landscape phones up to 500px tall).
+   Loaded after every other committee stylesheet. The shared page (#committeePage) and
+   Dalal Street (#dalalCommitteePage) are targeted by id so these rules win over the
+   class-based !important layers without reordering anything.
+   Not touched here: the itinerary block (#cpItinerary / #dpItinerary), the map, the landing. */
+
+/* ---------- IPL: the auction explainer was painting under the sticky scene backdrop ----------
+   .cp-scroll-backdrop is position:sticky with z-index:0, so it paints above any non-positioned
+   sibling. Every other section is position:relative; .ipl-auction-guide was static, which left a
+   screen-high band of bare stadium (the guide was there, just underneath). All viewports. */
+html body #committeePage .ipl-auction-guide{position:relative;z-index:1}
+
+@media (max-width:560px), (max-height:500px) and (max-width:950px){
+
+  /* ---------- top bar: back arrow · one brand mark · Register ---------- */
+  html body #committeePage .cp-nav,
+  html body #dalalCommitteePage .dp-nav{
+    display:grid!important;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;column-gap:12px;
+    height:auto!important;min-height:60px;
+    padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left))!important
+  }
+  html body #committeePage .cp-nav-right,
+  html body #dalalCommitteePage .dp-nav-right{display:contents!important}
+  html body #committeePage .committee-brand-mark,
+  html body #dalalCommitteePage .committee-brand-mark,
+  html body #dalalCommitteePage .dp-brand{display:none!important}
+  html body #committeePage .cp-nav .mu-university-wordmark,
+  html body #dalalCommitteePage .dp-nav .mu-university-wordmark{
+    grid-column:2;grid-row:1;justify-self:start;width:auto!important;height:24px!important;max-width:100%;min-width:0;object-fit:contain;object-position:left center
+  }
+  html body #committeePage #committeePageClose,
+  html body #dalalCommitteePage #dalalPageClose{
+    grid-column:1;grid-row:1;display:inline-grid!important;place-items:center;
+    width:44px!important;height:44px!important;min-width:44px;padding:0!important;margin:0!important;gap:0!important;
+    border-radius:50%!important;border:1px solid rgba(243,233,220,.4)!important;background:rgba(11,3,6,.55)!important;
+    color:var(--ivory)!important;font:500 0/1 var(--f-display)!important;letter-spacing:0!important
+  }
+  /* shared page: "<span>←</span> World map" — keep the arrow, drop the words (aria-label carries them) */
+  html body #committeePage #committeePageClose>span{display:block;font:500 20px/1 system-ui,-apple-system,sans-serif!important;color:var(--ivory)!important}
+  /* Dalal: "← <span>World map</span>" — the arrow is the text node */
+  html body #dalalCommitteePage #dalalPageClose{font:500 20px/1 system-ui,-apple-system,sans-serif!important}
+  html body #dalalCommitteePage #dalalPageClose>span{display:none!important}
+  html body #committeePage .cp-nav-register,
+  html body #dalalCommitteePage .dp-nav-cta{
+    grid-column:3;grid-row:1;justify-self:end;display:inline-flex!important;align-items:center;gap:8px;
+    min-height:44px;padding:0 18px!important;margin:0!important;border-radius:999px!important;
+    border:1px solid var(--ivory)!important;background:var(--ivory)!important;color:var(--void)!important;
+    font:700 14px/1 var(--f-display)!important;letter-spacing:.02em!important;text-transform:none;white-space:nowrap;
+    box-shadow:none!important;transition:transform 160ms var(--ease-out)!important
+  }
+  html body #committeePage .cp-nav-register span,
+  html body #dalalCommitteePage .dp-nav-cta span{color:inherit!important;margin:0!important}
+  html body #committeePage .cp-nav-register:active,
+  html body #dalalCommitteePage .dp-nav-cta:active,
+  html body #committeePage #committeePageClose:active,
+  html body #dalalCommitteePage #dalalPageClose:active{transform:scale(.97)}
+
+  /* ---------- hero CTAs: same weight, same size, stacked full width ---------- */
+  html body #committeePage .cp-hero-copy,
+  html body #dalalCommitteePage .dp-hero-copy{padding-inline:0!important;width:100%!important;max-width:100%!important}
+  html body #committeePage .mu-hero-actions{display:block!important;width:100%!important;margin:0!important}
+  html body #committeePage .cp-cta-row,
+  html body #dalalCommitteePage .dp-hero-actions{
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;
+    width:100%!important;max-width:420px!important;min-width:0!important;margin:24px auto 0!important;padding:0!important
+  }
+  html body #committeePage :is(.cp-primary,.mu-start-registration),
+  html body #dalalCommitteePage :is(.dp-primary,.mu-dalal-register){
+    display:flex!important;align-items:center!important;justify-content:center!important;gap:12px!important;
+    width:100%!important;min-width:0!important;min-height:52px!important;margin:0!important;padding:0 20px!important;
+    border-radius:2px!important;box-sizing:border-box;
+    font:700 14px/1.2 var(--f-display)!important;font-stretch:80%!important;letter-spacing:.12em!important;text-transform:uppercase!important;
+    white-space:nowrap;text-decoration:none!important;box-shadow:none!important;backdrop-filter:none!important
+  }
+  /* secondary: a filled dark plate with a clear ivory edge, so it reads over any skyline */
+  html body #committeePage .cp-primary,
+  html body #dalalCommitteePage .dp-primary{
+    background:rgba(11,3,6,.74)!important;border:1px solid rgba(243,233,220,.78)!important;color:var(--ivory)!important
+  }
+  html body #committeePage .cp-primary b,
+  html body #dalalCommitteePage .dp-primary b{color:var(--rv-c)!important;font-size:16px!important}
+  /* primary */
+  html body #committeePage .mu-start-registration,
+  html body #dalalCommitteePage .mu-dalal-register{
+    background:var(--ivory)!important;border:1px solid var(--ivory)!important;color:var(--void)!important
+  }
+  html body #committeePage .mu-start-registration[hidden]{display:none!important}
+
+  /* ---------- hero copy readability ---------- */
+  html body #committeePage .cp-eyebrow,
+  html body #dalalCommitteePage .dp-eyebrow{font-size:12px!important}
+  html body #committeePage #cpAgenda.rv-cable{font-size:13px!important}
+  html body #dalalCommitteePage .dp-hero-tagline{font-size:14px!important;letter-spacing:.16em!important}
+
+  /* ---------- section copy: labels, paragraphs, steps ---------- */
+  html body #committeePage :is(.cp-section-label,.cp-do-head,.cp-awards-head,.cp-register>div:first-child)>small,
+  html body #dalalCommitteePage :is(.dp-section-title,.dp-playbook>div,.dp-awards-head,.dp-register-copy)>small{font-size:12px!important}
+  html body #committeePage :is(.cp-steps>li) small,
+  html body #dalalCommitteePage .dp-playbook li small{font-size:15px!important}
+  html body #committeePage .cp-tags span,
+  html body #dalalCommitteePage .dp-tags span{font-size:12px!important}
+  html body #committeePage .mun-award-names,
+  html body #dalalCommitteePage .mun-award-names,
+  html body :is(#committeePage,#dalalCommitteePage) .mun-award-names b,
+  html body #dalalCommitteePage .dp-awards-head>p{font-size:14px!important}
+
+  /* IPL auction explainer */
+  html body #committeePage .ipl-auction-intro>small{font-size:12px!important}
+  html body #committeePage .ipl-auction-intro>p{font-size:15px!important}
+  html body #committeePage .ipl-auction-list li>span{font-size:13px!important}
+  html body #committeePage .ipl-auction-list b{font-size:16px!important}
+  html body #committeePage .ipl-auction-list p{font-size:15px!important}
+
+  /* prize cheque: engraving stays small (decorative, aria-hidden; the article carries the label) */
+  html body #committeePage .rv-cheque :is(.rv-cq-top,.rv-cq-foot),
+  html body #dalalCommitteePage .rv-cheque :is(.rv-cq-top,.rv-cq-foot){font-size:10px!important}
+  html body #committeePage .rv-cheque span.rv-cq-words,
+  html body #dalalCommitteePage .rv-cheque span.rv-cq-words{font-size:16px!important}
+
+  /* registration: labels and helper copy */
+  html body :is(#committeePage,#dalalCommitteePage) .mu-inline-form :is(input:not([type=checkbox]),select,textarea){font-size:16px!important}
+  html body :is(#committeePage,#dalalCommitteePage) .mu-inline-form>small{font-size:13px!important;line-height:1.5!important}
+  html body :is(#committeePage,#dalalCommitteePage) .rv-seat-hint{font-size:12px!important}
+  html body #committeePage .cp-register-actions>small{font-size:13px!important}
+
+  /* ---------- footer: stacked, readable, real tap targets ---------- */
+  html body #committeePage .cp-footer.with-site-credit,
+  html body #dalalCommitteePage .dp-footer.with-site-credit{
+    display:flex!important;flex-direction:column;align-items:center;gap:6px!important;text-align:center;
+    padding:28px max(19px,env(safe-area-inset-right)) max(28px,calc(env(safe-area-inset-bottom) + 16px)) max(19px,env(safe-area-inset-left))!important;
+    font:500 12px/1.5 var(--f-mono)!important;letter-spacing:.08em!important
+  }
+  html body :is(#committeePage,#dalalCommitteePage) .site-credit{flex-direction:column;gap:0!important}
+  html body :is(#committeePage,#dalalCommitteePage) .site-credit-label{font-size:12px!important}
+  html body :is(#committeePage,#dalalCommitteePage) .site-credit-names{font-size:14px!important;gap:4px!important}
+  html body :is(#committeePage,#dalalCommitteePage) .site-credit-names a,
+  html body #committeePage .cp-footer>a:last-child,
+  html body #dalalCommitteePage .dp-footer>a:last-child{
+    display:inline-flex!important;align-items:center;justify-content:center;min-height:44px;padding:0 10px;
+    font-size:14px!important;justify-self:auto!important
+  }
+
+  /* ---------- Dalal Street ---------- */
+  /* the walking broker is a fixed overlay that drifts across body copy on a phone */
+  html body #dalalCommitteePage .dp-mascot{display:none!important}
+  html body #dalalCommitteePage :is(.dp-register-copy,.dp-section-title,.dp-playbook>div){padding-right:0!important}
+  /* simulated market board: keep it inside the screen and legible */
+  html body #dalalCommitteePage .mu-market-board{width:100%!important;max-width:100%!important;box-sizing:border-box;margin-inline:0!important}
+  html body #dalalCommitteePage .mu-market-top{font-size:11px!important;flex-wrap:wrap}
+  html body #dalalCommitteePage .mu-market-top b{font-size:14px!important}
+  html body #dalalCommitteePage .mu-market-indices{font-size:12px!important;flex-wrap:wrap;gap:4px 12px!important}
+  html body #dalalCommitteePage :is(.mu-market-row,.mu-market-head){grid-template-columns:minmax(0,1.5fr) minmax(0,1.1fr) minmax(0,1fr)!important;gap:6px!important;padding-inline:10px!important}
+  html body #dalalCommitteePage .mu-market-head{font-size:10px!important;letter-spacing:.12em!important}
+  html body #dalalCommitteePage .mu-market-row{font-size:13px!important;letter-spacing:.02em!important}
+  html body #dalalCommitteePage :is(.mu-market-row [data-status],.mu-market-head>span:nth-child(4)){display:none!important}
+  html body #dalalCommitteePage .mu-market-bottom{font-size:11px!important}
+  html body #dalalCommitteePage .dp-hero-caption{display:none!important}
+
+  /* ---------- the soundtrack button: small, bottom-right, inside the safe area ---------- */
+  html body:has(#committeePage.open,#dalalCommitteePage.open) #journeyMusicToggle{
+    top:auto!important;left:auto!important;
+    right:max(12px,env(safe-area-inset-right))!important;
+    bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px))!important;
+    width:44px;height:44px;min-width:44px;min-height:44px;padding:0!important;gap:0!important;justify-content:center;
+    border:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;
+    transition:opacity 200ms var(--ease-out),transform 200ms var(--ease-out),visibility 0s linear 0s!important
+  }
+  html body:has(#committeePage.open,#dalalCommitteePage.open) #journeyMusicToggle .journey-music-label{display:none!important}
+  html body:has(#committeePage.open,#dalalCommitteePage.open) #journeyMusicToggle .journey-music-icon{
+    width:34px;height:34px;font-size:.9rem;box-shadow:0 0 0 1px rgba(243,233,220,.35),0 6px 18px rgba(0,0,0,.55)!important
+  }
+  /* committee-mobile.js sets this while a registration form or the placard is on screen */
+  html body.cm-music-tucked:has(#committeePage.open,#dalalCommitteePage.open) #journeyMusicToggle{
+    opacity:0!important;transform:scale(.8)!important;visibility:hidden!important;pointer-events:none!important;
+    transition:opacity 200ms var(--ease-out),transform 200ms var(--ease-out),visibility 0s linear 200ms!important
+  }
+}
+
+/* landscape phones: vw-based section padding leaves half-screen gaps on a 390px-tall screen */
+@media (max-height:500px) and (max-width:950px) and (orientation:landscape){
+  html body #committeePage :is(.cp-section,.cp-do,.cp-awards,.cp-register,.ipl-auction-guide),
+  html body #dalalCommitteePage :is(.dp-section,.dp-playbook,.dp-awards,.dp-register){padding-block:48px!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html body:has(#committeePage.open,#dalalCommitteePage.open) #journeyMusicToggle{transform:none!important}
+}

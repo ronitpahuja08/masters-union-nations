@@ -89,18 +89,75 @@ function previewCommittee(c,i,on=true){
 function cableLines(c){return[`CABLE MUN/GGN ▸ ${cityOf(c).toUpperCase()}`,`${coordOf(c)}  LOCAL `,`${c.code} · ${c.full.toUpperCase()}`,`AGENDA  ${String(c.agenda||'').toUpperCase()}`,`PURSE   ${inr(purseOf(c))}`,`STATUS  ${statusOf(c).toUpperCase()} · ENTER ↵`]}
 function typeCable(c){cancelAnimationFrame(typeFrame);const lines=cableLines(c),full=lines.join('\n'),zone=ZONES[c.code];const finish=()=>{mapCableText.textContent='';lines.forEach((line,k)=>{const row=document.createElement('span');row.className='cable-line'+(k===0?' cable-head':'');row.textContent=line;if(k===1){const t=document.createElement('b');t.className='cable-time';t.dataset.zone=zone;t.textContent=localTime(zone,true);row.append(t)}mapCableText.append(row)})};if(reducedMotion()){finish();return}const start=performance.now(),rate=.42;const step=now=>{const n=Math.floor((now-start)*rate);if(n>=full.length){finish();return}mapCableText.textContent=full.slice(0,n)+'▌';typeFrame=requestAnimationFrame(step)};typeFrame=requestAnimationFrame(step)}
 function placeCable(c){const stage=$('#mapStage'),w=stage.clientWidth,h=stage.clientHeight;mapCable.style.setProperty('--cx',c.x+'%');mapCable.style.setProperty('--cy',c.y+'%');mapCable.dataset.side=(c.x/100*w>w*.56)?'left':'right';mapCable.dataset.vert=(c.y/100*h<h*.4)?'below':'above'}
-committees.forEach((c,i)=>{const n=document.createElement('button');n.className='node node-'+c.code.toLowerCase();n.style.setProperty('--c',c.color);n.setAttribute('aria-label',`${c.full} — ${c.city.replace(' / ',' ')}`);n.innerHTML=`<span class="node-dot"></span><span class="node-label">${c.code}<small>${c.city.split(' / ')[0]}</small></span>`;n.onclick=e=>selectCommittee(c,i,e);n.onmouseenter=()=>{sonic(c);previewCommittee(c,i)};n.onmouseleave=()=>previewCommittee(c,i,false);n.onfocus=()=>previewCommittee(c,i);n.onblur=()=>previewCommittee(c,i,false);nodes.append(n);const b=document.createElement('button');b.style.setProperty('--c',c.color);b.textContent=String(i+1).padStart(2,'0')+' / '+c.code;b.type='button';b.dataset.committee=c.code;b.onclick=e=>{e.preventDefault();e.stopPropagation();selectCommittee(c,i,e)};b.onmouseenter=()=>previewCommittee(c,i);b.onmouseleave=()=>previewCommittee(c,i,false);b.onfocus=()=>previewCommittee(c,i);b.onblur=()=>previewCommittee(c,i,false);rail.append(b)});
+committees.forEach((c,i)=>{const n=document.createElement('button');n.className='node node-'+c.code.toLowerCase();n.style.setProperty('--c',c.color);n.setAttribute('aria-label',`${c.full} — ${c.city.replace(' / ',' ')}`);n.innerHTML=`<span class="node-dot"></span><span class="node-label">${c.code}<small>${c.city.split(' / ')[0]}</small></span>`;n.onclick=e=>selectCommittee(c,i,e);n.onmouseenter=()=>{sonic(c);previewCommittee(c,i)};n.onmouseleave=()=>previewCommittee(c,i,false);n.onfocus=()=>previewCommittee(c,i);n.onblur=()=>previewCommittee(c,i,false);nodes.append(n);const b=document.createElement('button');b.style.setProperty('--c',c.color);b.innerHTML=`<span class="rail-num">${String(i+1).padStart(2,'0')} / </span><span class="rail-code">${c.code}</span> <span class="rail-city">${cityOf(c)}</span>`;b.type='button';b.dataset.committee=c.code;b.onclick=e=>{e.preventDefault();e.stopPropagation();selectCommittee(c,i,e)};b.onmouseenter=()=>previewCommittee(c,i);b.onmouseleave=()=>previewCommittee(c,i,false);b.onfocus=()=>previewCommittee(c,i);b.onblur=()=>previewCommittee(c,i,false);rail.append(b)});
 const mapArt=new Image();mapArt.src='assets/images/world-atlas-india-focus.png';
 // Pixel coordinates calibrated to the visible cities on this illustrated atlas.
 // Geographic equirectangular maths lands east of the actual painted coastlines.
 const atlasCities={MCC:[490,285],IP:[751,240],UNHRC:[802,270],AIPPM:[1132,355],STARTUP:[321,305],DALAL:[1095,397],IPL:[1111,443],CCEP:[1244,479]};
 function backgroundOffset(container,image,position){if(position?.endsWith('%'))return(container-image)*parseFloat(position)/100;if(position==='right'||position==='bottom')return container-image;if(position==='center')return(container-image)/2;if(position==='left'||position==='top')return 0;return parseFloat(position)||0}
-let mapSynced=false;function syncCommitteeMap(){const stage=$('#mapStage');if(!stage||!mapArt.naturalWidth||!mapArt.naturalHeight)return;const width=stage.clientWidth,height=stage.clientHeight;if(!width||!height)return;const style=getComputedStyle(stage),size=style.backgroundSize.trim().split(/\s+/),position=style.backgroundPosition.trim().split(/\s+/);let imageWidth,imageHeight;const ratio=mapArt.naturalWidth/mapArt.naturalHeight;
+// Phones and tablets (map-mobile.css sets --map-band:1 on the stage): fit the San Francisco → Singapore band
+// of the atlas into the stage, then project the dots exactly as on desktop from the resulting background box.
+const BAND_LABEL_SIDE={MCC:'up',IP:'up',UNHRC:'up',AIPPM:'up',STARTUP:'down',IPL:'down',CCEP:'down',DALAL:'left'};
+const BAND_VARS=['--lx','--ly','--ll','--la','--hit'];
+let bandFitted=false;
+const cssPx=(style,name)=>parseFloat(style.getPropertyValue(name))||0;
+function fitBand(stage,width,height,style){
+  const pts=Object.values(atlasCities),xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
+  const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const padX=cssPx(style,'--band-pad-x'),padT=cssPx(style,'--band-pad-top'),padB=cssPx(style,'--band-pad-bottom');
+  const scale=Math.min((width-2*padX)/(x1-x0),(height-padT-padB)/(y1-y0));
+  if(!(scale>0))return false;
+  const imageWidth=mapArt.naturalWidth*scale,imageHeight=mapArt.naturalHeight*scale;
+  let offsetX=padX+(width-2*padX-(x1-x0)*scale)/2-x0*scale,offsetY=padT+(height-padT-padB-(y1-y0)*scale)/2-y0*scale;
+  // Keep the artwork covering the stage whenever it is big enough to.
+  if(imageWidth>=width)offsetX=Math.min(0,Math.max(width-imageWidth,offsetX));
+  if(imageHeight>=height)offsetY=Math.min(0,Math.max(height-imageHeight,offsetY));
+  stage.style.backgroundSize=`${imageWidth.toFixed(2)}px ${imageHeight.toFixed(2)}px`;
+  stage.style.backgroundPosition=`${offsetX.toFixed(2)}px ${offsetY.toFixed(2)}px`;
+  bandFitted=true;return true;
+}
+function clearBand(stage){
+  if(!bandFitted)return;bandFitted=false;
+  stage.style.backgroundSize='';stage.style.backgroundPosition='';
+  $$('.node',nodes).forEach(n=>BAND_VARS.forEach(v=>n.style.removeProperty(v)));
+}
+// Labels sit in a row above or below the cities (or beside Mumbai), spread so they never overlap, with a leader line
+// back to the dot. Dot hit areas shrink to the gap to their nearest neighbour so close cities never steal taps.
+function layoutBandLabels(width,height,style){
+  const gap=8,edge=12,lift=cssPx(style,'--band-label-lift')||44,list=$$('.node',nodes);
+  const items=committees.map((c,i)=>{const n=list[i],label=n?.querySelector('.node-label');return{n,side:BAND_LABEL_SIDE[c.code]||'up',x:c.x/100*width,y:c.y/100*height,w:label?.offsetWidth||64,h:label?.offsetHeight||32}});
+  items.forEach(a=>{let d=Infinity;items.forEach(b=>{if(a!==b)d=Math.min(d,Math.hypot(a.x-b.x,a.y-b.y))});a.hit=Math.max(14,Math.min(44,d))});
+  const row=(group,y)=>{
+    group.sort((a,b)=>a.x-b.x);
+    group.forEach((it,k)=>{const prev=group[k-1];it.lx=Math.max(it.x,edge+it.w/2,prev?prev.lx+(prev.w+it.w)/2+gap:-Infinity);it.ly=y});
+    for(let k=group.length-1;k>=0;k--){const it=group[k],next=group[k+1];it.lx=Math.min(it.lx,width-edge-it.w/2,next?next.lx-(next.w+it.w)/2-gap:Infinity)}
+  };
+  const up=items.filter(it=>it.side==='up'),down=items.filter(it=>it.side==='down');
+  if(up.length){const h=Math.max(...up.map(it=>it.h));row(up,Math.max(h/2+6,Math.min(...up.map(it=>it.y))-lift))}
+  if(down.length){const h=Math.max(...down.map(it=>it.h));row(down,Math.min(height-h/2-6,Math.max(...down.map(it=>it.y))+lift))}
+  items.filter(it=>it.side==='left').forEach(it=>{it.lx=Math.max(edge+it.w/2,it.x-16-it.w/2);it.ly=it.y});
+  items.forEach(it=>{if(!it.n)return;const dx=it.lx-it.x,dy=it.ly-it.y,s=it.n.style;
+    s.setProperty('--lx',dx.toFixed(1)+'px');s.setProperty('--ly',dy.toFixed(1)+'px');
+    s.setProperty('--ll',Math.hypot(dx,dy).toFixed(1)+'px');s.setProperty('--la',Math.atan2(dy,dx).toFixed(4)+'rad');
+    s.setProperty('--hit',it.hit.toFixed(1)+'px')});
+}
+let mapSynced=false;
+function syncCommitteeMap(){
+ const stage=$('#mapStage');if(!stage||!mapArt.naturalWidth||!mapArt.naturalHeight)return;
+ const width=stage.clientWidth,height=stage.clientHeight;if(!width||!height)return;
+ const style=getComputedStyle(stage),band=style.getPropertyValue('--map-band').trim()==='1';
+ if(band){if(!fitBand(stage,width,height,style))return}else clearBand(stage);
+ const size=style.backgroundSize.trim().split(/\s+/),position=style.backgroundPosition.trim().split(/\s+/);let imageWidth,imageHeight;const ratio=mapArt.naturalWidth/mapArt.naturalHeight;
  if(size[0]==='cover'||size[0]==='contain'){const scale=size[0]==='cover'?Math.max(width/mapArt.naturalWidth,height/mapArt.naturalHeight):Math.min(width/mapArt.naturalWidth,height/mapArt.naturalHeight);imageWidth=mapArt.naturalWidth*scale;imageHeight=mapArt.naturalHeight*scale}
  else{const dimension=(value,container,natural)=>value==='auto'?null:value?.endsWith('%')?container*parseFloat(value)/100:value?.endsWith('px')?parseFloat(value):null;imageWidth=dimension(size[0],width,mapArt.naturalWidth);imageHeight=dimension(size[1],height,mapArt.naturalHeight);if(imageWidth===null&&imageHeight===null){imageWidth=width;imageHeight=height}else if(imageWidth===null)imageWidth=imageHeight*ratio;else if(imageHeight===null)imageHeight=imageWidth/ratio}
  const offsetX=backgroundOffset(width,imageWidth,position[0]||'50%'),offsetY=backgroundOffset(height,imageHeight,position[1]||'50%');
- committees.forEach((c,i)=>{const point=atlasCities[c.code],u=point[0]/mapArt.naturalWidth,v=point[1]/mapArt.naturalHeight;c.x=((u*imageWidth+offsetX)/width)*100;c.y=((v*imageHeight+offsetY)/height)*100;const node=$$('.node')[i];node?.style.setProperty('--x',c.x+'%');node?.style.setProperty('--y',c.y+'%')});routes.innerHTML='';committees.forEach((c,i)=>{if(i)routes.insertAdjacentHTML('beforeend',`<path d="M${committees[0].x*10} ${committees[0].y*5.2} Q500 210 ${c.x*10} ${c.y*5.2}"/>`)})}
+ // map-life.js (ambient lights) sizes its canvas from this; it is a no-op while that script is not loaded.
+ window.dispatchEvent(new CustomEvent('mun-map-geom',{detail:{width,height,imageWidth,imageHeight,offsetX,offsetY}}));
+ committees.forEach((c,i)=>{const point=atlasCities[c.code],u=point[0]/mapArt.naturalWidth,v=point[1]/mapArt.naturalHeight;c.x=((u*imageWidth+offsetX)/width)*100;c.y=((v*imageHeight+offsetY)/height)*100;const node=$$('.node')[i];node?.style.setProperty('--x',c.x+'%');node?.style.setProperty('--y',c.y+'%')});routes.innerHTML='';committees.forEach((c,i)=>{if(i)routes.insertAdjacentHTML('beforeend',`<path d="M${committees[0].x*10} ${committees[0].y*5.2} Q500 210 ${c.x*10} ${c.y*5.2}"/>`)});if(band)layoutBandLabels(width,height,style)}
 mapArt.addEventListener('load',syncCommitteeMap,{once:true});if(mapArt.complete)syncCommitteeMap();window.addEventListener('resize',syncCommitteeMap,{passive:true});window.addEventListener('journey',e=>{if(e.detail>=.9&&!mapSynced){mapSynced=true;syncCommitteeMap()}else if(e.detail<.5)mapSynced=false},{passive:true});
+// The stage can change size without a window resize (journey layout, URL bar, rotation), and label widths settle once fonts load.
+let stageSyncFrame=0;const queueStageSync=()=>{if(!stageSyncFrame)stageSyncFrame=requestAnimationFrame(()=>{stageSyncFrame=0;syncCommitteeMap()})};
+if('ResizeObserver' in window&&$('#mapStage'))new ResizeObserver(queueStageSync).observe($('#mapStage'));document.fonts?.ready.then(queueStageSync);
 
 /* Camera movement applies only to map artwork; map heading and committee rail stay fixed. */
 /* The colour screen opens like an iris from the centre (where the dot was) to reveal the intro. Falls back to a fade. */
