@@ -1,0 +1,66 @@
+
+/* 29 Oct final: white university sticker, safe event-card typography. */
+html body .mu-university-wordmark {
+  filter:brightness(0) invert(1)!important;
+  background:transparent!important;
+}
+html body #home .pass {
+  grid-template-columns:minmax(0,1.05fr) minmax(0,1.45fr) minmax(0,.95fr) minmax(320px,1.5fr)!important;
+}
+html body #home .pass-seg {min-width:0;box-sizing:border-box;padding-left:clamp(12px,1.35vw,20px);padding-right:clamp(12px,1.35vw,20px)}
+html body #home .pass-seg:not(.pass-count) b {
+  font-size:clamp(.88rem,1.15vw,1.14rem)!important;
+  line-height:1.25!important;
+  letter-spacing:-.025em!important;
+  max-width:100%;
+}
+html body #home .pass-seg:not(.pass-count) b .board-text,
+html body #home .pass-seg:not(.pass-count) b .board-char {
+  font-size:inherit!important;
+  letter-spacing:inherit!important;
+}
+@media(min-width:761px) and (max-width:1100px) {
+  html body #home .pass{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:760px) {
+  html body #home .pass{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html body #home .pass-count{grid-column:1/-1}
+  html body #home .pass-seg:not(.pass-count) b {font-size:clamp(.73rem,3.25vw,1rem)!important;white-space:normal}
+}
+@media(max-width:390px) {
+  html body #home .pass-seg:not(.pass-count) b{font-size:clamp(.65rem,3vw,.83rem)!important}
+}
+/* Shared AIPPM foreground: five original sprites plus a compact SVG loader-lift. */
+.committee-page[data-committee="AIPPM"] .mu-sprite-loader {
+  width:clamp(184px,20vw,278px)!important;
+  aspect-ratio:420/360!important;
+  height:auto!important;
+  bottom:clamp(13px,3vh,28px)!important;
+  z-index:4!important;
+  filter:drop-shadow(0 13px 13px rgba(0,0,0,.55));
+}
+.mu-sprite-loader .mu-loader-illustration{display:block;width:100%;height:100%;overflow:visible}
+.mu-loader-lift{transform-origin:234px 231px;animation:muLoaderRise 4.8s cubic-bezier(.5,.05,.43,.95) infinite}
+.mu-yogi-wave{transform-origin:105px 127px;animation:muYogiWave 2.4s ease-in-out infinite alternate}
+@keyframes muLoaderRise{
+  0%,13%,100%{transform:rotate(-13deg)}
+  46%,64%{transform:rotate(17deg)}
+  84%{transform:rotate(-8deg)}
+}
+@keyframes muYogiWave{
+  from{transform:rotate(-9deg)}
+  to{transform:rotate(11deg)}
+}
+.committee-page:not(.open) .mu-loader-lift,
+.committee-page:not(.open) .mu-yogi-wave{animation-play-state:paused!important}
+@media(max-width:800px){
+  .committee-page[data-committee="AIPPM"] .mu-sprite-loader {width:clamp(120px,25vw,185px)!important}
+}
+@media(max-width:560px){
+  .committee-page[data-committee="AIPPM"] .mu-sprite-loader{left:46%!important;width:clamp(128px,33vw,160px)!important}
+  .committee-page[data-committee="AIPPM"] .mu-sprite-ravi{left:74%!important}
+  .committee-page[data-committee="AIPPM"] .mu-sprite-sonia{left:92%!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .mu-loader-lift,.mu-yogi-wave{animation:none!important;transform:none!important}
+}
