@@ -92,7 +92,7 @@ try {
   // A bounded point cloud keeps the impact dense without rebuilding nine thousand
   // positions on every frame of the map handoff.
   const random = n => { const x = Math.sin(n * 127.1 + 78.233) * 43758.5453; return x - Math.floor(x); };
-  const fragmentCount = lowTier ? 760 : mobileTier ? 950 : 2400;
+  const fragmentCount = lowTier ? 600 : mobileTier ? 850 : 1400;
   const fragmentBase = new Float32Array(fragmentCount * 3);
   const fragmentData = new Float32Array(fragmentCount * 3);
   const fragmentColors = new Float32Array(fragmentCount * 3);
