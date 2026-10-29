@@ -254,7 +254,7 @@
   })();
 
   var cv=$('#stars'),ctx=cv.getContext('2d'),stars=[],W,H,mx=0,my=0;
-  function resize(){if(window.MUNPerformance?.lite){W=cv.width=1;H=cv.height=1;stars=[];return;}W=cv.width=home.clientWidth;H=cv.height=home.clientHeight;stars=[];var n=Math.floor(W*H/12000);for(var i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,tw:Math.random()*6.28,d:Math.random()<.5?'0':'1'});}
+  function resize(){if(window.MUNPerformance?.lite){W=cv.width=1;H=cv.height=1;stars=[];return;}W=cv.width=home.clientWidth;H=cv.height=home.clientHeight;stars=[];var n=Math.min(110,Math.floor(W*H/16000));for(var i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,tw:Math.random()*6.28,d:Math.random()<.5?'0':'1'});}
   resize();addEventListener('resize',resize);
   /* star field no longer tracks cursor */
   var visibleHome=true,starTimer=0,starRaf=0,starsCleared=false;
