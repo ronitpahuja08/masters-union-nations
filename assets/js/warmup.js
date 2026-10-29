@@ -17,14 +17,15 @@
   };
   var VIDEOS = { MCC: ['mccDroneVideo'], STARTUP: ['slBridgeVideo', 'slBoardroomVideo'], DALAL: ['dcMarketVideo'] };
   var warmed = {}, kept = [];
+  var lite = !!window.MUNPerformance?.lite;
   function warmImage(name) {
     if (warmed[name]) return;
     warmed[name] = 1;
-    var img = new Image(); img.decoding = 'async'; img.src = 'assets/images/' + name + '.webp'; kept.push(img);
+    var img = new Image(); img.decoding = 'async'; img.src = 'assets/images/' + name + '.webp'; kept.push(img); if (kept.length > (lite ? 2 : 8)) kept.shift();
   }
   function warmVideo(id) {
     var v = document.getElementById(id);
-    if (!v || warmed[id]) return;
+    if (!v || warmed[id] || lite) return;
     warmed[id] = 1; v.preload = 'auto'; try { v.load(); } catch (e) {}
   }
   function warmCode(code) { (IMAGES[code] || []).forEach(warmImage); (VIDEOS[code] || []).forEach(warmVideo); }
@@ -39,7 +40,7 @@
   });
 
   /* fast desktops: once the map is showing, warm the remaining stills one at a time in idle time */
-  var fast = (!conn.effectiveType || conn.effectiveType === '4g') && matchMedia('(min-width: 900px) and (pointer: fine)').matches;
+  var fast = !lite && (navigator.deviceMemory || 8) >= 8 && (navigator.hardwareConcurrency || 8) >= 6 && (!conn.effectiveType || conn.effectiveType === '4g') && matchMedia('(min-width: 900px) and (pointer: fine)').matches;
   if (!fast) return;
   function idle(fn) { if ('requestIdleCallback' in window) requestIdleCallback(fn, { timeout: 3000 }); else setTimeout(fn, 600); }
   var queue = Object.keys(IMAGES).reduce(function (a, k) { return a.concat(IMAGES[k]); }, []);
