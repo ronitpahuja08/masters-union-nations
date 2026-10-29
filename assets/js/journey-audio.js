@@ -7,11 +7,11 @@
   const explosion = new Audio('assets/audio/bomb-blast.mp3');
   const resetLine = new Audio('assets/audio/world-resets-voice.mp3');
   epic.loop = true;
-  epic.preload = 'metadata';
+  epic.preload = 'none';
   epic.volume = .42;
-  explosion.preload = 'auto';
+  explosion.preload = 'none';
   explosion.volume = .26;
-  resetLine.preload = 'auto';
+  resetLine.preload = 'none';
   resetLine.volume = 1;
   const explosionCue = .16;
   explosion.addEventListener('loadedmetadata', () => {
@@ -19,7 +19,7 @@
   }, { once: true });
   let scene = '';
   let enabled = true;
-  try { enabled = localStorage.getItem('mun26-sound-choice') !== 'off'; } catch (e) { /* sound defaults to on */ }
+  try { const choice=localStorage.getItem('mun26-sound-choice');enabled=choice==='on'||(!window.MUNPerformance?.lite&&choice!=='off'); } catch (e) { enabled=!window.MUNPerformance?.lite; }
   let blastTimer = 0, duckTimer = 0, resetLinePlayed = false, voiceActive = false, voicePending = false, fadeTimer = 0, voiceTimer = 0;
   let voiceContext = null, voiceGain = null, musicAttempt = null;
   const overlayMuted = () => document.body.classList.contains('overlay');

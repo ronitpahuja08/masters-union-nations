@@ -1,7 +1,7 @@
 (function(){
   // Gavel strike opening and departures-board details for the home hero.
   var home=document.getElementById('home');if(!home)return;
-  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||!!window.MUNPerformance?.lite;
 
   /* ---- departures board: values roll through characters, then settle ---- */
   var GLYPHS='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

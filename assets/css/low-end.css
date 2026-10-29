@@ -1,0 +1,14 @@
+/* Low-spec profile: keep content, navigation and registration accessible; pause decorative GPU work. */
+html.low-spec #stars,html.low-spec .grain,html.low-spec .cursor-glow,html.low-spec .lobby-glow,
+html.low-spec .hero-ring,html.low-spec .noise,html.low-spec .pointer-light,
+html.low-spec #globeCanvas,html.low-spec .film-gl,html.low-spec .sl-particles{display:none!important}
+html.low-spec #home .lobby-title .t2{filter:none!important}
+html.low-spec #home::after{filter:none!important;mix-blend-mode:normal!important;opacity:.045}
+html.low-spec .hud.scrolled,html.low-spec .nav,html.low-spec .meta-pill,html.low-spec .committee-page,
+html.low-spec .film,html.low-spec .film-skip{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html.low-spec .hero-ticker .track,html.low-spec .film-play::before,html.low-spec #home .lobby-kicker::after,
+html.low-spec .routes path,html.low-spec .film-line,html.low-spec .time-dial-hand,html.low-spec .dp-mascot{animation:none!important}
+html.low-spec .film-sky{transition-duration:240ms!important}
+html.low-spec .film-venue .ln{clip-path:none!important;transform:none!important}
+html.low-spec .film-odo .odo-strip{transition:none!important}
+html.low-spec .film-vignette{filter:none!important}

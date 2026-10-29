@@ -6,7 +6,7 @@
   'use strict';
   const TARGETS = new Set(['MCC', 'IP', 'AIPPM', 'IPL', 'STARTUP', 'UNHRC', 'CCEP']);
   const $ = (selector, parent=document) => parent.querySelector(selector);
-  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!window.MUNPerformance?.lite;
   const page = $('#committeePage');
   const dalal = $('#dalalCommitteePage');
   if (!page || !dalal) return;
@@ -346,7 +346,7 @@
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const page = $('#committeePage'), dalal = $('#dalalCommitteePage');
   if (!page || !dalal) return;
-  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || !!window.MUNPerformance?.lite;
 
   const COORD = { UNHRC:'46.20°N  6.14°E', MCC:'40.71°N  74.01°W', CCEP:'1.35°N  103.82°E', IPL:'12.97°N  77.59°E', AIPPM:'28.61°N  77.21°E', STARTUP:'37.77°N  122.42°W', IP:'51.51°N  0.13°W', DALAL:'19.08°N  72.88°E' };
   /* hero: [wide word, serif half]; then per-section [line, serif line] */

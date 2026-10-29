@@ -13,6 +13,19 @@
 <link rel="preload" href="assets/images/mun-nations-hero-art.webp" as="image" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" media="print" onload="this.media='all'">
+<script>
+/* Low-spec hardware gets a GPU-light site. ?perf=full overrides; ?perf=lite forces. */
+(function(){
+ var choice=new URLSearchParams(location.search).get('perf');
+ var mem=navigator.deviceMemory,cores=navigator.hardwareConcurrency;
+ var lite=choice==='lite'||(choice!=='full'&&(
+  (typeof mem==='number'&&mem<=4)||(typeof cores==='number'&&cores<=4)||
+  !!(navigator.connection&&navigator.connection.saveData)||
+  matchMedia('(prefers-reduced-motion: reduce)').matches));
+ window.MUNPerformance=Object.freeze({lite:lite,memoryGB:mem||null,cores:cores||null});
+ document.documentElement.classList.toggle('low-spec',lite);
+})();
+</script>
 <link rel="stylesheet" href="assets/css/tokens.css?v=reset-2">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="stylesheet" href="assets/css/boardroom.css?v=reset-1">
@@ -44,6 +57,7 @@
 <link rel="stylesheet" href="assets/css/aippm-loader-box-fit.css?v=photo-loader-hd-2" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/committee-mobile.css?v=phone-1" media="print" data-defer onload="this.media='all'">
 <link rel="stylesheet" href="assets/css/intro-film.css?v=film-5">
+<link rel="stylesheet" href="assets/css/low-end.css?v=20261029-1">
 <script>
 /* Landing stays lean until the map shows (see perf.css). Committee links opened directly never set it. */
 if(location.pathname==='/'||location.pathname==='/index.html'){document.documentElement.classList.add('landing-lean');document.addEventListener('DOMContentLoaded',function(){new MutationObserver(function(_,o){if(document.body.classList.contains('at-map')){document.documentElement.classList.remove('landing-lean');o.disconnect();}}).observe(document.body,{attributes:true,attributeFilter:['class']});});}
@@ -279,7 +293,7 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 </section>
 
 <section class="mcc-night-flight" id="mccNightFlight" aria-hidden="true" aria-label="Midnight Crisis Committee cinematic introduction" role="dialog" aria-modal="true" aria-labelledby="mccFlightTitle">
-<video class="mcc-drone-video" id="mccDroneVideo" src="assets/video/mcc-new-york-drone.mp4" muted playsinline preload="metadata" aria-hidden="true"></video>
+<video class="mcc-drone-video" id="mccDroneVideo" src="assets/video/mcc-new-york-drone.mp4" muted playsinline preload="none" aria-hidden="true"></video>
 <div class="mcc-night-grade" aria-hidden="true"></div><div class="mcc-city-lights" aria-hidden="true"></div><div class="mcc-flight-vignette" aria-hidden="true"></div>
 <div class="mcc-flight-title"><p>MASTERS’ UNION NATIONS <i>·</i> NEW YORK</p><h1 id="mccFlightTitle">MIDNIGHT CRISIS<br><em>COMMITTEE</em></h1><span class="mcc-flight-tagline">WHEN THE CLOCK STOPS, JUDGMENT BEGINS.</span></div>
 <button class="mcc-flight-skip" id="mccFlightSkip" type="button">Skip intro <span aria-hidden="true">↗</span></button>
@@ -504,12 +518,12 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 <div class="toast" id="toast">
 </div>
 <button class="journey-music-toggle" id="journeyMusicToggle" type="button" aria-pressed="false" aria-label="Turn on soundtrack"><span class="journey-music-icon" aria-hidden="true">♫</span><span class="journey-music-label">Music off</span></button>
-<script src="assets/js/soundscape.js?v=reset-1"></script>
-<script src="assets/js/home.js?v=lean-1"></script>
-<script src="assets/js/hero-strike.js?v=morning-motion-1"></script>
-<script src="assets/js/boardroom.js?v=lean-1">
+<script src="assets/js/soundscape.js?v=low-spec-1"></script>
+<script src="assets/js/home.js?v=low-spec-1"></script>
+<script src="assets/js/hero-strike.js?v=low-spec-1"></script>
+<script src="assets/js/boardroom.js?v=low-spec-1">
 </script>
-<script src="assets/js/journey-audio.js?v=reset-1"></script>
+<script src="assets/js/journey-audio.js?v=low-spec-1"></script>
 <script type="module" src="assets/js/dalal-crash.js?v=reset-1"></script>
 <script type="module" src="assets/js/startup-launch.js?v=reset-1"></script>
 <script src="assets/js/mcc-night-flight.js?v=reset-1"></script>
@@ -518,14 +532,14 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 <script src="assets/js/unhrc-protest.js?v=unhrc-1"></script>
 <script src="assets/js/unhrc-editorial.js?v=editorial-1"></script>
 <script src="assets/js/committee-sequence.js?v=perf-1"></script>
-<script src="assets/js/warmup.js?v=lean-1"></script>
-<script src="assets/js/committee-cinematics.js?v=aippm-hindi-1"></script>
-<script src="assets/js/committee-v2.js?v=cheque-words-1"></script>
+<script src="assets/js/warmup.js?v=low-spec-1"></script>
+<script src="assets/js/committee-cinematics.js?v=low-spec-1"></script>
+<script src="assets/js/committee-v2.js?v=low-spec-1"></script>
 <script src="assets/js/committee-mobile.js?v=phone-1"></script>
 <script src="assets/vendor/qrcode-generator-1.4.4.min.js"></script>
 <script src="assets/js/icard.js?v=reset-1"></script>
 <script src="assets/js/page-routes.js?v=routes-1"></script>
 <script src="assets/js/committee-itineraries.js?v=order-of-business-1"></script>
-<script type="module" src="assets/js/intro-film.js?v=film-6"></script>
+<script type="module" src="assets/js/intro-film.js?v=low-spec-1"></script>
 </body>
 </html>

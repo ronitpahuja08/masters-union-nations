@@ -11,19 +11,20 @@
   var journeyTop=journey.offsetTop,journeyRange=journey.offsetHeight-innerHeight;
   var range=function(){return journeyRange;};
   function measureJourney(){journeyTop=journey.offsetTop;journeyRange=journey.offsetHeight-innerHeight;}
-  var target=0,p=0,raf=0,globeOn=true,lastFrame=0,strikeAssetsWarmed=false,starsReady=false,globeLoading=false;
+  var target=0,p=0,raf=0,globeOn=!window.MUNPerformance?.lite,lastFrame=0,strikeAssetsWarmed=false,starsReady=false,globeLoading=false;
   function warmStrikeAssets(){
     if(strikeAssetsWarmed)return;
     strikeAssetsWarmed=true;
     // The WebGL scene is only needed after the visitor enters the journey.
     // The theme reveal gives the module and textures time to become ready.
-    if(!globeLoading){
+    if(!globeLoading && globeOn){
       globeLoading=true;
       import('./globe-journey.js?v=film-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
     }
     // globe-journey.js fetches and decodes its own textures off the main thread; preloading them here downloaded them twice.
-    window.MUNJourneyAudio?.preload();
+    if(!window.MUNPerformance?.lite) window.MUNJourneyAudio?.preload();
   }
+  if(!globeOn) body.classList.add('no-globe');
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
   // Prepare the strike while the visitor reads the hero (after its opening has played),
   // so texture uploads and shader compiles never land on their first scroll.
@@ -35,7 +36,7 @@
   var lastContent=-1,lastDeco=-1,lastDusk=-1,lastFlash=-1,lastVeil=-1,lastGlobe=-1,lastMap=-1;
   var impactFlash=$('#impactFlash'),impactVeil=$('#impactVeil'),globeCanvas=$('#globeCanvas');
   var phase='browsing',voiceHold=0,handoffStart=0,handoffFrom=0,holdScrollY=0,mapScrollDone=false;
-  var reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches||!!window.MUNPerformance?.lite;
   var revealComplete=false,revealTimer=0,revealCleanupTimer=0,revealAnchor=.19;
   var lastUserScroll=-1e5,MAX_SPEED=.34;
   var AUTO_MS=reducedMotion?400:2800,autoStart=0,autoFrom=0;
@@ -253,7 +254,7 @@
   })();
 
   var cv=$('#stars'),ctx=cv.getContext('2d'),stars=[],W,H,mx=0,my=0;
-  function resize(){W=cv.width=home.clientWidth;H=cv.height=home.clientHeight;stars=[];var n=Math.floor(W*H/12000);for(var i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,tw:Math.random()*6.28,d:Math.random()<.5?'0':'1'});}
+  function resize(){if(window.MUNPerformance?.lite){W=cv.width=1;H=cv.height=1;stars=[];return;}W=cv.width=home.clientWidth;H=cv.height=home.clientHeight;stars=[];var n=Math.min(110,Math.floor(W*H/16000));for(var i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,tw:Math.random()*6.28,d:Math.random()<.5?'0':'1'});}
   resize();addEventListener('resize',resize);
   /* star field no longer tracks cursor */
   var visibleHome=true,starTimer=0,starRaf=0,starsCleared=false;
@@ -270,6 +271,7 @@
     starRaf=0;
   }
   function syncStars(){
+    if(window.MUNPerformance?.lite)return;
     if(!visibleHome||p>=.25||document.hidden){clearTimeout(starTimer);cancelAnimationFrame(starRaf);starTimer=starRaf=0;draw();}
     else if(!starTimer&&!starRaf){starRaf=requestAnimationFrame(draw);}
   }

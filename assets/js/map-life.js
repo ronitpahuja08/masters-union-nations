@@ -12,6 +12,7 @@
 
   const ctx = canvas.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const lite = !!window.MUNPerformance?.lite;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   const FRAME_MS = 1000 / 30;
   const MAX_LIGHTS = 520;
@@ -157,7 +158,7 @@
     live = next;
     board.classList.toggle('map-live', live);
     window.dispatchEvent(new CustomEvent('mun-map-live', { detail: { live } }));
-    if (live && !reduce.matches) { if (!raf) raf = requestAnimationFrame(loop); }
+    if (live && !reduce.matches && !lite) { if (!raf) raf = requestAnimationFrame(loop); }
     else { cancelAnimationFrame(raf); raf = 0; if (live) drawFrame(performance.now()); }
   }
 
