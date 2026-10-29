@@ -199,18 +199,22 @@
   let aippmObserver=null;
   let aippmInView=false;
   let aippmFrame=0;
+  let aippmLoaderTick=0;
   let aippmTimer=null;
   const spritePositions=['0%','33.3333%','66.6667%','100%'];
   function paintAippmSprites(){
     $$('.mu-sprite-frame',page).forEach((sprite,index)=>{
-      const frameOffset=sprite.closest('.mu-sprite-loader')?0:index;
-      sprite.style.backgroundPositionX=spritePositions[(aippmFrame+frameOffset)%4];
+      // Photographic loader follows low -> mid -> high -> mid at half the
+      // existing character-timer cadence; no extra timer or media decode loop.
+      const loader=sprite.closest('.mu-sprite-loader');
+      const frameIndex=loader?Math.floor(aippmLoaderTick/2)%4:(aippmFrame+index)%4;
+      sprite.style.backgroundPositionX=spritePositions[frameIndex];
     });
   }
   function syncAippmMotion(){
     const play=page.classList.contains('open')&&page.dataset.committee==='AIPPM'&&aippmInView&&!document.hidden&&!reduced();
     if(play&&!aippmTimer){
-      aippmTimer=setInterval(()=>{aippmFrame=(aippmFrame+1)%4;paintAippmSprites();},230);
+      aippmTimer=setInterval(()=>{aippmFrame=(aippmFrame+1)%4;aippmLoaderTick=(aippmLoaderTick+1)%8;paintAippmSprites();},230);
     }else if(!play&&aippmTimer){
       clearInterval(aippmTimer);aippmTimer=null;
     }
@@ -229,7 +233,7 @@
     const placements=[
       ['shah','amit_shah_dozing_bench_sprite_sheet.webp','11%'],
       ['modi','modi_teacup_sprite_sheet.webp','29%'],
-      ['loader','yogi_bulldozer_photo_sprite.webp','43%'],
+      ['loader','yogi_bulldozer_hd_sprite.webp','43%'],
       ['ravi','ravi_kishan_dance_sprite_sheet.webp','66%'],
       ['rahul','rahul_gandhi_walk_cycle.webp','81%'],
       ['sonia','sonia_gandhi_walk_cycle.webp','93%']
@@ -240,14 +244,14 @@
     stage.replaceChildren();
     placements.forEach(([key,file,x])=>{
       const figure=document.createElement('figure');figure.className=`mu-sprite-character mu-sprite-${key}`;
-      if(key==='loader')figure.setAttribute('aria-label','Stylized photographic illustration of Yogi Adityanath on an animated bulldozer bucket');
+      if(key==='loader')figure.setAttribute('aria-label','Fictional photographic montage of Yogi Adityanath being lifted in a bulldozer bucket');
       figure.style.setProperty('--stage-x',x);
       const shadow=document.createElement('span');shadow.className='mu-sprite-shadow';
       const artwork=document.createElement('span');artwork.className='mu-sprite-frame';
       artwork.style.backgroundImage=`url("assets/images/aippm-sprites/${file}")`;
       figure.append(shadow,artwork);stage.append(figure);
     });
-    aippmFrame=0;paintAippmSprites();
+    aippmFrame=0;aippmLoaderTick=0;paintAippmSprites();
     aippmObserver?.disconnect();aippmInView=false;
     aippmObserver=new IntersectionObserver(entries=>{aippmInView=entries.some(entry=>entry.isIntersecting);syncAippmMotion();},{root:$('#committeePageScroll'),threshold:.05});
     aippmObserver.observe(scene);

@@ -32,20 +32,22 @@ html body #home .pass-seg:not(.pass-count) b .board-char {
 }
 /* Removed the temporary illustrated-loader experiment; original photographic character composition restored. */
 
-/* Photographic Yogi-on-bulldozer character, same 4-frame sprite animation as cast.
-   Lightweight WebP image replaces the mismatched cartoon SVG. */
+/* High-resolution, artifact-cleaned Yogi loader: native 543 x 724 pixels/frame.
+   Reuse the existing visibility-aware character timer; no video or extra loop. */
 .committee-page[data-committee="AIPPM"] .mu-sprite-loader {
-  width:clamp(152px,14.2vw,210px)!important;
-  aspect-ratio:3/4!important;
+  width:clamp(158px,14.2vw,208px)!important;
+  aspect-ratio:543/724!important;
   height:auto!important;
-  bottom:clamp(18px,4vh,42px)!important;
+  bottom:clamp(20px,4vh,42px)!important;
   z-index:3!important;
-  filter:drop-shadow(0 13px 17px rgba(0,0,0,.55));
+  filter:drop-shadow(0 12px 15px rgba(0,0,0,.45));
 }
 .committee-page[data-committee="AIPPM"] .mu-sprite-loader .mu-sprite-frame {
   background-size:400% 100%;
   background-repeat:no-repeat;
   image-rendering:auto;
+  background-position-y:0;
+  background-color:transparent;
 }
 @media(max-width:800px){
   .committee-page[data-committee="AIPPM"] .mu-sprite-loader {
