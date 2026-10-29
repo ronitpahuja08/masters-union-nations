@@ -134,8 +134,8 @@ if (home && content) {
     return stageLoading;
   }
   function buildStage(THREE) {
-    const renderer = new THREE.WebGLRenderer({ canvas: glCanvas, alpha: true, antialias: !phone(), powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, phone() ? 1.25 : 1.5));
+    const renderer = new THREE.WebGLRenderer({ canvas: glCanvas, alpha: true, antialias: false, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, phone() ? 1 : 1.25));
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
