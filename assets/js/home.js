@@ -22,7 +22,7 @@
       import('./globe-journey.js?v=film-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
     }
     // globe-journey.js fetches and decodes its own textures off the main thread; preloading them here downloaded them twice.
-    window.MUNJourneyAudio?.preload();
+    if(!window.MUNPerformance?.lite) window.MUNJourneyAudio?.preload();
   }
   if(!globeOn) body.classList.add('no-globe');
   window.addEventListener('globe-failed',function(){globeOn=false;body.classList.add('no-globe');apply();});
