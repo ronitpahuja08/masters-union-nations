@@ -30,37 +30,4 @@ html body #home .pass-seg:not(.pass-count) b .board-char {
 @media(max-width:390px) {
   html body #home .pass-seg:not(.pass-count) b{font-size:clamp(.65rem,3vw,.83rem)!important}
 }
-/* Shared AIPPM foreground: five original sprites plus a compact SVG loader-lift. */
-.committee-page[data-committee="AIPPM"] .mu-sprite-loader {
-  width:clamp(184px,20vw,278px)!important;
-  aspect-ratio:420/360!important;
-  height:auto!important;
-  bottom:clamp(13px,3vh,28px)!important;
-  z-index:4!important;
-  filter:drop-shadow(0 13px 13px rgba(0,0,0,.55));
-}
-.mu-sprite-loader .mu-loader-illustration{display:block;width:100%;height:100%;overflow:visible}
-.mu-loader-lift{transform-origin:234px 231px;animation:muLoaderRise 4.8s cubic-bezier(.5,.05,.43,.95) infinite}
-.mu-yogi-wave{transform-origin:105px 127px;animation:muYogiWave 2.4s ease-in-out infinite alternate}
-@keyframes muLoaderRise{
-  0%,13%,100%{transform:rotate(-13deg)}
-  46%,64%{transform:rotate(17deg)}
-  84%{transform:rotate(-8deg)}
-}
-@keyframes muYogiWave{
-  from{transform:rotate(-9deg)}
-  to{transform:rotate(11deg)}
-}
-.committee-page:not(.open) .mu-loader-lift,
-.committee-page:not(.open) .mu-yogi-wave{animation-play-state:paused!important}
-@media(max-width:800px){
-  .committee-page[data-committee="AIPPM"] .mu-sprite-loader {width:clamp(120px,25vw,185px)!important}
-}
-@media(max-width:560px){
-  .committee-page[data-committee="AIPPM"] .mu-sprite-loader{left:46%!important;width:clamp(128px,33vw,160px)!important}
-  .committee-page[data-committee="AIPPM"] .mu-sprite-ravi{left:74%!important}
-  .committee-page[data-committee="AIPPM"] .mu-sprite-sonia{left:92%!important}
-}
-@media(prefers-reduced-motion:reduce){
-  .mu-loader-lift,.mu-yogi-wave{animation:none!important;transform:none!important}
-}
+/* Removed the temporary illustrated-loader experiment; original photographic character composition restored. */
