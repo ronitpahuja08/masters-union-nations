@@ -32,6 +32,6 @@ function committee(slug){if(!enabled)return;clearTheme();wake();var s=slug||'unh
   }
 }
 function set(on){enabled=!!on;try{localStorage.setItem('munSound',enabled?'1':'0');}catch(e){}if(enabled){wake();cue('select');}else{clearTheme();}document.documentElement.classList.toggle('sound-on',enabled);return enabled;}
-function toggle(){return set(!enabled);}try{enabled=localStorage.getItem('mun26-sound-choice')!=='off';}catch(e){enabled=true;}
+function toggle(){return set(!enabled);}try{var choice=localStorage.getItem('mun26-sound-choice');enabled=choice==='on'||(!window.MUNPerformance?.lite&&choice!=='off');}catch(e){enabled=!window.MUNPerformance?.lite;}
 window.MUNSound={toggle:toggle,set:set,cue:cue,committee:committee,isOn:function(){return enabled;},wake:function(){if(enabled)wake();}};
 })();
