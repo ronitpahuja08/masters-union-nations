@@ -10,3 +10,8 @@ html body #cpAwardsList .rv-count{display:grid;gap:10px;padding:clamp(8px,2vw,22
 html body #cpAwardsList .rv-count small{font:500 .72rem/1 var(--f-mono,"DM Mono",monospace);letter-spacing:.28em;color:var(--brass,#d2a95c)}
 html body #cpAwardsList .rv-count b{font:800 clamp(3.4rem,11vw,9rem)/.95 var(--f-display,"Manrope",sans-serif);letter-spacing:-.05em;color:var(--ivory,#f3e9dc);font-variant-numeric:tabular-nums;text-shadow:0 0 44px color-mix(in srgb,var(--committee-accent,#d2a95c) 45%,transparent)}
 @media(max-width:640px){html body #cpAwardsList .rv-count b{font-size:clamp(3rem,16vw,5rem)}}
+
+/* MCC mandate title on a single line: AFTER Life. */
+.committee-page[data-committee="MCC"] #cpBrief .cp-section-label h2{white-space:nowrap}
+.committee-page[data-committee="MCC"] #cpBrief .cp-section-label h2 br{display:none}
+.committee-page[data-committee="MCC"] #cpBrief .cp-section-label h2 em{margin-left:.22em}
