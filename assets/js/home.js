@@ -19,7 +19,8 @@
     // The theme reveal gives the module and textures time to become ready.
     if(!globeLoading && globeOn){
       globeLoading=true;
-      import('./globe-journey.js?v=film-1').catch(function(){window.dispatchEvent(new Event('globe-failed'));});
+      // The hammer-and-globe strike is gone from the landing, so the 3D globe is never downloaded.
+      window.dispatchEvent(new Event('globe-failed'));
     }
     // globe-journey.js fetches and decodes its own textures off the main thread; preloading them here downloaded them twice.
     if(!window.MUNPerformance?.lite) window.MUNJourneyAudio?.preload();
@@ -206,11 +207,12 @@
   window.MUNJourney={
     // Start where the globe is already rising (the film covers the jump), skipping the theme card.
     play:function(){
-      warmStrikeAssets();
       clearTimeout(revealTimer);clearTimeout(revealCleanupTimer);cancelAnimationFrame(raf);raf=0;
       themeReveal.classList.remove('is-playing','is-exiting');themeReveal.setAttribute('aria-hidden','true');
-      revealComplete=true;struck=false;autoFrom=p=target=.29;apply();
-      phase='auto';autoStart=performance.now();raf=requestAnimationFrame(step);
+      // No hammer strike: the film cuts straight to the black 'The World Resets' card, then the map.
+      revealComplete=true;struck=true;p=target=.925;handoffFrom=.925;
+      phase='handoff';handoffStart=performance.now()-(reducedMotion?0:3100);voiceHold=0;holdScrollY=scrollY;mapScrollDone=false;
+      apply();raf=requestAnimationFrame(step);
     },
     warm:warmStrikeAssets,
     globeReady:function(){return !globeOn||!!window.MUNGlobeReady;},

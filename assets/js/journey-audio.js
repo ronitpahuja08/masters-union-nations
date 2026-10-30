@@ -19,7 +19,7 @@
   }, { once: true });
   let scene = '';
   let enabled = true;
-  try { const choice=localStorage.getItem('mun26-sound-choice');enabled=choice==='on'||(!window.MUNPerformance?.lite&&choice!=='off'); } catch (e) { enabled=!window.MUNPerformance?.lite; }
+  try { const choice=localStorage.getItem('mun26-sound-choice');enabled=choice!=='off'; } catch (e) { enabled=true; }
   let blastTimer = 0, duckTimer = 0, resetLinePlayed = false, voiceActive = false, voicePending = false, fadeTimer = 0, voiceTimer = 0;
   let voiceContext = null, voiceGain = null, musicAttempt = null;
   const overlayMuted = () => document.body.classList.contains('overlay');

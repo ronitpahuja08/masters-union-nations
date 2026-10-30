@@ -352,7 +352,7 @@
   /* hero: [wide word, serif half]; then per-section [line, serif line] */
   const COPY = {
     UNHRC: { hero:['UNHRC','Human rights cannot wait.'], dossier:["The case file","on trafficking."], mandate:["How the room","moves forward."], mandateP:"Every response must distinguish exploitation from trafficking and respect the Council’s mandate.", citation:'for the strongest case.', seat:['Geneva is','holding your seat.'] },
-    MCC:   { hero:['MIDNIGHT CRISIS','When the clock stops, judgment begins.'], dossier:["DEATH","is dead."], mandate:["ANSWER BEFORE","the dawn does."], mandateP:"The realms are collapsing. Before dawn, the court must answer: who killed Death, and who rules in Death’s place?", citation:'for the steadiest hand.', seat:['Take the chair','before midnight.'] },
+    MCC:   { hero:['MIDNIGHT CRISIS','When the clock stops, judgment begins.'], dossier:["AFTER","Life."], mandate:["ANSWER BEFORE","the dawn does."], mandateP:"The realms are collapsing. Before dawn, the court must answer: who killed Death, and who rules in Death’s place?", citation:'for the steadiest hand.', seat:['Take the chair','before midnight.'] },
     CCEP:  { hero:['CCEP','The future is negotiable.'], dossier:['Markets meet','the rulebook.'], mandate:['Price every','trade-off.'], mandateP:'Founders, regulators and economies argue over who pays and who grows. Bring numbers, not slogans.', citation:'on the ledger.', seat:['Singapore is','at the table.'] },
     IPL:   { hero:['IPL','Every bid builds a champion.'], dossier:["THE PURSE","is open."], mandate:["BID, BUILD,","win the season."], mandateP:"", citation:'for the auction room.', seat:['Paddle up.','It is your bid.'] },
     AIPPM: { hero:['AIPPM','The House is in session.'], dossier:["एक राष्ट्र,","एक संहिता."], mandate:["Hold your line.","बहुमत बनाइए."], mandateP:"Equality, faith and federalism meet at one table. Build consensus without losing conviction.", citation:'for the House.', seat:['The Speaker','calls your name.'] },
@@ -387,10 +387,37 @@
   }
   function label(el, text) { if (el) { el.textContent = text; el.classList.add('rv-label'); el.dataset.rv = ''; } }
 
+  /* ---- MCC and IP: a plain number that counts up to the prize pool ---- */
+  function counter(article, code, amount) {
+    const to = Number(String(amount).replace(/[^\d]/g, ''));
+    if (!to) return;
+    article.dataset.rvPrize = '1'; article.dataset.rv = '';
+    article.classList.add('rv-prize', 'rv-prize-total', 'rv-prize-count');
+    article.setAttribute('aria-label', 'Total prize pool for ' + code + ': ' + amount);
+    article.innerHTML = '<div class="rv-count"><small>TOTAL PRIZE POOL</small><b>\u20B90</b></div>';
+    const out = $('b', article), fmt = n => '\u20B9' + Math.round(n).toLocaleString('en-IN');
+    let started = false;
+    const run = () => {
+      if (started) return; started = true;
+      if (reduced()) { out.textContent = fmt(to); return; }
+      const t0 = performance.now(), DUR = 1900;
+      (function step() {
+        const k = Math.min(1, (performance.now() - t0) / DUR);
+        out.textContent = fmt(to * (1 - Math.pow(1 - k, 3)));
+        if (k < 1) setTimeout(step, 24); else out.textContent = fmt(to);
+      })();
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); run(); } }, { threshold: .35 });
+      io.observe(article);
+    } else run();
+  }
+
   /* ---- prizes as engraved cheques ---- */
   function cheque(article, i, code) {
     if (article.dataset.rvPrize) return;
     const amount = ($('b', article)?.textContent || '').trim();
+    if (code === 'MCC' || code === 'IP') return counter(article, code, amount);
     const words = rupeesInWords(amount);
     if (!amount || !words) return;
     article.dataset.rvPrize = '1'; article.dataset.rv = '';

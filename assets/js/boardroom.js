@@ -13,23 +13,23 @@ const committees=[
 ];
 const committeePageCopy={
  UNHRC:{heroA:'Human rights',heroB:'cannot wait.',lead:"Separate trafficking from labour and exploitation. Protect children at risk in conflict-affected Sudan.",steps:[["Know the difference","Separate child labour, forced labour, trafficking and sexual exploitation, because each needs a different response."],["Focus on Sudan","Examine how the war has exposed children to abduction, recruitment and sexual violence, and what the Council can do about it."],["Act within the mandate","Propose measures the Human Rights Council can actually take, from Special Rapporteur access to strengthening the Fact-Finding Mission."]]},
- MCC:{heroA:"Eternal Court:",heroB:"Afterlife.",lead:"Every power in existence is summoned to the Eternal Court, and every one of them has something to hide.",steps:[["Guard your secrets","Every realm is hiding something. Decide what to reveal."],["Find the killer","Follow the evidence, and the lies, across every realm."],["Claim the throne","Decide who, or what, governs death now."]]},
+ MCC:{heroA:"Eternal Court:",heroB:"Afterlife.",lead:"Every power in existence is summoned to the Eternal Court, and every one of them has something to hide.",steps:[["Fight for your faith","Every realm holds its own beliefs. Defend yours when religious convictions collide in the court."],["Be ready for the crisis","This is a crisis committee: the situation can change overnight, so adapt before the dawn."],["Claim the throne","Decide who, or what, governs death now."]]},
  CCEP:{heroA:'Shape the rules',heroB:'of tomorrow.',lead:'Balance innovation, market growth and public interest as you set the rules of commerce.',steps:[['Find the trade-off','Understand how a policy decision affects business and the public.'],['Make the case','Use evidence and commercial reasoning to persuade the room.'],['Design the framework','Build workable rules that support responsible growth.']]},
  IPL:{heroA:'IPL',heroB:'',lead:"Build a winning franchise, one bid at a time.",steps:[["Plan","Know what your squad needs."],["Bid","Spend smart, not fast."],["Build","Turn signings into a winning XI."]]},
  AIPPM:{heroA:'The House is',heroB:'in session.',lead:"Equality, faith and federalism meet at one table. Build consensus without losing conviction.",steps:[["Know your position","Study your party’s position on the Uniform Civil Code (UCC)."],["Debate the agenda","Explore equality, faith, religious freedom and federalism."],["Build consensus","Negotiate a workable position without losing conviction."]]},
- STARTUP:{heroA:'Bring an idea',heroB:'to the table.',lead:"You have 48 hours to build a venture that solves a real Indian problem, then pitch it to VCs and Sharks and let’s see how well you can defend it.",steps:[["Build with a mentor","One mentor per team, guiding you from idea to pitch."],["Defend the model","Show your venture holds up when the numbers are questioned."],["Pitch to real VCs","Make your case to investors who back startups for a living."]]},
- IP:{heroA:'The story is',heroB:'still developing.',lead:"Cover every committee live as it unfolds: report, photograph and caricature the summit in real time. Be ready for a horse trade in other committees.",steps:[["Chase the story","Move between committees and catch the moments that matter."],["Verify the facts","Check every claim before it goes live."],["Go live, score points","File on deadline and climb the newsroom leaderboard."]]}
+ STARTUP:{heroA:'Bring an idea',heroB:'to the table.',lead:"You have 48 hours to build a venture that solves a real Indian problem, then pitch it to VCs and Sharks and let’s see how well you can defend it.",steps:[["Build with a mentor","One mentor per team, guiding you from idea to pitch."],["Defend the model","Show your venture holds up when the numbers are questioned."],["Pitch to VCs","48 hours to build it, then make your case to investors who back startups for a living."]]},
+ IP:{heroA:'The story is',heroB:'still developing.',lead:"Cover every committee live as it unfolds: report, photograph and caricature the summit in real time. Be ready for a horse trade in other committees.",steps:[["Live broadcasting","Report from the floor as it happens and go live on deadline."],["Be ready as a journalist","Chase leads across committees, verify every claim and file before the clock runs out."],["Photography","Shoot a short video of the summit. The best video decides the photography winner."]]}
 };
 committees.forEach(c=>Object.assign(c,committeePageCopy[c.code]||{}));
 const committeeAwards={
  UNHRC:[['Total Prize Pool','₹30,000']],
- MCC:[['Total Prize Pool','₹30,000']],
+ MCC:[['Total Prize Pool','₹50,000']],
  CCEP:[['Total Prize Pool','₹30,000']],
  IPL:[['Total Prize Pool','₹20,000']],
  AIPPM:[['Total Prize Pool','₹30,000']],
  DALAL:[['Total Prize Pool','₹20,000']],
  STARTUP:[['Total Prize Pool','₹45,000']],
- IP:[['Total Prize Pool','₹15,000']]
+ IP:[['Total Prize Pool','₹20,000']]
 };
 committees.forEach(c=>c.awards=committeeAwards[c.code]);
 function slugOf(code){return code==='DALAL'?'dalal-street':String(code).toLowerCase()}
@@ -40,7 +40,7 @@ let state={name:'',committee:null,sound:true,finish:'glass',photo:null,paymentVe
 try{state={...state,...JSON.parse(localStorage.getItem('mun26-global')||'{}')}}catch(e){}
 // New visitors start with sound requested. A deliberate choice on this version
 // remains authoritative across visits, including when an older saved state exists.
-try{const choice=localStorage.getItem('mun26-sound-choice');state.sound=choice==='on'||(!window.MUNPerformance?.lite&&choice!=='off')}catch(e){state.sound=!window.MUNPerformance?.lite}
+try{const choice=localStorage.getItem('mun26-sound-choice');state.sound=choice!=='off'}catch(e){state.sound=true}
 let lastSoundState=state.sound;
 const save=()=>{localStorage.setItem('mun26-global',JSON.stringify({...state,photo:null}));if(lastSoundState!==state.sound){lastSoundState=state.sound;window.dispatchEvent(new CustomEvent('mun-sound-change',{detail:{enabled:state.sound}}))}};
 

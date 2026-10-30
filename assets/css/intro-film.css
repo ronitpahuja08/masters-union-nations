@@ -116,3 +116,6 @@ body:not(.on-home) .film-play::before{animation-play-state:paused}
   .film.is-on .film-line{animation:none}
   .film-venue .ln{clip-path:none;transform:none}
 }
+
+/* the currency word in front of the prize digits */
+.film-odo .cur{align-self:center;margin-right:.28em;font-size:.3em;font-weight:700;letter-spacing:.22em}
