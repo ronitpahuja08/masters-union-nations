@@ -1,7 +1,6 @@
 /* 30 Oct content edits: STARTUP has no prize section; MCC and IP show a counting number instead of the cheque; IP mandate is one paragraph */
 .committee-page[data-committee="STARTUP"] #cpAwards{display:none!important}
 
-.committee-page[data-committee="IP"] #cpBrief .cp-section-label h2,
 .committee-page[data-committee="IP"] #cpBrief #cpIntro,
 .committee-page[data-committee="IP"] #cpBrief #cpSkills{display:none!important}
 
