@@ -117,5 +117,6 @@ body:not(.on-home) .film-play::before{animation-play-state:paused}
   .film-venue .ln{clip-path:none;transform:none}
 }
 
-/* the currency word in front of the prize digits */
-.film-odo .cur{align-self:center;margin-right:.28em;font-size:.3em;font-weight:700;letter-spacing:.22em}
+/* the currency, very small, in the bottom-right corner of the number */
+.film-odo{position:relative}
+.film-odo .cur{position:absolute;right:-.02em;bottom:-.1em;margin:0;align-self:auto;font:italic 600 .16em/1 var(--f-display,"Manrope",sans-serif);letter-spacing:.02em;color:rgba(243,233,220,.8);text-transform:none}

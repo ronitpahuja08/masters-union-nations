@@ -34,7 +34,7 @@ if (home && content) {
   film.innerHTML = '<div class="film-sky sky-purse"></div><div class="film-sky sky-print"></div><div class="film-sky sky-sunset"></div><div class="film-sky sky-night"></div>'
     + '<canvas class="film-gl" aria-hidden="true"></canvas><div class="film-vignette"></div><i class="film-line" aria-hidden="true"></i>'
     + '<div class="film-slate" aria-hidden="true"><b>Masters’ Union Nations 26</b><span class="chapter c1">I · The purse</span><span class="chapter c2">II · The venue</span></div>'
-    + `<div class="film-purse"><small>The prize pool</small><div class="film-odo" role="img" aria-label="3,00,000 Riyal"><span class="cur">RIYAL</span>${odoCols}</div><p>across eight committees. Come and take it.</p></div>`
+    + `<div class="film-purse"><small>The prize pool</small><div class="film-odo" role="img" aria-label="3,00,000 Riyal"><span class="cur">rial</span>${odoCols}</div><p>across eight committees. Come and take it.</p></div>`
     + '<div class="film-venue"><span class="ln k">The venue</span><h2 class="ln">CDS Corporate Tower</h2><em class="ln">Udyog Vihar, Gurugram</em>'
     + '<span class="ln meta"><span>28 — 29 Nov 2026</span><span>8 committees</span><span>2 days</span></span></div>'
     + '<span class="film-tag">8 committee rooms</span><span class="film-tag">28 — 29 November</span><span class="film-tag">Udyog Vihar · Gurugram</span>'
@@ -85,7 +85,9 @@ if (home && content) {
     g.font = '500 11px "DM Mono", monospace'; g.fillText('THE WORLD RESET', 330, 142);
     g.textAlign = 'left'; g.textBaseline = 'alphabetic';
     g.font = '600 13px "DM Mono", monospace'; g.fillText("MASTERS' UNION NATIONS", 28, 38);
-    g.font = '800 46px Manrope, system-ui, sans-serif'; g.fillText(denom + ' RIYAL', 28, 210);
+    g.font = '800 64px Manrope, system-ui, sans-serif'; g.fillText(denom, 28, 210);
+    const dw = g.measureText(denom).width;
+    g.font = 'italic 600 18px Manrope, system-ui, sans-serif'; g.fillText('rial', 28 + dw + 6, 210);
     g.textAlign = 'right'; g.font = '800 40px Manrope, system-ui, sans-serif'; g.fillText(denom, 492, 52);
     g.fillStyle = '#a3262c'; g.font = '600 15px "DM Mono", monospace'; g.fillText('2ZR 281126', 492, 214);
     g.fillStyle = 'rgba(200,200,210,.9)'; g.fillRect(246, 10, 6, 220); // security thread
@@ -103,8 +105,8 @@ if (home && content) {
     const g = c.getContext('2d');
     g.fillStyle = '#efe6d2'; g.fillRect(0, 0, 256, 256);
     g.fillStyle = '#a3262c'; g.fillRect(0, 20, 256, 10); g.fillRect(0, 226, 256, 10);
-    g.fillStyle = '#2a0a10'; g.textAlign = 'center'; g.font = '800 40px Manrope, sans-serif'; g.fillText('RIYAL', 128, 112);
-    g.font = '700 30px Manrope, sans-serif'; g.fillText('3,00,000', 128, 156);
+    g.fillStyle = '#2a0a10'; g.textAlign = 'center'; g.font = '800 40px Manrope, sans-serif'; g.fillText('3,00,000', 128, 124);
+    g.textAlign = 'right'; g.font = 'italic 600 15px Manrope, sans-serif'; g.fillText('rial', 218, 150); g.textAlign = 'center';
     g.font = '500 15px "DM Mono", monospace'; g.fillText('MUN · 26', 128, 196);
     return c;
   }
