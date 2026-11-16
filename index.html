@@ -60,6 +60,7 @@
 <link rel="stylesheet" href="assets/css/low-end.css?v=20261029-1">
 <link rel="stylesheet" href="assets/css/home-countdown-fit.css?v=1">
 <link rel="stylesheet" href="assets/css/committee-edits-2026.css?v=4">
+<link rel="stylesheet" href="assets/css/landing-lite.css?v=1">
 <script>
 /* Landing stays lean until the map shows (see perf.css). Committee links opened directly never set it. */
 if(location.pathname==='/'||location.pathname==='/index.html'){document.documentElement.classList.add('landing-lean');document.addEventListener('DOMContentLoaded',function(){new MutationObserver(function(_,o){if(document.body.classList.contains('at-map')){document.documentElement.classList.remove('landing-lean');o.disconnect();}}).observe(document.body,{attributes:true,attributeFilter:['class']});});}
@@ -521,7 +522,7 @@ if(/^\/(?:unhrc|mcc|ccep|ipl|aippm|dalal-street|startup-boardroom|international-
 </div>
 <button class="journey-music-toggle" id="journeyMusicToggle" type="button" aria-pressed="false" aria-label="Turn on soundtrack"><span class="journey-music-icon" aria-hidden="true">♫</span><span class="journey-music-label">Music off</span></button>
 <script src="assets/js/soundscape.js?v=edits-1"></script>
-<script src="assets/js/home.js?v=edits-2"></script>
+<script src="assets/js/home.js?v=lite-1"></script>
 <script src="assets/js/hero-strike.js?v=low-spec-1"></script>
 <script src="assets/js/boardroom.js?v=edits-1">
 </script>

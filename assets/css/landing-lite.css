@@ -1,0 +1,4 @@
+/* Landing: three always-on effects removed to keep the hero light on weak laptops */
+#home .lobby-glow{animation:none!important;filter:blur(60px)!important;will-change:auto!important}
+#home .hero-ring{animation:none!important}
+#stars{display:none!important}

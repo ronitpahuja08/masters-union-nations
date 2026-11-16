@@ -261,7 +261,8 @@
   /* star field no longer tracks cursor */
   var visibleHome=true,starTimer=0,starRaf=0,starsCleared=false;
   function draw(){
-    if(visibleHome&&p<.25&&!document.hidden){
+    // The falling-digit star field is retired: it repainted a full-screen canvas every few frames.
+    if(false&&visibleHome&&p<.25&&!document.hidden){
       ctx.clearRect(0,0,W,H);
       starsCleared=false;
       ctx.font='13px "DM Mono",ui-monospace,monospace';
